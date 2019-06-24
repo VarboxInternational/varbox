@@ -3,5 +3,9 @@
 /.sass-cache
 /node_modules
 /vendor
+/tests/Browser/console/*
+!/tests/Browser/console/.gitkeep
+/tests/Browser/screenshots/*
+!/tests/Browser/screenshots/.gitkeep
 .phpunit.result.cache
 npm-debug.log
