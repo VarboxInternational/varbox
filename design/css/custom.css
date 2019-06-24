@@ -1,0 +1,33 @@
+.breadcrumb-item + .breadcrumb-item:before {
+    content: none;
+}
+
+.breadcrumb-item+.breadcrumb-item {
+    padding-left: 0;
+}
+
+.no-background {
+    background: none !important;
+}
+
+.no-border {
+    border: 0 !important;
+}
+
+table th {
+    cursor: default;
+}
+
+table th.sortable {
+    cursor: pointer;
+}
+
+.bootbox-close-button.close {
+    overflow: hidden;
+    text-indent: -9999px;
+}
+
+.bootbox-close-button.close::before {
+    float: left;
+    text-indent: 0;
+}
