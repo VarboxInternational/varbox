@@ -117,7 +117,7 @@ if (!function_exists('relation')) {
     {
         return new \Varbox\Helpers\RelationHelper;
     }
-}g
+}
 
 if (!function_exists('is_json_format')) {
     /**
