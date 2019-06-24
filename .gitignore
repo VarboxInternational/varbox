@@ -1,0 +1,7 @@
+/.idea
+/.vagrant
+/.sass-cache
+/node_modules
+/vendor
+.phpunit.result.cache
+npm-debug.log
