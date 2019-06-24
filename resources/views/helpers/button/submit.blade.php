@@ -1,0 +1,1 @@
+{!! form()->button('<i class="fa ' . ($icon ?: '') . '"></i>&nbsp; ' . $text, ['type' => 'submit', 'class' => 'btn-submit btn ' . ($class ?: ''), 'data-url' => $url, 'data-confirm' => $confirm] + ($attributes ? (array)$attributes : [])) !!}
