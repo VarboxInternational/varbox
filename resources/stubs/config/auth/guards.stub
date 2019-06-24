@@ -1,0 +1,4 @@
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
