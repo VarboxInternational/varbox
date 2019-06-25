@@ -8,11 +8,11 @@
             <div class="card">
                 <div class="card-body">
                     {!! form()->open(['url' => route('admin.activity.clean'), 'method' => 'DELETE']) !!}
-                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Activity', ['type' => 'submit', 'class' => 'button-delete-old-activity btn btn-yellow btn-square btn-block mb-5', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Older than ' . $days . ' ' . \Illuminate\Support\Str::plural('day', $days)]) !!}
+                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Activity', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block text-left mb-5', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Older than ' . $days . ' ' . Str::plural('day', $days)]) !!}
                     {!! form()->close() !!}
 
                     {!! form()->open(['url' => route('admin.activity.delete'), 'method' => 'DELETE']) !!}
-                    {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>Delete All Activity', ['type' => 'submit', 'class' => 'button-delete-all-activity btn btn-red btn-square btn-block']) !!}
+                    {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>Delete All Activity', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block text-left']) !!}
                     {!! form()->close() !!}
                 </div>
             </div>
@@ -26,32 +26,3 @@
         </div>
     </div>
 @endsection
-
-@section('bottom_scripts')
-    <script>
-        $('.button-delete-old-activity, .button-delete-all-activity').click(function (e) {
-            e.preventDefault();
-
-            var _this = $(this);
-
-            bootbox.confirm({
-                message: "Are you sure you want to delete the records?",
-                buttons: {
-                    cancel: {
-                        label: 'No',
-                        className: 'btn-secondary btn-default btn-square px-5 mr-auto'
-                    },
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn-primary btn-square px-5'
-                    }
-                },
-                callback: function (result) {
-                    if (result === true) {
-                        _this.closest('form').submit();
-                    }
-                }
-            });
-        });
-    </script>
-@append
