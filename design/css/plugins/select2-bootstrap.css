@@ -221,7 +221,7 @@
   cursor: pointer;
   float: right;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: 3px;
 }
 
 .select2-container--bootstrap .select2-selection__clear:hover {
