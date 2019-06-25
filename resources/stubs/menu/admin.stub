@@ -179,7 +179,7 @@ class AdminMenuComposer
                 });
             }*/
 
-            /*if (\Varbox::moduleEnabled('audit')) {
+            if (\Varbox::moduleEnabled('audit')) {
                 $menu->add(function ($item) use ($menu) {
                     $audit = $item->name('Audit Center')->data('icon', 'fa-flag')
                         ->permissions('notifications-list', 'activity-list')
@@ -193,7 +193,7 @@ class AdminMenuComposer
                         $item->name('Activity')->url(route('admin.activity.index'))->permissions('activity-list')->active('admin/activity/*');
                     });
                 });
-            }*/
+            }
 
             /*if (\Varbox::moduleEnabled('sys')) {
                 $menu->add(function ($item) use ($menu) {
