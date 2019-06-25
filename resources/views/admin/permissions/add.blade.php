@@ -3,5 +3,5 @@
 @section('title', $title)
 
 @section('content')
-    @include('varbox::admin.auth.permissions._form', ['url' => route('admin.permissions.store')])
+    @include('varbox::admin.permissions._form', ['url' => route('admin.permissions.store')])
 @endsection

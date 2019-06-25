@@ -3,5 +3,5 @@
 @section('title', $title)
 
 @section('content')
-    @include('varbox::admin.auth.roles._form', ['url' => route('admin.roles.update', $item->getKey())])
+    @include('varbox::admin.roles._form', ['url' => route('admin.roles.update', $item->getKey())])
 @endsection

@@ -7,10 +7,10 @@
         <div class="col-lg-3">
             {!! button()->addRecord(route('admin.permissions.create')) !!}
 
-            @include('varbox::admin.auth.permissions._filter')
+            @include('varbox::admin.permissions._filter')
         </div>
         <div class="col-lg-9">
-            @include('varbox::admin.auth.permissions._table')
+            @include('varbox::admin.permissions._table')
 
             {!! pagination('admin')->render($items) !!}
         </div>
