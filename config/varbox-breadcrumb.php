@@ -14,7 +14,7 @@ return [
     | Flag indicating whether or not breadcrumbs should be enabled in the entire admin.
     |
     */
-    'enable' => true,
+    'enabled' => true,
 
     /*
     |
