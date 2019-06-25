@@ -1,3 +1,3 @@
-<a href="{{ $url or '#' }}" class="btn {!! $class or '' !!}" {!! implode(' ', $attributes) !!}>
-    <i class="fa {!! $icon or '' !!}"></i>&nbsp; {!! $text or 'Click' !!}
+<a href="{{ $url ?? '#' }}" class="btn {!! $class ?? '' !!}" {!! implode(' ', $attributes) !!}>
+    <i class="fa {!! $icon ?? '' !!}"></i>&nbsp; {!! $text ?? 'Click' !!}
 </a>
