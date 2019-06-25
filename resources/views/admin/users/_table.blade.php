@@ -10,7 +10,7 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="active">
                 <i class="fa fa-sort mr-2"></i>Active
             </th>
-            <th class="text-right"></th>
+            <th class="text-right d-flex justify-content-end"></th>
         </tr>
         @forelse($items as $index => $item)
             <tr>
@@ -23,11 +23,11 @@
                         @if($item->active) Yes @else No @endif
                     </span>
                 </td>
-                <td class="text-right">
+                <td class="text-right d-flex justify-content-end">
                     {!! button()->editRecord(route('admin.users.edit', $item->getKey())) !!}
                     {!! button()->deleteRecord(route('admin.users.destroy', $item->getKey())) !!}
 
-                    <div class="item-action dropdown" data-toggle="tooltip" data-placement="top" title="More">
+                    <div class="item-action dropdown d-flex" data-toggle="tooltip" data-placement="top" title="More">
                         <a href="javascript:void(0)" data-toggle="dropdown" class="d-inline btn icon px-0" aria-expanded="false" >
                             <i class="fe fe-more-vertical"></i>
                         </a>
