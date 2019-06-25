@@ -146,6 +146,11 @@ class AdminsController extends Controller
     {
         $this->guardAgainstNonAdmin($user);
 
+        if (auth()->id() ===$user->id) {
+            flash()->error('You cannot delete yourself!');
+            return back();
+        }
+
         return $this->_destroy(function () use ($user) {
             $this->item = $user;
             $this->redirect = redirect()->route('admin.admins.index');
