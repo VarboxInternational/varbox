@@ -143,7 +143,7 @@ dfn {
 
 b,
 strong {
-  font-weight: bolder;
+  font-weight: 700;
 }
 
 small {
@@ -9908,7 +9908,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
 
 strong,
 b {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 p,
