@@ -93,6 +93,21 @@ return [
         */
         'permission_model' => \Varbox\Models\Permission::class,
 
+        /*
+        |
+        | Concrete implementation for the "activity model".
+        | To extend or replace this functionality, change the value below with your full "activity model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Activity" class
+        | - or at least implement the "Varbox\Contracts\ActivityModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('activity.model') OR app('\Varbox\Contracts\ActivityModelContract')
+        | - or you could even use your own class as a direct implementation
+        */
+        'activity_model' => \Varbox\Models\Activity::class,
+
     ],
 
     /*
@@ -197,6 +212,30 @@ return [
         |
         */
         'permissions_controller' => \Varbox\Controllers\PermissionsController::class,
+
+        /*
+        |
+        | Concrete implementation for the "notifications controller".
+        | To extend or replace this functionality, change the value below with your full "notifications controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\NotificationsController" class
+        | - or you'll have to implement the following public methods yourself: index(), destroy(), actionNotification(), markAsRead(), markAllAsRead(), deleteRead(), deleteOld(), deleteAll()
+        |
+        */
+        'notifications_controller' => \Varbox\Controllers\NotificationsController::class,
+
+        /*
+        |
+        | Concrete implementation for the "activity controller".
+        | To extend or replace this functionality, change the value below with your full "activity controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\ActivityController" class
+        | - or you'll have to implement the following public methods yourself: index(), destroy(), clean(), delete()
+        |
+        */
+        'activity_controller' => \Varbox\Controllers\ActivityController::class,
 
     ],
 
@@ -427,6 +466,18 @@ return [
         |
         */
         'admin_menu_view_composer' => \Varbox\Composers\AdminMenuComposer::class,
+
+        /*
+        |
+        | Concrete implementation for the "notifications view composer".
+        | To extend or replace this functionality, change the value below with your full "notifications view composer" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Composers\NotificationsComposer" class
+        | - or at least implement the following methods: compose()
+        |
+        */
+        'notifications_view_composer' => \Varbox\Composers\NotificationsComposer::class,
 
     ],
 
