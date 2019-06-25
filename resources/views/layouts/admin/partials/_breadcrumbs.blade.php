@@ -1,4 +1,4 @@
-@if(config('varbox.varbox-breadcrumb.enable', true) === true)
+@if(config('varbox.varbox-breadcrumb.enabled', true) === true)
     <nav aria-label="breadcrumb" class="">
         <ol class="breadcrumb mb-0 px-sm-0">
             @foreach (breadcrumbs()->generate() as $breadcrumb)
