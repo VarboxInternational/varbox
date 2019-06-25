@@ -127,6 +127,7 @@ class CreateTestingTables extends Migration
                 $table->string('entity_url')->nullable();
 
                 $table->string('event');
+                $table->boolean('obsolete')->default(false);
 
                 $table->timestamps();
 

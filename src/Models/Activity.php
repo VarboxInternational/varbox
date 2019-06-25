@@ -35,6 +35,15 @@ class Activity extends Model implements ActivityModelContract
     ];
 
     /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'obsolete' => 'boolean',
+    ];
+
+    /**
      * The relations that are eager-loaded.
      *
      * @var array
@@ -78,7 +87,7 @@ class Activity extends Model implements ActivityModelContract
         $message[] = $this->event;
         $message[] = 'a ' . $this->entity_type ?: $this->subject->getMorphClass();
 
-        if ($this->entity_url) {
+        if (!$this->obsolete && $this->entity_url) {
             $message[] = '(<a href="' . url($this->entity_url) . '" target="_blank">' . $this->entity_name . '</a>)';
         } else {
             $message[] = '(<span style="color: #868e96;">' . $this->entity_name . '</span>)';

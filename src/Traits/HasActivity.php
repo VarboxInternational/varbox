@@ -48,6 +48,12 @@ trait HasActivity
                 if ($model->shouldLogActivity()) {
                     $model->logActivity($event);
                 }
+
+                if ($event == 'deleted') {
+                    $model->activity()->forSubject($model)->update([
+                        'obsolete' => true,
+                    ]);
+                }
             });
         });
     }
