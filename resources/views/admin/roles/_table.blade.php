@@ -7,17 +7,17 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="guard">
                 <i class="fa fa-sort mr-2"></i>Guard
             </th>
-            <th class="text-right"></th>
+            <th class="text-right d-flex justify-content-end"></th>
         </tr>
         @forelse($items as $index => $item)
             <tr>
                 <td>{{ $item->name ?: 'N/A' }}</td>
                 <td class="d-none d-sm-table-cell text-muted">
-                    <span class="badge badge badge-info">
+                    <span class="badge badge badge-default">
                         {{ $item->guard ?: 'N/A' }}
                     </span>
                 </td>
-                <td class="text-right">
+                <td class="text-right d-flex justify-content-end">
                     {!! button()->editRecord(route('admin.roles.edit', $item)) !!}
                     {!! button()->deleteRecord(route('admin.roles.destroy', $item)) !!}
                 </td>
