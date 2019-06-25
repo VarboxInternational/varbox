@@ -20,25 +20,25 @@ class AdminsController extends Controller
     use CanCrud;
 
     /**
-     * @var RoleModelContract
+     * @var UserModelContract
      */
     protected $model;
 
     /**
-     * @var UserModelContract
+     * @var RoleModelContract
      */
-    protected $user;
+    protected $role;
 
     /**
      * AdminsController constructor.
      *
-     * @param RoleModelContract $model
-     * @param UserModelContract $user
+     * @param UserModelContract $model
+     * @param RoleModelContract $user
      */
-    public function __construct(RoleModelContract $model, UserModelContract $user)
+    public function __construct(UserModelContract $model, RoleModelContract $role)
     {
         $this->model = $model;
-        $this->user = $user;
+        $this->role = $role;
     }
 
     /**
@@ -51,7 +51,7 @@ class AdminsController extends Controller
     public function index(Request $request, AdminFilter $filter, AdminSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
-            $this->items = $this->user->onlyAdmins()
+            $this->items = $this->model->onlyAdmins()
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
                 ->paginate(config('varbox.varbox-crud.per_page', 10));
@@ -59,7 +59,7 @@ class AdminsController extends Controller
             $this->title = 'Admins';
             $this->view = view('varbox::admin.admins.index');
             $this->vars = [
-                'roles' => $this->model->whereGuard('admin')->get(),
+                'roles' => $this->role->whereGuard('admin')->get(),
             ];
         });
     }
@@ -74,7 +74,7 @@ class AdminsController extends Controller
             $this->title = 'Add Admin';
             $this->view = view('varbox::admin.admins.add');
             $this->vars = [
-                'roles' => $this->model->whereGuard('admin')->get(),
+                'roles' => $this->role->whereGuard('admin')->get(),
             ];
         });
     }
@@ -89,7 +89,7 @@ class AdminsController extends Controller
         $request = $this->initRequest();
 
         return $this->_store(function () use ($request) {
-            $this->item = $this->user->doNotLogActivity()->create($request->all());
+            $this->item = $this->model->doNotLogActivity()->create($request->all());
             $this->redirect = redirect()->route('admin.admins.index');
 
             $this->item->roles()->attach($request->input('roles'));
@@ -104,12 +104,14 @@ class AdminsController extends Controller
      */
     public function edit(UserModelContract $user)
     {
+        $this->guardAgainstNonAdmin($user);
+
         return $this->_edit(function () use ($user) {
             $this->item = $user;
             $this->title = 'Edit Admin';
             $this->view = view('varbox::admin.admins.edit');
             $this->vars = [
-                'roles' => $this->model->whereGuard('admin')->get(),
+                'roles' => $this->role->whereGuard('admin')->get(),
             ];
         });
     }
@@ -122,6 +124,8 @@ class AdminsController extends Controller
      */
     public function update(Request $request, UserModelContract $user)
     {
+        $this->guardAgainstNonAdmin($user);
+
         $request = $this->initRequest();
 
         return $this->_update(function () use ($request, $user) {
@@ -140,6 +144,8 @@ class AdminsController extends Controller
      */
     public function destroy(UserModelContract $user)
     {
+        $this->guardAgainstNonAdmin($user);
+
         return $this->_destroy(function () use ($user) {
             $this->item = $user;
             $this->redirect = redirect()->route('admin.admins.index');
@@ -156,5 +162,16 @@ class AdminsController extends Controller
         return app(config(
             'varbox.varbox-binding.form_requests.admin_form_request', AdminRequest::class
         ))->merged();
+    }
+
+    /**
+     * @param UserModelContract $user
+     * @return void
+     */
+    protected function guardAgainstNonAdmin(UserModelContract $user)
+    {
+        if (!$user->isAdmin()) {
+            abort(404);
+        }
     }
 }
