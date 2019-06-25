@@ -35,12 +35,8 @@ class Varbox
      * @return void
      * @throws Exception
      */
-    public function routes()
+    public function route()
     {
-        if (file_exists(__DIR__ . '/../routes/routes.php')) {
-            require __DIR__ . '/../routes/routes.php';
-        }
-
         if (file_exists(__DIR__ . '/../routes/last.php')) {
             require __DIR__ . '/../routes/last.php';
         }

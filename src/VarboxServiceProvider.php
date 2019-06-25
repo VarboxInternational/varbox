@@ -9,8 +9,12 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Varbox\Commands\ActivityCleanCommand;
+use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Commands\InstallCommand;
 use Varbox\Composers\AdminMenuComposer;
+use Varbox\Composers\NotificationsComposer;
+use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\ButtonHelperContract;
@@ -35,6 +39,7 @@ use Varbox\Middleware\Authenticated;
 use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\NotAuthenticated;
+use Varbox\Models\Activity;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
 use Varbox\Models\User;
@@ -108,9 +113,11 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function publishConfigs()
     {
         $this->publishes([
+            __DIR__ . '/../config/varbox-activity.php' => config_path('varbox/varbox-activity.php'),
+            __DIR__ . '/../config/varbox-binding.php' => config_path('varbox/varbox-binding.php'),
             __DIR__ . '/../config/varbox-cache.php' => config_path('varbox/varbox-cache.php'),
             __DIR__ . '/../config/varbox-modules.php' => config_path('varbox/varbox-modules.php'),
-            __DIR__ . '/../config/varbox-binding.php' => config_path('varbox/varbox-binding.php'),
+            __DIR__ . '/../config/varbox-notification.php' => config_path('varbox/varbox-notification.php'),
             __DIR__ . '/../config/varbox-breadcrumb.php' => config_path('varbox/varbox-breadcrumb.php'),
             __DIR__ . '/../config/varbox-crud.php' => config_path('varbox/varbox-crud.php'),
             __DIR__ . '/../config/varbox-flash.php' => config_path('varbox/varbox-flash.php'),
@@ -130,9 +137,9 @@ class VarboxServiceProvider extends BaseServiceProvider
         );
 
         $this->config->set([
-            'breadcrumbs.unnamed-route-exception' => config('varbox.varbox-breadcrumb.throw_exceptions', true),
-            'breadcrumbs.missing-route-bound-breadcrumb-exception' => config('varbox.varbox-breadcrumb.throw_exceptions', true),
-            'breadcrumbs.invalid-named-breadcrumb-exception' => config('varbox.varbox-breadcrumb.throw_exceptions', true),
+            'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
+            'breadcrumbs.missing-route-bound-breadcrumb-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
+            'breadcrumbs.invalid-named-breadcrumb-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
         ]);
     }
 
@@ -183,6 +190,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
+                ActivityCleanCommand::class,
+                NotificationsCleanCommand::class,
             ]);
         }
     }
@@ -204,9 +213,16 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerViewComposers()
     {
+        $composers = $this->config['varbox.varbox-binding']['view_composers'];
+
         $this->app['view']->composer(
             'varbox::layouts.admin.partials._menu',
-            $this->config['varbox.varbox-binding']['view_composers']['admin_menu_view_composer'] ?? AdminMenuComposer::class
+            $composers['admin_menu_view_composer'] ?? AdminMenuComposer::class
+        );
+
+        $this->app['view']->composer(
+            'varbox::layouts.admin.partials._notifications',
+            $composers['notifications_view_composer'] ?? NotificationsComposer::class
         );
     }
 
@@ -218,6 +234,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('user', UserModelContract::class);
         Route::model('role', RoleModelContract::class);
         Route::model('permission', PermissionModelContract::class);
+        Route::model('activity', ActivityModelContract::class);
     }
 
     /**
@@ -225,7 +242,11 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function loadRoutes()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/main.php');
+
+        if (\Varbox::moduleEnabled('audit')) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/audit.php');
+        }
     }
 
     /**
@@ -233,8 +254,12 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function loadBreadcrumbs()
     {
-        if (class_exists('Breadcrumbs')) {
-            require __DIR__ . '/../routes/breadcrumbs.php';
+        if ($this->config['varbox']['varbox-breadcrumb']['enabled'] ?? false === true) {
+            require __DIR__ . '/../breadcrumbs/main.php';
+
+            if (\Varbox::moduleEnabled('audit')) {
+                require __DIR__ . '/../breadcrumbs/audit.php';
+            }
         }
     }
 
@@ -243,8 +268,10 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function mergeConfigs()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-activity.php', 'varbox.varbox-activity');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-cache.php', 'varbox.varbox-cache');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-modules.php', 'varbox.varbox-modules');
+        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-notification.php', 'varbox.varbox-notification');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-binding.php', 'varbox.varbox-binding');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-breadcrumb.php', 'varbox.varbox-breadcrumb');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-crud.php', 'varbox.varbox-crud');
@@ -288,6 +315,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(PermissionModelContract::class, $binding['models']['permission_model'] ?? Permission::class);
         $this->app->alias(PermissionModelContract::class, 'permission.model');
+
+        $this->app->bind(ActivityModelContract::class, $binding['models']['activity_model'] ?? Activity::class);
+        $this->app->alias(ActivityModelContract::class, 'activity.model');
     }
 
     /**
