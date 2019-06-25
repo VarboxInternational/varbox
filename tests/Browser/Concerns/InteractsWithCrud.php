@@ -84,7 +84,7 @@ trait InteractsWithCrud
     public function deleteRecord($text)
     {
         $this->clickDeleteButton($text)->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure you want to delete this record?')->press('Yes');
+            $modal->assertSee('Are you sure?')->press('Yes');
         });
 
         return $this;
@@ -98,7 +98,7 @@ trait InteractsWithCrud
     public function deleteAnyRecord()
     {
         $this->click('.button-delete')->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure you want to delete this record?')->press('Yes');
+            $modal->assertSee('Are you sure?')->press('Yes');
         });
 
         return $this;
