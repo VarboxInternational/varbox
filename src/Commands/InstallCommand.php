@@ -117,6 +117,13 @@ class InstallCommand extends Command
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "CACHE_DUPLICATE_QUERIES" configuration.');
             }
+
+            if (false === strpos($env, 'LOG_ACTIVITY')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nLOG_ACTIVITY=true\n");
+                $this->line('<fg=green>SUCCESS |</> Appended "LOG_ACTIVITY" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "LOG_ACTIVITY" configuration.');
+            }
         } catch (FileNotFoundException $e) {
             $this->line('<fg=red>ERROR   |</> Unable to append the env variables! The file ".env" was not found.');
         }
@@ -129,20 +136,20 @@ class InstallCommand extends Command
     {
         $this->line(PHP_EOL . PHP_EOL);
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
-        $this->line('<fg=yellow>REGISTERING ROUTES</>');
+        $this->line('<fg=yellow>REGISTERING ROUTE</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
         try {
             $routes = $this->files->get(base_path('routes/web.php'));
 
-            if (false === strpos($routes, 'Varbox::routes()')) {
-                $this->files->append(base_path('routes/web.php'), "\n// This should be the last line\nVarbox::routes();\n");
+            if (false === strpos($routes, 'Varbox::route()')) {
+                $this->files->append(base_path('routes/web.php'), "\n// This should be the last line\nVarbox::route();\n");
                 $this->line('<fg=green>SUCCESS |</> Registered the routes inside the "routes/web.php" file.');
             } else {
-                $this->line('<fg=green>SUCCESS |</> Routes already registered inside the "routes/web.php" file.');
+                $this->line('<fg=green>SUCCESS |</> Route already registered inside the "routes/web.php" file.');
             }
         } catch (FileNotFoundException $e) {
-            $this->line('<fg=red>ERROR   |</> Unable to register the routes! The file "routes/web.php" was not found.');
+            $this->line('<fg=red>ERROR   |</> Unable to register the route`! The file "routes/web.php" was not found.');
         }
     }
 
