@@ -51,6 +51,6 @@
     </div>
 @endsection
 
-@section('bottom_scripts')
+@push('scripts')
     {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.login_form_request', \Varbox\Requests\LoginRequest::class)) !!}
-@append
+@endpush

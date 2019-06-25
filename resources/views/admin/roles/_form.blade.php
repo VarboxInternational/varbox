@@ -124,7 +124,7 @@
 </div>
 {!! form_admin()->close() !!}
 
-@section('bottom_scripts')
+@push('scripts')
     {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.role_form_request', Varbox\Requests\RoleRequest::class), '.frm') !!}
 
     <script type="text/javascript">
@@ -152,5 +152,5 @@
                 .find('input[type="checkbox"][name="permissions[]"], input[type="checkbox"][name="dummy"]').prop('checked', false);
         }
     </script>
-@append
+@endpush
 

@@ -55,6 +55,6 @@
 </div>
 {!! form_admin()->close() !!}
 
-@section('bottom_scripts')
+@push('scripts')
     {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.permission_form_request', Varbox\Requests\PermissionRequest::class), '.frm') !!}
-@append
+@endpush

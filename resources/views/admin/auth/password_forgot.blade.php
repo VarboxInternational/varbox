@@ -40,6 +40,6 @@
     </div>
 @endsection
 
-@section('bottom_scripts')
+@push('scripts')
     {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.password_forgot_form_request', \Varbox\Requests\PasswordForgotRequest::class)) !!}
-@append
+@endpush
