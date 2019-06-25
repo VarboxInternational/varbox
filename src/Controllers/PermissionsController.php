@@ -57,7 +57,7 @@ class PermissionsController extends Controller
                 ->paginate(config('varbox.varbox-crud.per_page', 10));
 
             $this->title = 'Permissions';
-            $this->view = view('varbox::admin.auth.permissions.index');
+            $this->view = view('varbox::admin.permissions.index');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
             ];
@@ -72,7 +72,7 @@ class PermissionsController extends Controller
     {
         return $this->_create(function () {
             $this->title = 'Add Permission';
-            $this->view = view('varbox::admin.auth.permissions.add');
+            $this->view = view('varbox::admin.permissions.add');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
             ];
@@ -104,7 +104,7 @@ class PermissionsController extends Controller
         return $this->_edit(function () use ($permission) {
             $this->item = $permission;
             $this->title = 'Edit Permission';
-            $this->view = view('varbox::admin.auth.permissions.edit');
+            $this->view = view('varbox::admin.permissions.edit');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
             ];
