@@ -1,43 +1,38 @@
 @extends('varbox::layouts.admin.default')
 
+@section('title', $title)
+
 @section('content')
-    <section class="filters">
-        @include('varbox::admin.audit.notifications._filter')
-    </section>
+    <div class="row row-cards">
+        <div class="col-lg-3">
+            @if(!$isAnotherUser)
+                <div class="card">
+                    <div class="card-body">
+                        {!! form()->open(['url' => route('admin.notifications.mark_all_as_read'), 'method' => 'POST']) !!}
+                        {!! form()->button('<i class="fe fe-check mr-2"></i>Mark All As Read', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue btn-square btn-block mb-5 text-left']) !!}
+                        {!! form()->close() !!}
 
-    <section class="content content-quarter one">
-        {!! form()->open(['url' => route('admin.notifications.mark_all_as_read'), 'method' => 'POST']) !!}
-        {!! form()->button('<i class="fa fa-check-circle"></i>&nbsp; Mark all notifications as read', ['type' => 'submit', 'class' => 'btn blue full centered no-margin visible-text', 'onclick' => 'return confirm("Are you sure you want to mark all your notifications as being read?")']) !!}
-        {!! form()->close() !!}
-    </section>
+                        {!! form()->open(['url' => route('admin.notifications.delete_read'), 'method' => 'DELETE']) !!}
+                        {!! form()->button('<i class="fe fe-eye-off mr-2"></i>Delete Read Notifications', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-green btn-square btn-block mb-5 text-left']) !!}
+                        {!! form()->close() !!}
 
-    <section class="content content-quarter two">
-        {!! form()->open(['url' => route('admin.notifications.delete_read'), 'method' => 'DELETE']) !!}
-        {!! form()->button('<i class="fa fa-eye-slash"></i>&nbsp; Discard already read notifications', ['type' => 'submit', 'class' => 'btn green full centered no-margin visible-text', 'onclick' => 'return confirm("Are you sure you want to remove all your read notifications?")']) !!}
-        {!! form()->close() !!}
-    </section>
+                        {!! form()->open(['url' => route('admin.notifications.delete_old'), 'method' => 'DELETE']) !!}
+                        {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Notifications', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block mb-5 text-left', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Older than ' . $days . ' ' . Str::plural('day', $days)]) !!}
+                        {!! form()->close() !!}
 
-    <section class="content content-quarter three">
-        {!! form()->open(['url' => route('admin.notifications.delete_old'), 'method' => 'DELETE']) !!}
-        {!! form()->button('<i class="fa fa-ban"></i>&nbsp; Cleanup notifications older than ' . (int)config('varbox.audit.notification.delete_records_older_than', 30) . ' days', ['type' => 'submit', 'class' => 'btn yellow full centered no-margin visible-text', 'onclick' => 'return confirm("Are you sure you want to remove all of the notifications older than the given time limit?")']) !!}
-        {!! form()->close() !!}
-    </section>
+                        {!! form()->open(['url' => route('admin.notifications.delete_all'), 'method' => 'DELETE']) !!}
+                        {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>Delete All Notifications', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block text-left']) !!}
+                        {!! form()->close() !!}
+                    </div>
+                </div>
+            @endif
 
-    <section class="content content-quarter four">
-        {!! form()->open(['url' => route('admin.notifications.delete_all'), 'method' => 'DELETE']) !!}
-        {!! form()->button('<i class="fa fa-trash"></i>&nbsp; Delete all notifications', ['type' => 'submit', 'class' => 'btn red full centered no-margin visible-text', 'onclick' => 'return confirm("Are you sure you want to delete absolutely all of your notifications?")']) !!}
-        {!! form()->close() !!}
-    </section>
+            @include('varbox::admin.notifications._filter')
+        </div>
+        <div class="col-lg-9">
+            @include('varbox::admin.notifications._table')
 
-    <section class="list">
-        @include('varbox::admin.audit.notifications._table', ['items' => $items])
-    </section>
-@endsection
-
-@section('footer')
-    {!! pagination('admin')->render($items) !!}
-
-    <section class="right">
-        {!! button()->updateAction() !!}
-    </section>
+            {!! $items->links("varbox::helpers.pagination.admin", request()->all()) !!}
+        </div>
+    </div>
 @endsection

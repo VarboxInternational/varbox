@@ -1,13 +1,24 @@
-{!! form()->open(['url' => request()->url(), 'method' => 'GET']) !!}
-    <fieldset>
-        {!! form()->select('read', ['' => 'Show All', '1' => 'Un-read Only', '2' => 'Read Only'], request()->query('read') ?: null) !!}
-    </fieldset>
-    <fieldset>
-        {!! form_admin()->calendar('start_date', false, request()->query('start_date') !== null ? request()->query('start_date') : null, ['placeholder' => 'Date From', 'style' => 'width: 48%;']) !!}
-        {!! form_admin()->calendar('end_date', false, request()->query('end_date') !== null ? request()->query('end_date') : null, ['placeholder' => 'Date To', 'style' => 'width: 48%;']) !!}
-    </fieldset>
-    <div>
-        {!! button()->filterRecords() !!}
-        {!! button()->clearFilters() !!}
+{!! form()->open(['url' => request()->url(), 'method' => 'get', 'class' => 'card ' . (empty(request()->except(['page', 'sort', 'dir'])) ? 'card-collapsed' : '')]) !!}
+<div class="filter-records-container card-header" data-toggle="card-collapse" style="cursor: pointer;">
+    <h3 class="card-title">Filter Records</h3>
+    <div class="card-options">
+        <a href="#" class="card-options-collapse"><i class="fe fe-chevron-up"></i></a>
     </div>
+</div>
+<div class="card-body">
+    {!! form_admin()->select('user', 'Belonging To',$users->pluck('full_name', 'id'), request()->query('user') ?: null) !!}
+    {!! form_admin()->select('read', 'Show Only', ['' => '---', '1' => 'Unread', '2' => 'Read'], request()->query('read') ?: null) !!}
+    <div class="row">
+        <div class="col">
+            {!! form_admin()->date('start_date', 'From', request()->query('start_date') ?: null) !!}
+        </div>
+        <div class="col">
+            {!! form_admin()->date('end_date', 'To', request()->query('end_date') ?: null) !!}
+        </div>
+    </div>
+</div>
+<div class="card-footer text-right">
+    {!! button()->clearFilters() !!}
+    {!! button()->filterRecords() !!}
+</div>
 {!! form()->close() !!}
