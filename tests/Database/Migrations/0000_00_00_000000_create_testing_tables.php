@@ -100,6 +100,39 @@ class CreateTestingTables extends Migration
                 $table->primary(['role_id', 'permission_id']);
             });
         }
+
+        if (!Schema::hasTable('notifications')) {
+            Schema::create('notifications', function (Blueprint $table) {
+                $table->uuid('id')->primary();
+
+                $table->string('type');
+                $table->morphs('notifiable');
+
+                $table->text('data');
+
+                $table->timestamp('read_at')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('activity')) {
+            Schema::create('activity', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->bigInteger('user_id')->unsigned()->index()->nullable();
+                $table->nullableMorphs('subject');
+
+                $table->string('entity_type')->nullable();
+                $table->string('entity_name')->nullable();
+                $table->string('entity_url')->nullable();
+
+                $table->string('event');
+
+                $table->timestamps();
+
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            });
+        }
     }
 
     /**
@@ -109,6 +142,8 @@ class CreateTestingTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('activity');
+        Schema::dropIfExists('notifications');
         Schema::dropIfExists('role_permission');
         Schema::dropIfExists('user_permission');
         Schema::dropIfExists('user_role');
