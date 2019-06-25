@@ -34,7 +34,7 @@ class RolesSeeder extends Seeder
     {
         foreach ($this->roles as $label => $data) {
             if ($role->where('name', $data['name'])->count() == 0) {
-                $role->create($data);
+                $role->doNotLogActivity()->create($data);
             }
         }
     }

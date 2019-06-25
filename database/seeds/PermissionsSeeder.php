@@ -225,6 +225,34 @@ class PermissionsSeeder extends Seeder
                 'name' => 'revisions-delete',
             ],
         ],
+        'Activity' => [
+            'List' => [
+                'group' => 'Activity',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'activity-list',
+            ],
+            'Delete' => [
+                'group' => 'Activity',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'activity-delete',
+            ],
+        ],
+        'Notifications' => [
+            'List' => [
+                'group' => 'Notifications',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'notifications-list',
+            ],
+            'Delete' => [
+                'group' => 'Notifications',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'notifications-delete',
+            ],
+        ],
     ];
 
     /**
@@ -238,7 +266,7 @@ class PermissionsSeeder extends Seeder
         foreach ($this->permissions as $permissions) {
             foreach ($permissions as $data) {
                 if ($permission->where('name', $data['name'])->count() == 0) {
-                    $permission->create($data);
+                    $permission->doNotLogActivity()->create($data);
                 }
             }
         }

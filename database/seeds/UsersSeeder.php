@@ -16,7 +16,7 @@ class UsersSeeder extends Seeder
     public function run(UserModelContract $user)
     {
         if ($user->where('email', 'admin@mail.com')->count() == 0) {
-            $admin = $user->create([
+            $admin = $user->doNotLogActivity()->create([
                 'email' => 'admin@mail.com',
                 'password' => bcrypt('admin'),
                 'first_name' => 'Admin',
@@ -24,7 +24,7 @@ class UsersSeeder extends Seeder
                 'active' => true,
             ]);
 
-            $admin->assignRoles([
+            $admin->doNotLogActivity()->assignRoles([
                 'Admin', 'Super'
             ]);
         }
