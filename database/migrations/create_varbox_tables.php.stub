@@ -142,6 +142,8 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('activity');
+        Schema::dropIfExists('notifications');
         Schema::dropIfExists('role_permission');
         Schema::dropIfExists('user_permission');
         Schema::dropIfExists('user_role');
