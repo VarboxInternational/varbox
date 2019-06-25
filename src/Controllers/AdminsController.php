@@ -89,10 +89,11 @@ class AdminsController extends Controller
         $request = $this->initRequest();
 
         return $this->_store(function () use ($request) {
-            $this->item = $this->user->create($request->all());
+            $this->item = $this->user->doNotLogActivity()->create($request->all());
             $this->redirect = redirect()->route('admin.admins.index');
 
             $this->item->roles()->attach($request->input('roles'));
+            $this->item->logActivity('created');
         }, $request);
     }
 

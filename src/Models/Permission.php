@@ -8,12 +8,15 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Varbox\Contracts\PermissionModelContract;
+use Varbox\Options\ActivityOptions;
+use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class Permission extends Model implements PermissionModelContract
 {
+    use HasActivity;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -118,5 +121,18 @@ class Permission extends Model implements PermissionModelContract
     public static function getGrouped($guard)
     {
         return static::whereGuard($guard)->get()->groupBy('group');
+    }
+
+    /**
+     * Set the options for the HasActivity trait.
+     *
+     * @return ActivityOptions
+     */
+    public function getActivityOptions()
+    {
+        return ActivityOptions::instance()
+            ->withEntityType('permission')
+            ->withEntityName($this->name)
+            ->withEntityUrl(route('admin.permissions.edit', $this->id));
     }
 }

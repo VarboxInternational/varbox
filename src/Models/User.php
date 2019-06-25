@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Notifications\ResetPassword;
+use Varbox\Options\ActivityOptions;
+use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasRoles;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -15,6 +17,7 @@ use Varbox\Traits\IsSortable;
 class User extends Authenticatable implements UserModelContract
 {
     use HasRoles;
+    use HasActivity;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -231,5 +234,26 @@ class User extends Authenticatable implements UserModelContract
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    /**
+     * Set the options for the HasActivity trait.
+     *
+     * @return ActivityOptions
+     */
+    public function getActivityOptions()
+    {
+        if ($this->isAdmin()) {
+            $type = 'admin';
+            $url = route('admin.admins.edit', $this->id);
+        } else {
+            $type = 'user';
+            $url = route('admin.users.edit', $this->id);
+        }
+
+        return ActivityOptions::instance()
+            ->withEntityType($type)
+            ->withEntityName($this->email)
+            ->withEntityUrl($url);
     }
 }

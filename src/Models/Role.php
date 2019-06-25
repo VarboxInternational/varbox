@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Options\ActivityOptions;
+use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasPermissions;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -16,6 +18,7 @@ use Varbox\Traits\IsSortable;
 class Role extends Model implements RoleModelContract
 {
     use HasPermissions;
+    use HasActivity;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -107,5 +110,18 @@ class Role extends Model implements RoleModelContract
         } catch (ModelNotFoundException $e) {
             throw new ModelNotFoundException('Role "' . $name . '" does not exist!');
         }
+    }
+
+    /**
+     * Set the options for the HasActivity trait.
+     *
+     * @return ActivityOptions
+     */
+    public function getActivityOptions()
+    {
+        return ActivityOptions::instance()
+            ->withEntityType('role')
+            ->withEntityName($this->name)
+            ->withEntityUrl(route('admin.roles.edit', $this->id));
     }
 }
