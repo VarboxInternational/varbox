@@ -10,7 +10,7 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="active">
                 <i class="fa fa-sort mr-2"></i>Active
             </th>
-            <th class="text-right"></th>
+            <th class="text-right d-flex justify-content-end"></th>
         </tr>
         @forelse($items as $index => $item)
             <tr>
@@ -23,7 +23,7 @@
                         @if($item->active) Yes @else No @endif
                     </span>
                 </td>
-                <td class="text-right">
+                <td class="text-right d-flex justify-content-end">
                     {!! button()->editRecord(route('admin.admins.edit', $item->getKey())) !!}
                     {!! button()->deleteRecord(route('admin.admins.destroy', $item->getKey())) !!}
                 </td>
