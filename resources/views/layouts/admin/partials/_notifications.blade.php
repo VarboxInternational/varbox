@@ -2,32 +2,25 @@
     <div class="dropdown d-none d-md-flex">
         <a class="nav-link icon" data-toggle="dropdown">
             <i class="fe fe-bell text-white"></i>
-            <span class="nav {{--nav-unread--}}"></span>
+            <span class="nav @if($count > 0) nav-unread @endif"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-            <a href="#" class="dropdown-item d-flex">
-                <span class="avatar avatar-blue mr-3 align-self-center">AC</span>
-                <div>
-                    <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
-                    <div class="small text-muted">10 minutes ago</div>
-                </div>
-            </a>
-            <a href="#" class="dropdown-item d-flex">
-                <span class="avatar avatar-azure mr-3 align-self-center">AB</span>
-                <div>
-                    <strong>Alice</strong> started new task: Tabler UI design.
-                    <div class="small text-muted">1 hour ago</div>
-                </div>
-            </a>
-            <a href="#" class="dropdown-item d-flex">
-                <span class="avatar mr-3 align-self-center"></span>
-                <div>
-                    <strong>Rose</strong> deployed new version of NodeJS REST Api V3
-                    <div class="small text-muted">2 hours ago</div>
-                </div>
-            </a>
+            @forelse($notifications as $notification)
+                <a href="{{ route('admin.notifications.action', $notification->id) }}" class="dropdown-item d-flex my-2">
+                    <div>
+                        {{ Str::limit(strip_tags($notification->data['subject'] ?? 'N/A'), 50) }}
+                        <div class="small text-muted">
+                            {{ Carbon\Carbon::parse($notification->created_at)->diffForHumans()}}
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <span class="dropdown-item d-flex">No new notifications</span>
+            @endforelse
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item text-center text-muted-dark">See all notifications</a>
+            <a href="{{ route('admin.notifications.index') }}" class="dropdown-item text-center text-muted-dark">
+                See All Notifications
+            </a>
         </div>
     </div>
 @endif

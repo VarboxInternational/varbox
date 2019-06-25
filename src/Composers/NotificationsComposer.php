@@ -17,7 +17,7 @@ class NotificationsComposer
             return;
         }
 
-        $notifications = auth()->user()->unreadNotifications();
+        $notifications = auth()->user()->unreadNotifications()->latest();
 
         $view->with([
             'notifications' => $notifications->take(10)->get(),
