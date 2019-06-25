@@ -103,6 +103,8 @@ class UsersController extends Controller
      */
     public function edit(UserModelContract $user)
     {
+        $this->guardAgainstAdmin($user);
+
         return $this->_edit(function () use ($user) {
             $this->item = $user;
             $this->title = 'Edit User';
@@ -121,6 +123,8 @@ class UsersController extends Controller
      */
     public function update(Request $request, UserModelContract $user)
     {
+        $this->guardAgainstAdmin($user);
+
         $request = $this->initRequest();
 
         return $this->_update(function () use ($request, $user) {
@@ -139,6 +143,8 @@ class UsersController extends Controller
      */
     public function destroy(UserModelContract $user)
     {
+        $this->guardAgainstAdmin($user);
+
         return $this->_destroy(function () use ($user) {
             $this->item = $user;
             $this->redirect = redirect()->route('admin.users.index');
@@ -153,6 +159,8 @@ class UsersController extends Controller
      */
     public function impersonate(UserModelContract $user)
     {
+        $this->guardAgainstAdmin($user);
+
         auth()->guard('web')->login($user);
         flash()->success('You are now signed in as ' . $user->full_name);
 
@@ -167,5 +175,16 @@ class UsersController extends Controller
         return app(config(
             'varbox.varbox-binding.form_requests.user_form_request', UserRequest::class
         ))->merged();
+    }
+
+    /**
+     * @param UserModelContract $user
+     * @return void
+     */
+    protected function guardAgainstAdmin(UserModelContract $user)
+    {
+        if ($user->isAdmin()) {
+            abort(404);
+        }
     }
 }
