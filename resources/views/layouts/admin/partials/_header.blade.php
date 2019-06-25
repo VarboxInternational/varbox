@@ -9,10 +9,7 @@
                     <a href="{{ config('app.url') }}" class="btn btn-sm btn-outline-primary btn-square" target="_blank">view site</a>
                 </div>
 
-                {{--@if(\Varbox::moduleEnabled('audit'))
-                    @include('varbox::layouts.admin.partials._notifications')
-                @endif--}}
-
+                @include('varbox::layouts.admin.partials._notifications')
                 @include('varbox::layouts.admin.partials._profile')
             </div>
             <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
