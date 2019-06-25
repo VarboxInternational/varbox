@@ -2350,6 +2350,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 
 .btn.disabled, .btn:disabled {
   opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .btn:not(:disabled):not(.disabled) {
@@ -5521,7 +5522,7 @@ button.close {
 .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
   top: 0;
   border-width: 0.4rem 0.4rem 0;
-  border-top-color: #000;
+  border-top-color: #44576D;
 }
 
 .bs-tooltip-right, .bs-tooltip-auto[x-placement^="right"] {
@@ -5537,7 +5538,7 @@ button.close {
 .bs-tooltip-right .arrow::before, .bs-tooltip-auto[x-placement^="right"] .arrow::before {
   right: 0;
   border-width: 0.4rem 0.4rem 0.4rem 0;
-  border-right-color: #000;
+  border-right-color: #44576D;
 }
 
 .bs-tooltip-bottom, .bs-tooltip-auto[x-placement^="bottom"] {
@@ -5551,7 +5552,7 @@ button.close {
 .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
   bottom: 0;
   border-width: 0 0.4rem 0.4rem;
-  border-bottom-color: #000;
+  border-bottom-color: #44576D;
 }
 
 .bs-tooltip-left, .bs-tooltip-auto[x-placement^="left"] {
@@ -5567,7 +5568,7 @@ button.close {
 .bs-tooltip-left .arrow::before, .bs-tooltip-auto[x-placement^="left"] .arrow::before {
   left: 0;
   border-width: 0.4rem 0 0.4rem 0.4rem;
-  border-left-color: #000;
+  border-left-color: #44576D;
 }
 
 .tooltip-inner {
@@ -5575,7 +5576,7 @@ button.close {
   padding: 0.25rem 0.5rem;
   color: #fff;
   text-align: center;
-  background-color: #000;
+  background-color: #44576D;
   border-radius: 3px;
 }
 
@@ -9756,7 +9757,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-muted {
-  color: #c9cbd1 !important;
+  color: #B4B6BE !important;
 }
 
 .text-black-50 {
@@ -10182,7 +10183,8 @@ body.fixed-header .page {
 .page-subtitle {
   font-size: 0.8125rem;
   color: #6e7687;
-  margin-left: 2rem;
+  margin-left: 1.2rem;
+  margin-top: 15px;
 }
 
 .page-subtitle a {
@@ -14134,7 +14136,7 @@ Icon input
 .jqstooltip {
   box-sizing: content-box;
   font-family: inherit !important;
-  background: #333 !important;
+  background: #44576D !important;
   border: none !important;
   border-radius: 3px;
   font-size: 11px !important;

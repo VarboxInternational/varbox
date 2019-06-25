@@ -3,6 +3,7 @@ $(document).ready(function () {
     buttons();
     sort();
     generators();
+    confirms();
 });
 
 function setups() {
@@ -25,31 +26,6 @@ function buttons() {
             .append('<input type="hidden" name="save_continue" value="1" />')
             .append('<input type="hidden" name="save_continue_route" value="' + $(this).data('route-name') + '" />')
             .submit();
-    });
-
-    $('.button-delete').click(function (e) {
-        e.preventDefault();
-
-        var _this = $(this);
-
-        bootbox.confirm({
-            message: "Are you sure you want to delete this record?",
-            buttons: {
-                cancel: {
-                    label: 'No',
-                    className: 'btn-secondary btn-default btn-square px-5 mr-auto'
-                },
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-primary btn-square px-5'
-                }
-            },
-            callback: function (result) {
-                if (result === true) {
-                    _this.closest('form').submit();
-                }
-            }
-        });
     });
 }
 
@@ -120,5 +96,32 @@ function generators() {
                 backdrop: true
             });
         }
+    });
+}
+
+function confirms() {
+    $('.confirm-are-you-sure').click(function (e) {
+        e.preventDefault();
+
+        var _this = $(this);
+
+        bootbox.confirm({
+            message: "Are you sure?",
+            buttons: {
+                cancel: {
+                    label: 'No',
+                    className: 'btn-secondary btn-default btn-square px-5 mr-auto'
+                },
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-primary btn-square px-5'
+                }
+            },
+            callback: function (result) {
+                if (result === true) {
+                    _this.closest('form').submit();
+                }
+            }
+        });
     });
 }
