@@ -81,6 +81,16 @@ class User extends Authenticatable implements UserModelContract
     }
 
     /**
+     * Sort query results in alphabetical order by email.
+     *
+     * @param Builder $query
+     */
+    public function scopeAlphabetically($query)
+    {
+        $query->orderBy('email');
+    }
+
+    /**
      * Filter query results to show only active users.
      *
      * @param Builder $query

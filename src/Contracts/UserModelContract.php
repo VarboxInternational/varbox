@@ -17,6 +17,11 @@ interface UserModelContract
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
+    public function scopeAlphabetically($query);
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
     public function scopeOnlyActive($query);
 
     /**
