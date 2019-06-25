@@ -65,7 +65,7 @@ class RolesController extends Controller
                 ->paginate(config('varbox.varbox-crud.per_page', 10));
 
             $this->title = 'Roles';
-            $this->view = view('varbox::admin.auth.roles.index');
+            $this->view = view('varbox::admin.roles.index');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
             ];
@@ -80,7 +80,7 @@ class RolesController extends Controller
     {
         return $this->_create(function () {
             $this->title = 'Add Role';
-            $this->view = view('varbox::admin.auth.roles.add');
+            $this->view = view('varbox::admin.roles.add');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
                 'adminPermissions' => $this->permission->getGrouped('admin'),
@@ -117,7 +117,7 @@ class RolesController extends Controller
         return $this->_edit(function () use ($role) {
             $this->item = $role;
             $this->title = 'Edit Role';
-            $this->view = view('varbox::admin.auth.roles.edit');
+            $this->view = view('varbox::admin.roles.edit');
             $this->vars = [
                 'guards' => $this->user->getAllGuards(),
                 'adminPermissions' => $this->permission->getGrouped('admin'),
