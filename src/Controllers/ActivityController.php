@@ -89,9 +89,9 @@ class ActivityController extends Controller
         try {
             $this->model->query()->delete();
 
-            flash()->success('All records were successfully deleted!');
+            flash()->success('All activity was successfully deleted!');
         } catch (Exception $e) {
-            flash()->error('Could not delete all of the records! Please try again.', $e);
+            flash()->error('Something went wrong! Please try again.', $e);
         }
 
         return redirect()->route('admin.activity.index');
@@ -106,9 +106,9 @@ class ActivityController extends Controller
         try {
             $this->model->deleteOld();
 
-            flash()->success('Old records were successfully deleted!');
+            flash()->success('Old activity was successfully deleted!');
         } catch (Exception $e) {
-            flash()->error('Could not delete the old records! Please try again.', $e);
+            flash()->error('Something went wrong! Please try again.', $e);
         }
 
         return redirect()->route('admin.activity.index');

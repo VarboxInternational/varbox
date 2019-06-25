@@ -5,13 +5,15 @@ namespace Varbox\Controllers;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Routing\Controller;
-use Varbox\Exceptions\NotificationException;
+use Varbox\Contracts\UserModelContract;
+use Varbox\Models\User;
 
 class NotificationsController extends Controller
 {
@@ -24,6 +26,29 @@ class NotificationsController extends Controller
      */
     public function index(Request $request, Authenticatable $user)
     {
+        session()->forget(['flash_error', 'flash_warning']);
+
+        if ($request->filled('user')) {
+            try {
+                $usr = app(UserModelContract::class)->findOrFail((int)$request->get('user'));
+
+                if ($user->id != $usr->id) {
+                    $user = $usr;
+                    $isAnotherUser = true;
+
+                    flash()->warning('
+                        <span class="font-weight-bold d-inline">You are now viewing another user\'s notifications!</span><br />
+                        Interactive actions are now not available.
+                    ');
+                }
+            } catch (ModelNotFoundException $e) {
+                flash()->error('
+                    <span class="font-weight-bold d-inline">Failed viewing another user\'s notifications!</span><br />
+                    You are now seeing your own notifications.
+                ', $e);
+            }
+        }
+
         $query = $user->notifications();
 
         if ($request->filled('read')) {
@@ -45,7 +70,11 @@ class NotificationsController extends Controller
         }
 
         return view('varbox::admin.notifications.index')->with([
-            'items' => $query->paginate(config('varbox.varbox-crud.per_page', 10))
+            'title' => 'Notifications',
+            'items' => $query->paginate(config('varbox.varbox-crud.per_page', 10)),
+            'users' => User::all(),
+            'days' => config('varbox.varbox-notification.delete_records_older_than', 30),
+            'isAnotherUser' => isset($isAnotherUser),
         ]);
     }
 
@@ -78,7 +107,6 @@ class NotificationsController extends Controller
             return isset($notification->data['url']) ? redirect($notification->data['url']) : back();
         } catch (Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
-
             return back();
         }
     }
@@ -111,12 +139,12 @@ class NotificationsController extends Controller
                 $notification->markAsRead();
             });
 
-            flash()->success('All your unread notifications have been successfully marked as read!');
+            flash()->success('All unread notifications have been successfully marked as read!');
         } catch (Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
         }
 
-        return back();
+        return redirect()->route('admin.notifications.index');
     }
 
     /**
@@ -128,12 +156,12 @@ class NotificationsController extends Controller
         try {
             $user->readNotifications()->delete();
 
-            flash()->success('All your already read notifications have been successfully deleted!');
+            flash()->success('All read notifications have been successfully deleted!');
         } catch (Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
         }
 
-        return back();
+        return redirect()->route('admin.notifications.index');
     }
 
     /**
@@ -143,21 +171,16 @@ class NotificationsController extends Controller
     public function deleteOnlyOld(Authenticatable $user)
     {
         try {
-            $days = config('varbox.notification.delete_records_older_than', 30);
+            $days = config('varbox.varbox-notification.delete_records_older_than', 30);
+            $date = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
 
             if ((int)$days > 0) {
-                try {
-                    $user->notifications()->where(
-                        'created_at', '<', Carbon::now()->subDays($days)->format('Y-m-d H:i:s')
-                    )->delete();
-                } catch (Exception $e) {
-                    throw NotificationException::cleanupFailed();
-                }
+                $user->notifications()->where('created_at', '<', $date)->delete();
             }
 
-            flash()->success('The records were successfully cleaned up!');
+            flash()->success('Old notifications were successfully deleted!');
         } catch (Exception $e) {
-            flash()->error('Could not cleanup the records! Please try again.', $e);
+            flash()->error('Something went wrong! Please try again.', $e);
         }
 
         return back();
@@ -172,7 +195,7 @@ class NotificationsController extends Controller
         try {
             $user->notifications()->delete();
 
-            flash()->success('All your notifications have been successfully deleted!');
+            flash()->success('All notifications were successfully deleted!');
         } catch (Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
         }
