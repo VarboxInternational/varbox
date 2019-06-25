@@ -57,7 +57,7 @@ class UsersController extends Controller
                 ->paginate(config('varbox.varbox-crud.per_page', 10));
 
             $this->title = 'Users';
-            $this->view = view('varbox::admin.auth.users.index');
+            $this->view = view('varbox::admin.users.index');
             $this->vars = [
                 'roles' => $this->role->whereGuard('web')->get(),
             ];
@@ -72,7 +72,7 @@ class UsersController extends Controller
     {
         return $this->_create(function () {
             $this->title = 'Add User';
-            $this->view = view('varbox::admin.auth.users.add');
+            $this->view = view('varbox::admin.users.add');
             $this->vars = [
                 'roles' => $this->role->whereGuard('web')->get(),
             ];
@@ -106,7 +106,7 @@ class UsersController extends Controller
         return $this->_edit(function () use ($user) {
             $this->item = $user;
             $this->title = 'Edit User';
-            $this->view = view('varbox::admin.auth.users.edit');
+            $this->view = view('varbox::admin.users.edit');
             $this->vars = [
                 'roles' => $this->role->whereGuard('web')->get(),
             ];
