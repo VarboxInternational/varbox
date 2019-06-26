@@ -39,6 +39,16 @@ class HasPermissionsTest extends TestCase
     }
 
     /** @test */
+    public function it_belongs_to_many_permissions()
+    {
+        $this->user->permissions()->attach([
+            $this->permission1->id, $this->permission2->id
+        ]);
+
+        $this->assertEquals(2, $this->user->permissions()->count());
+    }
+
+    /** @test */
     public function it_can_grant_a_permission_by_using_the_model()
     {
         $this->user->grantPermission($this->permission1);

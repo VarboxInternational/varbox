@@ -62,7 +62,7 @@ class RoleTest extends TestCase
     /** @test */
     public function it_can_get_a_role_by_id()
     {
-        $role = Role::getRole($this->role->id);
+        $role = (new Role)->getRole($this->role->id);
 
         $this->assertEquals($this->role->id, $role->id);
         $this->assertEquals($this->role->name, $role->name);
@@ -71,7 +71,7 @@ class RoleTest extends TestCase
     /** @test */
     public function it_can_get_a_role_by_name()
     {
-        $role = Role::getRole($this->role->name);
+        $role = (new Role)->getRole($this->role->name);
 
         $this->assertEquals($this->role->id, $role->id);
         $this->assertEquals($this->role->name, $role->name);
@@ -80,7 +80,7 @@ class RoleTest extends TestCase
     /** @test */
     public function it_can_get_roles_by_an_array_of_ids()
     {
-        $roles = Role::getRoles([$this->role->id]);
+        $roles = (new Role)->getRoles([$this->role->id]);
 
         foreach ($roles as $index => $role) {
             $this->assertEquals($this->role->id, $role->id);
@@ -91,7 +91,7 @@ class RoleTest extends TestCase
     /** @test */
     public function it_can_get_roles_by_an_array_of_names()
     {
-        $roles = Role::getRoles([$this->role->name]);
+        $roles = (new Role)->getRoles([$this->role->name]);
 
         foreach ($roles as $index => $role) {
             $this->assertEquals($this->role->id, $role->id);

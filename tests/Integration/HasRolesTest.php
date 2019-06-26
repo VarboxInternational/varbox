@@ -49,6 +49,256 @@ class HasRolesTest extends TestCase
     }
 
     /** @test */
+    public function it_belongs_to_many_roles()
+    {
+        $this->user->roles()->attach([
+            $this->role1->id, $this->role2->id
+        ]);
+
+        $this->assertEquals(2, $this->user->roles()->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_role()
+    {
+        $this->assertEquals(0, $this->user->withRoles($this->role1)->count());
+
+        $this->user->assignRoles($this->role1);
+
+        $this->assertEquals(1, $this->user->withRoles($this->role1)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_role_id()
+    {
+        $this->assertEquals(0, $this->user->withRoles($this->role1->id)->count());
+
+        $this->user->assignRoles($this->role1->id);
+
+        $this->assertEquals(1, $this->user->withRoles($this->role1->id)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_role_name()
+    {
+        $this->assertEquals(0, $this->user->withRoles($this->role1->name)->count());
+
+        $this->user->assignRoles($this->role1->name);
+
+        $this->assertEquals(1, $this->user->withRoles($this->role1->name)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_roles()
+    {
+        $this->assertEquals(0, $this->user->withRoles(Role::all())->count());
+
+        $this->user->assignRoles(Role::all());
+
+        $this->assertEquals(1, $this->user->withRoles(Role::all())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_role_ids()
+    {
+        $this->assertEquals(0, $this->user->withRoles(Role::all()->pluck('id')->toArray())->count());
+
+        $this->user->assignRoles(Role::all());
+
+        $this->assertEquals(1, $this->user->withRoles(Role::all()->pluck('id')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_role_names()
+    {
+        $this->assertEquals(0, $this->user->withRoles(Role::all()->pluck('name')->toArray())->count());
+
+        $this->user->assignRoles(Role::all());
+
+        $this->assertEquals(1, $this->user->withRoles(Role::all()->pluck('name')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_role()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles($this->role1)->count());
+
+        $this->user->assignRoles($this->role1);
+
+        $this->assertEquals(0, $this->user->withoutRoles($this->role1)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_role_id()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles($this->role1->id)->count());
+
+        $this->user->assignRoles($this->role1->id);
+
+        $this->assertEquals(0, $this->user->withoutRoles($this->role1->id)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_role_name()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles($this->role1->name)->count());
+
+        $this->user->assignRoles($this->role1->name);
+
+        $this->assertEquals(0, $this->user->withoutRoles($this->role1->name)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_roles()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles(Role::all())->count());
+
+        $this->user->assignRoles(Role::all());
+
+        $this->assertEquals(0, $this->user->withoutRoles(Role::all())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_role_ids()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles(Role::all()->pluck('id')->toArray())->count());
+
+        $this->user->assignRoles(Role::all()->pluck('id')->toArray());
+
+        $this->assertEquals(0, $this->user->withoutRoles(Role::all()->pluck('id')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_role_names()
+    {
+        $this->assertEquals(1, $this->user->withoutRoles(Role::all()->pluck('name')->toArray())->count());
+
+        $this->user->assignRoles(Role::all()->pluck('name')->toArray());
+
+        $this->assertEquals(0, $this->user->withoutRoles(Role::all()->pluck('name')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permission()
+    {
+        $this->assertEquals(0, $this->user->withPermissions($this->permission1)->count());
+
+        $this->user->grantPermission($this->permission1);
+
+        $this->assertEquals(1, $this->user->withPermissions($this->permission1)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permission_id()
+    {
+        $this->assertEquals(0, $this->user->withPermissions($this->permission1->id)->count());
+
+        $this->user->grantPermission($this->permission1->id);
+
+        $this->assertEquals(1, $this->user->withPermissions($this->permission1->id)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permission_name()
+    {
+        $this->assertEquals(0, $this->user->withPermissions($this->permission1->name)->count());
+
+        $this->user->grantPermission($this->permission1->name);
+
+        $this->assertEquals(1, $this->user->withPermissions($this->permission1->name)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permissions()
+    {
+        $this->assertEquals(0, $this->user->withPermissions(Permission::all())->count());
+
+        $this->user->grantPermission(Permission::all());
+
+        $this->assertEquals(1, $this->user->withPermissions(Permission::all())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permission_ids()
+    {
+        $this->assertEquals(0, $this->user->withPermissions(Permission::all()->pluck('id')->toArray())->count());
+
+        $this->user->grantPermission(Permission::all());
+
+        $this->assertEquals(1, $this->user->withPermissions(Permission::all()->pluck('id')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_having_the_specified_permission_names()
+    {
+        $this->assertEquals(0, $this->user->withPermissions(Permission::all()->pluck('name')->toArray())->count());
+
+        $this->user->grantPermission(Permission::all());
+
+        $this->assertEquals(1, $this->user->withPermissions(Permission::all()->pluck('name')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permission()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions($this->permission1)->count());
+
+        $this->user->grantPermission($this->permission1);
+
+        $this->assertEquals(0, $this->user->withoutPermissions($this->permission1)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permission_id()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions($this->permission1->id)->count());
+
+        $this->user->grantPermission($this->permission1->id);
+
+        $this->assertEquals(0, $this->user->withoutPermissions($this->permission1->id)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permission_name()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions($this->permission1->name)->count());
+
+        $this->user->grantPermission($this->permission1->name);
+
+        $this->assertEquals(0, $this->user->withoutPermissions($this->permission1->name)->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permissions()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions(Permission::all())->count());
+
+        $this->user->grantPermission(Permission::all());
+
+        $this->assertEquals(0, $this->user->withoutPermissions(Permission::all())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permission_ids()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions(Permission::all()->pluck('id')->toArray())->count());
+
+        $this->user->grantPermission(Permission::all()->pluck('id')->toArray());
+
+        $this->assertEquals(0, $this->user->withoutPermissions(Permission::all()->pluck('id')->toArray())->count());
+    }
+
+    /** @test */
+    public function it_can_show_only_records_not_having_the_specified_permission_names()
+    {
+        $this->assertEquals(1, $this->user->withoutPermissions(Permission::all()->pluck('name')->toArray())->count());
+
+        $this->user->grantPermission(Permission::all()->pluck('name')->toArray());
+
+        $this->assertEquals(0, $this->user->withoutPermissions(Permission::all()->pluck('name')->toArray())->count());
+    }
+
+    /** @test */
     public function it_can_assign_a_role_by_using_the_model()
     {
         $this->user->assignRoles($this->role1);

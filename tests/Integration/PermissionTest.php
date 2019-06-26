@@ -62,7 +62,7 @@ class PermissionTest extends TestCase
     /** @test */
     public function it_can_get_a_permission_by_id()
     {
-        $permission = Permission::getPermission($this->permission->id);
+        $permission = (new Permission)->getPermission($this->permission->id);
 
         $this->assertEquals($this->permission->id, $permission->id);
         $this->assertEquals($this->permission->name, $permission->name);
@@ -71,7 +71,7 @@ class PermissionTest extends TestCase
     /** @test */
     public function it_can_get_a_permission_by_name()
     {
-        $permission = Permission::getPermission($this->permission->name);
+        $permission = (new Permission)->getPermission($this->permission->name);
 
         $this->assertEquals($this->permission->id, $permission->id);
         $this->assertEquals($this->permission->name, $permission->name);
