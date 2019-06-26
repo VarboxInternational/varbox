@@ -6,7 +6,7 @@
     </div>
 </div>
 <div class="card-body">
-    {!! form_admin()->select('user', 'User', ['' => 'All Users'] + $users->pluck('full_name', 'id')->toArray(), request()->query('user') ?: null) !!}
+    {!! form_admin()->select('user', 'User', ['' => 'All Users'] + $users->pluck('email', 'id')->toArray(), request()->query('user') ?: null) !!}
     <div class="row">
         <div class="col">
             {!! form_admin()->select('entity', 'Entity', ['' => 'All Entities'] + $entities, request()->query('entity') ?: null) !!}
