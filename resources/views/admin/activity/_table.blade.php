@@ -7,7 +7,7 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="created_at">
                 <i class="fa fa-sort mr-2"></i>Logged at
             </th>
-            <th class="text-right d-flex justify-content-end"></th>
+            <th class="text-right d-table-cell"></th>
         </tr>
         @forelse($items as $index => $item)
             <tr>
@@ -20,7 +20,7 @@
                         <span class="text-muted">N/A</span>
                     @endif
                 </td>
-                <td class="text-right d-flex justify-content-end">
+                <td class="text-right d-table-cell">
                     {!! button()->deleteRecord(route('admin.activity.destroy', $item->getKey())) !!}
                 </td>
             </tr>
