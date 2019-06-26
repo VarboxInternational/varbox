@@ -177,6 +177,8 @@ trait HasRoles
                     })->all()
                 );
             }
+
+            $this->load(['roles', 'permissions']);
         } catch (QueryException $e) {
             $this->removeRoles($roles);
             $this->assignRoles($roles);
@@ -203,6 +205,8 @@ trait HasRoles
                 })
             );
         }
+
+        $this->load(['roles', 'permissions']);
 
         return $this;
     }
