@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration;
 
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Contracts\Foundation\Application;
 use Varbox\Facades\VarboxFacade;
@@ -44,6 +45,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             'Varbox' => VarboxFacade::class,
+            'Breadcrumbs' => Breadcrumbs::class,
         ];
     }
 
