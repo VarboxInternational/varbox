@@ -1,6 +1,6 @@
 @if(config('varbox.varbox-breadcrumb.enabled', true) === true)
     <nav aria-label="breadcrumb" class="">
-        <ol class="breadcrumb mb-0 px-sm-0">
+        <ol class="breadcrumb mb-0 px-0">
             @foreach (breadcrumbs()->generate() as $breadcrumb)
                 <li class="breadcrumb-item {{ $loop->first ? 'ml-md-auto ml-sm-0' : '' }} {{ $loop->last ? 'active' : '' }}">
                     @if($loop->last)
