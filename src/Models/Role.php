@@ -70,7 +70,7 @@ class Role extends Model implements RoleModelContract
      * @param string|array|RoleModelContract|Collection $role
      * @return RoleModelContract|Collection
      */
-    public static function getRole($role)
+    public function getRole($role)
     {
         if (is_numeric($role)) {
             return static::findOrFail($role);

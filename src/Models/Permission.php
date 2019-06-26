@@ -70,7 +70,7 @@ class Permission extends Model implements PermissionModelContract
      * @param string|array|PermissionModelContract|\Illuminate\Database\Eloquent\Collection $permission
      * @return mixed
      */
-    public static function getPermission($permission)
+    public function getPermission($permission)
     {
         if (is_numeric($permission)) {
             return static::findOrFail($permission);
