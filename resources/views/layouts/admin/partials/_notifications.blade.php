@@ -1,5 +1,5 @@
 @if(\Varbox::moduleEnabled('audit'))
-    <div class="dropdown d-none d-md-flex">
+    <div class="dropdown d-flex">
         <a class="nav-link icon" data-toggle="dropdown">
             <i class="fe fe-bell text-white"></i>
             <span class="nav @if($count > 0) nav-unread @endif"></span>
