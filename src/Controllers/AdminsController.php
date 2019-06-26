@@ -93,7 +93,7 @@ class AdminsController extends Controller
             $this->redirect = redirect()->route('admin.admins.index');
 
             $this->item->roles()->attach($request->input('roles'));
-            $this->item->logActivity('created');
+            $this->item->doLogActivity()->logActivity('created');
         }, $request);
     }
 
