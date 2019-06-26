@@ -69,6 +69,11 @@ class NotificationsController extends Controller
             $query->whereDate('created_at', '<=', $request->query('end_date'));
         }
 
+        if ($request->filled('sort')) {
+            $query->getBaseQuery()->orders = null;
+            $query->orderBy($request->get('sort'), $request->get('dir') ?: 'asc');
+        }
+
         return view('varbox::admin.notifications.index')->with([
             'title' => 'Notifications',
             'items' => $query->paginate(config('varbox.varbox-crud.per_page', 10)),
