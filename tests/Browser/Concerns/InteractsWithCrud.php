@@ -53,7 +53,7 @@ trait InteractsWithCrud
     {
         $this->driver->findElement(
             WebDriverBy::xpath(
-                "//td[contains(text(),'$text')]//following-sibling::td[last()]//button[contains(concat(' ',@class,' '),' button-delete ')]"
+                "//td[contains(.,'$text')]//following-sibling::td[last()]//button[contains(concat(' ',@class,' '),' button-delete ')]"
             )
         )->click();
 
