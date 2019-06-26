@@ -10,11 +10,6 @@ interface UserModelContract
     public function getFullNameAttribute();
 
     /**
-     * @return string
-     */
-    public function getAbbreviationAttribute();
-
-    /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeAlphabetically($query);

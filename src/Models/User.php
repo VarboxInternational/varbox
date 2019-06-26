@@ -64,26 +64,6 @@ class User extends Authenticatable implements UserModelContract
     }
 
     /**
-     * Get the abbreviated name attribute.
-     *
-     * @return string
-     */
-    public function getAbbreviationAttribute()
-    {
-        $abbreviation = '';
-
-        if ($this->first_name) {
-            $abbreviation .= mb_substr($this->first_name, 0, 1, 'utf-8');
-        }
-
-        if ($this->last_name) {
-            $abbreviation .= mb_substr($this->last_name, 0, 1, 'utf-8');
-        }
-
-        return $abbreviation;
-    }
-
-    /**
      * Sort query results in alphabetical order by email.
      *
      * @param Builder $query

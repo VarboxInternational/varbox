@@ -34,12 +34,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_the_abbreviation_for_the_full_name()
-    {
-        $this->assertEquals('TU', $this->user->abbreviation);
-    }
-
-    /** @test */
     public function it_can_filter_only_active_users()
     {
         $this->assertEquals(1, User::onlyActive()->count());

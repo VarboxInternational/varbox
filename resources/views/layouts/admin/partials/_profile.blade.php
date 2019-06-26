@@ -1,6 +1,6 @@
 <div class="dropdown">
     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-        <span class="avatar bg-white">{{ auth()->user()->abbreviation }}</span>
+        <span class="avatar bg-white text-dark"><i class="fe fe-user"></i></span>
         <span class="ml-2 d-none d-lg-block">
             <span class="text-white font-weight-bold">{{ auth()->user()->full_name }}</span>
             <small class="text-muted d-block mt-1">Administrator</small>
