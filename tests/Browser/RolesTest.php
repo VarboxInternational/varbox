@@ -45,7 +45,7 @@ class RolesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_role()
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
     {
         $this->admin->revokePermission('roles-list');
 
@@ -87,7 +87,7 @@ class RolesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_role()
+    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('roles-list');
         $this->admin->revokePermission('roles-add');
@@ -139,7 +139,7 @@ class RolesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_view_the_edit_page_if_it_doesnt_have_role()
+    public function an_admin_cannot_view_the_edit_page_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('roles-list');
         $this->admin->revokePermission('roles-edit');
@@ -288,7 +288,7 @@ class RolesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_delete_a_role_if_it_doesnt_have_role()
+    public function an_admin_cannot_delete_a_role_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('roles-list');
         $this->admin->revokePermission('roles-delete');
