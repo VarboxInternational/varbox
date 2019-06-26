@@ -31,22 +31,12 @@ trait HasRoles
      * Filter the query by the given roles.
      *
      * @param $query
-     * @param string|array|RoleModelContract|Collection $roles
+     * @param int|string|array|RoleModelContract|Collection $roles
      * @return mixed
      */
     public function scopeWithRoles($query, $roles)
     {
-        if ($roles instanceof RoleModelContract) {
-            $roles = [$roles];
-        } else {
-            $roles = collect($roles)->map(function ($role) {
-                if ($role instanceof RoleModelContract) {
-                    return $role;
-                }
-
-                return app(RoleModelContract::class)->findByName($role);
-            });
-        }
+        $roles = $this->convertToRoleModels($roles);
 
         return $query->whereHas('roles', function ($query) use ($roles) {
             $query->where(function ($query) use ($roles) {
@@ -61,26 +51,16 @@ trait HasRoles
      * Filter the query excluding the given roles.
      *
      * @param $query
-     * @param string|array|RoleModelContract|Collection $roles
+     * @param int|string|array|RoleModelContract|Collection $roles
      */
     public function scopeWithoutRoles($query, $roles)
     {
-        if ($roles instanceof RoleModelContract) {
-            $roles = [$roles];
-        } else {
-            $roles = collect($roles)->map(function ($role) {
-                if ($role instanceof RoleModelContract) {
-                    return $role;
-                }
-
-                return app(RoleModelContract::class)->findByName($role);
-            });
-        }
+        $roles = $this->convertToRoleModels($roles);
 
         $query->whereDoesntHave('roles', function ($query) use ($roles) {
             $query->where(function ($query) use ($roles) {
                 foreach ($roles as $role) {
-                    $query->where('roles.id', '=', $role->id);
+                    $query->orWhere('roles.id', '=', $role->id);
                 }
             });
         });
@@ -97,28 +77,12 @@ trait HasRoles
     {
         $permissions = $this->convertToPermissionModels($permissions);
 
-        $rolesWithPermissions = array_unique(array_reduce($permissions, function ($result, $permission) {
-            return array_merge($result, $permission->roles->all());
-        }, []));
-
-        return $query->where(function ($query) use ($permissions, $rolesWithPermissions) {
-            $query->whereHas('permissions', function ($query) use ($permissions) {
-                $query->where(function ($query) use ($permissions) {
-                    foreach ($permissions as $permission) {
-                        $query->orWhere('permissions.id', $permission->id);
-                    }
-                });
+        return $query->whereHas('permissions', function ($query) use ($permissions) {
+            $query->where(function ($query) use ($permissions) {
+                foreach ($permissions as $permission) {
+                    $query->orWhere('permissions.id', $permission->id);
+                }
             });
-
-            if (count($rolesWithPermissions) > 0) {
-                $query->orWhereHas('roles', function ($query) use ($rolesWithPermissions) {
-                    $query->where(function ($query) use ($rolesWithPermissions) {
-                        foreach ($rolesWithPermissions as $role) {
-                            $query->orWhere('roles.id', $role->id);
-                        }
-                    });
-                });
-            }
         });
     }
 
@@ -133,11 +97,7 @@ trait HasRoles
     {
         $permissions = $this->convertToPermissionModels($permissions);
 
-        $rolesWithPermissions = array_unique(array_reduce($permissions, function ($result, $permission) {
-            return array_merge($result, $permission->roles->all());
-        }, []));
-
-        return $query->where(function ($query) use ($permissions, $rolesWithPermissions) {
+        return $query->where(function ($query) use ($permissions) {
             $query->whereDoesntHave('permissions', function ($query) use ($permissions) {
                 $query->where(function ($query) use ($permissions) {
                     foreach ($permissions as $permission) {
@@ -145,16 +105,6 @@ trait HasRoles
                     }
                 });
             });
-
-            if (count($rolesWithPermissions) > 0) {
-                $query->whereDoesntHave('roles', function ($query) use ($rolesWithPermissions) {
-                    $query->where(function ($query) use ($rolesWithPermissions) {
-                        foreach ($rolesWithPermissions as $role) {
-                            $query->orWhere('roles.id', $role->id);
-                        }
-                    });
-                });
-            }
         });
     }
 
@@ -427,23 +377,34 @@ trait HasRoles
     /**
      * Convert permissions to Permission models.
      *
+     * @param string|array|RoleModelContract|SupportCollection $roles
+     * @return array
+     */
+    protected function convertToRoleModels($roles)
+    {
+        if ($roles instanceof RoleModelContract) {
+            return [$roles];
+        }
+
+        return collect($roles)->map(function ($role) {
+            return app(RoleModelContract::class)->getRole($role);
+        });
+    }
+
+    /**
+     * Convert permissions to Permission models.
+     *
      * @param string|array|PermissionModelContract|SupportCollection $permissions
      * @return array
      */
     protected function convertToPermissionModels($permissions)
     {
-        if ($permissions instanceof SupportCollection) {
-            $permissions = $permissions->toArray();
+        if ($permissions instanceof PermissionModelContract) {
+            return [$permissions];
         }
 
-        $permissions = Arr::wrap($permissions);
-
-        return array_map(function ($permission) {
-            if ($permission instanceof PermissionModelContract) {
-                return $permission;
-            }
-
-            return app(PermissionModelContract::class)->findByName($permission);
-        }, $permissions);
+        return collect($permissions)->map(function ($permission) {
+            return app(PermissionModelContract::class)->getPermission($permission);
+        });
     }
 }
