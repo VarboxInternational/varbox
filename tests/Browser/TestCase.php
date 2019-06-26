@@ -107,6 +107,7 @@ abstract class TestCase extends OrchestraDuskTestCase
     {
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('auth.providers.users.model', User::class);
+        $app['config']->set('varbox.varbox-activity.enabled', false);
     }
 
     /**
