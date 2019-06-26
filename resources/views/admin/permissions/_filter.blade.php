@@ -1,4 +1,4 @@
-{!! form()->open(['url' => request()->url(), 'method' => 'get', 'class' => 'card ' . (empty(request()->except(['page', 'sort', 'dir'])) ? 'card-collapsed' : '')]) !!}
+{!! form()->open(['url' => request()->url(), 'method' => 'get', 'class' => 'card ' . (empty(request()->except(['page'])) ? 'card-collapsed' : '')]) !!}
     <div class="filter-records-container card-header" data-toggle="card-collapse" style="cursor: pointer;">
         <h3 class="card-title">Filter Records</h3>
         <div class="card-options">

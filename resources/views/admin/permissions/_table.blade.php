@@ -7,7 +7,7 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="guard">
                 <i class="fa fa-sort mr-2"></i>Guard
             </th>
-            <th class="text-right d-flex justify-content-end"></th>
+            <th class="text-right d-table-cell"></th>
         </tr>
         @forelse($items as $index => $item)
             <tr>
@@ -17,7 +17,7 @@
                         {{ $item->guard ?: 'N/A' }}
                     </span>
                 </td>
-                <td class="text-right d-flex justify-content-end">
+                <td class="text-right d-table-cell">
                     {!! button()->editRecord(route('admin.permissions.edit', $item)) !!}
                     {!! button()->deleteRecord(route('admin.permissions.destroy', $item)) !!}
                 </td>
