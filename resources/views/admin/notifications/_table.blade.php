@@ -5,17 +5,17 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="read_at">
                 <i class="fa fa-sort mr-2"></i>Read
             </th>
-            <th class="sortable d-none d-sm-table-cell" data-sort="created_at">
+            <th class="sortable d-none d-md-table-cell" data-sort="created_at">
                 <i class="fa fa-sort mr-2"></i>Received At
             </th>
             @if(!$isAnotherUser)
-                <th class="text-right d-flex justify-content-end"></th>
+                <th class="text-right d-table-cell"></th>
             @endif
         </tr>
         @forelse($items as $index => $item)
             <tr>
                 <td >
-                    <span @if(!empty($item->data['subject'])) data-toggle="tooltip" data-placement="right" title="{{ $item->data['subject'] }}" @endif>
+                    <span @if(!empty($item->data['subject']) && strlen($item->data['subject']) > 30) data-toggle="tooltip" data-placement="right" title="{{ $item->data['subject'] }}" @endif>
                         {{ Str::limit($item->data['subject'] ?? 'N/A', 30) }}
                     </span>
                 </td>
@@ -24,7 +24,7 @@
                         {{ $item->read() ? 'Yes' : 'No' }}
                     </span>
                 </td>
-                <td class="d-none d-sm-table-cell">
+                <td class="d-none d-md-table-cell">
                     @if($item->created_at)
                         <div>{{ $item->created_at }}</div>
                         <div class="text-muted">{{ Carbon\Carbon::parse($item->created_at)->diffForHumans()}}</div>
@@ -33,8 +33,8 @@
                     @endif
                 </td>
                 @if(!$isAnotherUser)
-                    <td class="text-right d-flex justify-content-end">
-                        <a href="{{ route('admin.notifications.action', $item->id) }}" class="btn icon d-inline bg-white px-0 mr-2" data-toggle="tooltip" data-placement="top" title="Action">
+                    <td class="text-right d-table-cell">
+                        <a href="{{ route('admin.notifications.action', $item->id) }}" class="btn icon d-inline bg-white px-0 mr-3" data-toggle="tooltip" data-placement="top" title="Action">
                             <i class="fe fe-check-square text-blue"></i>
                         </a>
 
