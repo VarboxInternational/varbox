@@ -39,15 +39,9 @@ trait HasActivity
      */
     public static function bootHasActivity()
     {
-        if (config('varbox.varbox-activity.enabled', false) !== true) {
-            return;
-        }
-
         static::activityEventsToBeLogged()->each(function ($event) {
             return static::$event(function (Model $model) use ($event) {
-                if ($model->shouldLogActivity()) {
-                    $model->logActivity($event);
-                }
+                $model->logActivity($event);
 
                 if ($event == 'deleted') {
                     $model->activity()->forSubject($model)->update([
@@ -76,7 +70,7 @@ trait HasActivity
      */
     public function logActivity($event)
     {
-        if (!$this->getAttribute('id')) {
+        if (!$this->shouldLogActivity()) {
             return;
         }
 
@@ -100,7 +94,8 @@ trait HasActivity
     {
         return
             config('varbox.varbox-activity.enabled', true) === true &&
-            static::$shouldLogActivity === true;
+            static::$shouldLogActivity === true &&
+            $this->getAttribute('id');
     }
 
     /**
