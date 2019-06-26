@@ -37,7 +37,7 @@ trait HasPermissions
                 $this->permissions()->saveMany(
                     collect($permissions)->flatten()->map(function ($permission) {
                         return is_array($permission) || is_a($permission, Collection::class) ?
-                            $this->getPermissions($permission) : app('permission.model')->getPermission($permission);
+                            app('permission.model')->getPermissions($permission) : app('permission.model')->getPermission($permission);
                     })->all()
                 );
             }
