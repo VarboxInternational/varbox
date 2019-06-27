@@ -90,7 +90,7 @@ class ActivityTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_role()
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
     {
         $this->admin->revokePermission('activity-list');
 
@@ -176,10 +176,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete Old Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete Old Activity')
                 ->assertPathIs('/admin/activity')
                 ->assertSee('Old activity was successfully deleted')
                 ->assertRecordsCount(2);
@@ -199,10 +196,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete Old Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete Old Activity')
                 ->assertPathIs('/admin/activity')
                 ->assertSee('Old activity was successfully deleted')
                 ->assertRecordsCount(2);
@@ -222,10 +216,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete Old Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete Old Activity')
                 ->assertDontSee('Old activity was successfully deleted')
                 ->assertSee('Unauthorized')
                 ->visit('/admin/activity')
@@ -245,10 +236,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete All Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete All Activity')
                 ->assertPathIs('/admin/activity')
                 ->assertSee('All activity was successfully deleted')
                 ->assertSee('No records found');
@@ -268,10 +256,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete All Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete All Activity')
                 ->assertPathIs('/admin/activity')
                 ->assertSee('All activity was successfully deleted')
                 ->assertSee('No records found');
@@ -291,10 +276,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickLink('Delete Old Activity', 'button')
-                ->whenAvailable('.bootbox-confirm', function ($modal) {
-                    $modal->assertSee('Are you sure?')->press('Yes');
-                })
+                ->clickButtonWithConfirm('Delete All Activity')
                 ->assertDontSee('All activity was successfully deleted')
                 ->assertSee('Unauthorized')
                 ->visit('/admin/activity')
@@ -393,8 +375,8 @@ class ActivityTest extends TestCase
 
         $this->createActivity();
 
-        $past = Carbon::now()->subDays(7)->format('Y-m-d');
-        $future = Carbon::now()->addDays(7)->format('Y-m-d');
+        $past = Carbon::now()->subDays(100)->format('Y-m-d');
+        $future = Carbon::now()->addDays(100)->format('Y-m-d');
 
         $this->browse(function ($browser) use ($past, $future) {
             $browser->loginAs($this->admin, 'admin')
