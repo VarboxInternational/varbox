@@ -38,7 +38,7 @@ class NotificationsController extends Controller
 
                     flash()->warning('
                         <span class="font-weight-bold d-inline">You are now viewing another user\'s notifications!</span><br />
-                        Interactive actions are now not available.
+                        Interactive actions are not available.
                     ');
                 }
             } catch (ModelNotFoundException $e) {
@@ -54,10 +54,10 @@ class NotificationsController extends Controller
         if ($request->filled('read')) {
             switch ($request->query('read')) {
                 case 1:
-                    $query->whereNull('read_at');
+                    $query->whereNotNull('read_at');
                     break;
                 case 2:
-                    $query->whereNotNull('read_at');
+                    $query->whereNull('read_at');
             }
         }
 
