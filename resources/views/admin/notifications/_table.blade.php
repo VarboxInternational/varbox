@@ -20,7 +20,7 @@
                     </span>
                 </td>
                 <td class="d-none d-sm-table-cell">
-                     <span class="badge badge badge-{!! $item->read() ? 'success' : 'danger' !!}">
+                     <span class="badge badge-{!! $item->read() ? 'success' : 'danger' !!}">
                         {{ $item->read() ? 'Yes' : 'No' }}
                     </span>
                 </td>
@@ -34,12 +34,12 @@
                 </td>
                 @if(!$isAnotherUser)
                     <td class="text-right d-table-cell">
-                        <a href="{{ route('admin.notifications.action', $item->id) }}" class="btn icon d-inline bg-white px-0 mr-3" data-toggle="tooltip" data-placement="top" title="Action">
+                        <a href="{{ route('admin.notifications.action', $item->id) }}" class="button-action btn icon d-inline bg-white px-0 mr-3" data-toggle="tooltip" data-placement="top" title="Action">
                             <i class="fe fe-check-square text-blue"></i>
                         </a>
 
                         {!! form()->open(['url' => route('admin.notifications.mark_as_read', $item->id), 'method' => 'PUT', 'class' => 'd-inline']) !!}
-                        {!! form()->button('<i class="fe fe-eye text-green"></i>', ['type' => 'submit', 'class' => 'btn icon d-inline bg-white px-0', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Mark As Read']) !!}
+                        {!! form()->button('<i class="fe fe-eye text-green"></i>', ['type' => 'submit', 'class' => 'button-mark-as-read btn icon d-inline bg-white px-0', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Mark As Read']) !!}
                         {!! form()->close() !!}
 
                         {!! button()->deleteRecord(route('admin.notifications.destroy', $item->getKey())) !!}

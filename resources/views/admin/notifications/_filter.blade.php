@@ -6,8 +6,8 @@
     </div>
 </div>
 <div class="card-body">
-    {!! form_admin()->select('user', 'Belonging To',$users->pluck('full_name', 'id'), request()->query('user') ?: null) !!}
-    {!! form_admin()->select('read', 'Show Only', ['' => '---', '1' => 'Unread', '2' => 'Read'], request()->query('read') ?: null) !!}
+    {!! form_admin()->select('user', 'Belonging To',$users->pluck('email', 'id'), request()->query('user') ?: null) !!}
+    {!! form_admin()->select('read', 'Show Only', ['' => '---', '1' => 'Read', '2' => 'Unread'], request()->query('read') ?: null) !!}
     <div class="row">
         <div class="col">
             {!! form_admin()->date('start_date', 'From', request()->query('start_date') ?: null) !!}
