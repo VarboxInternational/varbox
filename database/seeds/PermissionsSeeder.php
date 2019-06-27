@@ -206,7 +206,7 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'revisions-list',
             ],
-            'view' => [
+            'View' => [
                 'group' => 'Revisions',
                 'label' => 'View',
                 'guard' => 'admin',
@@ -245,6 +245,12 @@ class PermissionsSeeder extends Seeder
                 'label' => 'List',
                 'guard' => 'admin',
                 'name' => 'notifications-list',
+            ],
+            'Read' => [
+                'group' => 'Notifications',
+                'label' => 'Read',
+                'guard' => 'admin',
+                'name' => 'notifications-read',
             ],
             'Delete' => [
                 'group' => 'Notifications',
