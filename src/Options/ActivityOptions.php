@@ -32,15 +32,6 @@ class ActivityOptions
     private $url;
 
     /**
-     * The eloquent model events that should trigger an activity being logged.
-     * By default (empty) all {after} model events will log activity.
-     * created | updated | deleted | restored | drafted(*) | revisioned(*) | duplicated(*)
-     *
-     * @var array
-     */
-    private $events = [];
-
-    /**
      * Get the value of a property of this class.
      *
      * @param $name
@@ -103,19 +94,6 @@ class ActivityOptions
     public function withEntityUrl($url): ActivityOptions
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Set the $logEvents to work with in the Varbox\Traits\HasActivity trait.
-     *
-     * @param $events
-     * @return ActivityOptions
-     */
-    public function logOnlyFor(...$events): ActivityOptions
-    {
-        $this->events = Arr::flatten($events);
 
         return $this;
     }
