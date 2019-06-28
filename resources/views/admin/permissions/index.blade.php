@@ -12,7 +12,7 @@
         <div class="col-lg-9">
             @include('varbox::admin.permissions._table')
 
-            {!! pagination('admin')->render($items) !!}
+            {!! $items->links('varbox::pagination.default', request()->query()) !!}
         </div>
     </div>
 @endsection

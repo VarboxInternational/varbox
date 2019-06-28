@@ -32,7 +32,7 @@
         <div class="col-lg-9">
             @include('varbox::admin.notifications._table')
 
-            {!! $items->links("varbox::helpers.pagination.admin", request()->all()) !!}
+            {!! $items->links('varbox::pagination.default', request()->query()) !!}
         </div>
     </div>
 @endsection

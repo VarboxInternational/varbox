@@ -22,7 +22,7 @@
         <div class="col-lg-9">
             @include('varbox::admin.activity._table')
 
-            {!! pagination('admin')->render($items) !!}
+            {!! $items->links('varbox::pagination.default', request()->query()) !!}
         </div>
     </div>
 @endsection
