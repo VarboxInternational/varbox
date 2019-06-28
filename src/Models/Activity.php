@@ -2,7 +2,6 @@
 
 namespace Varbox\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
@@ -59,7 +58,7 @@ class Activity extends Model implements ActivityModelContract
      */
     public function user()
     {
-        $user = config('auth.providers.users.model', User::class);
+        $user = config('varbox.varbox-bindings.models.user_model', User::class);
 
         return $this->belongsTo($user, 'user_id');
     }
@@ -83,7 +82,7 @@ class Activity extends Model implements ActivityModelContract
     {
         $message = [];
 
-        $message[] = '<strong>' . (optional($this->user)->full_name ?: 'A user') . '</strong>';
+        $message[] = '<strong>' . (optional($this->user)->email ?: 'A user') . '</strong>';
         $message[] = $this->event;
         $message[] = 'a ' . $this->entity_type ?: $this->subject->getMorphClass();
 
@@ -162,14 +161,8 @@ class Activity extends Model implements ActivityModelContract
      */
     public static function deleteOld()
     {
-        $days = (int)config('varbox.varbix-activity.delete_records_older_than', 30);
-
-        if (!($days > 0)) {
-            return;
+        if (($days = (int)config('varbox.varbox-activity.delete_records_older_than', 30)) && $days > 0) {
+            static::where('created_at', '<', today()->subDays($days))->delete();
         }
-
-        $date = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
-
-        static::where('created_at', '<', $date)->delete();
     }
 }
