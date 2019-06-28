@@ -164,7 +164,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>MODIFYING USER MODEL</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $authGuardsStub = __DIR__ . '/../../resources/stubs/config/auth/guards.stub';
+        $authGuardsStub = __DIR__ . '/../../resources/stubs/config/auth.guards.stub';
         $userModelFile = $this->laravel['path'] . '/User.php';
         $authConfig = $this->laravel['path.config'] . '/auth.php';
 
@@ -243,7 +243,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>GENERATING ADMIN MENU</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $stub = __DIR__ . '/../../resources/stubs/menu/admin.stub';
+        $stub = __DIR__ . '/../../resources/stubs/menu/menu.stub';
         $path = "{$this->laravel['path']}/Http/Composers";
         $file = "{$path}/AdminMenuComposer.php";
         $contents = str_replace('DummyNamespace', $this->laravel->getNamespace() . 'Http\\Composers', $this->files->get($stub));
