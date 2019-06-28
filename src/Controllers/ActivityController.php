@@ -60,7 +60,7 @@ class ActivityController extends Controller
                 'users' => $this->user->alphabetically()->get(),
                 'entities' => $this->model->getDistinctEntities(),
                 'events' => $this->model->getDistinctEvents(),
-                'days' => config('varbox.varbox-activity.delete_records_older_than', 30),
+                'days' => config('varbox.varbox-activity.old_threshold', 30),
             ];
         });
     }

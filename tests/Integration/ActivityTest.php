@@ -122,7 +122,7 @@ class ActivityTest extends TestCase
     /** @test */
     public function it_can_delete_old_activity_logs()
     {
-        $this->app['config']->set('varbox.varbox-activity.delete_records_older_than', 30);
+        $this->app['config']->set('varbox.varbox-activity.old_threshold', 30);
 
         for ($i = 1; $i <= 3; $i++) {
             Activity::create([

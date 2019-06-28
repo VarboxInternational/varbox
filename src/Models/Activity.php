@@ -155,13 +155,13 @@ class Activity extends Model implements ActivityModelContract
      *
      * Activity qualifies as being old if:
      * "created_at" field is smaller than the current date minus the number of days set in the
-     * "delete_records_older_than" key of /config/varbox/audit/activity.php file.
+     * "old_threshold" key of /config/varbox/audit/activity.php file.
      *
      * @return void
      */
     public static function deleteOld()
     {
-        if (($days = (int)config('varbox.varbox-activity.delete_records_older_than', 30)) && $days > 0) {
+        if (($days = (int)config('varbox.varbox-activity.old_threshold', 30)) && $days > 0) {
             static::where('created_at', '<', today()->subDays($days))->delete();
         }
     }

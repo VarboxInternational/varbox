@@ -78,7 +78,7 @@ class NotificationsController extends Controller
             'title' => 'Notifications',
             'items' => $query->paginate(config('varbox.varbox-crud.per_page', 10)),
             'users' => User::all(),
-            'days' => config('varbox.varbox-notification.delete_records_older_than', 30),
+            'days' => config('varbox.varbox-notification.old_threshold', 30),
             'isAnotherUser' => isset($isAnotherUser),
         ]);
     }
@@ -176,7 +176,7 @@ class NotificationsController extends Controller
     public function deleteOnlyOld(Authenticatable $user)
     {
         try {
-            $days = config('varbox.varbox-notification.delete_records_older_than', 30);
+            $days = config('varbox.varbox-notification.old_threshold', 30);
             $date = Carbon::now()->subDays($days)->format('Y-m-d H:i:s');
 
             if ((int)$days > 0) {

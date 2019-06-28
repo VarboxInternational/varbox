@@ -14,13 +14,13 @@ return [
     |
     | This option accepts an integer, representing the number of days.
     |
-    | This option is used when:
-    | - executing the cli command: "php artisan varbox:activity-cleanup"
-    | - clicking the "cleanup" button from the admin panel, inside the activity list view
+    | This option is used to delete activity records older than the number of days supplied when:
+    | - executing the cli command: "php artisan varbox:clean-activity"
+    | - clicking the "Delete Old Activity" button from the admin panel, inside the activity list view
     |
     | If set to "null" or "0", no past activities will be deleted whatsoever.
     |
     */
-    'delete_records_older_than' => 30,
+    'old_threshold' => 30,
 
 ];
