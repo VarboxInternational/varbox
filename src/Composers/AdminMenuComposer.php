@@ -91,8 +91,8 @@ class AdminMenuComposer
 
             $menu->add(function ($item) use ($menu) {
                 $auth = $item->name('Access Control')->data('icon', 'fa-sign-in')
-                    ->permissions('users-list', 'admins-list', 'roles-list', 'permissions-list')
-                    ->active('admin/users/*', 'admin/admins/*', 'admin/roles/*', 'admin/permissions/*');
+                    ->permissions('users-list', 'admins-list', 'roles-list', 'permissions-list', 'activity-list', 'notifications-list')
+                    ->active('admin/users/*', 'admin/admins/*', 'admin/roles/*', 'admin/permissions/*', 'admin/activity/*', 'admin/notifications/*');
 
                 $menu->child($auth, function (MenuItem $item) {
                     $item->name('Users')->url(route('admin.users.index'))->permissions('users-list')->active('admin/users/*');
@@ -109,6 +109,16 @@ class AdminMenuComposer
                 $menu->child($auth, function (MenuItem $item) {
                     $item->name('Permissions')->url(route('admin.permissions.index'))->permissions('permissions-list')->active('admin/permissions/*');
                 });
+
+                if (\Varbox::moduleEnabled('audit')) {
+                    $menu->child($auth, function (MenuItem $item) {
+                        $item->name('Activity')->url(route('admin.activity.index'))->permissions('activity-list')->active('admin/activity/*');
+                    });
+
+                    $menu->child($auth, function (MenuItem $item) {
+                        $item->name('Notifications')->url(route('admin.notifications.index'))->permissions('notifications-list')->active('admin/notifications/*');
+                    });
+                }
             });
 
             /*if (\Varbox::moduleEnabled('geo')) {
@@ -178,22 +188,6 @@ class AdminMenuComposer
                     });
                 });
             }*/
-
-            if (\Varbox::moduleEnabled('audit')) {
-                $menu->add(function ($item) use ($menu) {
-                    $audit = $item->name('Audit Center')->data('icon', 'fa-flag')
-                        ->permissions('notifications-list', 'activity-list')
-                        ->active('admin/notifications/*', 'admin/activity/*');
-
-                    $menu->child($audit, function (MenuItem $item) {
-                        $item->name('Notifications')->url(route('admin.notifications.index'))->permissions('notifications-list')->active('admin/notifications/*');
-                    });
-
-                    $menu->child($audit, function (MenuItem $item) {
-                        $item->name('Activity')->url(route('admin.activity.index'))->permissions('activity-list')->active('admin/activity/*');
-                    });
-                });
-            }
 
             /*if (\Varbox::moduleEnabled('sys')) {
                 $menu->add(function ($item) use ($menu) {

@@ -4,6 +4,7 @@ namespace Varbox\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Varbox\Models\Activity;
 use Varbox\Options\ActivityOptions;
 
@@ -129,7 +130,7 @@ trait HasActivity
      * @return \Illuminate\Support\Collection
      * @throws Exception
      */
-    public static function activityEventsToBeLogged()
+    public static function activityEventsToBeLogged(): Collection
     {
         $events = collect([
             'created', 'updated', 'deleted'
