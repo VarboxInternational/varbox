@@ -20,7 +20,6 @@ use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\MetaHelperContract;
-use Varbox\Contracts\PaginationHelperContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RoleModelContract;
@@ -32,7 +31,6 @@ use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\ButtonHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
-use Varbox\Helpers\PaginationHelper;
 use Varbox\Helpers\ValidationHelper;
 use Varbox\Middleware\AuthenticateSession;
 use Varbox\Middleware\Authenticated;
@@ -121,7 +119,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/varbox-breadcrumb.php' => config_path('varbox/varbox-breadcrumb.php'),
             __DIR__ . '/../config/varbox-crud.php' => config_path('varbox/varbox-crud.php'),
             __DIR__ . '/../config/varbox-flash.php' => config_path('varbox/varbox-flash.php'),
-            __DIR__ . '/../config/varbox-pagination.php' => config_path('varbox/varbox-pagination.php'),
             __DIR__ . '/../config/varbox-validation.php' => config_path('varbox/varbox-validation.php'),
         ], 'varbox-config');
     }
@@ -276,7 +273,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-breadcrumb.php', 'varbox.varbox-breadcrumb');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-crud.php', 'varbox.varbox-crud');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-flash.php', 'varbox.varbox-flash');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-pagination.php', 'varbox.varbox-pagination');
         $this->mergeConfigFrom(__DIR__ . '/../config/varbox-validation.php', 'varbox.varbox-validation');
     }
 
@@ -341,9 +337,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(ValidationHelperContract::class, $binding['helpers']['validation_helper'] ?? ValidationHelper::class);
         $this->app->alias(ValidationHelperContract::class, 'validation.helper');
-
-        $this->app->singleton(PaginationHelperContract::class, $binding['helpers']['pagination_helper'] ?? PaginationHelper::class);
-        $this->app->alias(PaginationHelperContract::class, 'pagination.helper');
 
         $this->app->singleton(ButtonHelperContract::class, $binding['helpers']['button_helper'] ?? ButtonHelper::class);
         $this->app->alias(ButtonHelperContract::class, 'button.helper');
