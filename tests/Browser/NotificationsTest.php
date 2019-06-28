@@ -611,7 +611,7 @@ class NotificationsTest extends TestCase
     /** @test */
     public function it_displays_the_notifications_icon_in_header_on_every_page()
     {
-        $this->admin->grantPermission('notifications-list');
+        $this->admin->assignRoles('Super');
 
         $this->createNotification();
 
@@ -627,21 +627,56 @@ class NotificationsTest extends TestCase
         $this->deleteNotification();
     }
 
+    /** @test */
+    public function it_displays_a_read_dot_in_the_notifications_icon_when_the_admin_has_unread_notifications()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createNotification();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin')
+                ->assertPresent('.nav-unread');
+        });
+
+        $this->deleteNotification();
+    }
+
+    /** @test */
+    public function it_doesnt_display_a_read_dot_in_the_notifications_icon_when_the_admin_doesnt_have_unread_notifications()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createNotification([
+            'read_at' => Carbon::now()
+        ]);
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin')
+                ->assertMissing('.nav-unread');
+        });
+
+        $this->deleteNotification();
+    }
+
     /**
+     * @param array $attributes
      * @return void
      */
-    protected function createNotification()
+    protected function createNotification(array $attributes = [])
     {
         $this->userModel = User::first();
 
-        $this->notification1Model = $this->userModel->notifications()->create([
+        $this->notification1Model = $this->userModel->notifications()->create(array_merge($attributes, [
             'id' => Str::uuid()->toString(),
             'type' => $this->notification1Type,
             'data' => [
                 'subject' => $this->notification1Subject,
                 'url' => $this->notification1Url,
             ],
-        ]);
+        ]));
     }
 
     /**
