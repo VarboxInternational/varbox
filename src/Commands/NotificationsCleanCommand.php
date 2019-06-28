@@ -13,10 +13,10 @@ class NotificationsCleanCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'varbox:notifications-clean';
+    protected $signature = 'varbox:clean-notifications';
 
     /**
-     * The console command description.
+     * Delete notification records older than the config value from "varbox.varbox-notification.old_threshold".
      *
      * @var string
      */
@@ -29,17 +29,17 @@ class NotificationsCleanCommand extends Command
      */
     public function handle()
     {
-        $days = config('varbox.varbox-notification.delete_records_older_than', 30);
+        $days = config('varbox.varbox-notification.old_threshold', 30);
 
         if ((int)$days > 0) {
             $count = DatabaseNotification::where(
                 'created_at', '<', Carbon::now()->subDays($days)->format('Y-m-d H:i:s')
             )->delete();
 
-            $this->info('Notifications cleaned up. ' . $count . 'record(s) were removed.');
+            $this->info('Notifications cleaned up. ' . $count . ' record(s) were removed.');
         } else {
             $this->line('<fg=red>Could not cleanup the notifications because no date threshold is set!</>');
-            $this->comment('Please set the "delete_records_older_than" key value in the "config/varbox/varbox-notification.php" file.');
+            $this->comment('Please set the "old_threshold" key value in the "config/varbox/varbox-notification.php" file.');
         }
     }
 }
