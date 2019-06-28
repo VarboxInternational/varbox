@@ -76,19 +76,6 @@ if (!function_exists('validation')) {
     }
 }
 
-if (!function_exists('pagination')) {
-    /**
-     * @param string|null $type
-     * @return \Varbox\Contracts\PaginationHelperContract
-     */
-    function pagination($type = null)
-    {
-        return app('pagination.helper', [
-            'type' => $type
-        ]);
-    }
-}
-
 if (!function_exists('button')) {
     /**
      * @return \Varbox\Contracts\ButtonHelperContract
