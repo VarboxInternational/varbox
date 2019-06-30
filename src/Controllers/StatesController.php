@@ -171,13 +171,11 @@ class StatesController extends Controller
                 'code' => $state->code,
             ];
 
-            if ($index == 0) {
-                foreach ($state->cities as $city) {
-                    $cities[] = [
-                        'id' => $city->getKey(),
-                        'name' => $city->name,
-                    ];
-                }
+            foreach ($state->cities as $city) {
+                $cities[] = [
+                    'id' => $city->getKey(),
+                    'name' => $city->name,
+                ];
             }
         }
 
