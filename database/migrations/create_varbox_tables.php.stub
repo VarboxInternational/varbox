@@ -134,6 +134,66 @@ class CreateVarboxTables extends Migration
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             });
         }
+
+        if (!Schema::hasTable('countries')) {
+            Schema::create('countries', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name')->unique();
+                $table->string('code')->unique();
+
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('states')) {
+            Schema::create('states', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('country_id')->unsigned()->index();
+
+                $table->string('name')->unique();
+                $table->string('code')->unique();
+
+                $table->timestamps();
+
+                $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+            });
+        }
+
+        if (!Schema::hasTable('cities')) {
+            Schema::create('cities', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('country_id')->unsigned()->index();
+                $table->integer('state_id')->unsigned()->index()->nullable();
+
+                $table->string('name');
+
+                $table->timestamps();
+
+                $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
+                $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('set null');
+            });
+        }
+
+        if (!Schema::hasTable('addresses') && Schema::hasTable('users')) {
+            Schema::create('addresses', function (Blueprint $table) {
+                $table->increments('id');
+                $table->bigInteger('user_id')->unsigned()->index();
+                $table->integer('country_id')->unsigned()->index()->nullable();
+                $table->integer('state_id')->unsigned()->index()->nullable();
+                $table->integer('city_id')->unsigned()->index()->nullable();
+
+                $table->text('address')->nullable();
+                $table->integer('ord')->default(0);
+
+                $table->timestamps();
+
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+                $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null');
+                $table->foreign('state_id')->references('id')->on('states')->onDelete('set null');
+                $table->foreign('city_id')->references('id')->on('cities')->onDelete('set null');
+            });
+        }
     }
 
     /**
@@ -143,6 +203,10 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('cities');
+        Schema::dropIfExists('states');
+        Schema::dropIfExists('countries');
         Schema::dropIfExists('activity');
         Schema::dropIfExists('notifications');
         Schema::dropIfExists('role_permission');
