@@ -15,14 +15,18 @@ use Varbox\Commands\InstallCommand;
 use Varbox\Composers\AdminMenuComposer;
 use Varbox\Composers\NotificationsComposer;
 use Varbox\Contracts\ActivityModelContract;
+use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\ButtonHelperContract;
+use Varbox\Contracts\CityModelContract;
+use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Facades\VarboxFacade;
@@ -38,8 +42,12 @@ use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\NotAuthenticated;
 use Varbox\Models\Activity;
+use Varbox\Models\Address;
+use Varbox\Models\City;
+use Varbox\Models\Country;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
+use Varbox\Models\State;
 use Varbox\Models\User;
 use Varbox\Services\QueryCacheService;
 
@@ -232,6 +240,10 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('role', RoleModelContract::class);
         Route::model('permission', PermissionModelContract::class);
         Route::model('activity', ActivityModelContract::class);
+        Route::model('country', CountryModelContract::class);
+        Route::model('state', StateModelContract::class);
+        Route::model('city', CityModelContract::class);
+        Route::model('address', AddressModelContract::class);
     }
 
     /**
@@ -243,6 +255,10 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         if (\Varbox::moduleEnabled('audit')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/audit.php');
+        }
+
+        if (\Varbox::moduleEnabled('geo')) {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/geo.php');
         }
     }
 
@@ -256,6 +272,10 @@ class VarboxServiceProvider extends BaseServiceProvider
 
             if (\Varbox::moduleEnabled('audit')) {
                 require __DIR__ . '/../breadcrumbs/audit.php';
+            }
+
+            if (\Varbox::moduleEnabled('geo')) {
+                require __DIR__ . '/../breadcrumbs/geo.php';
             }
         }
     }
@@ -314,6 +334,18 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(ActivityModelContract::class, $binding['models']['activity_model'] ?? Activity::class);
         $this->app->alias(ActivityModelContract::class, 'activity.model');
+
+        $this->app->bind(CountryModelContract::class, $binding['models']['country_model'] ?? Country::class);
+        $this->app->alias(CountryModelContract::class, 'country.model');
+
+        $this->app->bind(StateModelContract::class, $binding['models']['state_model'] ?? State::class);
+        $this->app->alias(StateModelContract::class, 'state.model');
+
+        $this->app->bind(CityModelContract::class, $binding['models']['city_model'] ?? City::class);
+        $this->app->alias(CityModelContract::class, 'city.model');
+
+        $this->app->bind(AddressModelContract::class, $binding['models']['address_model'] ?? Address::class);
+        $this->app->alias(AddressModelContract::class, 'address.model');
     }
 
     /**
