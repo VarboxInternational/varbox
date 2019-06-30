@@ -121,7 +121,7 @@ class AdminMenuComposer
                 }
             });
 
-            /*if (\Varbox::moduleEnabled('geo')) {
+            if (\Varbox::moduleEnabled('geo')) {
                 $menu->add(function ($item) use ($menu) {
                     $geo = $item->name('Geo Location')->data('icon', 'fa-map-marker')
                         ->permissions('countries-list', 'states-list', 'cities-list')
@@ -139,7 +139,7 @@ class AdminMenuComposer
                         $item->name('Cities')->url(route('admin.cities.index'))->permissions('cities-list')->active('admin/cities/*');
                     });
                 });
-            }*/
+            }
 
             /*if (\Varbox::moduleEnabled('trans')) {
                 $menu->add(function ($item) use ($menu) {
