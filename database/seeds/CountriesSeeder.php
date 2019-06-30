@@ -271,7 +271,9 @@ class CountriesSeeder extends Seeder
                 continue;
             }
 
-            $country->create(['name' => $name, 'code' => $code]);
+            $country->doNotLogActivity()->create([
+                'name' => $name, 'code' => $code
+            ]);
         }
     }
 }
