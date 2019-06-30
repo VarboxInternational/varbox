@@ -140,10 +140,11 @@ interface ButtonHelperContract
 
     /**
      * @param string $routeName
+     * @param array $routeParameters
      * @param array $attributes
      * @return \Illuminate\View\View
      */
-    public function saveAndContinue($routeName, array $attributes = []);
+    public function saveAndContinue($routeName, array $routeParameters = [], array $attributes = []);
 
     /**
      * @param string $url

@@ -290,13 +290,15 @@ class ButtonHelper implements ButtonHelperContract
      * Render save and continue button.
      *
      * @param string $routeName
+     * @param array $routeParameters
      * @param array $attributes
      * @return \Illuminate\View\View
      */
-    public function saveAndContinue($routeName, array $attributes = [])
+    public function saveAndContinue($routeName, array $routeParameters = [], array $attributes = [])
     {
         return view('varbox::helpers.button.save_continue')->with([
             'routeName' => $routeName,
+            'routeParameters' => $routeParameters,
             'attributes' => self::buildAttributes($attributes)
         ]);
     }

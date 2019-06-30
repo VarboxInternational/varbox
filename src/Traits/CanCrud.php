@@ -439,6 +439,12 @@ trait CanCrud
         }
 
         if ($request && $request->filled('save_continue') && $request->filled('save_continue_route')) {
+            if ($request->has('save_continue_route_parameters')) {
+                return redirect()->route($request->get('save_continue_route'), array_merge(
+                    (array)$request->get('save_continue_route_parameters') + [$this->item->getKey()]
+                ));
+            }
+
             return redirect()->route($request->get('save_continue_route'), $this->item->getKey());
         }
 

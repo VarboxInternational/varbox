@@ -21,6 +21,12 @@ function buttons() {
     $(document).on('click', '.button-save-continue', function (e) {
         e.preventDefault();
 
+        if ($(this).data('route-parameters')) {
+            $.each($(this).data('route-parameters'), function (key, value) {
+                $('form.row.row-cards').append('<input type="hidden" name="save_continue_route_parameters[' + key + ']" value="' + value + '" />')
+            })
+        }
+
         $('form.row.row-cards')
             .append('<input type="hidden" name="save_continue" value="1" />')
             .append('<input type="hidden" name="save_continue_route" value="' + $(this).data('route-name') + '" />')
