@@ -56,7 +56,7 @@ class Country extends Model implements CountryModelContract
     {
         $city = config('varbox.varbox-binding.models.city_model', City::class);
 
-        return $this->hasMany($city,c 'country_id');
+        return $this->hasMany($city, 'country_id');
     }
 
     /**
