@@ -8,7 +8,6 @@ $(document).ready(function () {
 
 function setups() {
     init.Editor();
-    //init.Chosen();
     init.Select2();
 }
 

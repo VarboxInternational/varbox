@@ -52,24 +52,6 @@ var init = {
     Editor: function () {
         var editor = new FroalaEditor('textarea.editor-input');
     },
-    Chosen: function () {
-        var select = $('.select-input'),
-            width = '80%';
-
-        if ($(window).width() < 1248) {
-            width = '73%';
-        }
-
-        if ($(window).width() < 640) {
-            width = '100%';
-        }
-
-        select.chosen({
-            width: width,
-            no_results_text: "Nothing found for",
-            allow_single_deselect: true
-        });
-    },
     Select2: function () {
         $('.select-input').select2({
             theme: "bootstrap",
