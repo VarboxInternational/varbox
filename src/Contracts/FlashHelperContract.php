@@ -30,4 +30,11 @@ interface FlashHelperContract
      * @return \Illuminate\View\View
      */
     public function warning($message = null, \Exception $exception = null);
+
+    /**
+     * @param string|null $message
+     * @param Exception|null $exception
+     * @return \Illuminate\View\View
+     */
+    public function info($message = null, Exception $exception = null);
 }

@@ -34,31 +34,36 @@ class FlashHelper implements FlashHelperContract
      */
     public function message()
     {
-        switch (true) {
-            case session()->has('flash_success');
-                return $this->success();
-                break;
-            case session()->has('flash_error');
-                return $this->error();
-                break;
-            case session()->has('flash_warning');
-                return $this->warning();
-                break;
+        if (session()->has('flash_success')) {
+            $this->success();
         }
 
-        return $this->show(null, null);
+        if (session()->has('flash_error')) {
+            $this->error();
+        }
+
+        if (session()->has('flash_warning')) {
+            $this->warning();
+        }
+
+        if (session()->has('flash_info')) {
+            $this->info();
+        }
+
+        $this->show(null, null);
     }
 
     /**
      * Set or render the success flash message.
      *
      * @param string|null $message
-     * @return \Illuminate\View\View
+     * @return void
      */
     public function success($message = null)
     {
         if ($message === null) {
-            return $this->show('success', session('flash_success'));
+            $this->show('success', session('flash_success'));
+            return;
         }
 
         session()->flash('flash_success', $message);
@@ -69,12 +74,13 @@ class FlashHelper implements FlashHelperContract
      *
      * @param string|null $message
      * @param Exception|null $exception
-     * @return \Illuminate\View\View
+     * @return void
      */
     public function error($message = null, Exception $exception = null)
     {
         if ($message === null) {
-            return $this->show('danger', session('flash_error'));
+            $this->show('danger', session('flash_error'));
+            return;
         }
 
         session()->flash('flash_error', $message);
@@ -89,12 +95,13 @@ class FlashHelper implements FlashHelperContract
      *
      * @param string|null $message
      * @param Exception|null $exception
-     * @return \Illuminate\View\View
+     * @return void
      */
     public function warning($message = null, Exception $exception = null)
     {
         if ($message === null) {
-            return $this->show('warning', session('flash_warning'));
+            $this->show('warning', session('flash_warning'));
+            return;
         }
 
         session()->flash('flash_warning', $message);
@@ -105,17 +112,37 @@ class FlashHelper implements FlashHelperContract
     }
 
     /**
+     * Set or render the warning flash message.
+     *
+     * @param string|null $message
+     * @param Exception|null $exception
+     * @return void
+     */
+    public function info($message = null, Exception $exception = null)
+    {
+        if ($message === null) {
+            $this->show('info', session('flash_info'));
+            return;
+        }
+
+        session()->flash('flash_info', $message);
+
+        if (config('varbox.varbox-flash.log_errors', true) && $exception) {
+            logger()->info($exception);
+        }
+    }
+
+    /**
      * Render the actual view helper that displays flash messages.
      *
      * @param string $type
      * @param string $message
-     * @return \Illuminate\View\View
      */
     protected function show($type, $message)
     {
-        return view("varbox::helpers.flash.{$this->type}")->with([
+        echo view()->make("varbox::helpers.flash.{$this->type}")->with([
             'type' => $type,
             'message' => $message,
-        ]);
+        ])->render();
     }
 }
