@@ -35,7 +35,7 @@ Breadcrumbs::register('admin.users.create', function($breadcrumbs) {
 /* Home > Users > Edit */
 Breadcrumbs::register('admin.users.edit', function($breadcrumbs, $user) {
     $breadcrumbs->parent('admin.users.index');
-    $breadcrumbs->push('Edit', route('admin.users.edit', $user));
+    $breadcrumbs->push('Edit', route('admin.users.edit', $user->getKey()));
 });
 /*
 | ------------------------------------------------------------------------------------------------------------------
