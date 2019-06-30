@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Filters\UserFilter;
@@ -30,15 +31,22 @@ class UsersController extends Controller
     protected $role;
 
     /**
+     * @var AddressModelContract
+     */
+    protected $address;
+
+    /**
      * UsersController constructor.
      *
      * @param UserModelContract $model
      * @param RoleModelContract $role
+     * @param AddressModelContract $address
      */
-    public function __construct(UserModelContract $model, RoleModelContract $role)
+    public function __construct(UserModelContract $model, RoleModelContract $role, AddressModelContract $address)
     {
         $this->model = $model;
         $this->role = $role;
+        $this->address = $address;
     }
 
     /**
@@ -111,6 +119,7 @@ class UsersController extends Controller
             $this->view = view('varbox::admin.users.edit');
             $this->vars = [
                 'roles' => $this->role->whereGuard('web')->get(),
+                'addresses' => $this->address->ofUser($user)->get(),
             ];
         });
     }
