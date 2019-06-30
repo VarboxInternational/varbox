@@ -122,6 +122,6 @@ class Role extends Model implements RoleModelContract
         return ActivityOptions::instance()
             ->withEntityType('role')
             ->withEntityName($this->name)
-            ->withEntityUrl(route('admin.roles.edit', $this->id));
+            ->withEntityUrl(route('admin.roles.edit', $this->getKey()));
     }
 }

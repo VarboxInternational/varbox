@@ -9,6 +9,7 @@ use Varbox\Contracts\UserModelContract;
 use Varbox\Notifications\ResetPassword;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasAddresses;
 use Varbox\Traits\HasRoles;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -17,6 +18,7 @@ use Varbox\Traits\IsSortable;
 class User extends Authenticatable implements UserModelContract
 {
     use HasRoles;
+    use HasAddresses;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;
@@ -225,10 +227,10 @@ class User extends Authenticatable implements UserModelContract
     {
         if ($this->isAdmin()) {
             $type = 'admin';
-            $url = route('admin.admins.edit', $this->id);
+            $url = route('admin.admins.edit', $this->getKey());
         } else {
             $type = 'user';
-            $url = route('admin.users.edit', $this->id);
+            $url = route('admin.users.edit', $this->getKey());
         }
 
         return ActivityOptions::instance()

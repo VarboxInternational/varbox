@@ -133,6 +133,6 @@ class Permission extends Model implements PermissionModelContract
         return ActivityOptions::instance()
             ->withEntityType('permission')
             ->withEntityName($this->name)
-            ->withEntityUrl(route('admin.permissions.edit', $this->id));
+            ->withEntityUrl(route('admin.permissions.edit', $this->getKey()));
     }
 }
