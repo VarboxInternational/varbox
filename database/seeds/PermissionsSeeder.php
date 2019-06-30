@@ -259,6 +259,110 @@ class PermissionsSeeder extends Seeder
                 'name' => 'notifications-delete',
             ],
         ],
+        'Countries' => [
+            'List' => [
+                'group' => 'Countries',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'countries-list',
+            ],
+            'Add' => [
+                'group' => 'Countries',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'countries-add',
+            ],
+            'Edit' => [
+                'group' => 'Countries',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'countries-edit',
+            ],
+            'Delete' => [
+                'group' => 'Countries',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'countries-delete',
+            ],
+        ],
+        'States' => [
+            'List' => [
+                'group' => 'States',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'states-list',
+            ],
+            'Add' => [
+                'group' => 'States',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'states-add',
+            ],
+            'Edit' => [
+                'group' => 'States',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'states-edit',
+            ],
+            'Delete' => [
+                'group' => 'States',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'states-delete',
+            ],
+        ],
+        'Cities' => [
+            'List' => [
+                'group' => 'Cities',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'cities-list',
+            ],
+            'Add' => [
+                'group' => 'Cities',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'cities-add',
+            ],
+            'Edit' => [
+                'group' => 'Cities',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'cities-edit',
+            ],
+            'Delete' => [
+                'group' => 'Cities',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'cities-delete',
+            ],
+        ],
+        'Addresses' => [
+            'List' => [
+                'group' => 'Addresses',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'addresses-list',
+            ],
+            'Add' => [
+                'group' => 'Addresses',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'addresses-add',
+            ],
+            'Edit' => [
+                'group' => 'Addresses',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'addresses-edit',
+            ],
+            'Delete' => [
+                'group' => 'Addresses',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'addresses-delete',
+            ],
+        ],
     ];
 
     /**
