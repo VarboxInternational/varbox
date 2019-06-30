@@ -108,6 +108,66 @@ return [
         */
         'activity_model' => \Varbox\Models\Activity::class,
 
+        /*
+        |
+        | Concrete implementation for the "country model".
+        | To extend or replace this functionality, change the value below with your full "country model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Country" class
+        | - or at least implement the "Varbox\Contracts\CountryModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('country.model') OR app('\Varbox\Contracts\CountryModelContract')
+        | - or you could even use your own class as a direct implementation
+        */
+        'country_model' => \Varbox\Models\Country::class,
+
+        /*
+        |
+        | Concrete implementation for the "state model".
+        | To extend or replace this functionality, change the value below with your full "state model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\State" class
+        | - or at least implement the "Varbox\Contracts\StateModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('state.model') OR app('\Varbox\Contracts\StateModelContract')
+        | - or you could even use your own class as a direct implementation
+        */
+        'state_model' => \Varbox\Models\State::class,
+
+        /*
+        |
+        | Concrete implementation for the "city model".
+        | To extend or replace this functionality, change the value below with your full "city model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\City" class
+        | - or at least implement the "Varbox\Contracts\CityModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('city.model') OR app('\Varbox\Contracts\CityModelContract')
+        | - or you could even use your own class as a direct implementation
+        */
+        'city_model' => \Varbox\Models\City::class,
+
+        /*
+        |
+        | Concrete implementation for the "address model".
+        | To extend or replace this functionality, change the value below with your full "address model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Address" class
+        | - or at least implement the "Varbox\Contracts\AddressModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('address.model') OR app('\Varbox\Contracts\AddressModelContract')
+        | - or you could even use your own class as a direct implementation
+        */
+        'address_model' => \Varbox\Models\Address::class,
+
     ],
 
     /*
@@ -237,6 +297,54 @@ return [
         */
         'activity_controller' => \Varbox\Controllers\ActivityController::class,
 
+        /*
+        |
+        | Concrete implementation for the "countries controller".
+        | To extend or replace this functionality, change the value below with your full "countries controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\CountriesController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
+        |
+        */
+        'countries_controller' => \Varbox\Controllers\CountriesController::class,
+
+        /*
+        |
+        | Concrete implementation for the "states controller".
+        | To extend or replace this functionality, change the value below with your full "states controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\StatesController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy(), get()
+        |
+        */
+        'states_controller' => \Varbox\Controllers\StatesController::class,
+
+        /*
+        |
+        | Concrete implementation for the "cities controller".
+        | To extend or replace this functionality, change the value below with your full "cities controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\CitiesController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy(), get()
+        |
+        */
+        'cities_controller' => \Varbox\Controllers\CitiesController::class,
+
+        /*
+        |
+        | Concrete implementation for the "addresses controller".
+        | To extend or replace this functionality, change the value below with your full "addresses controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\AddressesController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
+        |
+        */
+        'addresses_controller' => \Varbox\Controllers\AddressesController::class,
+
     ],
 
     'form_requests' => [
@@ -324,6 +432,54 @@ return [
         |
         */
         'password_reset_form_request' => \Varbox\Requests\PasswordResetRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "country form request".
+        | To extend or replace this functionality, change the value below with your full "country form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\CountryRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'country_form_request' => \Varbox\Requests\CountryRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "state form request".
+        | To extend or replace this functionality, change the value below with your full "state form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\StateRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'state_form_request' => \Varbox\Requests\StateRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "city form request".
+        | To extend or replace this functionality, change the value below with your full "city form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\CityRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'city_form_request' => \Varbox\Requests\CityRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "address form request".
+        | To extend or replace this functionality, change the value below with your full "address form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\AddressRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'address_form_request' => \Varbox\Requests\AddressRequest::class,
 
     ],
 
