@@ -26,8 +26,6 @@ class NotificationsController extends Controller
      */
     public function index(Request $request, Authenticatable $user)
     {
-        session()->forget(['flash_error', 'flash_warning']);
-
         if ($request->filled('user')) {
             try {
                 $usr = app(UserModelContract::class)->findOrFail((int)$request->get('user'));
