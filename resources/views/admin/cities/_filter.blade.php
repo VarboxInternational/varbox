@@ -39,8 +39,6 @@
                 success: function(data) {
                     var selected = @json(request()->query('state'))
 
-                    console.log(selected);
-
                     if (data.status === true) {
                         select.empty();
 
