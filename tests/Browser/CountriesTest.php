@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Browser;
 
+use Carbon\Carbon;
 use Varbox\Models\Country;
 
 class CountriesTest extends TestCase
@@ -310,6 +311,98 @@ class CountriesTest extends TestCase
                 ->deleteAnyRecord()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_filter_countries_by_keyword()
+    {
+        $this->admin->grantPermission('roles-list');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->filterRecordsByText('#search-input', $this->countryName)
+                ->assertQueryStringHas('search', $this->countryName)
+                ->assertSee($this->countryName)
+                ->assertRecordsCount(1);
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_countries_by_start_date()
+    {
+        $this->admin->grantPermission('countries-list');
+
+        $this->createCountry();
+
+        $past = Carbon::now()->subDays(7)->format('Y-m-d');
+        $future = Carbon::now()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/countries', $this->countryModel)
+                ->assertSee($this->countryName)
+                ->visit('/admin/countries')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_countries_by_end_date()
+    {
+        $this->admin->grantPermission('countries-list');
+
+        $this->createCountry();
+
+        $past = Carbon::now()->subDays(7)->format('Y-m-d');
+        $future = Carbon::now()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/countries')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/countries', $this->countryModel)
+                ->assertSee($this->countryName);
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_country_filters()
+    {
+        $this->admin->grantPermission('countries-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries/?search=a&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/countries/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
         });
     }
 
