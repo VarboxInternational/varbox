@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Browser;
 
-use Carbon\Carbon;
 use Varbox\Models\Country;
 
 class CountriesTest extends TestCase
@@ -340,8 +339,8 @@ class CountriesTest extends TestCase
 
         $this->createCountry();
 
-        $past = Carbon::now()->subDays(7)->format('Y-m-d');
-        $future = Carbon::now()->addDays(7)->format('Y-m-d');
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
 
         $this->browse(function ($browser) use ($past, $future) {
             $browser->loginAs($this->admin, 'admin')
@@ -367,8 +366,8 @@ class CountriesTest extends TestCase
 
         $this->createCountry();
 
-        $past = Carbon::now()->subDays(7)->format('Y-m-d');
-        $future = Carbon::now()->addDays(7)->format('Y-m-d');
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
 
         $this->browse(function ($browser) use ($past, $future) {
             $browser->loginAs($this->admin, 'admin')
