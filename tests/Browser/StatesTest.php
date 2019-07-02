@@ -34,11 +34,6 @@ class StatesTest extends TestCase
      */
     protected $stateNameModified = 'Test State Name Modified';
 
-    /**
-     * @var string
-     */
-    protected $countryNameModified = 'Test Country Name Modified';
-
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
     {
@@ -365,6 +360,273 @@ class StatesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_filter_states_by_keyword()
+    {
+        $this->admin->grantPermission('states-list');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->filterRecordsByText('#search-input', $this->stateName)
+                ->assertQueryStringHas('search', $this->stateName)
+                ->assertSee($this->stateName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/states')
+                ->filterRecordsByText('#search-input', $this->stateNameModified)
+                ->assertQueryStringHas('search', $this->stateNameModified)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_states_by_country()
+    {
+        $this->admin->grantPermission('states-list');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->filterRecordsBySelect('#country-input', $this->countryName)
+                ->assertQueryStringHas('country', $this->countryModel->id)
+                ->assertSee($this->stateName)
+                ->assertSee($this->countryName)
+                ->assertRecordsCount(1);
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_states_by_start_date()
+    {
+        $this->admin->grantPermission('states-list');
+
+        $this->createCountry();
+        $this->createState();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/states', $this->stateModel)
+                ->assertSee($this->stateName)
+                ->visit('/admin/states')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_states_by_end_date()
+    {
+        $this->admin->grantPermission('states-list');
+
+        $this->createCountry();
+        $this->createState();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/states')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/states', $this->stateModel)
+                ->assertSee($this->stateName);
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_state_filters()
+    {
+        $this->admin->grantPermission('states-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states/?search=something&country=1000&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('country')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/states/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('country')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_creating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-add');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickLink('Add New')
+                ->select2('#country_id-input', $this->countryName)
+                ->type('#code-input', $this->stateCode)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_code_when_creating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-add');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickLink('Add New')
+                ->select2('#country_id-input', $this->countryName)
+                ->type('#name-input', $this->stateName)
+                ->press('Save')
+                ->waitForText('The code field is required')
+                ->assertSee('The code field is required');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_country_when_creating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-add');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->stateName)
+                ->type('#code-input', $this->stateCode)
+                ->press('Save')
+                ->waitForText('The country field is required')
+                ->assertSee('The country field is required');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_updating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-edit');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickEditButton($this->stateName)
+                ->type('#name-input', '')
+                ->type('#code-input', $this->stateCode)
+                ->select2('#copuntry_id-input', $this->countryName)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_code_when_updating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-edit');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickEditButton($this->stateName)
+                ->type('#name-input', $this->stateName)
+                ->type('#code-input', '')
+                ->select2('#copuntry_id-input', $this->countryName)
+                ->press('Save')
+                ->waitForText('The code field is required')
+                ->assertSee('The code field is required');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_country_when_updating_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-edit');
+
+        $this->createCountry();g
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->clickEditButton($this->stateName)
+                ->type('#name-input', $this->stateName)
+                ->type('#code-input', $this->stateCode)
+                ->click('.select2-selection__clear')
+                ->press('Save')
+                ->waitForText('The country field is required')
+                ->assertSee('The country field is required');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
@@ -401,14 +663,6 @@ class StatesTest extends TestCase
     protected function deleteState()
     {
         State::whereName($this->stateName)->first()->delete();
-    }
-
-    /**
-     * @return void
-     */
-    protected function deleteCountryModified()
-    {
-        Country::whereName($this->countryNameModified)->first()->delete();
     }
 
     /**
