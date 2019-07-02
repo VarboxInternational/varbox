@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\City;
 use Varbox\Models\Country;
@@ -71,6 +72,7 @@ class CityTest extends TestCase
         $this->createState();
         $this->createCity();
 
+        $this->assertTrue($this->city->country() instanceof BelongsTo);
         $this->assertEquals(1, $this->city->country()->count());
         $this->assertEquals($this->country->id, $this->city->country->id);
     }
@@ -82,6 +84,7 @@ class CityTest extends TestCase
         $this->createState();
         $this->createCity();
 
+        $this->assertTrue($this->city->state() instanceof BelongsTo);
         $this->assertEquals(1, $this->city->state()->count());
         $this->assertEquals($this->state->id, $this->city->state->id);
     }
