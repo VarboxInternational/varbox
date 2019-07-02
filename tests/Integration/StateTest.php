@@ -2,6 +2,8 @@
 
 namespace Varbox\Tests\Integration;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Country;
 use Varbox\Models\State;
@@ -59,6 +61,7 @@ class StateTest extends TestCase
         $this->createCountry();
         $this->createState();
 
+        $this->assertTrue($this->state->country() instanceof BelongsTo);
         $this->assertEquals(1, $this->state->country()->count());
         $this->assertEquals($this->country->id, $this->state->country->id);
     }
@@ -78,6 +81,7 @@ class StateTest extends TestCase
             $this->assertEquals($this->state->id, $city->state_id);
         }
 
+        $this->assertTrue($this->state->cities() instanceof HasMany);
         $this->assertEquals(3, $this->state->cities()->count());
     }
 
