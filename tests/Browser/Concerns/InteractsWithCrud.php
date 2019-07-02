@@ -134,7 +134,7 @@ trait InteractsWithCrud
      */
     public function filterRecordsByText($selector, $text)
     {
-        $this->click('.filter-records-container')->type($selector, $text)->press('Filter');
+        $this->click('.filter-records-container')->waitForText('Filter')->type($selector, $text)->press('Filter');
 
         return $this;
     }
