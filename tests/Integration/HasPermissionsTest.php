@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
@@ -45,6 +46,7 @@ class HasPermissionsTest extends TestCase
             $this->permission1->id, $this->permission2->id
         ]);
 
+        $this->assertTrue($this->user->permissions() instanceof BelongsToMany);
         $this->assertEquals(2, $this->user->permissions()->count());
     }
 
