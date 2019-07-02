@@ -324,6 +324,57 @@ class CitiesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_delete_a_city_if_it_has_permission()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-delete');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/cities/', $this->cityModel)
+                ->assertSee($this->cityName)
+                ->assertSee($this->countryName)
+                ->assertSee($this->stateName)
+                ->deleteRecord($this->cityName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/cities/', $this->cityModel)
+                ->assertDontSee($this->cityName)
+                ->assertDontSee($this->countryName)
+                ->assertDontSee($this->stateName);
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_city_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->revokePermission('cities-delete');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
