@@ -123,6 +123,20 @@ class StateTest extends TestCase
     }
 
     /**
+     * Create a state for testing purposes.
+     *
+     * @return void
+     */
+    protected function createState()
+    {
+        $this->state = State::create([
+            'country_id' => $this->country->id,
+            'name' => 'Test State Name',
+            'code' => 'TSN',
+        ]);
+    }
+
+    /**
      * Create a country for testing purposes.
      *
      * @return void
@@ -145,20 +159,6 @@ class StateTest extends TestCase
         $this->anotherCountry = Country::create([
             'name' => 'Test Another Country Name',
             'code' => 'TACN',
-        ]);
-    }
-
-    /**
-     * Create a state for testing purposes.
-     *
-     * @return void
-     */
-    protected function createState()
-    {
-        $this->state = State::create([
-            'country_id' => $this->country->id,
-            'name' => 'Test State Name',
-            'code' => 'TSN',
         ]);
     }
 }
