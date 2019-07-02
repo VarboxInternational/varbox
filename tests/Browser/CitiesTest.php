@@ -571,6 +571,101 @@ class CitiesTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-add');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickLink('Add New')
+                ->select2('#country_id-input', $this->countryName)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_country_when_creating_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-add');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->cityName)
+                ->press('Save')
+                ->waitForText('The country field is required')
+                ->assertSee('The country field is required');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_updating_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickEditButton($this->cityName)
+                ->type('#name-input', '')
+                ->select2('#copuntry_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_a_country_when_updating_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickEditButton($this->cityName)
+                ->type('#name-input', $this->stateName)
+                ->click('.select2-selection__clear')
+                ->press('Save')
+                ->waitForText('The country field is required')
+                ->assertSee('The country field is required');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
