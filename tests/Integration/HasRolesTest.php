@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
@@ -55,6 +56,7 @@ class HasRolesTest extends TestCase
             $this->role1->id, $this->role2->id
         ]);
 
+        $this->assertTrue($this->user->roles() instanceof BelongsToMany);
         $this->assertEquals(2, $this->user->roles()->count());
     }
 
