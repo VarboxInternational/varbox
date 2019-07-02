@@ -7,6 +7,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
 use Varbox\Models\User;
+use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasPermissions;
+use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsFilterable;
+use Varbox\Traits\IsSortable;
 
 class RoleTest extends TestCase
 {
@@ -27,6 +32,36 @@ class RoleTest extends TestCase
         parent::setUp();
 
         $this->setUpTestingConditions();
+    }
+
+    /** @test */
+    public function it_uses_the_has_permissions_trait()
+    {
+        $this->assertArrayHasKey(HasPermissions::class, class_uses(Role::class));
+    }
+
+    /** @test */
+    public function it_uses_the_has_activity_trait()
+    {
+        $this->assertArrayHasKey(HasActivity::class, class_uses(Role::class));
+    }
+
+    /** @test */
+    public function it_uses_the_is_cacheable_trait()
+    {
+        $this->assertArrayHasKey(IsCacheable::class, class_uses(Role::class));
+    }
+
+    /** @test */
+    public function it_uses_the_is_filterable_trait()
+    {
+        $this->assertArrayHasKey(IsFilterable::class, class_uses(Role::class));
+    }
+
+    /** @test */
+    public function it_uses_the_is_sortable_trait()
+    {
+        $this->assertArrayHasKey(IsSortable::class, class_uses(Role::class));
     }
 
     /** @test */
