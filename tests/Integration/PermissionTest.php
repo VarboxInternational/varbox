@@ -3,6 +3,7 @@
 namespace Varbox\Tests\Integration;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
@@ -69,6 +70,7 @@ class PermissionTest extends TestCase
             $this->permission->users()->attach($user->id);
         }
 
+        $this->assertTrue($this->permission->users() instanceof BelongsToMany);
         $this->assertEquals(3, $this->permission->users()->count());
     }
 
@@ -84,6 +86,7 @@ class PermissionTest extends TestCase
             $this->permission->roles()->attach($role->id);
         }
 
+        $this->assertTrue($this->permission->roles() instanceof BelongsToMany);
         $this->assertEquals(3, $this->permission->roles()->count());
     }
 
