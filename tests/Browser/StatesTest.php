@@ -266,7 +266,58 @@ class StatesTest extends TestCase
         $this->deleteState();
         $this->deleteCountry();
     }
-    
+
+    /** @test */
+    public function an_admin_can_update_a_state()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-edit');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/states', $this->stateModel)
+                ->clickEditButton($this->stateName)
+                ->type('#name-input', $this->stateNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/states')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/states', $this->stateModel)
+                ->assertSee($this->stateNameModified);
+        });
+
+        $this->deleteStateModified();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_state_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-edit');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/states', $this->stateModel)
+                ->clickEditButton($this->stateName)
+                ->type('#name-input', $this->stateNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/states/edit/' . $this->stateModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->stateNameModified);
+        });
+
+        $this->deleteStateModified();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
