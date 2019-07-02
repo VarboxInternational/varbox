@@ -318,6 +318,53 @@ class StatesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_delete_a_state_if_it_has_permission()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-delete');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/states/', $this->stateModel)
+                ->assertSee($this->stateName)
+                ->assertSee($this->countryName)
+                ->assertSee($this->stateCode)
+                ->deleteRecord($this->stateName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/states/', $this->stateModel)
+                ->assertDontSee($this->stateName)
+                ->assertDontSee($this->countryName)
+                ->assertDontSee($this->stateCode);
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_state_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->revokePermission('states-delete');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
