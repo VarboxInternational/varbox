@@ -464,6 +464,29 @@ class CitiesTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_only_filter_by_states_belonging_to_the_selected_country()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->click('.filter-records-container')
+                ->waitForText('Filter')
+                ->click('#state-input + .select2')
+                ->assertSee('No results found');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
     public function an_admin_can_filter_cities_by_start_date()
     {
         $this->admin->grantPermission('cities-list');
