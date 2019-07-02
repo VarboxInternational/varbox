@@ -231,7 +231,7 @@ class CountriesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_update_a_role()
+    public function an_admin_can_update_a_country()
     {
         $this->admin->grantPermission('countries-list');
         $this->admin->grantPermission('countries-edit');
@@ -255,7 +255,7 @@ class CountriesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_update_a_role_and_stay_to_continue_editing_id()
+    public function an_admin_can_update_a_country_and_stay_to_continue_editing_id()
     {
         $this->admin->grantPermission('countries-list');
         $this->admin->grantPermission('countries-edit');
@@ -275,6 +275,42 @@ class CountriesTest extends TestCase
         });
 
         $this->deleteCountryModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_country_if_it_has_permission()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-delete');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/countries/', $this->countryModel)
+                ->assertSee($this->countryName)
+                ->assertSee($this->countryCode)
+                ->deleteRecord($this->countryName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/countries/', $this->countryModel)
+                ->assertDontSee($this->countryName)
+                ->assertDontSee($this->countryCode);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_country_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->revokePermission('countries-delete');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
     }
 
     /**
