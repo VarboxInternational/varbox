@@ -58,6 +58,7 @@
         </div>
     </div>
 </div>
+@if($item->exists)
 <div class="col-12">
     <div class="card">
         <div class="card-status bg-yellow"></div>
@@ -70,6 +71,7 @@
         </div>
     </div>
 </div>
+@endif
 <div class="col-12">
     <div class="card">
         <div class="card-body">
