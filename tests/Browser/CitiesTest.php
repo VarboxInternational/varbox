@@ -129,7 +129,9 @@ class CitiesTest extends TestCase
     {
         $this->admin->assignRoles('Super');
 
-        $this->createAll();
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -139,7 +141,9 @@ class CitiesTest extends TestCase
                 ->assertSee('Edit City');
         });
 
-        $this->deleteAll();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
     }
 
     /** @test */
@@ -148,7 +152,9 @@ class CitiesTest extends TestCase
         $this->admin->grantPermission('cities-list');
         $this->admin->grantPermission('cities-edit');
 
-        $this->createAll();
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -158,7 +164,9 @@ class CitiesTest extends TestCase
                 ->assertSee('Edit City');
         });
 
-        $this->deleteAll();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
     }
 
     /** @test */
@@ -167,7 +175,9 @@ class CitiesTest extends TestCase
         $this->admin->grantPermission('cities-list');
         $this->admin->revokePermission('cities-edit');
 
-        $this->createAll();
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -177,7 +187,9 @@ class CitiesTest extends TestCase
                 ->assertDontSee('Edit City');
         });
 
-        $this->deleteAll();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
     }
 
     /** @test */
@@ -375,6 +387,167 @@ class CitiesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_filter_cities_by_keyword()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#search-input', $this->cityName)
+                ->assertQueryStringHas('search', $this->cityName)
+                ->assertSee($this->cityName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#search-input', $this->cityNameModified)
+                ->assertQueryStringHas('search', $this->cityNameModified)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_cities_by_country()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->filterRecordsBySelect('#country-input', $this->countryName)
+                ->assertQueryStringHas('country', $this->countryModel->id)
+                ->assertSee($this->cityName)
+                ->assertSee($this->countryName)
+                ->assertRecordsCount(1);
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_cities_by_state()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->filterRecordsBySelect('#country-input', $this->countryName)
+                ->filterRecordsBySelect('#state-input', $this->stateName, true)
+                ->assertQueryStringHas('state', $this->stateModel->id)
+                ->assertSee($this->cityName)
+                ->assertSee($this->stateName)
+                ->assertRecordsCount(1);
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_cities_by_start_date()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/cities', $this->cityModel)
+                ->assertSee($this->cityName)
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_cities_by_end_date()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/cities')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/cities', $this->cityModel)
+                ->assertSee($this->cityName);
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_city_filters()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities/?search=something&country=1000&state=100&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('country')
+                ->assertQueryStringHas('state')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/cities/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('country')
+                ->assertQueryStringMissing('state')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      */
@@ -413,16 +586,6 @@ class CitiesTest extends TestCase
     /**
      * @return void
      */
-    protected function createAll()
-    {
-        $this->createCountry();
-        $this->createState();
-        $this->createCity();
-    }
-
-    /**
-     * @return void
-     */
     protected function deleteCountry()
     {
         Country::whereName($this->countryName)->first()->delete();
@@ -450,15 +613,5 @@ class CitiesTest extends TestCase
     protected function deleteCityModified()
     {
         City::whereName($this->cityNameModified)->first()->delete();
-    }
-
-    /**
-     * @return void
-     */
-    protected function deleteAll()
-    {
-        $this->deleteCity();
-        $this->deleteState();
-        $this->deleteCountry();
     }
 }
