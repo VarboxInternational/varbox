@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Country;
 use Varbox\Traits\HasActivity;
@@ -48,14 +49,13 @@ class CountryTest extends TestCase
         $this->createCountry();
 
         for ($i = 1; $i <= 3; $i++) {
-            $state = $this->country->states()->create([
+            $this->country->states()->create([
                 'name' => 'Test State ' . $i,
                 'code' => 'TS' . $i,
             ]);
-
-            $this->assertEquals($this->country->id, $state->country_id);
         }
 
+        $this->assertTrue($this->country->states() instanceof HasMany);
         $this->assertEquals(3, $this->country->states()->count());
     }
 
