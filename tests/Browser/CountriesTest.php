@@ -406,6 +406,76 @@ class CountriesTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_a_country()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->clickLink('Add New')
+                ->type('#code-input', $this->countryCode)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_code_when_creating_a_country()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->countryName)
+                ->press('Save')
+                ->waitForText('The code field is required')
+                ->assertSee('The code field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_updating_a_country()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->click('.button-edit')
+                ->type('#name-input', '')
+                ->type('#code-input', $this->countryCode)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_code_when_updating_a_country()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->click('.button-edit')
+                ->type('#code-input', '')
+                ->type('#name-input', $this->countryName)
+                ->press('Save')
+                ->waitForText('The code field is required')
+                ->assertSee('The code field is required');
+        });
+    }
+
     /**
      * @return void
      */
