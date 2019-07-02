@@ -7,7 +7,6 @@ use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasAddresses;
-use Varbox\Traits\HasPermissions;
 use Varbox\Traits\HasRoles;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
