@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Browser;
 
-use Carbon\Carbon;
 use Varbox\Models\Country;
 
 class CountriesTest extends TestCase
@@ -157,6 +156,75 @@ class CountriesTest extends TestCase
                 ->clickEditButton($this->countryName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Country');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_country()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->countryName)
+                ->type('#code-input', $this->countryCode)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/countries')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/countries/', new Country)
+                ->assertSee($this->countryName)
+                ->assertSee($this->countryCode);
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_country_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->countryName)
+                ->type('#code-input', $this->countryCode)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/countries/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_country_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-add');
+        $this->admin->grantPermission('countries-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/countries')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->countryName)
+                ->type('#code-input', $this->countryCode)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/countries/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->countryName)
+                ->assertInputValue('#code-input', $this->countryCode);
         });
 
         $this->deleteCountry();
