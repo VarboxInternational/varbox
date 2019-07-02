@@ -316,7 +316,7 @@ class CountriesTest extends TestCase
     /** @test */
     public function an_admin_can_filter_countries_by_keyword()
     {
-        $this->admin->grantPermission('roles-list');
+        $this->admin->grantPermission('countries-list');
 
         $this->createCountry();
 
