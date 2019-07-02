@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Activity;
+use Varbox\Models\Country;
 use Varbox\Models\User;
 use Varbox\Tests\Models\Post;
+use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsFilterable;
+use Varbox\Traits\IsSortable;
 
 class ActivityTest extends TestCase
 {
@@ -39,6 +43,25 @@ class ActivityTest extends TestCase
 
         $this->setUpTestingConditions();
     }
+    
+    /** @test */
+    public function it_uses_the_is_cacheable_trait()
+    {
+        $this->assertArrayHasKey(IsCacheable::class, class_uses(Country::class));
+    }
+
+    /** @test */
+    public function it_uses_the_is_filterable_trait()
+    {
+        $this->assertArrayHasKey(IsFilterable::class, class_uses(Country::class));
+    }
+
+    /** @test */
+    public function it_uses_the_is_sortable_trait()
+    {
+        $this->assertArrayHasKey(IsSortable::class, class_uses(Country::class));
+    }
+
 
     /** @test */
     public function it_can_belong_to_a_user()
