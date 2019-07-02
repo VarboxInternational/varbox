@@ -25,8 +25,8 @@ class CityFilter extends Filter
             'search' => 'operator:like|condition:or|columns:name,country.name',
             'country' => 'operator:=|condition:or|columns:country_id',
             'state' => 'operator:=|condition:or|columns:state_id',
-            'start_date' => 'operator:date >=|condition:or|columns:users.created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:users.created_at',
+            'start_date' => 'operator:date >=|condition:or|columns:created_at',
+            'end_date' => 'operator:date <=|condition:or|columns:created_at',
         ];
     }
 
