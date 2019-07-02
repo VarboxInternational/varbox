@@ -24,8 +24,8 @@ class StateFilter extends Filter
         return [
             'search' => 'operator:like|condition:or|columns:name,code',
             'country' => 'operator:=|condition:or|columns:country_id',
-            'start_date' => 'operator:date >=|condition:or|columns:users.created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:users.created_at',
+            'start_date' => 'operator:date >=|condition:or|columns:created_at',
+            'end_date' => 'operator:date <=|condition:or|columns:created_at',
         ];
     }
 
