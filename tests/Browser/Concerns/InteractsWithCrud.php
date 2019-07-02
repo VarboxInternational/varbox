@@ -130,11 +130,16 @@ trait InteractsWithCrud
      *
      * @param string $selector
      * @param string $text
+     * @param bool $opened
      * @return $this
      */
-    public function filterRecordsByText($selector, $text)
+    public function filterRecordsByText($selector, $text, $opened = false)
     {
-        $this->click('.filter-records-container')->waitForText('Filter')->type($selector, $text)->press('Filter');
+        if ($opened === false) {
+            $this->click('.filter-records-container')->waitForText('Filter');
+        }
+
+        $this->type($selector, $text)->press('Filter');
 
         return $this;
     }
@@ -144,11 +149,16 @@ trait InteractsWithCrud
      *
      * @param string $selector
      * @param string $value
+     * @param bool $opened
      * @return $this
      */
-    public function filterRecordsBySelect($selector, $value)
+    public function filterRecordsBySelect($selector, $value, $opened = false)
     {
-        $this->click('.filter-records-container')->select2($selector, $value)->press('Filter');
+        if ($opened === false) {
+            $this->click('.filter-records-container')->waitForText('Filter');
+        }
+
+        $this->select2($selector, $value)->press('Filter');
 
         return $this;
     }
