@@ -180,6 +180,95 @@ class CitiesTest extends TestCase
         $this->deleteAll();
     }
 
+    /** @test */
+    public function an_admin_can_create_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-add');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->cityName)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/cities')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/cities/', new City)
+                ->assertSee($this->cityName)
+                ->assertSee($this->stateName)
+                ->assertSee($this->countryName);
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_city_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-add');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->cityName)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/cities/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_city_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-add');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/cities')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->cityName)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/cities/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->cityName)
+                ->assertSee($this->countryName)
+                ->assertSee($this->stateName);
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
