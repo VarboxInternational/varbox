@@ -230,6 +230,53 @@ class CountriesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_update_a_role()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-edit');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/countries', $this->countryModel)
+                ->clickEditButton($this->countryName)
+                ->type('#name-input', $this->countryNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/countries')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/countries', $this->countryModel)
+                ->assertSee($this->countryNameModified);
+        });
+
+        $this->deleteCountryModified();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_role_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('countries-list');
+        $this->admin->grantPermission('countries-edit');
+
+        $this->createCountry();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/countries', $this->countryModel)
+                ->clickEditButton($this->countryName)
+                ->type('#name-input', $this->countryNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/countries/edit/' . $this->countryModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->countryNameModified);
+        });
+
+        $this->deleteCountryModified();
+    }
+
     /**
      * @return void
      */
