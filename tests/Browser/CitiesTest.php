@@ -269,6 +269,61 @@ class CitiesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_update_a_city()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/cities', $this->cityModel)
+                ->clickEditButton($this->cityName)
+                ->type('#name-input', $this->cityNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/cities')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/cities', $this->cityModel)
+                ->assertSee($this->cityNameModified);
+        });
+
+        $this->deleteCityModified();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_city_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/cities', $this->cityModel)
+                ->clickEditButton($this->cityName)
+                ->type('#name-input', $this->cityNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/cities/edit/' . $this->cityModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->cityNameModified);
+        });
+
+        $this->deleteCityModified();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
@@ -343,7 +398,7 @@ class CitiesTest extends TestCase
      */
     protected function deleteCityModified()
     {
-        State::whereName($this->cityNameModified)->first()->delete();
+        City::whereName($this->cityNameModified)->first()->delete();
     }
 
     /**
