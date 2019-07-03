@@ -21,6 +21,6 @@ class UserSort extends Sort
      */
     public function direction()
     {
-        return 'dir';
+        return 'direction';
     }
 }

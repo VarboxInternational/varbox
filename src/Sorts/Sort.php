@@ -20,7 +20,7 @@ abstract class Sort
      *
      * @const
      */
-    const DEFAULT_DIRECTION_FIELD = 'dir';
+    const DEFAULT_DIRECTION_FIELD = 'direction';
 
     /**
      * The sorting directions available.

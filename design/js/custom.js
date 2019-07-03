@@ -37,20 +37,19 @@ function buttons() {
 function sort() {
     var sortField = $('th.sortable');
 
-    //initialize sort headings display
     sortField.each(function () {
         if (query.param('sort') == $(this).data('sort')) {
-            if (query.param('dir') == 'asc') {
-                $(this).attr('data-dir', 'desc');
+            if (query.param('direction') == 'asc') {
+                $(this).attr('data-direction', 'desc');
                 $(this).find('i').addClass('fa-sort-asc');
             } else {
-                $(this).attr('data-dir', 'asc');
+                $(this).attr('data-direction', 'asc');
                 $(this).find('i').addClass('fa-sort-desc');
             }
         }
 
-        if (!$(this).attr('data-dir')) {
-            $(this).attr('data-dir', 'asc');
+        if (!$(this).attr('data-direction')) {
+            $(this).attr('data-direction', 'asc');
         }
     });
 
@@ -61,7 +60,7 @@ function sort() {
             params = [];
 
         $.each(query.params(), function (index, obj) {
-            if (obj.name == 'sort' || obj.name == 'dir') {
+            if (obj.name == 'sort' || obj.name == 'direction') {
                 return true;
             }
 
@@ -74,8 +73,8 @@ function sort() {
         });
 
         params.push({
-            name: 'dir',
-            value: $(this).data('dir') ? $(this).data('dir') : 'asc'
+            name: 'direction',
+            value: $(this).data('direction') ? $(this).data('direction') : 'asc'
         });
 
         window.location.href = url + '?' + decodeURIComponent($.param(params));
