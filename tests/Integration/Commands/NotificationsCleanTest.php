@@ -1,13 +1,14 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Commands;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 use Varbox\Models\User;
+use Varbox\Tests\Integration\TestCase;
 
-class NotificationsCleanCommandTest extends TestCase
+class NotificationsCleanTest extends TestCase
 {
     use DatabaseTransactions;
 

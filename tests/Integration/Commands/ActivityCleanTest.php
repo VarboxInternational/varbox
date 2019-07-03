@@ -1,11 +1,12 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Commands;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Activity;
+use Varbox\Tests\Integration\TestCase;
 
-class ActivityCleanCommandTest extends TestCase
+class ActivityCleanTest extends TestCase
 {
     use DatabaseTransactions;
 
