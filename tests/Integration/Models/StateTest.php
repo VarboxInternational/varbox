@@ -1,12 +1,13 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Country;
 use Varbox\Models\State;
+use Varbox\Tests\Integration\TestCase;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;

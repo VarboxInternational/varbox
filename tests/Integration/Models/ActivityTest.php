@@ -1,12 +1,13 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Models\Integration;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Activity;
 use Varbox\Models\User;
+use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Post;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;

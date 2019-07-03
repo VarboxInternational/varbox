@@ -1,10 +1,11 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Role;
 use Varbox\Models\User;
+use Varbox\Tests\Integration\TestCase;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasAddresses;
 use Varbox\Traits\HasRoles;
