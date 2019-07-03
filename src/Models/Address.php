@@ -121,7 +121,7 @@ class Address extends Model implements AddressModelContract
      */
     public function scopeFromCountry($query, $country)
     {
-        $query->orderBy('country_id', $country instanceof CountryModelContract ? $country->getKey() : $country);
+        $query->where('country_id', $country instanceof CountryModelContract ? $country->getKey() : $country);
     }
 
     /**
@@ -132,7 +132,7 @@ class Address extends Model implements AddressModelContract
      */
     public function scopeFromState($query, $state)
     {
-        $query->orderBy('state_id', $state instanceof StateModelContract ? $state->getKey() : $state);
+        $query->where('state_id', $state instanceof StateModelContract ? $state->getKey() : $state);
     }
 
     /**
@@ -143,7 +143,7 @@ class Address extends Model implements AddressModelContract
      */
     public function scopeFromCity($query, $city)
     {
-        $query->orderBy('city_id', $city instanceof CityModelContract ? $city->getKey() : $city);
+        $query->where('city_id', $city instanceof CityModelContract ? $city->getKey() : $city);
     }
 
     /**
