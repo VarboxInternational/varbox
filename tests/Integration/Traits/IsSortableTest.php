@@ -1,9 +1,10 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Sorts\Sort;
+use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Author;
 use Varbox\Tests\Models\Post;
 use Varbox\Tests\Models\Review;

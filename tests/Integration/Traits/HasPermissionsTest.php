@@ -1,12 +1,12 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Permission;
-use Varbox\Models\Role;
 use Varbox\Models\User;
+use Varbox\Tests\Integration\TestCase;
 
 class HasPermissionsTest extends TestCase
 {

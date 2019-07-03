@@ -1,10 +1,11 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\User;
+use Varbox\Tests\Integration\TestCase;
 
 class HasAddressesTest extends TestCase
 {

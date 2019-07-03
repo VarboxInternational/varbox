@@ -1,12 +1,13 @@
 <?php
 
-namespace Varbox\Tests\Integration;
+namespace Varbox\Tests\Integration\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 use Varbox\Options\ActivityOptions;
+use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Post;
 
 class HasActivityTest extends TestCase
