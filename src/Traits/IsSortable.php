@@ -2,16 +2,20 @@
 
 namespace Varbox\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
-use Varbox\Exceptions\SortException;
+use Illuminate\Support\Str;
 use Varbox\Sorts\Sort;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Varbox\Exceptions\SortException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait IsSortable
 {
+    /**
+     * @var array
+     */
     protected $sort = [
         /**
          * The query builder instance from the Sorted scope.
@@ -28,7 +32,7 @@ trait IsSortable
         'data' => null,
 
         /**
-         * The Varbox\Sorts\Sort instance.
+         * The Neurony\Sort\Objects\Sort instance.
          * This is used to get the sorting rules, just like a request.
          *
          * @var Sort
@@ -57,8 +61,6 @@ trait IsSortable
      * @param Builder $query
      * @param array $data
      * @param Sort $sort
-     *
-     * @throws SortException
      */
     public function scopeSorted($query, array $data, Sort $sort = null)
     {
@@ -72,79 +74,54 @@ trait IsSortable
         if ($this->isValidSort()) {
             $this->checkSortingDirection();
 
-            if ($this->sort['data'][$this->sort['direction']] == Sort::DIRECTION_RANDOM) {
-                $this->sort['query']->inRandomOrder();
-            } else {
-                if ($this->shouldSortByRelation()) {
-                    $this->sortByRelation();
-                } else {
-                    $this->sortNormally();
-                }
+            switch ($this->sort['data'][$this->sort['direction']]) {
+                case Sort::DIRECTION_RANDOM:
+                    $this->sort['query']->inRandomOrder();
+                    break;
+                default:
+                    if ($this->shouldSortByRelation()) {
+                        $this->sortByRelation();
+                    } else {
+                        $this->sortNormally();
+                    }
             }
         }
     }
 
     /**
-     * Sort model records using columns from the model relation's table.
+     * Verify if all sorting conditions are met.
+     *
+     * @return bool
+     */
+    protected function isValidSort()
+    {
+        return
+            isset($this->sort['data'][$this->sort['field']]) &&
+            isset($this->sort['data'][$this->sort['direction']]);
+    }
+
+    /**
+     * Set the sort field if an Neurony\Sort\Objects\Sort instance has been provided as a parameter for the sorted scope.
      *
      * @return void
-     * @throws SortException
      */
-    protected function sortByRelation()
+    protected function setFieldToSortBy()
     {
-        $sortParts = explode('.', $this->sort['data'][$this->sort['field']]);
-        $sortModels = [];
-
-        if (count($sortParts) > 2) {
-            $field = array_pop($sortParts);
-            $relations = $sortParts;
-        } else {
-            $field = Arr::last($sortParts);
-            $relations = (array)Arr::first($sortParts);
+        if ($this->sort['instance'] instanceof Sort) {
+            $this->sort['field'] = $this->sort['instance']->field();
         }
+    }
 
-        foreach ($relations as $index => $relation) {
-            $previousModel = $this;
-
-            if (isset($sortModels[$index - 1])) {
-                $previousModel = $sortModels[$index - 1];
-            }
-
-            $this->checkRelationToSortBy($previousModel, $relation);
-
-            $sortModels[] = $previousModel->{$relation}()->getModel();
-
-            $modelTable = $previousModel->getTable();
-            $relationTable = $previousModel->{$relation}()->getModel()->getTable();
-            $foreignKey = $previousModel->{$relation}() instanceof HasOne ?
-                $previousModel->{$relation}()->getForeignKeyName() :
-                $previousModel->{$relation}()->getForeignKey();
-
-            if (!$this->joinAlreadyExists($relationTable)) {
-                if ($previousModel->{$relation}() instanceof BelongsTo) {
-                    $this->sort['query']->join(
-                        $relationTable, $modelTable . '.' . $foreignKey, '=', $relationTable . '.id'
-                    );
-                } else {
-                    $this->sort['query']->join(
-                        $relationTable, $modelTable . '.id', '=', $relationTable . '.' . $foreignKey
-                    );
-                }
-            }
+    /**
+     * Set the sort direction if an Neurony\Sort\Objects\Sort instance has been provided as a parameter for the sorted scope.
+     *
+     * @return void
+     */
+    protected function setDirectionToSortIn()
+    {
+        if ($this->sort['instance'] instanceof Sort) {
+            $this->sort['direction'] = $this->sort['instance']->direction();
         }
-
-        $sortFieldAlias = implode('_', $relations) . '_' . $field;
-
-        if (isset($relationTable)) {
-            $this->sort['query']->addSelect([
-                $this->getTable() . '.*',
-                $relationTable . '.' . $field . ' AS ' . $sortFieldAlias
-            ]);
-        }
-
-        $this->sort['query']->orderBy(
-            $sortFieldAlias, $this->sort['data'][$this->sort['direction']]
-        );
     }
 
     /**
@@ -161,39 +138,62 @@ trait IsSortable
     }
 
     /**
-     * Verify if all sorting conditions are met.
-     *
-     * @return bool
-     */
-    protected function isValidSort()
-    {
-        return
-            isset($this->sort['data'][$this->sort['field']]) &&
-            isset($this->sort['data'][$this->sort['direction']]);
-    }
-
-    /**
-     * Set the sort field if an Varbox\Sorts\Sort instance has been provided as a parameter for the sorted scope.
+     * Sort model records using columns from the model relation's table.
      *
      * @return void
      */
-    protected function setFieldToSortBy()
+    protected function sortByRelation()
     {
-        if ($this->sort['instance'] instanceof Sort) {
-            $this->sort['field'] = $this->sort['instance']->field();
-        }
-    }
+        $parts = explode('.', $this->sort['data'][$this->sort['field']]);
+        $models = [];
 
-    /**
-     * Set the sort direction if an Varbox\Sorts\Sort instance has been provided as a parameter for the sorted scope.
-     *
-     * @return void
-     */
-    protected function setDirectionToSortIn()
-    {
-        if ($this->sort['instance'] instanceof Sort) {
-            $this->sort['direction'] = $this->sort['instance']->direction();
+        if (count($parts) > 2) {
+            $field = array_pop($parts);
+            $relations = $parts;
+        } else {
+            $field = Arr::last($parts);
+            $relations = (array) Arr::first($parts);
         }
+
+        foreach ($relations as $index => $relation) {
+            $previousModel = $this;
+
+            if (isset($models[$index - 1])) {
+                $previousModel = $models[$index - 1];
+            }
+
+            $this->checkRelationToSortBy($previousModel, $relation);
+
+            $models[] = $previousModel->{$relation}()->getModel();
+
+            $modelTable = $previousModel->getTable();
+            $relationTable = $previousModel->{$relation}()->getModel()->getTable();
+            $foreignKey = $previousModel->{$relation}()->getForeignKeyName();
+
+            if (! $this->alreadyJoinedForSorting($relationTable)) {
+                switch (get_class($previousModel->{$relation}())) {
+                    case BelongsTo::class:
+                        $this->sort['query']->join($relationTable, $modelTable.'.'.$foreignKey, '=', $relationTable.'.id');
+                        break;
+                    case HasOne::class:
+                        $this->sort['query']->join($relationTable, $modelTable.'.id', '=', $relationTable.'.'.$foreignKey);
+                        break;
+                }
+            }
+        }
+
+        $alias = implode('_', $relations).'_'.$field;
+
+        if (isset($relationTable)) {
+            $this->sort['query']->addSelect([
+                $this->getTable().'.*',
+                $relationTable.'.'.$field.' AS '.$alias,
+            ]);
+        }
+
+        $this->sort['query']->orderBy(
+            $alias, $this->sort['data'][$this->sort['direction']]
+        );
     }
 
     /**
@@ -201,7 +201,7 @@ trait IsSortable
      */
     protected function shouldSortByRelation()
     {
-        return str_contains($this->sort['data'][$this->sort['field']], '.');
+        return Str::contains($this->sort['data'][$this->sort['field']], '.');
     }
 
     /**
@@ -211,20 +211,20 @@ trait IsSortable
      *
      * @return bool
      */
-    protected function joinAlreadyExists($table)
+    protected function alreadyJoinedForSorting($table)
     {
-        return str_contains($this->sort['query']->toSql(), '`' . $table . '`');
+        return Str::contains(strtolower($this->sort['query']->toSql()), 'join `'.$table.'`');
     }
 
     /**
      * Verify if the direction provided matches one of the directions from:
-     * Varbox\Sorts\Sort::$directions.
+     * Neurony\Sort\Objects\Sort::$directions.
      *
      * @return void
      */
     protected function checkSortingDirection()
     {
-        if (!in_array(strtolower($this->sort['data'][$this->sort['direction']]), array_map('strtolower', Sort::$directions))) {
+        if (! in_array(strtolower($this->sort['data'][$this->sort['direction']]), array_map('strtolower', Sort::$directions))) {
             throw SortException::invalidDirectionSupplied($this->sort['data'][$this->sort['direction']]);
         }
     }
@@ -238,7 +238,7 @@ trait IsSortable
      */
     protected function checkRelationToSortBy(Model $model, $relation)
     {
-        if (!($model->{$relation}() instanceof HasOne) && !($model->{$relation}() instanceof BelongsTo)) {
+        if (! ($model->{$relation}() instanceof HasOne) && ! ($model->{$relation}() instanceof BelongsTo)) {
             throw SortException::wrongRelationToSort($relation, get_class($model->{$relation}()));
         }
     }
