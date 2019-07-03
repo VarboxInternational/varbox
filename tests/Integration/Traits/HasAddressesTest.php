@@ -32,8 +32,6 @@ class HasAddressesTest extends TestCase
     }
 
     /**
-     * Create a user instance.
-     *
      * @return $this
      */
     protected function createPost()

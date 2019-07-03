@@ -180,8 +180,6 @@ class CityTest extends TestCase
     }
 
     /**
-     * Create a state for testing purposes.
-     *
      * @return void
      */
     protected function createCity()
@@ -194,8 +192,6 @@ class CityTest extends TestCase
     }
 
     /**
-     * Create a country for testing purposes.
-     *
      * @return void
      */
     protected function createCountry()
@@ -207,8 +203,6 @@ class CityTest extends TestCase
     }
 
     /**
-     * Create a country for testing purposes.
-     *
      * @return void
      */
     protected function createAnotherCountry()
@@ -220,8 +214,6 @@ class CityTest extends TestCase
     }
 
     /**
-     * Create a state for testing purposes.
-     *
      * @return void
      */
     protected function createState()
@@ -234,8 +226,6 @@ class CityTest extends TestCase
     }
 
     /**
-     * Create a state for testing purposes.
-     *
      * @return void
      */
     protected function createAnotherState()

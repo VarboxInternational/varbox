@@ -190,8 +190,6 @@ class UserTest extends TestCase
         $this->assertTrue($this->user->isSuper());
     }
     /**
-     * Create a user instance.
-     *
      * @return void
      */
     protected function setUpTestingConditions()

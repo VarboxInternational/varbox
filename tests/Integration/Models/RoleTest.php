@@ -153,8 +153,6 @@ class RoleTest extends TestCase
     }
 
     /**
-     * Set up testing conditions for roles.
-     *
      * @return void
      */
     protected function setUpTestingConditions()

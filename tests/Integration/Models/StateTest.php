@@ -128,8 +128,6 @@ class StateTest extends TestCase
     }
 
     /**
-     * Create a state for testing purposes.
-     *
      * @return void
      */
     protected function createState()
@@ -142,8 +140,6 @@ class StateTest extends TestCase
     }
 
     /**
-     * Create a country for testing purposes.
-     *
      * @return void
      */
     protected function createCountry()
@@ -155,8 +151,6 @@ class StateTest extends TestCase
     }
 
     /**
-     * Create a country for testing purposes.
-     *
      * @return void
      */
     protected function createAnotherCountry()

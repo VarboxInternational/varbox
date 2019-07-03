@@ -282,7 +282,7 @@ class AddressTest extends TestCase
         $this->assertEquals(2, Address::fromCity($this->city->id)->count());
         $this->assertEquals(1, Address::fromCity($this->anotherState->id)->count());
     }
-    
+
     /**
      * @return void
      */

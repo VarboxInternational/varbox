@@ -649,8 +649,6 @@ class HasRolesTest extends TestCase
     }
 
     /**
-     * Create a permission instance.
-     *
      * @return void
      */
     protected function setUpTestingConditions()

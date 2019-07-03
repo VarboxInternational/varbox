@@ -88,8 +88,6 @@ class CountryTest extends TestCase
     }
 
     /**
-     * Set up testing conditions for roles.
-     *
      * @return void
      */
     protected function createCountry()

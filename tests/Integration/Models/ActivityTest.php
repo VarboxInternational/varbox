@@ -236,11 +236,7 @@ class ActivityTest extends TestCase
         $this->assertEquals('entity-3', $entities['entity-3']);
     }
 
-
-
     /**
-     * Create a permission instance.
-     *
      * @return void
      */
     protected function setUpTestingConditions()

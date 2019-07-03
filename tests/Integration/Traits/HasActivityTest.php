@@ -168,8 +168,6 @@ class HasActivityTest extends TestCase
     }
 
     /**
-     * Create a post instance.
-     *
      * @param Post|null $model
      * @return $this
      */
@@ -188,8 +186,6 @@ class HasActivityTest extends TestCase
     }
 
     /**
-     * Update the post instance.
-     *
      * @param bool $logActivity
      * @return $this
      */
@@ -209,8 +205,6 @@ class HasActivityTest extends TestCase
     }
 
     /**
-     * Delete the post instance.
-     *
      * @param bool $logActivity
      * @return $this
      */
