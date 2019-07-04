@@ -5,6 +5,7 @@ namespace Varbox\Tests\Integration\Traits;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
+use Varbox\Tests\Models\Author;
 use Varbox\Tests\Models\Post;
 
 class IsFilterableTest extends TestCase
@@ -25,6 +26,11 @@ class IsFilterableTest extends TestCase
      * @var Post
      */
     protected $post3;
+
+    /**
+     * @var Author
+     */
+    protected $author1;
 
     /**
      * Setup the test environment.
@@ -275,7 +281,7 @@ class IsFilterableTest extends TestCase
             'author' => '',
         ], $filter)->get();
 
-        $this->assertEquals(3, $posts->count());
+        $this->assertEquals(2, $posts->count());
     }
 
     /** @test */
@@ -308,7 +314,7 @@ class IsFilterableTest extends TestCase
             'author' => '',
         ], $filter)->get();
 
-        $this->assertEquals(0, $posts->count());
+        $this->assertEquals(1, $posts->count());
     }
 
     /** @test */
@@ -910,12 +916,81 @@ class IsFilterableTest extends TestCase
         $this->assertEquals(0, $posts->count());
     }
 
+    /** @test */
+    public function it_can_filter_by_a_belongs_to_relationship()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'author' => [
+                        'operator' => Filter::OPERATOR_EQUAL,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'author.id'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'author' => $this->author1->id,
+        ], $filter)->get();
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'author' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'author.name'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'author' => substr($this->author1->name, 0, 4),
+        ], $filter)->get();
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+    }
+
     /**
      * @return void
      */
     protected function setUpTestingConditions()
     {
+        $this->author1 = Author::create([
+            'name' => 'Test Author',
+        ]);
+
         $this->post1 = Post::create([
+            'author_id' => $this->author1->id,
             'name' => 'The Test Post',
             'votes' => '10',
             'published_at' => today(),
