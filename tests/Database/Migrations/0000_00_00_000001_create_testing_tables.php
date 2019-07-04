@@ -75,7 +75,7 @@ class CreateTestingTables extends Migration
             $table->integer('post_id')->unsigned()->index();
             $table->string('title');
             $table->text('content');
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->boolean('active')->default(false);
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
