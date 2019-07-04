@@ -7,6 +7,7 @@ use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Author;
 use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\Review;
 
 class IsFilterableTest extends TestCase
 {
@@ -31,6 +32,11 @@ class IsFilterableTest extends TestCase
      * @var Author
      */
     protected $author1;
+
+    /**
+     * @var Review
+     */
+    protected $review1;
 
     /**
      * Setup the test environment.
@@ -980,6 +986,70 @@ class IsFilterableTest extends TestCase
         $this->assertEquals($this->post1->id, $posts->first()->id);
     }
 
+    /** @test */
+    public function it_can_filter_by_a_has_one_relationship()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'review' => [
+                        'operator' => Filter::OPERATOR_EQUAL,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'review.id'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'review' => $this->review1->id,
+        ], $filter)->get();
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'review' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'review.name'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'review' => substr($this->review1->name, 0, 4),
+        ], $filter)->get();
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+    }
+
     /**
      * @return void
      */
@@ -1006,6 +1076,11 @@ class IsFilterableTest extends TestCase
             'name' => 'Some Another Test Post',
             'votes' => '100',
             'published_at' => today()->subDays(10),
+        ]);
+
+        $this->review1 = Review::create([
+            'post_id' => $this->post1->id,
+            'name' => 'Test Review'
         ]);
     }
 }
