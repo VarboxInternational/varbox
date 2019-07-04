@@ -383,51 +383,33 @@ trait IsFilterable
      * Set the operator for filtering.
      * This is done based on the string defined in Varbox\Filters\Filter corresponding class.
      *
-     * @param string $options
+     * @param array $options
      */
-    protected function setOperatorForFiltering($options)
+    protected function setOperatorForFiltering(array $options)
     {
-        foreach (explode('|', $options) as $option) {
-            $arguments = explode(':', $option);
-
-            if (strtolower($arguments[0]) == 'operator') {
-                $this->filter['operator'] = $arguments[1];
-            }
-        }
+        $this->filter['operator'] = $options['operator'] ?? null;
     }
 
     /**
      * Set the condition to filter by.
      * This is done based on the string defined in Varbox\Filters\Filter corresponding class.
      *
-     * @param string $options
+     * @param array $options
      */
-    protected function setConditionToFilterBy($options)
+    protected function setConditionToFilterBy(array $options)
     {
-        foreach (explode('|', $options) as $option) {
-            $arguments = explode(':', $option);
-
-            if (strtolower($arguments[0]) == 'condition') {
-                $this->filter['condition'] = $arguments[1];
-            }
-        }
+        $this->filter['condition'] = $options['condition'] ?? null;
     }
 
     /**
      * Set the columns to filter in.
      * This is done based on the string defined in Varbox\Filters\Filter corresponding class.
      *
-     * @param string $options
+     * @param array $options
      */
-    protected function setColumnsToFilterIn($options)
+    protected function setColumnsToFilterIn(array $options)
     {
-        foreach (explode('|', $options) as $option) {
-            $arguments = explode(':', $option);
-
-            if (strtolower($arguments[0]) == 'columns') {
-                $this->filter['columns'] = $arguments[1];
-            }
-        }
+        $this->filter['columns'] = $options['columns'] ?? null;
     }
 
     /**
