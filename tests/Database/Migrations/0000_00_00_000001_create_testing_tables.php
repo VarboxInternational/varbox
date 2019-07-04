@@ -13,33 +13,6 @@ class CreateTestingTables extends Migration
      */
     public function up()
     {
-        /*Schema::create('test_authors', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->integer('age');
-            $table->timestamps();
-        });
-
-        Schema::create('test_posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('author_id')->unsigned()->index()->nullable();
-            $table->string('name');
-            $table->string('slug')->unique()->nullable();
-            $table->text('content')->nullable();
-            $table->integer('views')->default(0);
-            $table->timestamps();
-            $table->foreign('author_id')->references('id')->on('authors')->onDelete('set null');
-        });
-
-        Schema::create('test_reviews', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('post_id')->unsigned()->index();
-            $table->string('name');
-            $table->integer('rating')->default(0);
-            $table->timestamps();
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-        });*/
-
         Schema::create('test_authors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable();
@@ -104,10 +77,6 @@ class CreateTestingTables extends Migration
      */
     public function down()
     {
-        /*Schema::dropIfExists('reviews');
-        Schema::dropIfExists('posts');
-        Schema::dropIfExists('authors');*/
-
         Schema::dropIfExists('test_post_tag');
         Schema::dropIfExists('test_tags');
         Schema::dropIfExists('test_comments');
