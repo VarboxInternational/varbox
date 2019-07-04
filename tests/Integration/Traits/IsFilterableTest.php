@@ -1080,7 +1080,39 @@ class IsFilterableTest extends TestCase
         Post::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
-    }g
+    }
+
+
+
+    /** @expectedException FilterException */
+    public function it_requires_a_condition_for_filtering()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'columns' => 'name'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        Post::filtered([
+            'name' => $this->post1->name,
+        ], $filter)->get();
+    }
 
     /**
      * @return void
