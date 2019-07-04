@@ -308,23 +308,37 @@ trait IsFilterable
             $this->filter['having'] = 'or' . ucwords($this->filter['having']);
         }
 
-        if (Str::contains(strtolower($this->filter['operator']), 'not')) {
-            $this->filter['method'] = $this->filter['method'] . 'Not';
-        }
-
         switch ($operator = strtolower($this->filter['operator'])) {
             case Str::contains($operator, 'null'):
+                $this->attemptToBuildNotMethod();
+
                 $this->filter['method'] = $this->filter['method'] . 'Null';
                 break;
             case Str::contains($operator, 'in'):
+                $this->attemptToBuildNotMethod();
+
                 $this->filter['method'] = $this->filter['method'] . 'In';
                 break;
             case Str::contains($operator, 'between'):
+                $this->attemptToBuildNotMethod();
+
                 $this->filter['method'] = $this->filter['method'] . 'Between';
                 break;
             case Str::contains($operator, 'date'):
+                $this->attemptToBuildNotMethod();
+
                 $this->filter['method'] = $this->filter['method'] . 'Date';
                 break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function attemptToBuildNotMethod()
+    {
+        if (Str::contains(strtolower($this->filter['operator']), 'not')) {
+            $this->filter['method'] = $this->filter['method'] . 'Not';
         }
     }
 
