@@ -60,6 +60,55 @@ class IsCacheableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_disable_query_caching_with_redis()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'redis');
+        $this->createPostsAndComments();
+        app(QueryCacheServiceContract::class)->disableQueryCache();
+
+        DB::enableQueryLog();
+
+        $this->executePostQueries();
+        $this->assertEquals(20, count(DB::getQueryLog()));
+
+        $this->executePostQueries();
+        $this->assertEquals(40, count(DB::getQueryLog()));
+
+        DB::disableQueryLog();
+    }
+
+    /** @test */
+    public function it_can_enable_query_caching_with_redis()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'redis');
+
+        $this->createPostsAndComments();
+
+        app(QueryCacheServiceContract::class)->disableQueryCache();
+
+        DB::enableQueryLog();
+
+        $this->executePostQueries();
+        $this->assertEquals(20, count(DB::getQueryLog()));
+
+        DB::flushQueryLog();
+
+        app(QueryCacheServiceContract::class)->enableQueryCache();
+
+        $this->executePostQueries();
+        $this->assertEquals(2, count(DB::getQueryLog()));
+
+        DB::flushQueryLog();
+
+        $this->executePostQueries();
+        $this->assertEquals(0, count(DB::getQueryLog()));
+
+        DB::disableQueryLog();
+    }
+
+    /** @test */
     public function it_caches_duplicate_queries_using_redis()
     {
         $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
@@ -78,6 +127,23 @@ class IsCacheableTest extends TestCase
         $this->assertEquals(0, count(DB::getQueryLog()));
 
         DB::disableQueryLog();
+    }
+
+    /** @test */
+    public function it_caches_only_duplicate_queries_using_redis()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.duplicate.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.duplicate.store', 'redis');
+
+        $this->createPostsAndComments();
+
+        DB::enableQueryLog();
+
+        $this->executePostQueries();
+
+        DB::disableQueryLog();
+
+        $this->assertEquals(2, count(DB::getQueryLog()));
     }
 
     /** @test */
@@ -182,53 +248,6 @@ class IsCacheableTest extends TestCase
         $this->executeCommentQueries();
 
         $this->assertEquals(4, count(DB::getQueryLog()));
-
-        DB::disableQueryLog();
-    }
-
-    /** @test */
-    public function it_can_disable_query_caching_with_redis()
-    {
-        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'redis');
-        $this->createPostsAndComments();
-        app(QueryCacheServiceContract::class)->disableQueryCache();
-
-        DB::enableQueryLog();
-
-        $this->executePostQueries();
-        $this->assertEquals(20, count(DB::getQueryLog()));
-
-        $this->executePostQueries();
-        $this->assertEquals(40, count(DB::getQueryLog()));
-
-        DB::disableQueryLog();
-    }
-
-    /** @test */
-    public function it_can_enable_query_caching_with_redis()
-    {
-        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'redis');
-        $this->createPostsAndComments();
-        app(QueryCacheServiceContract::class)->disableQueryCache();
-
-        DB::enableQueryLog();
-
-        $this->executePostQueries();
-        $this->assertEquals(20, count(DB::getQueryLog()));
-
-        DB::flushQueryLog();
-
-        app(QueryCacheServiceContract::class)->enableQueryCache();
-
-        $this->executePostQueries();
-        $this->assertEquals(2, count(DB::getQueryLog()));
-
-        DB::flushQueryLog();
-
-        $this->executePostQueries();
-        $this->assertEquals(0, count(DB::getQueryLog()));
 
         DB::disableQueryLog();
     }
