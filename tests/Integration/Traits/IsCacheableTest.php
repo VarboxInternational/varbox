@@ -252,6 +252,21 @@ class IsCacheableTest extends TestCase
         DB::disableQueryLog();
     }
 
+    /** @test */
+    public function it_caches_only_duplicate_queries_using_array()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.duplicate.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.duplicate.store', 'array');
+
+        DB::enableQueryLog();
+
+        $this->executePostQueries();
+
+        DB::disableQueryLog();
+
+        $this->assertEquals(2, count(DB::getQueryLog()));
+    }
+
     /**
      * @return void
      */
