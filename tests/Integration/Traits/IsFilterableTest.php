@@ -1114,6 +1114,36 @@ class IsFilterableTest extends TestCase
         ], $filter)->get();
     }
 
+    /** @expectedException FilterException */
+    public function it_requires_columns_for_filtering()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        Post::filtered([
+            'name' => $this->post1->name,
+        ], $filter)->get();
+    }
+
     /**
      * @return void
      */
