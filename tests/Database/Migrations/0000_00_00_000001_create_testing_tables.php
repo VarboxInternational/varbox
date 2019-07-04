@@ -29,6 +29,7 @@ class CreateTestingTables extends Migration
             $table->text('content')->nullable();
             $table->integer('votes')->default(0);
             $table->integer('views')->default(0);
+            $table->timestamp('published_at')->nullable();
             $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade')->onUpdate('set null');
             $table->timestamps();
         });

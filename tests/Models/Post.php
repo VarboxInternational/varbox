@@ -35,6 +35,16 @@ class Post extends Model
         'content',
         'votes',
         'views',
+        'published_at'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
     /**
