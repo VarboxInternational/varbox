@@ -846,6 +846,70 @@ class IsFilterableTest extends TestCase
         $this->assertEquals($this->post3->id, $posts->last()->id);
     }
 
+    /** @test */
+    public function it_supports_inter_column_conditioning_for_a_single_filter_field()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'name,votes'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'name' => 1,
+        ], $filter)->get();
+
+        $this->assertEquals(2, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+        $this->assertEquals($this->post3->id, $posts->last()->id);
+
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_AND,
+                        'columns' => 'name,votes'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'name' => 1,
+        ], $filter)->get();
+
+        $this->assertEquals(0, $posts->count());
+    }
+
     /**
      * @return void
      */
