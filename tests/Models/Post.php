@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class Post extends Model
 {
     use HasActivity;
     use IsCacheable;
+    use IsFilterable;
     use IsSortable;
 
     /**
