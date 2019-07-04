@@ -12,7 +12,53 @@ use Varbox\Tests\Models\Post;
 class IsCacheableTest extends TestCase
 {
     use DatabaseTransactions;
-    
+
+    /** @test */
+    public function it_can_insert_records()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'array');
+
+        $this->createPostsAndComments();
+
+        Post::query()->insert([
+            'name' => 'Test post name',
+            'slug' => 'test-post-name',
+            'content' => 'Test post content',
+        ]);
+
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    public function it_can_update_records()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'array');
+
+        $this->createPostsAndComments();
+
+        Post::query()->where([
+            'name' => 'Test post name',
+        ])->update([
+            'name' => 'Test post name modified',
+        ]);
+
+        $this->assertTrue(true);
+    }
+
+    /** @test */
+    public function it_can_delete_records()
+    {
+        $this->app['config']->set('varbox.varbox-cache.query.all.enabled', true);
+        $this->app['config']->set('varbox.varbox-cache.query.all.store', 'array');
+
+        $this->createPostsAndComments();
+        Post::query()->delete();
+
+        $this->assertTrue(true);
+    }
+
     /**
      * @return void
      */
