@@ -3,9 +3,12 @@
 namespace Varbox\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Traits\IsCacheable;
 
 class Comment extends Model
 {
+    use IsCacheable;
+
     /**
      * The database table.
      *
