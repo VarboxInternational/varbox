@@ -737,6 +737,80 @@ class IsFilterableTest extends TestCase
         $this->assertEquals($this->post2->name, $posts->last()->name);
     }
 
+    /** @test */
+    public function it_can_filter_records_by_morphing_conditions()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'name'
+                    ],
+                    'votes' => [
+                        'operator' => Filter::OPERATOR_EQUAL,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'votes'
+                    ]
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'name' => substr($this->post2->name, 0, 4),
+            'votes' => 10,
+        ], $filter)->get();
+
+        $this->assertEquals(0, $posts->count());
+
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'or';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'name'
+                    ],
+                    'votes' => [
+                        'operator' => Filter::OPERATOR_EQUAL,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'votes'
+                    ]
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'name' => substr($this->post2->name, 0, 4),
+            'votes' => 10,
+        ], $filter)->get();
+
+        $this->assertEquals(3, $posts->count());
+    }
+
     /**
      * @return void
      */
