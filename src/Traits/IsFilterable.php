@@ -5,6 +5,7 @@ namespace Varbox\Traits;
 use BadMethodCallException;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Varbox\Exceptions\FilterException;
 use Varbox\Filters\Filter;
 
@@ -100,7 +101,6 @@ trait IsFilterable
      * @param Builder $query
      * @param array $data
      * @param Filter $filter
-     * @throws FilterException
      */
     public function scopeFiltered($query, array $data, Filter $filter)
     {
@@ -176,7 +176,7 @@ trait IsFilterable
     protected function filterByRelation(Builder $query, $column)
     {
         $options = [];
-        $relation = camel_case(explode('.', $column)[0]);
+        $relation = Str::camel(explode('.', $column)[0]);
         $options[$relation][] = explode('.', $column)[1];
 
         foreach ($options as $relation => $columns) {
@@ -217,16 +217,16 @@ trait IsFilterable
     protected function filterIndividually(Builder $query, $method, $column)
     {
         switch ($_method = strtolower($method)) {
-            case str_contains($_method, Filter::OPERATOR_NULL):
+            case Str::contains($_method, Filter::OPERATOR_NULL):
                 $query->{$method}($column);
                 break;
-            case str_contains($_method, Filter::OPERATOR_IN):
+            case Str::contains($_method, Filter::OPERATOR_IN):
                 $query->{$method}($column, $this->filter['value']);
                 break;
-            case str_contains($_method, Filter::OPERATOR_BETWEEN):
+            case Str::contains($_method, Filter::OPERATOR_BETWEEN):
                 $query->{$method}($column, $this->filter['value']);
                 break;
-            case str_contains($_method, Filter::OPERATOR_DATE):
+            case Str::contains($_method, Filter::OPERATOR_DATE):
                 $operator = explode(' ', $this->filter['operator']);
                 $query->{$method}($column, ($operator[1] ?? '='), $this->filter['value']);
                 break;
@@ -289,7 +289,7 @@ trait IsFilterable
      */
     protected function shouldFilterByRelation($column)
     {
-        return str_contains($column, '.');
+        return Str::contains($column, '.');
     }
 
     /**
@@ -308,21 +308,21 @@ trait IsFilterable
             $this->filter['having'] = 'or' . ucwords($this->filter['having']);
         }
 
-        if (str_contains(strtolower($this->filter['operator']), 'not')) {
+        if (Str::contains(strtolower($this->filter['operator']), 'not')) {
             $this->filter['method'] = $this->filter['method'] . 'Not';
         }
 
         switch ($operator = strtolower($this->filter['operator'])) {
-            case str_contains($operator, 'null'):
+            case Str::contains($operator, 'null'):
                 $this->filter['method'] = $this->filter['method'] . 'Null';
                 break;
-            case str_contains($operator, 'in'):
+            case Str::contains($operator, 'in'):
                 $this->filter['method'] = $this->filter['method'] . 'In';
                 break;
-            case str_contains($operator, 'between'):
+            case Str::contains($operator, 'between'):
                 $this->filter['method'] = $this->filter['method'] . 'Between';
                 break;
-            case str_contains($operator, 'date'):
+            case Str::contains($operator, 'date'):
                 $this->filter['method'] = $this->filter['method'] . 'Date';
                 break;
         }
@@ -352,13 +352,13 @@ trait IsFilterable
         }
 
         switch ($operator = strtolower($this->filter['operator'])) {
-            case str_contains($operator, Filter::OPERATOR_LIKE):
+            case Str::contains($operator, Filter::OPERATOR_LIKE):
                 $this->filter['value'] = "%" . $this->filter['value'] . "%";
                 break;
-            case str_contains($operator, Filter::OPERATOR_IN):
+            case Str::contains($operator, Filter::OPERATOR_IN):
                 $this->filter['value'] = (array)$this->filter['value'];
                 break;
-            case str_contains($operator, Filter::OPERATOR_BETWEEN):
+            case Str::contains($operator, Filter::OPERATOR_BETWEEN):
                 if (!isset($this->filter['value'][0])) {
                     $this->filter['value'][0] = 0;
                 }
@@ -438,7 +438,10 @@ trait IsFilterable
      */
     protected function checkOperatorForFiltering()
     {
-        if (!isset($this->filter['operator']) || !in_array(strtolower($this->filter['operator']), array_map('strtolower', Filter::$operators))) {
+        if (
+            !isset($this->filter['operator']) || 
+            !in_array(strtolower($this->filter['operator']), array_map('strtolower', Filter::$operators))
+        ) {
             throw FilterException::noOperatorSupplied($this->filter['field'], get_class($this->filter['instance']));
         }
     }
@@ -451,7 +454,10 @@ trait IsFilterable
      */
     protected function checkConditionToFilterBy()
     {
-        if (!isset($this->filter['condition']) || !in_array(strtolower($this->filter['condition']), array_map('strtolower', Filter::$conditions))) {
+        if (
+            !isset($this->filter['condition']) || 
+            !in_array(strtolower($this->filter['condition']), array_map('strtolower', Filter::$conditions))
+        ) {
             throw FilterException::noConditionSupplied($this->filter['field'], get_class($this->filter['instance']));
         }
     }
