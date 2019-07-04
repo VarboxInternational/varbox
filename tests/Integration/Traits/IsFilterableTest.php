@@ -7,6 +7,7 @@ use Varbox\Exceptions\FilterException;
 use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Author;
+use Varbox\Tests\Models\Comment;
 use Varbox\Tests\Models\Post;
 use Varbox\Tests\Models\Review;
 
@@ -38,6 +39,26 @@ class IsFilterableTest extends TestCase
      * @var Review
      */
     protected $review1;
+
+    /**
+     * @var Comment
+     */
+    protected $comment1;
+
+    /**
+     * @var Comment
+     */
+    protected $comment2;
+
+    /**
+     * @var Comment
+     */
+    protected $comment3;
+
+    /**
+     * @var Comment
+     */
+    protected $comment4;
 
     /**
      * Setup the test environment.
@@ -1015,7 +1036,7 @@ class IsFilterableTest extends TestCase
 
         $posts = Post::filtered([
             'review' => $this->review1->id,
-        ], $filter)->get();
+        ], $filter);
 
         $this->assertEquals(1, $posts->count());
         $this->assertEquals($this->post1->id, $posts->first()->id);
@@ -1045,6 +1066,70 @@ class IsFilterableTest extends TestCase
 
         $posts = Post::filtered([
             'review' => substr($this->review1->name, 0, 4),
+        ], $filter)->get();
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+    }
+
+    /** @test */
+    public function it_can_filter_by_a_has_many_relationship()
+    {
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'comments' => [
+                        'operator' => Filter::OPERATOR_EQUAL,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'comments.id'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'comments' => $this->comment1->id,
+        ], $filter);
+
+        $this->assertEquals(1, $posts->count());
+        $this->assertEquals($this->post1->id, $posts->first()->id);
+
+        $filter = new class extends Filter {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'comments' => [
+                        'operator' => Filter::OPERATOR_LIKE,
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'comments.title'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        $posts = Post::filtered([
+            'comments' => $this->comment1->title,
         ], $filter)->get();
 
         $this->assertEquals(1, $posts->count());
@@ -1175,6 +1260,26 @@ class IsFilterableTest extends TestCase
         $this->review1 = Review::create([
             'post_id' => $this->post1->id,
             'name' => 'Test Review'
+        ]);
+
+        $this->comment1 = Comment::create([
+            'post_id' => $this->post1->id,
+            'title' => 'Test Comment 1'
+        ]);
+
+        $this->comment2 = Comment::create([
+            'post_id' => $this->post1->id,
+            'title' => 'Test Comment 2'
+        ]);
+
+        $this->comment3 = Comment::create([
+            'post_id' => $this->post2->id,
+            'title' => 'Test Comment 3'
+        ]);
+
+        $this->comment4 = Comment::create([
+            'post_id' => $this->post2->id,
+            'title' => 'Test Comment 4'
         ]);
     }
 }
