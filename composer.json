@@ -37,7 +37,8 @@
         "orchestra/testbench": "~3.8.0",
         "orchestra/testbench-dusk": "~3.8.0",
         "phpunit/phpunit": "^7.5|^8.0",
-        "roquie/laravel-dusk-select2": "^1.1"
+        "roquie/laravel-dusk-select2": "^1.1",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4": {
