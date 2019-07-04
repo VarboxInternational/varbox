@@ -27,9 +27,9 @@ abstract class Filter
     const OPERATOR_EQUAL = '=';
     const OPERATOR_NOT_EQUAL = '!=';
     const OPERATOR_SMALLER = '<';
-    const OPERATOR_BIGGER = '>';
+    const OPERATOR_GREATER = '>';
     const OPERATOR_SMALLER_OR_EQUAL = '<=';
-    const OPERATOR_BIGGER_OR_EQUAL = '>=';
+    const OPERATOR_GREATER_OR_EQUAL = '>=';
     const OPERATOR_NULL = 'null';
     const OPERATOR_NOT_NULL = 'not null';
     const OPERATOR_LIKE = 'like';
@@ -42,9 +42,9 @@ abstract class Filter
     const OPERATOR_DATE_EQUAL = 'date =';
     const OPERATOR_DATE_NOT_EQUAL = 'date !=';
     const OPERATOR_DATE_SMALLER = 'date <';
-    const OPERATOR_DATE_BIGGER = 'date >';
+    const OPERATOR_DATE_GREATER = 'date >';
     const OPERATOR_DATE_SMALLER_OR_EQUAL = 'date <=';
-    const OPERATOR_DATE_BIGGER_OR_EQUAL = 'date >=';
+    const OPERATOR_DATE_GREATER_OR_EQUAL = 'date >=';
 
     /**
      * List of un-constrained fields.
@@ -74,9 +74,9 @@ abstract class Filter
         self::OPERATOR_EQUAL,
         self::OPERATOR_NOT_EQUAL,
         self::OPERATOR_SMALLER,
-        self::OPERATOR_BIGGER,
+        self::OPERATOR_GREATER,
         self::OPERATOR_SMALLER_OR_EQUAL,
-        self::OPERATOR_BIGGER_OR_EQUAL,
+        self::OPERATOR_GREATER_OR_EQUAL,
         self::OPERATOR_NULL,
         self::OPERATOR_NOT_NULL,
         self::OPERATOR_IN,
@@ -89,14 +89,16 @@ abstract class Filter
         self::OPERATOR_DATE_EQUAL,
         self::OPERATOR_DATE_NOT_EQUAL,
         self::OPERATOR_DATE_SMALLER,
-        self::OPERATOR_DATE_BIGGER,
+        self::OPERATOR_DATE_GREATER,
         self::OPERATOR_DATE_SMALLER_OR_EQUAL,
-        self::OPERATOR_DATE_BIGGER_OR_EQUAL,
+        self::OPERATOR_DATE_GREATER_OR_EQUAL,
     ];
 
     /**
      * Get the main where condition between entire request fields.
      * This method should be implemented in this class' children.
+     *
+     * Return "and" or "or" as string.
      *
      * @return string
      */
@@ -115,6 +117,8 @@ abstract class Filter
      * This method should be implemented in this class' children.
      * This method should return an array containing key => closure.
      * The filtering functionality will use the result returned from the closure, instead of the original request.
+     *
+     * If no modified values are needed, just return an empty array.
      *
      * @return array
      */

@@ -22,10 +22,21 @@ class AddressFilter extends Filter
     public function filters()
     {
         return [
-            'search' => 'operator:like|condition:or|columns:address,country.name,country.code,state.name,state.code,city.name',
-            'country' => 'operator:=|condition:or|columns:country_id',
-            'start_date' => 'operator:date >=|condition:or|columns:created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:created_at',
+            'search' => [
+                'operator' => Filter::OPERATOR_LIKE,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'address,country.name,country.code,state.name,state.code,city.name',
+            ],
+            'start_date' => [
+                'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
+            'end_date' => [
+                'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
         ];
     }
 

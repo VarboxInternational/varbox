@@ -22,11 +22,31 @@ class CityFilter extends Filter
     public function filters()
     {
         return [
-            'search' => 'operator:like|condition:or|columns:name,country.name',
-            'country' => 'operator:=|condition:or|columns:country_id',
-            'state' => 'operator:=|condition:or|columns:state_id',
-            'start_date' => 'operator:date >=|condition:or|columns:created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:created_at',
+            'search' => [
+                'operator' => Filter::OPERATOR_LIKE,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'name,country.name',
+            ],
+            'country' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'country_id',
+            ],
+            'state' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'state_id',
+            ],
+            'start_date' => [
+                'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
+            'end_date' => [
+                'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
         ];
     }
 

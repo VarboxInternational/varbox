@@ -22,11 +22,31 @@ class AdminFilter extends Filter
     public function filters()
     {
         return [
-            'search' => 'operator:like|condition:or|columns:email,first_name,last_name',
-            'active' => 'operator:=|condition:or|columns:active',
-            'role' => 'operator:=|condition:or|columns:roles.role_id',
-            'start_date' => 'operator:date >=|condition:or|columns:users.created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:users.created_at',
+            'search' => [
+                'operator' => Filter::OPERATOR_LIKE,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'email,first_name,last_name',
+            ],
+            'active' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'active',
+            ],
+            'role' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'roles.role_id',
+            ],
+            'start_date' => [
+                'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'users.created_at',
+            ],
+            'end_date' => [
+                'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'users.created_at',
+            ],
         ];
     }
 

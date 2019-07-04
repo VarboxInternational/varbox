@@ -22,10 +22,26 @@ class PermissionFilter extends Filter
     public function filters()
     {
         return [
-            'start_date' => 'operator:date >=|condition:or|columns:created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:created_at',
-            'search' => 'operator:like|condition:or|columns:name,group,label',
-            'guard' => 'operator:=|condition:or|columns:guard',
+            'search' => [
+                'operator' => Filter::OPERATOR_LIKE,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'name,group,label',
+            ],
+            'guard' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'guard',
+            ],
+            'start_date' => [
+                'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
+            'end_date' => [
+                'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
         ];
     }
 

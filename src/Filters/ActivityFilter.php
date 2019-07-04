@@ -22,11 +22,31 @@ class ActivityFilter extends Filter
     public function filters()
     {
         return [
-            'user' => 'operator:=|condition:or|columns:user_id',
-            'entity' => 'operator:=|condition:or|columns:entity_type',
-            'event' => 'operator:=|condition:or|columns:event',
-            'start_date' => 'operator:date >=|condition:or|columns:created_at',
-            'end_date' => 'operator:date <=|condition:or|columns:created_at',
+            'user' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'user_id',
+            ],
+            'entity' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'entity_type',
+            ],
+            'event' => [
+                'operator' => Filter::OPERATOR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'event',
+            ],
+            'start_date' => [
+                'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
+            'end_date' => [
+                'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
+                'condition' => Filter::CONDITION_OR,
+                'columns' => 'created_at',
+            ],
         ];
     }
 
