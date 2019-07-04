@@ -3,6 +3,7 @@
 namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Varbox\Exceptions\FilterException;
 use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Author;
@@ -1049,6 +1050,37 @@ class IsFilterableTest extends TestCase
         $this->assertEquals(1, $posts->count());
         $this->assertEquals($this->post1->id, $posts->first()->id);
     }
+
+    /** @expectedException FilterException */
+    public function it_requires_an_operator_for_filtering()
+    {
+        $filter = new class extends Filter
+        {
+            public function morph()
+            {
+                return 'and';
+            }
+
+            public function filters()
+            {
+                return [
+                    'name' => [
+                        'condition' => Filter::CONDITION_OR,
+                        'columns' => 'name'
+                    ],
+                ];
+            }
+
+            public function modifiers()
+            {
+                return [];
+            }
+        };
+
+        Post::filtered([
+            'name' => $this->post1->name,
+        ], $filter)->get();
+    }g
 
     /**
      * @return void
