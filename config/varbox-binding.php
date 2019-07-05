@@ -174,8 +174,8 @@ return [
         | To extend or replace this functionality, change the value below with your full "config model" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Models\Config" class
-        | - or at least implement the "Varbox\Sys\Contracts\ConfigModelContract" interface.
+        | - extend the "Varbox\Models\Config" class
+        | - or at least implement the "Varbox\Contracts\ConfigModelContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
         | - app('config.model') OR app('\Varbox\Contracts\ConfigModelContract')
@@ -190,8 +190,8 @@ return [
         | To extend or replace this functionality, change the value below with your full "backup model" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Models\Backup" class
-        | - or at least implement the "Varbox\Sys\Contracts\BackupModelContract" interface.
+        | - extend the "Varbox\Models\Backup" class
+        | - or at least implement the "Varbox\Contracts\BackupModelContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
         | - app('backup.model') OR app('\Varbox\Contracts\BackupModelContract')
@@ -206,8 +206,8 @@ return [
         | To extend or replace this functionality, change the value below with your full "error model" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Models\Error" class
-        | - or at least implement the "Varbox\Sys\Contracts\ErrorModelContract" interface.
+        | - extend the "Varbox\Models\Error" class
+        | - or at least implement the "Varbox\Contracts\ErrorModelContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
         | - app('error.model') OR app('\Varbox\Contracts\ErrorModelContract')
@@ -399,7 +399,7 @@ return [
         | To extend or replace this functionality, change the value below with your full "configs controller" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Controllers\ConfigsController" class
+        | - extend the "Varbox\Controllers\ConfigsController" class
         | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
@@ -411,7 +411,7 @@ return [
         | To extend or replace this functionality, change the value below with your full "backups controller" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Controllers\BackupsController" class
+        | - extend the "Varbox\Controllers\BackupsController" class
         | - or you'll have to implement the following public methods yourself: index(), create(), destroy(), download(), clear()
         |
         */
@@ -423,7 +423,7 @@ return [
         | To extend or replace this functionality, change the value below with your full "errors controller" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Sys\Controllers\ErrorsController" class
+        | - extend the "Varbox\Controllers\ErrorsController" class
         | - or you'll have to implement the following public methods yourself: index(), show(), destroy(), clear()
         |
         */
