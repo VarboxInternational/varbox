@@ -90,20 +90,20 @@ class Backup extends Model implements BackupModelContract
             return response()->download(
                 Storage::disk($this->disk)->getDriver()->getAdapter()->applyPathPrefix($this->path)
             );
-        } else {
-            Storage::disk($this->disk)->setVisibility($this->path, 'public');
-
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-            header("Content-Disposition: attachment; filename=" . basename($this->path));
-            header("Content-Type: application/zip");
-
-            $file = readfile(Storage::disk($this->disk)->url($this->path));
-
-            Storage::disk($this->disk)->setVisibility($this->path, 'private');
-
-            return $file;
         }
+
+        Storage::disk($this->disk)->setVisibility($this->path, 'public');
+
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=" . basename($this->path));
+        header("Content-Type: application/zip");
+
+        $file = readfile(Storage::disk($this->disk)->url($this->path));
+
+        Storage::disk($this->disk)->setVisibility($this->path, 'private');
+
+        return $file;
     }
 
     /**
