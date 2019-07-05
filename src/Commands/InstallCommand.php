@@ -64,7 +64,9 @@ class InstallCommand extends Command
         $this->writeEnvVariables();
         $this->registerRoutes();
         $this->modifyUserModel();
+        $this->modifyExceptionHandler();
         $this->generateAdminMenu();
+        $this->manageBackups();
         $this->migrateTables();
         $this->seedDatabase();
     }
@@ -234,6 +236,41 @@ class InstallCommand extends Command
     }
 
     /**
+     * @throws FileNotFoundException
+     */
+    public function modifyExceptionHandler()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>MODIFYING THE EXCEPTION HANDLER</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $exceptionHandlerFile = $this->laravel['path'] . '/Exceptions/Handler.php';
+
+        if ($this->files->exists($exceptionHandlerFile)) {
+            $content = $this->files->get($exceptionHandlerFile);
+
+            if ($content !== false) {
+                $content = str_replace(
+                    'extends ExceptionHandler',
+                    "extends \Varbox\Exceptions\Handler",
+                    $content
+                );
+
+                $this->files->put($exceptionHandlerFile, $content);
+
+                $this->line('<fg=green>SUCCESS |</> Extended the "app/Exceptions/Handler.php" with the VarBox exception handler.');
+            } else {
+                $this->line('<fg=red>ERROR   |</> Could not get the contents of "app/Exceptions/Handler.php"! You will need to update this manually.');
+                $this->line('<fg=red>ERROR   |</> Change "extends ExceptionHandler" to "extends \Varbox\Exceptions\Handler" in your exception handler.');
+            }
+        } else {
+            $this->line('<fg=red>ERROR   |</> Unable to locate "app/Exceptions/Handler.php"! You will need to update this manually.');
+            $this->line('<fg=red>ERROR   |</> Change "extends ExceptionHandler" to "extends \Varbox\Exceptions\Handler" in your exception handler.');
+        }
+    }
+
+    /**
      * @return bool
      * @throws FileNotFoundException
      */
@@ -261,6 +298,56 @@ class InstallCommand extends Command
 
         $this->files->put($file, $contents);
         $this->line('<fg=green>SUCCESS |</> The "AdminMenuComposer.php" file has been copied over to "app/Http/Composers/" directory!');
+    }
+
+    /**
+     * @return void
+     * @throws FileNotFoundException
+     */
+    protected function manageBackups()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>MANAGING Backups</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $backupsDiskStub = __DIR__ . '/../../resources/stubs/config/backup.disks.stub';
+        $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
+        $backupsPath = $this->laravel['path.storage'] . '/backups';
+        $gitignoreFile = $backupsPath . '/.gitignore';
+
+        if ($this->files->exists($filesystemsConfig)) {
+            $content = $this->files->get($filesystemsConfig);
+
+            if (strpos($content, "'backups' => [") === false) {
+                $content = str_replace(
+                    "'disks' => [",
+                    "'disks' => [\n\n" . file_get_contents($backupsDiskStub)
+                    , $content
+                );
+
+                $this->files->put($filesystemsConfig, $content);
+                $this->line('<fg=green>SUCCESS |</> Setup the "backups" storage disk inside "config/filesystems.php" => "disks".');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The "backups" storage disk already exists inside "config/filesystems.php" => "disks".');
+            }
+        } else {
+            $this->line('<fg=red>ERROR   |</> The "config/filesystems.php" file does not exist!');
+            $this->line('<fg=red>ERROR   |</> You will have to manually add the "backups" storage disk.');
+        }
+
+        if ($this->files->exists($gitignoreFile)) {
+            $this->line('<fg=green>SUCCESS |</> The "storage/backups/" directory already exists.');
+            $this->line('<fg=green>SUCCESS |</> The ".gitignore" file inside the "storage/backups/" directory already exists.');
+
+            return;
+        } else {
+            $this->files->makeDirectory($backupsPath);
+            $this->line('<fg=green>SUCCESS |</> Created the "storage/backups/" directory!');
+
+            $this->files->put($gitignoreFile, "*\n!.gitignore\n");
+            $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/backups/" directory!');
+        }
     }
 
     /**
