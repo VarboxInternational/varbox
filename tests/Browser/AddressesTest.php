@@ -16,6 +16,48 @@ class AddressesTest extends TestCase
     protected $user;
 
     /**
+     * @var Address
+     */
+    protected $addressModel;
+
+    /**
+     * @var Country
+     */
+    protected $countryModel;
+
+    /**
+     * @var State
+     */
+    protected $stateModel;
+
+    /**
+     * @var City
+     */
+    protected $cityModel;
+
+    /**
+     * @var string
+     */
+    protected $addressAddress = 'Test Address';
+
+    /**
+     * @var string
+     */
+    protected $countryName = 'Test Country Name';
+    protected $countryCode = 'TCC';
+
+    /**
+     * @var string
+     */
+    protected $stateName = 'Test State Name';
+    protected $stateCode = 'TSC';
+
+    /**
+     * @var string
+     */
+    protected $cityName = 'Test City Name';
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -41,7 +83,7 @@ class AddressesTest extends TestCase
                 ->assertSee('View User\'s Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -56,7 +98,7 @@ class AddressesTest extends TestCase
                 ->assertSee('View User\'s Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -71,7 +113,7 @@ class AddressesTest extends TestCase
                 ->assertDontSee('View User\'s Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -87,7 +129,7 @@ class AddressesTest extends TestCase
                 ->assertSee('Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -104,7 +146,7 @@ class AddressesTest extends TestCase
                 ->assertSee('Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -120,7 +162,7 @@ class AddressesTest extends TestCase
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -136,7 +178,7 @@ class AddressesTest extends TestCase
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -151,7 +193,7 @@ class AddressesTest extends TestCase
                 ->assertDontSee('Addresses');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -168,7 +210,7 @@ class AddressesTest extends TestCase
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -186,7 +228,7 @@ class AddressesTest extends TestCase
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
     }
 
     /** @test */
@@ -203,6 +245,91 @@ class AddressesTest extends TestCase
                 ->assertDontSee('Add Address');
         });
 
-        $this->user->delete();
+        $this->user->forceDelete();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->clickEditButton($this->addressAddress)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
+                ->assertSee('Edit Address')
+                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+        });
+
+        $this->deleteAddress();
+
+        $this->user->forceDelete();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-edit');
+
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->clickEditButton($this->addressAddress)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
+                ->assertSee('Edit Address')
+                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+        });
+
+        $this->deleteAddress();
+
+        $this->user->forceDelete();
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_edit_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->revokePermission('addresses-edit');
+
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->clickEditButton($this->addressAddress)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Edit Address');
+        });
+
+        $this->deleteAddress();
+
+        $this->user->forceDelete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function createAddress()
+    {
+        $this->addressModel = $this->user->addresses()->create([
+            'country_id' => optional($this->countryModel)->id ?: null,
+            'state_id' => optional($this->stateModel)->id ?: null,
+            'city_id' => optional($this->cityModel)->id ?: null,
+            'address' => $this->addressAddress,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteAddress()
+    {
+        $this->addressModel->forceDelete();
     }
 }
