@@ -313,7 +313,6 @@ class AddressesTest extends TestCase
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
                 ->assertSee('The record was successfully created!')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', new Address)
-                ->screenshot('aici')
                 ->assertSee($this->addressAddress)
                 ->assertSee($this->countryName)
                 ->assertSee($this->stateName)
@@ -448,6 +447,44 @@ class AddressesTest extends TestCase
         $this->deleteCity();
         $this->deleteState();
         $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_an_address_if_it_has_permission()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-delete');
+
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->assertSee($this->addressAddress)
+                ->deleteRecord($this->addressAddress)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->assertDontSee($this->addressAddress);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_an_address_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->revokePermission('addresses-delete');
+
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteAddress();
     }
     
     /**
