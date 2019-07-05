@@ -50,6 +50,22 @@ class Config extends Model implements ConfigModelContract
     }
 
     /**
+     * Get all the configuration keys that are allowed to be editable.
+     *
+     * @return array
+     */
+    public static function getAllowedKeys()
+    {
+        $keys = [];
+
+        foreach (config('varbox.varbox-config.keys', []) as $key) {
+            $keys[$key] = ucwords(str_replace('.', ' ', $key));
+        }
+
+        return $keys;
+    }
+
+    /**
      * Set the options for the HasActivity trait.
      *
      * @return ActivityOptions
