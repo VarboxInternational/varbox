@@ -66,10 +66,16 @@ class AddressesTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::create([
-            'email' => 'test-user@mail.com',
-            'password' => bcrypt('test_password'),
-        ]);
+        $this->afterApplicationCreated(function () {
+            $this->user = User::create([
+                'email' => 'test-user@mail.com',
+                'password' => bcrypt('test_password'),
+            ]);
+        });
+
+        $this->beforeApplicationDestroyed(function () {
+            $this->user->forceDelete();
+        });
     }
 
     /** @test */
@@ -82,8 +88,6 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/edit/' . $this->user->id)
                 ->assertSee('View User\'s Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -97,8 +101,6 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/edit/' . $this->user->id)
                 ->assertSee('View User\'s Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -112,8 +114,6 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/edit/' . $this->user->id)
                 ->assertDontSee('View User\'s Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -128,8 +128,6 @@ class AddressesTest extends TestCase
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
                 ->assertSee('Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -145,8 +143,6 @@ class AddressesTest extends TestCase
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
                 ->assertSee('Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -161,8 +157,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Addresses')
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -177,8 +171,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Addresses')
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -192,8 +184,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Addresses');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -209,8 +199,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Add Address')
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -227,8 +215,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Add Address')
                 ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -244,8 +230,6 @@ class AddressesTest extends TestCase
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Address');
         });
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -265,8 +249,6 @@ class AddressesTest extends TestCase
         });
 
         $this->deleteAddress();
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -287,8 +269,6 @@ class AddressesTest extends TestCase
         });
 
         $this->deleteAddress();
-
-        $this->user->forceDelete();
     }
 
     /** @test */
@@ -303,13 +283,10 @@ class AddressesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
                 ->clickEditButton($this->addressAddress)
-                ->assertSee('Unauthorized')
-                ->assertDontSee('Edit Address');
+                ->assertSee('Unauthorized');
         });
 
         $this->deleteAddress();
-
-        $this->user->forceDelete();
     }
 
     /**
