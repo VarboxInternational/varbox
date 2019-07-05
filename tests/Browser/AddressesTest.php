@@ -289,6 +289,120 @@ class AddressesTest extends TestCase
         $this->deleteAddress();
     }
 
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_create_an_address()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-add');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->clickLink('Add New')
+                ->type('#address-input', $this->addressAddress)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->select2('#city_id-input', $this->cityName)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', new Address)
+                ->screenshot('aici')
+                ->assertSee($this->addressAddress)
+                ->assertSee($this->countryName)
+                ->assertSee($this->stateName)
+                ->assertSee($this->cityName);
+        });
+
+        $this->deleteAddress();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_address_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-add');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->clickLink('Add New')
+                ->type('#address-input', $this->addressAddress)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->select2('#city_id-input', $this->cityName)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteAddress();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_address_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-add');
+        $this->admin->grantPermission('addresses-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->clickLink('Add New')
+                ->type('#address-input', $this->addressAddress)
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->select2('#city_id-input', $this->cityName)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/users/' . $this->user->id . '/addresses/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#address-input', $this->addressAddress)
+                ->assertSee($this->countryName)
+                ->assertSee($this->stateName)
+                ->assertSee($this->cityName);
+        });
+
+        $this->deleteAddress();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+
+
+
+
+
+
+
+
     /**
      * @return void
      */
@@ -305,8 +419,67 @@ class AddressesTest extends TestCase
     /**
      * @return void
      */
+    protected function createCountry()
+    {
+        $this->countryModel = Country::create([
+            'name' => $this->countryName,
+            'code' => $this->countryCode,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function createState()
+    {
+        $this->stateModel = State::create([
+            'country_id' => $this->countryModel->id,
+            'name' => $this->stateName,
+            'code' => $this->stateCode,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function createCity()
+    {
+        $this->cityModel = City::create([
+            'country_id' => $this->countryModel->id,
+            'state_id' => $this->stateModel->id,
+            'name' => $this->cityName,
+        ]);
+    }
+
+    /**
+     * @return void
+     */
     protected function deleteAddress()
     {
-        $this->addressModel->forceDelete();
+        Address::whereAddress($this->addressAddress)->first()->delete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteCountry()
+    {
+        Country::whereName($this->countryName)->first()->delete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteState()
+    {
+        State::whereName($this->stateName)->first()->delete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteCity()
+    {
+        City::whereName($this->cityName)->first()->delete();
     }
 }
