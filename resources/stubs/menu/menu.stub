@@ -189,7 +189,7 @@ class AdminMenuComposer
                 });
             }*/
 
-            /*if (\Varbox::moduleEnabled('sys')) {
+            if (\Varbox::moduleEnabled('sys')) {
                 $menu->add(function ($item) use ($menu) {
                     $sys = $item->name('System Settings')->data('icon', 'fa-cog')
                         ->permissions('configs-list', 'errors-list', 'backups-list')
@@ -207,7 +207,7 @@ class AdminMenuComposer
                         $item->name('Backups')->url(route('admin.backups.index'))->permissions('backups-list')->active('admin/backups/*');
                     });
                 });
-            }*/
+            }
         })->filter(function (MenuItem $item) use ($user) {
             return $user->isSuper() || $user->hasAnyPermission($item->permissions());
         });
