@@ -44,6 +44,7 @@ use Varbox\Middleware\Authenticated;
 use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\NotAuthenticated;
+use Varbox\Middleware\OverrideConfigs;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
 use Varbox\Models\Backup;
@@ -232,6 +233,11 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.not.authenticated', NotAuthenticated::class);
         $this->router->aliasMiddleware('varbox.check.roles', CheckRoles::class);
         $this->router->aliasMiddleware('varbox.check.permissions', CheckPermissions::class);
+
+        if (\Varbox::moduleEnabled('sys')) {
+            $this->router->aliasMiddleware('varbox.override.configs', OverrideConfigs::class);
+            $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
+        }
     }
 
     /**
