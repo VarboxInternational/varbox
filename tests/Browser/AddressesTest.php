@@ -39,7 +39,6 @@ class AddressesTest extends TestCase
      * @var string
      */
     protected $addressAddress = 'Test Address';
-    protected $addressAddressModified = 'Test Address Modified';
 
     /**
      * @var string
@@ -57,6 +56,11 @@ class AddressesTest extends TestCase
      * @var string
      */
     protected $cityName = 'Test City Name';
+
+    protected $addressAddressModified = 'Test Address Modified';
+    protected $countryNameModified = 'Test Country Name Modified';
+    protected $stateNameModified = 'Test State Name Modified';
+    protected $cityNameModified = 'Test City Name Modified';
 
     /**
      * Setup the test environment.
@@ -486,7 +490,199 @@ class AddressesTest extends TestCase
 
         $this->deleteAddress();
     }
-    
+
+    /** @test */
+    public function an_admin_can_filter_addresses_by_keyword()
+    {
+        $this->admin->grantPermission('addresses-list');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->addressAddress)
+                ->assertQueryStringHas('search', $this->addressAddress)
+                ->assertSee($this->addressAddress)
+                ->assertRecordsCount(1)
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->addressAddressModified)
+                ->assertQueryStringHas('search', $this->addressAddressModified)
+                ->assertSee('No records found')
+
+
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->countryName)
+                ->assertQueryStringHas('search', $this->countryName)
+                ->assertSee($this->countryName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->countryNameModified)
+                ->assertQueryStringHas('search', $this->countryNameModified)
+                ->assertSee('No records found')
+
+
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->stateName)
+                ->assertQueryStringHas('search', $this->stateName)
+                ->assertSee($this->stateName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->stateNameModified)
+                ->assertQueryStringHas('search', $this->stateNameModified)
+                ->assertSee('No records found')
+
+
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->cityName)
+                ->assertQueryStringHas('search', $this->cityName)
+                ->assertSee($this->cityName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#search-input', $this->cityNameModified)
+                ->assertQueryStringHas('search', $this->cityNameModified)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteAddress();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_addresses_by_start_date()
+    {
+        $this->admin->grantPermission('addresses-list');
+
+        $this->createAddress();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->assertSee($this->addressAddress)
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteAddress();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_addresses_by_end_date()
+    {
+        $this->admin->grantPermission('addresses-list');
+
+        $this->createAddress();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->assertSee($this->addressAddress);
+        });
+
+        $this->deleteAddress();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_address_filters()
+    {
+        $this->admin->grantPermission('cities-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses?search=something&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
+    /** @test */
+    public function it_requires_an_address_when_creating_an_address()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-add');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->clickLink('Add New')
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->select2('#city_id-input', $this->cityName)
+                ->press('Save')
+                ->waitForText('The address field is required')
+                ->assertSee('The address field is required');
+        });
+
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
+    /** @test */
+    public function it_requires_an_address_when_updating_an_address()
+    {
+        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('cities-edit');
+
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+        $this->createAddress();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->clickEditButton($this->addressAddress)
+                ->type('#address-input', '')
+                ->select2('#country_id-input', $this->countryName)
+                ->select2('#state_id-input', $this->stateName)
+                ->select2('#city_id-input', $this->cityName)
+                ->press('Save')
+                ->waitForText('The address field is required')
+                ->assertSee('The address field is required');
+        });
+
+        $this->deleteAddress();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+
     /**
      * @return void
      */
