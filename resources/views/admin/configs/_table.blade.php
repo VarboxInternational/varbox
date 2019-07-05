@@ -11,9 +11,11 @@
         </tr>
         @forelse($items as $index => $item)
             <tr>
-                <td>{{ $item->key ?: 'N/A' }}</td>
+                <td>{{ $keys[$item->key] ?? 'N/A' }}</td>
                 <td class="d-none d-sm-table-cell">
-                    {{ $item->value ?: 'N/A' }}
+                    <span class="badge badge badge-default" style="font-size: 90%;">
+                        {{ $item->getAttributes()['value'] ?? 'N/A' }}
+                    </span>
                 </td>
                 <td class="text-right d-table-cell">
                     {!! button()->editRecord(route('admin.configs.edit', $item)) !!}

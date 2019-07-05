@@ -14,7 +14,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    {!! form_admin()->text('key', 'Key', null, ['required']) !!}
+                    {!! form_admin()->select('key', 'Key', $keys, null, ['required']) !!}
                 </div>
                 <div class="col-md-6">
                     {!! form_admin()->text('value', 'Value', null, ['required']) !!}
