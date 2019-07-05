@@ -59,18 +59,20 @@
     </div>
 </div>
 @if($item->exists)
-<div class="col-12">
-    <div class="card">
-        <div class="card-status bg-yellow"></div>
-        <div class="card-header border-0 py-5">
-            <h3 class="card-title">Addresses</h3>
+    @permission('addresses-list')
+        <div class="col-12">
+            <div class="card">
+                <div class="card-status bg-yellow"></div>
+                <div class="card-header border-0 py-5">
+                    <h3 class="card-title">Addresses</h3>
 
-            <a href="{{ route('admin.addresses.index', $item->getKey()) }}" class="btn btn-yellow btn-square float-right ml-auto">
-                <i class="fe fe-eye mr-2"></i>View User's Addresses
-            </a>
+                    <a href="{{ route('admin.addresses.index', $item->getKey()) }}" class="btn btn-yellow btn-square float-right ml-auto">
+                        <i class="fe fe-eye mr-2"></i>View User's Addresses
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    @endpermission
 @endif
 <div class="col-12">
     <div class="card">
