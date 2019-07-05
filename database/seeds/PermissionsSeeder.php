@@ -363,6 +363,78 @@ class PermissionsSeeder extends Seeder
                 'name' => 'addresses-delete',
             ],
         ],
+        'Configs' => [
+            'List' => [
+                'group' => 'Configs',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'configs-list',
+            ],
+            'Add' => [
+                'group' => 'Configs',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'configs-add',
+            ],
+            'Edit' => [
+                'group' => 'Configs',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'configs-edit',
+            ],
+            'Delete' => [
+                'group' => 'Configs',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'configs-delete',
+            ],
+        ],
+        'Errors' => [
+            'List' => [
+                'group' => 'Errors',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'errors-list',
+            ],
+            'View' => [
+                'group' => 'Errors',
+                'label' => 'View',
+                'guard' => 'admin',
+                'name' => 'errors-view',
+            ],
+            'Delete' => [
+                'group' => 'Errors',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'errors-delete',
+            ],
+        ],
+        'Backups' => [
+            'List' => [
+                'group' => 'Backups',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'backups-list',
+            ],
+            'Create' => [
+                'group' => 'Backups',
+                'label' => 'Create',
+                'guard' => 'admin',
+                'name' => 'backups-create',
+            ],
+            'Download' => [
+                'group' => 'Backups',
+                'label' => 'Download',
+                'guard' => 'admin',
+                'name' => 'backups-download',
+            ],
+            'Delete' => [
+                'group' => 'Backups',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'backups-delete',
+            ],
+        ],
     ];
 
     /**
