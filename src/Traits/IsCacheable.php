@@ -3,6 +3,7 @@
 namespace Varbox\Traits;
 
 use Illuminate\Database\Query\Builder;
+use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Database\QueryCacheBuilder;
 
 trait IsCacheable
@@ -28,7 +29,7 @@ trait IsCacheable
      */
     public function getQueryCacheTag(): string
     {
-        return app('query_cache.service')->getAllQueryCachePrefix().'.'.(string) $this->getTable();
+        return app(QueryCacheServiceContract::class)->getAllQueryCachePrefix().'.'.(string) $this->getTable();
     }
 
     /**
@@ -36,7 +37,7 @@ trait IsCacheable
      */
     public function getDuplicateQueryCacheTag(): string
     {
-        return app('query_cache.service')->getDuplicateQueryCachePrefix().'.'.(string) $this->getTable();
+        return app(QueryCacheServiceContract::class)->getDuplicateQueryCachePrefix().'.'.(string) $this->getTable();
     }
 
     /**
@@ -46,7 +47,7 @@ trait IsCacheable
      */
     public function clearQueryCache(): void
     {
-        app('query_cache.service')->clearQueryCache($this);
+        app(QueryCacheServiceContract::class)->clearQueryCache($this);
     }
 
     /**
@@ -62,12 +63,12 @@ trait IsCacheable
         $connection = $this->getConnection();
         $grammar = $connection->getQueryGrammar();
 
-        if (app('query_cache.service')->canCacheQueries()) {
-            if (app('query_cache.service')->shouldCacheAllQueries()) {
+        if (app(QueryCacheServiceContract::class)->canCacheQueries()) {
+            if (app(QueryCacheServiceContract::class)->shouldCacheAllQueries()) {
                 $cacheAllQueriesForever = true;
             }
 
-            if (app('query_cache.service')->shouldCacheDuplicateQueries()) {
+            if (app(QueryCacheServiceContract::class)->shouldCacheDuplicateQueries()) {
                 $cacheOnlyDuplicateQueriesOnce = true;
             }
         }
@@ -75,14 +76,14 @@ trait IsCacheable
         if ($cacheAllQueriesForever === true) {
             return new QueryCacheBuilder(
                 $connection, $grammar, $connection->getPostProcessor(),
-                $this->getQueryCacheTag(), app('query_cache.service')->cacheAllQueriesForeverType()
+                $this->getQueryCacheTag(), app(QueryCacheServiceContract::class)->cacheAllQueriesForeverType()
             );
         }
 
         if ($cacheOnlyDuplicateQueriesOnce === true) {
             return new QueryCacheBuilder(
                 $connection, $grammar, $connection->getPostProcessor(),
-                $this->getDuplicateQueryCacheTag(), app('query_cache.service')->cacheOnlyDuplicateQueriesOnceType()
+                $this->getDuplicateQueryCacheTag(), app(QueryCacheServiceContract::class)->cacheOnlyDuplicateQueriesOnceType()
             );
         }
 

@@ -7,6 +7,7 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Varbox\Contracts\QueryCacheServiceContract;
 
 class QueryCacheBuilder extends QueryBuilder
 {
@@ -69,7 +70,7 @@ class QueryCacheBuilder extends QueryBuilder
     public function flushQueryCache(): void
     {
         cache()->store(
-            app('query_cache.service')->getAllQueryCacheStore()
+            app(QueryCacheServiceContract::class)->getAllQueryCacheStore()
         )->tags($this->cacheTag)->flush();
     }
 
@@ -137,10 +138,10 @@ class QueryCacheBuilder extends QueryBuilder
     protected function runSelect(): array
     {
         switch ($this->cacheType) {
-            case app('query_cache.service')->cacheAllQueriesForeverType():
+            case app(QueryCacheServiceContract::class)->cacheAllQueriesForeverType():
                 return $this->runSelectWithAllQueriesCached();
                 break;
-            case app('query_cache.service')->cacheOnlyDuplicateQueriesOnceType():
+            case app(QueryCacheServiceContract::class)->cacheOnlyDuplicateQueriesOnceType():
                 return $this->runSelectWithDuplicateQueriesCached();
                 break;
             default:
@@ -159,7 +160,7 @@ class QueryCacheBuilder extends QueryBuilder
     protected function runSelectWithAllQueriesCached()
     {
         return cache()->store(
-            app('query_cache.service')->getAllQueryCacheStore()
+            app(QueryCacheServiceContract::class)->getAllQueryCacheStore()
         )->tags($this->cacheTag)->rememberForever($this->getQueryCacheKey(), function () {
             return parent::runSelect();
         });
@@ -175,7 +176,7 @@ class QueryCacheBuilder extends QueryBuilder
     protected function runSelectWithDuplicateQueriesCached()
     {
         return cache()->store(
-            app('query_cache.service')->getDuplicateQueryCacheStore()
+            app(QueryCacheServiceContract::class)->getDuplicateQueryCacheStore()
         )->tags($this->cacheTag)->remember($this->getQueryCacheKey(), 1, function () {
             return parent::runSelect();
         });
