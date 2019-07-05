@@ -25,7 +25,7 @@ class ConfigRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'key' => [
                 'required',
                 Rule::unique('configs', 'key')
                     ->ignore($this->route('config') ? $this->route('config')->id : null)
