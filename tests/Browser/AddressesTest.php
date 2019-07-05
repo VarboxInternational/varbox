@@ -106,4 +106,51 @@ class AddressesTest extends TestCase
 
         $this->user->delete();
     }
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
+                ->assertSee('Addresses')
+                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+        });
+
+        $this->user->delete();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('addresses-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
+                ->assertSee('Addresses')
+                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+        });
+
+        $this->user->delete();
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->revokePermission('addresses-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users/' . $this->user->id . '/addresses')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Addresses');
+        });
+
+        $this->user->delete();
+    }
 }
