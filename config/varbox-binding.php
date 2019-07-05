@@ -168,6 +168,54 @@ return [
         */
         'address_model' => \Varbox\Models\Address::class,
 
+        /*
+        |
+        | Concrete implementation for the "config model".
+        | To extend or replace this functionality, change the value below with your full "config model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Models\Config" class
+        | - or at least implement the "Varbox\Sys\Contracts\ConfigModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('config.model') OR app('\Varbox\Contracts\ConfigModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'config_model' => \Varbox\Models\Backup::class,
+
+        /*
+        |
+        | Concrete implementation for the "backup model".
+        | To extend or replace this functionality, change the value below with your full "backup model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Models\Backup" class
+        | - or at least implement the "Varbox\Sys\Contracts\BackupModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('backup.model') OR app('\Varbox\Contracts\BackupModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'backup_model' => \Varbox\Models\Backup::class,
+
+        /*
+        |
+        | Concrete implementation for the "error model".
+        | To extend or replace this functionality, change the value below with your full "error model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Models\Error" class
+        | - or at least implement the "Varbox\Sys\Contracts\ErrorModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('error.model') OR app('\Varbox\Contracts\ErrorModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'error_model' => \Varbox\Models\Error::class,
+
     ],
 
     /*
@@ -345,6 +393,42 @@ return [
         */
         'addresses_controller' => \Varbox\Controllers\AddressesController::class,
 
+        /*
+        |
+        | Concrete implementation for the "configs controller".
+        | To extend or replace this functionality, change the value below with your full "configs controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Controllers\ConfigsController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
+        |
+        */
+        'configs_controller' => \Varbox\Controllers\BackupsController::class,
+
+        /*
+        |
+        | Concrete implementation for the "backups controller".
+        | To extend or replace this functionality, change the value below with your full "backups controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Controllers\BackupsController" class
+        | - or you'll have to implement the following public methods yourself: index(), create(), destroy(), download(), clear()
+        |
+        */
+        'backups_controller' => \Varbox\Controllers\BackupsController::class,
+
+        /*
+        |
+        | Concrete implementation for the "errors controller".
+        | To extend or replace this functionality, change the value below with your full "errors controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sys\Controllers\ErrorsController" class
+        | - or you'll have to implement the following public methods yourself: index(), show(), destroy(), clear()
+        |
+        */
+        'errors_controller' => \Varbox\Controllers\ErrorsController::class,
+
     ],
 
     'form_requests' => [
@@ -480,6 +564,18 @@ return [
         |
         */
         'address_form_request' => \Varbox\Requests\AddressRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "config form request".
+        | To extend or replace this functionality, change the value below with your full "config form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\ConfigRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'config_form_request' => \Varbox\Requests\ConfigRequest::class,
 
     ],
 
