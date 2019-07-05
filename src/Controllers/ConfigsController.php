@@ -50,6 +50,9 @@ class ConfigsController extends Controller
 
             $this->title = 'Configs';
             $this->view = view('varbox::admin.configs.index');
+            $this->vars = [
+                'keys' => $this->model->getAllowedKeys()
+            ];
         });
     }
 
@@ -62,6 +65,9 @@ class ConfigsController extends Controller
         return $this->_create(function () {
             $this->title = 'Add Config';
             $this->view = view('varbox::admin.configs.add');
+            $this->vars = [
+                'keys' => $this->model->getAllowedKeys()
+            ];
         });
     }
 
@@ -91,6 +97,9 @@ class ConfigsController extends Controller
             $this->item = $config;
             $this->title = 'Edit Config';
             $this->view = view('varbox::admin.configs.edit');
+            $this->vars = [
+                'keys' => $this->model->getAllowedKeys()
+            ];
         });
     }
 
