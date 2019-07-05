@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'configs' => '\\' . config('varbox.sys.binding.controllers.configs_controller', \Varbox\Controllers\ConfigsController::class),
-    'errors' => '\\' . config('varbox.sys.binding.controllers.errors_controller', \Varbox\Controllers\ErrorsController::class),
-    'backups' => '\\' . config('varbox.sys.binding.controllers.backups_controller', \Varbox\Controllers\BackupsController::class),
+    'configs' => '\\' . config('varbox.varbox-binding.controllers.configs_controller', \Varbox\Controllers\ConfigsController::class),
+    'errors' => '\\' . config('varbox.varbox-binding.controllers.errors_controller', \Varbox\Controllers\ErrorsController::class),
+    'backups' => '\\' . config('varbox.varbox-binding.controllers.backups_controller', \Varbox\Controllers\BackupsController::class),
 ];
 
 Route::group([
@@ -51,7 +51,7 @@ Route::group([
         'prefix' => 'backups',
     ], function () use ($controllers) {
         Route::get('/', ['as' => 'admin.backups.index', 'uses' => $controllers['backups'] . '@index', 'permissions' => 'backups-list']);
-        Route::post('create', ['as' => 'admin.backups.create', 'uses' => $controllers['backups'] . '@create', 'permissions' => 'backups-create']);
+        Route::post('store', ['as' => 'admin.backups.store', 'uses' => $controllers['backups'] . '@create', 'permissions' => 'backups-create']);
         Route::get('download/{backup}', ['as' => 'admin.backups.download', 'uses' => $controllers['backups'] . '@download', 'permissions' => 'backups-download']);
         Route::delete('destroy/{backup}', ['as' => 'admin.backups.destroy', 'uses' => $controllers['backups'] . '@destroy', 'permissions' => 'backups-delete']);
         Route::delete('clear', ['as' => 'admin.backups.clear', 'uses' => $controllers['backups'] . '@clear', 'permissions' => 'backups-delete']);
