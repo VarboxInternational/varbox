@@ -182,7 +182,7 @@ return [
         | - or you could even use your own class as a direct implementation
         |
         */
-        'config_model' => \Varbox\Models\Backup::class,
+        'config_model' => \Varbox\Models\Config::class,
 
         /*
         |
@@ -403,7 +403,7 @@ return [
         | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
-        'configs_controller' => \Varbox\Controllers\BackupsController::class,
+        'configs_controller' => \Varbox\Controllers\ConfigsController::class,
 
         /*
         |
