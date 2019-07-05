@@ -39,6 +39,7 @@ class AddressesTest extends TestCase
      * @var string
      */
     protected $addressAddress = 'Test Address';
+    protected $addressAddressModified = 'Test Address Modified';
 
     /**
      * @var string
@@ -289,11 +290,6 @@ class AddressesTest extends TestCase
         $this->deleteAddress();
     }
 
-
-
-
-
-
     /** @test */
     public function an_admin_can_create_an_address()
     {
@@ -395,14 +391,65 @@ class AddressesTest extends TestCase
         $this->deleteCountry();
     }
 
+    /** @test */
+    public function an_admin_can_update_an_address()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-edit');
 
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+        $this->createAddress();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->clickEditButton($this->addressAddress)
+                ->type('#address-input', $this->addressAddressModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->assertSee($this->addressAddressModified);
+        });
 
+        $this->deleteAddressModified();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
 
+    /** @test */
+    public function an_admin_can_update_an_address_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-edit');
 
+        $this->createCountry();
+        $this->createState();
+        $this->createCity();
+        $this->createAddress();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
+                ->clickEditButton($this->addressAddress)
+                ->type('#address-input', $this->addressAddressModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#address-input', $this->addressAddressModified);
+        });
 
-
+        $this->deleteAddressModified();
+        $this->deleteCity();
+        $this->deleteState();
+        $this->deleteCountry();
+    }
+    
     /**
      * @return void
      */
@@ -457,6 +504,14 @@ class AddressesTest extends TestCase
     protected function deleteAddress()
     {
         Address::whereAddress($this->addressAddress)->first()->delete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteAddressModified()
+    {
+        Address::whereAddress($this->addressAddressModified)->first()->delete();
     }
 
     /**
