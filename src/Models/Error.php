@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Sys\Models;
+namespace Varbox\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
