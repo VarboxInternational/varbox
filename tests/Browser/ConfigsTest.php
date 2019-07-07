@@ -4,7 +4,6 @@ namespace Varbox\Tests\Browser;
 
 use Illuminate\Contracts\Foundation\Application;
 use Varbox\Models\Config;
-use Varbox\Models\User;
 
 class ConfigsTest extends TestCase
 {
