@@ -2,7 +2,9 @@
 
 namespace Varbox\Tests\Browser;
 
+use Illuminate\Contracts\Foundation\Application;
 use Varbox\Models\Config;
+use Varbox\Models\User;
 
 class ConfigsTest extends TestCase
 {
@@ -35,10 +37,19 @@ class ConfigsTest extends TestCase
         parent::setUp();
 
         $this->afterApplicationCreated(function () {
-            $this->app['config']->set('varbox.varbox-config.keys', ['app.name']);
-
             $this->configKeys = Config::getAllowedKeys();
         });
+    }
+
+    /**
+     * @param Application $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        $app['config']->set('varbox.varbox-config.keys', ['app.name']);
     }
 
     /** @test */
@@ -175,6 +186,75 @@ class ConfigsTest extends TestCase
                 ->clickEditButton($this->configKeys[$this->configKey])
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Config');
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->type('#value-input', $this->configValue)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/configs')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/configs/', new Config)
+                ->assertSee($this->configKeys[$this->configKey])
+                ->assertSee($this->configValue);
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_config_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->type('#value-input', $this->configValue)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/configs/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_config_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+        $this->admin->grantPermission('configs-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->type('#value-input', $this->configValue)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/configs/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertSee($this->configKeys[$this->configKey])
+                ->assertInputValue('#value-input', $this->configValue);
         });
 
         $this->deleteConfig();
