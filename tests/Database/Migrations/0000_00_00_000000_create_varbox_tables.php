@@ -194,6 +194,48 @@ class CreateVarboxTables extends Migration
                 $table->foreign('city_id')->references('id')->on('cities')->onDelete('set null');
             });
         }
+
+        if (!Schema::hasTable('configs')) {
+            Schema::create('configs', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('key')->unique();
+                $table->string('value')->nullable();
+
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('errors')) {
+            Schema::create('errors', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('type');
+                $table->integer('code')->default(0);
+                $table->text('url')->nullable();
+                $table->text('message')->nullable();
+                $table->integer('occurrences')->default(1);
+                $table->text('file')->nullable();
+                $table->integer('line')->nullable();
+                $table->longText('trace')->nullable();
+
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('backups')) {
+            Schema::create('backups', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name');
+                $table->string('disk');
+                $table->string('path');
+                $table->timestamp('date');
+                $table->integer('size')->default(0);
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -203,6 +245,9 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('backups');
+        Schema::dropIfExists('errors');
+        Schema::dropIfExists('configs');
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('cities');
         Schema::dropIfExists('states');
