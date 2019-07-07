@@ -484,6 +484,50 @@ class ConfigsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_key_when_updating_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-edit');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->click('.button-edit')
+                ->click('.select2-selection__clear')
+                ->type('#value-input', $this->configValue)
+                ->press('Save')
+                ->waitForText('The key field is required')
+                ->assertSee('The key field is required');
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function it_requires_a_value_when_updating_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-edit');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->click('.button-edit')
+                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->type('#value-input', '')
+                ->press('Save')
+                ->waitForText('The value field is required')
+                ->assertSee('The value field is required');
+        });
+
+        $this->deleteConfig();
+    }
+
     /**
      * @return void
      */
