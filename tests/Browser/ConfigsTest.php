@@ -449,6 +449,41 @@ class ConfigsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_key_when_creating_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->click('.select2-selection__clear')
+                ->type('#value-input', $this->configValue)
+                ->press('Save')
+                ->waitForText('The key field is required')
+                ->assertSee('The key field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_value_when_creating_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->press('Save')
+                ->waitForText('The value field is required')
+                ->assertSee('The value field is required');
+        });
+    }
+
     /**
      * @return void
      */
