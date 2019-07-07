@@ -307,6 +307,46 @@ class ConfigsTest extends TestCase
         $this->deleteConfig();
     }
 
+    /** @test */
+    public function an_admin_can_delete_a_config_if_it_has_permission()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-delete');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/configs/', $this->configModel)
+                ->assertSee($this->configKeys[$this->configKey])
+                ->assertSee($this->configValue)
+                ->deleteRecord($this->configKeys[$this->configKey])
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/configs/', $this->configModel)
+                ->assertDontSee($this->configKeys[$this->configKey])
+                ->assertDontSee($this->configValue);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_config_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->revokePermission('configs-delete');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteConfig();
+    }
+
     /**
      * @return void
      */
