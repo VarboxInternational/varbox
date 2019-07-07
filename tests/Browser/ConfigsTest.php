@@ -61,6 +61,50 @@ class ConfigsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/configs/create')
+                ->assertSee('Add Config');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/configs/create')
+                ->assertSee('Add Config');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->revokePermission('configs-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->clickLink('Add New')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Add Config');
+        });
+    }
+
     /**
      * @return void
      */
