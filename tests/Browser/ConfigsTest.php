@@ -260,6 +260,53 @@ class ConfigsTest extends TestCase
         $this->deleteConfig();
     }
 
+    /** @test */
+    public function an_admin_can_update_a_config()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-edit');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/configs', $this->configModel)
+                ->clickEditButton($this->configKeys[$this->configKey])
+                ->type('#value-input', $this->configValueModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/configs')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/configs', $this->configModel)
+                ->assertSee($this->configValueModified);
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_config_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('configs-list');
+        $this->admin->grantPermission('configs-edit');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/configs', $this->configModel)
+                ->clickEditButton($this->configKeys[$this->configKey])
+                ->type('#value-input', $this->configValueModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/configs/edit/' . $this->configModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#value-input', $this->configValueModified);
+        });
+
+        $this->deleteConfig();
+    }
+
     /**
      * @return void
      */
