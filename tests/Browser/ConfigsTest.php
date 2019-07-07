@@ -347,6 +347,108 @@ class ConfigsTest extends TestCase
         $this->deleteConfig();
     }
 
+    /** @test */
+    public function an_admin_can_filter_configs_by_keyword()
+    {
+        $this->admin->grantPermission('configs-list');
+
+        $this->createConfig();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#search-input', $this->configKeys[$this->configKey])
+                ->assertQueryStringHas('search', $this->configKeys[$this->configKey])
+                ->assertSee($this->configKeys[$this->configKey])
+                ->assertRecordsCount(1)
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#search-input', $this->configValue)
+                ->assertQueryStringHas('search', $this->configValue)
+                ->assertSee($this->configValue)
+                ->assertRecordsCount(1)
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#search-input', $this->configValueModified)
+                ->assertQueryStringHas('search', $this->configValueModified)
+                ->assertDontSee($this->configValueModified)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_configs_by_start_date()
+    {
+        $this->admin->grantPermission('configs-list');
+
+        $this->createConfig();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/configs', $this->configModel)
+                ->assertSee($this->configKeys[$this->configKey])
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_configs_by_end_date()
+    {
+        $this->admin->grantPermission('configs-list');
+
+        $this->createConfig();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/configs')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/configs', $this->configModel)
+                ->assertSee($this->configKeys[$this->configKey]);
+        });
+
+        $this->deleteConfig();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_config_filters()
+    {
+        $this->admin->grantPermission('configs-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/configs/?search=something&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/configs/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      */
