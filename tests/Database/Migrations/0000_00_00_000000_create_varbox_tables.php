@@ -211,7 +211,7 @@ class CreateVarboxTables extends Migration
                 $table->increments('id');
 
                 $table->string('type');
-                $table->integer('code')->default(0);
+                $table->string('code')->nullable();
                 $table->text('url')->nullable();
                 $table->text('message')->nullable();
                 $table->integer('occurrences')->default(1);
