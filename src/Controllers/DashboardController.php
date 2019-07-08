@@ -20,6 +20,8 @@ class DashboardController extends Controller
      */
     public function index(Request $request, Authenticatable $user)
     {
+        meta()->set('title', 'Admin - Dashboard');
+
         return view('varbox::admin.dashboard');
     }
 }
