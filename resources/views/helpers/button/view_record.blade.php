@@ -1,3 +1,3 @@
-<a href="{{ $url }}" class="btn-view-record btn yellow no-margin-top no-margin-bottom" {!! implode(' ', $attributes) !!}>
-    <i class="fa fa-eye"></i>&nbsp; View
+<a href="{{ $url }}" class="button-view d-inline btn icon px-0 mr-2" data-toggle="tooltip" data-placement="top" title="View" {!! implode(' ', $attributes) !!}>
+    <i class="fe fe-eye text-yellow"></i>
 </a>
