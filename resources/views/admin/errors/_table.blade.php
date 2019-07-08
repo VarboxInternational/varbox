@@ -1,7 +1,7 @@
 <div class="card">
     <table class="table card-table table-vcenter">
         <tr>
-            <th class="sortable d-none d-sm-table-cell" data-sort="type">
+            <th class="sortable" data-sort="type">
                 <i class="fa fa-sort mr-2"></i>Error
             </th>
             <th class="sortable d-none d-sm-table-cell" data-sort="url">
