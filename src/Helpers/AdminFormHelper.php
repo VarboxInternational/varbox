@@ -610,7 +610,7 @@ class AdminFormHelper implements AdminFormHelperContract
         $_label[] = '<label class="form-label" for="' . (empty($options['id']) ? $name . '-input' : $options['id']) . '">';
         $_label[] = $label ?: ucfirst(preg_replace("/[^a-zA-Z0-9\s]/", " ", $name));
 
-        if (in_array('required', $options) || array_key_exists('required', $options)) {
+        if (in_array('required', $options, true) || array_key_exists('required', $options)) {
             $_label[] = '<span class="form-required">*</span>';
         }
 
