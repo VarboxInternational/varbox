@@ -1882,8 +1882,9 @@ pre code {
 }
 
 .form-control:disabled, .form-control[readonly] {
-  background-color: #f8f9fa;
+  /*background-color: #f8f9fa;*/
   opacity: 1;
+  cursor: not-allowed;
 }
 
 select.form-control:not([size]):not([multiple]) {
