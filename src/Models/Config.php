@@ -73,7 +73,7 @@ class Config extends Model implements ConfigModelContract
     public function getActivityOptions()
     {
         return ActivityOptions::instance()
-            ->withEntityType('backup')
+            ->withEntityType('config')
             ->withEntityName($this->key)
             ->withEntityUrl(route('admin.configs.edit', $this->getKey()));
     }
