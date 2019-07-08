@@ -85,7 +85,7 @@ class ErrorsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function clear()
+    public function deleteAll()
     {
         try {
             $this->model->truncate();

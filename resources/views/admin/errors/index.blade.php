@@ -7,7 +7,7 @@
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
-                    {!! form()->open(['url' => route('admin.errors.clear'), 'method' => 'DELETE']) !!}
+                    {!! form()->open(['url' => route('admin.errors.delete_all'), 'method' => 'DELETE']) !!}
                     {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>Delete All Errors', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block text-left']) !!}
                     {!! form()->close() !!}
                 </div>
