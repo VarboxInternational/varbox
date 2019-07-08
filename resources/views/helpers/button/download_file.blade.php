@@ -1,3 +1,3 @@
-<a href="{{ $url }}" class="btn-download-file btn green no-margin-top no-margin-bottom no-margin-left" {!! implode(' ', $attributes) !!}>
-    <i class="fa fa-download"></i>&nbsp; Download
+<a href="{{ $url }}" class="button-download d-inline btn icon px-0 mr-2" data-toggle="tooltip" data-placement="top" title="Download" {!! implode(' ', $attributes) !!}>
+    <i class="fe fe-download text-blue"></i>
 </a>
