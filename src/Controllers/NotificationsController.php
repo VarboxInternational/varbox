@@ -26,6 +26,8 @@ class NotificationsController extends Controller
      */
     public function index(Request $request, Authenticatable $user)
     {
+        meta()->set('title', 'Admin - Notifications');
+
         if ($request->filled('user')) {
             try {
                 $usr = app(UserModelContract::class)->findOrFail((int)$request->get('user'));
