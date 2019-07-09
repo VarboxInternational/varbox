@@ -51,14 +51,12 @@ class Authenticated
     protected function authenticate(array $guards)
     {
         if (empty($guards)) {
-            $this->auth->authenticate();
-            return;
+            $guards = [null];
         }
 
         foreach ($guards as $guard) {
             if ($this->auth->guard($guard)->check()) {
-                $this->auth->shouldUse($guard);
-                return;
+                return $this->auth->shouldUse($guard);
             }
         }
 
