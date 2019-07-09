@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Varbox\Models\Permission;
+use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Tests\Integration\TestCase;
 
@@ -38,9 +39,10 @@ class CheckPermissionsTest extends TestCase
     /** @test */
     public function it_doesnt_allow_user_without_one_permission()
     {
-        Route::middleware('varbox.check.permissions:permission1')->get('/_test/check-permissions', function () {
-            return 'OK';
-        });
+        Route::middleware('varbox.check.permissions:permission1')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
 
         $this->withoutExceptionHandling();
 
@@ -58,9 +60,10 @@ class CheckPermissionsTest extends TestCase
     /** @test */
     public function it_doesnt_allow_user_without_multiple_permissions()
     {
-        Route::middleware('varbox.check.permissions:permission1,permission2')->get('/_test/check-permissions', function () {
-            return 'OK';
-        });
+        Route::middleware('varbox.check.permissions:permission1,permission2')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
 
         $this->withoutExceptionHandling();
 
@@ -80,9 +83,10 @@ class CheckPermissionsTest extends TestCase
     {
         $this->user->grantPermission('permission1');
 
-        Route::middleware('varbox.check.permissions:permission1,permission2')->get('/_test/check-permissions', function () {
-            return 'OK';
-        });
+        Route::middleware('varbox.check.permissions:permission1,permission2')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
 
         $this->withoutExceptionHandling();
 
@@ -95,6 +99,61 @@ class CheckPermissionsTest extends TestCase
         }
 
         $this->fail('Expected Symfony\Component\HttpKernel\Exception\HttpException -> 401');
+    }
+
+    /** @test */
+    public function it_allows_user_with_one_permission()
+    {
+        $this->user->grantPermission('permission1');
+
+        Route::middleware('varbox.check.permissions:permission1')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-permissions');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
+    }
+
+    /** @test */
+    public function it_allows_user_with_multiple_permissions()
+    {
+        $this->user->grantPermission([
+            'permission1', 'permission2', 'permission3'
+        ]);
+
+        Route::middleware('varbox.check.permissions:permission1,permission2,permission3')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-permissions');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
+    }
+
+    /** @test */
+    public function it_allows_super_user_even_without_permissions()
+    {
+        Role::create([
+            'name' => 'Super',
+            'guard' => config('auth.defaults.guard')
+        ]);
+
+        $this->user->assignRoles('Super');
+
+        Route::middleware('varbox.check.permissions:permission1,permission2,permission3')
+            ->get('/_test/check-permissions', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-permissions');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
     }
 
     /**
