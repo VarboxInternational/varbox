@@ -57,6 +57,16 @@ class Error extends Model implements ErrorModelContract
     }
 
     /**
+     * Determine if an error should be saved to the database.
+     *
+     * @return bool
+     */
+    public function shouldSaveError()
+    {
+        return config('varbox.errors.enabled', true) === true;
+    }
+
+    /**
      * Store the registered error in the database.
      *
      * @param Exception $exception
@@ -64,18 +74,14 @@ class Error extends Model implements ErrorModelContract
      */
     public function saveError(Exception $exception)
     {
+        if (!$this->shouldSaveError()) {
+            return;
+        }
+
         $type = get_class($exception);
-        $code = $exception->getCode();
+        $code = $this->getParsedErrorCode($exception);
         $message = $exception->getMessage();
         $url = url()->current();
-
-        if ($exception instanceof ModelNotFoundException) {
-            $code = 404;
-        }
-
-        if ($exception instanceof HttpExceptionInterface) {
-            $code = $exception->getStatusCode();
-        }
 
         static::updateOrCreate([
             'type' => $type,
@@ -107,5 +113,26 @@ class Error extends Model implements ErrorModelContract
         if (($days = (int)config('varbox.errors.old_threshold', 30)) && $days > 0) {
             static::where('created_at', '<', today()->subDays($days))->delete();
         }
+    }
+
+    /**
+     * Get the actual error code.
+     *
+     * @param Exception $exception
+     * @return int
+     */
+    protected function getParsedErrorCode(Exception $exception)
+    {
+        $code = $exception->getCode();
+
+        if ($exception instanceof ModelNotFoundException) {
+            $code = 404;
+        }
+
+        if ($exception instanceof HttpExceptionInterface) {
+            $code = $exception->getStatusCode();
+        }
+
+        return $code;
     }
 }
