@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 $controllers = [
     'notifications' => '\\' . config('varbox.varbox-binding.controllers.notifications_controller', \Varbox\Controllers\NotificationsController::class),
-    'activity' => '\\' . config('varbox.varbox-binding.controllers.activity_controller', \Varbox\Controllers\ActivityController::class),
 ];
 
 Route::group([
@@ -17,9 +16,6 @@ Route::group([
         'varbox.check.permissions',
     ]
 ], function () use ($controllers) {
-    /*
-     * CRUD Notifications.
-     */
     Route::group([
         'prefix' => 'notifications',
     ], function () use ($controllers) {
@@ -31,17 +27,5 @@ Route::group([
         Route::delete('delete-read', ['as' => 'admin.notifications.delete_read', 'uses' => $controllers['notifications'] . '@deleteOnlyRead', 'permissions' => 'notifications-delete']);
         Route::delete('delete-old', ['as' => 'admin.notifications.delete_old', 'uses' => $controllers['notifications'] . '@deleteOnlyOld', 'permissions' => 'notifications-delete']);
         Route::delete('delete-all', ['as' => 'admin.notifications.delete_all', 'uses' => $controllers['notifications'] . '@deleteAll', 'permissions' => 'notifications-delete']);
-    });
-
-    /**
-     * CRUD Activity.
-     */
-    Route::group([
-        'prefix' => 'activity',
-    ], function () use ($controllers) {
-        Route::get('/', ['as' => 'admin.activity.index', 'uses' => $controllers['activity'] . '@index', 'permissions' => 'activity-list']);
-        Route::delete('destroy/{activity}', ['as' => 'admin.activity.destroy', 'uses' => $controllers['activity'] . '@destroy', 'permissions' => 'activity-delete']);
-        Route::delete('delete', ['as' => 'admin.activity.delete', 'uses' => $controllers['activity'] . '@delete', 'permissions' => 'activity-delete']);
-        Route::delete('clean', ['as' => 'admin.activity.clean', 'uses' => $controllers['activity'] . '@clean', 'permissions' => 'activity-delete']);
     });
 });
