@@ -2,7 +2,6 @@
 
 namespace Varbox\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Varbox\Contracts\ActivityModelContract;
 
@@ -33,9 +32,7 @@ class ActivityCleanCommand extends Command
         $days = config('varbox.activity.old_threshold', 30);
 
         if ((int)$days > 0) {
-            $count = $activity->where(
-                'created_at', '<', Carbon::now()->subDays($days)->format('Y-m-d H:i:s')
-            )->delete();
+            $count = $activity->where('created_at', '<', today()->subDays($days))->delete();
 
             $this->info('Activity log cleaned up. ' . $count . ' record(s) were removed.');
         } else {
