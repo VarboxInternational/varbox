@@ -28,7 +28,7 @@
                 <td class="d-none d-sm-table-cell text-gray">
                     @if($item->url)
                         <a href="{{ url($item->url) }}" target="_blank">
-                            {{ str_replace(config('app.url'), '', $item->url) }}
+                            {{ str_replace(config('app.url'), '', $item->url) ?: '/' }}
                         </a>
                     @else
                         N/A
