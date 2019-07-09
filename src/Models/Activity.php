@@ -155,7 +155,7 @@ class Activity extends Model implements ActivityModelContract
      *
      * Activity qualifies as being old if:
      * "created_at" field is smaller than the current date minus the number of days set in the
-     * "old_threshold" key of /config/varbox/audit/activity.php file.
+     * "old_threshold" key of /config/varbox/activity.php file.
      *
      * @return void
      */
