@@ -21,11 +21,6 @@ class CheckPermissionsTest extends TestCase
     protected $user;
 
     /**
-     * @var Collection
-     */
-    protected $permissions;
-
-    /**
      * @return void
      */
     public function setUp(): void
@@ -172,13 +167,11 @@ class CheckPermissionsTest extends TestCase
      */
     protected function createPermissions()
     {
-        $this->permissions = collect();
-
         for ($i = 1; $i <= 3; $i++) {
-            $this->permissions->push(Permission::create([
+            Permission::create([
                 'name' => 'permission' . $i,
                 'guard' => config('auth.defaults.guard'),
-            ]));
+            ]);
         }
     }
 }
