@@ -3,7 +3,6 @@
 namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Varbox\Models\Permission;
