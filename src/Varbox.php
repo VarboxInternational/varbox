@@ -26,7 +26,7 @@ class Varbox
     {
         $this->verifyModule($module);
 
-        return config('varbox.varbox-modules.' . $module) === true;
+        return config('varbox.modules.' . $module) === true;
     }
 
     /**

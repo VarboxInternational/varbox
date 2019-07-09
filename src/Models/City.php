@@ -45,7 +45,7 @@ class City extends Model implements CityModelContract
      */
     public function country()
     {
-        $country = config('varbox.varbox-binding.models.country_model', Country::class);
+        $country = config('varbox.bindings.models.country_model', Country::class);
 
         return $this->belongsTo($country, 'country_id');
     }
@@ -57,7 +57,7 @@ class City extends Model implements CityModelContract
      */
     public function state()
     {
-        $state = config('varbox.varbox-binding.models.state_model', State::class);
+        $state = config('varbox.bindings.models.state_model', State::class);
 
         return $this->belongsTo($state, 'state_id');
     }

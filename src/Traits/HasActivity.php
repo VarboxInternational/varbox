@@ -60,7 +60,7 @@ trait HasActivity
      */
     public function activity()
     {
-        $activity = config('varbox.varbox-binding.models.activity_model', Activity::class);
+        $activity = config('varbox.bindings.models.activity_model', Activity::class);
 
         return $this->morphMany($activity, 'subject');
     }
@@ -94,7 +94,7 @@ trait HasActivity
     public function shouldLogActivity()
     {
         return
-            config('varbox.varbox-activity.enabled', true) === true &&
+            config('varbox.activity.enabled', true) === true &&
             static::$shouldLogActivity === true &&
             $this->getAttribute('id');
     }

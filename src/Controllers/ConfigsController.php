@@ -78,7 +78,7 @@ class ConfigsController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.config_form_request', ConfigRequest::class));
+        app(config('varbox.bindings.form_requests.config_form_request', ConfigRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -111,7 +111,7 @@ class ConfigsController extends Controller
      */
     public function update(Request $request, ConfigModelContract $config)
     {
-        app(config('varbox.varbox-binding.form_requests.config_form_request', ConfigRequest::class));
+        app(config('varbox.bindings.form_requests.config_form_request', ConfigRequest::class));
 
         return $this->_update(function () use ($request, $config) {
             $this->item = $config;

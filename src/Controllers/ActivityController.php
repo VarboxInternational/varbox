@@ -52,7 +52,7 @@ class ActivityController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Activity';
             $this->view = view('varbox::admin.activity.index');
@@ -60,7 +60,7 @@ class ActivityController extends Controller
                 'users' => $this->user->alphabetically()->get(),
                 'entities' => $this->model->getDistinctEntities(),
                 'events' => $this->model->getDistinctEvents(),
-                'days' => config('varbox.varbox-activity.old_threshold', 30),
+                'days' => config('varbox.activity.old_threshold', 30),
             ];
         });
     }

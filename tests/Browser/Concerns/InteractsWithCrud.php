@@ -18,7 +18,7 @@ trait InteractsWithCrud
     public function visitLastPage($path, Model $model)
     {
         $page = number_format(ceil(
-            ($model->count() + 1) / config('varbox.varbox-crud.per_page', 10)
+            ($model->count() + 1) / config('varbox.crud.per_page', 10)
         ));
 
         $this->visit(rtrim($path, "/") . '/?page=' . $page);

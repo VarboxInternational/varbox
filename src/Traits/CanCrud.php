@@ -305,7 +305,7 @@ trait CanCrud
         } catch (Exception $e) {
             $this->rollbackCrudDbTransaction();
 
-            if (in_array(get_class($e), config('varbox.varbox-crud.soft_exceptions', []))) {
+            if (in_array(get_class($e), config('varbox.crud.soft_exceptions', []))) {
                 flash()->error($e->getMessage(), $e);
 
                 return back()->withInput($request ? $request->all() : []);
@@ -364,7 +364,7 @@ trait CanCrud
      */
     protected function shouldUseTransactions()
     {
-        return config('varbox.varbox-crud.use_transactions', true) === true;
+        return config('varbox.crud.use_transactions', true) === true;
     }
 
     /**
@@ -415,7 +415,7 @@ trait CanCrud
     protected function establishPageTitle()
     {
         if ($this->title) {
-            $namespace = config('varbox.varbox-crud.namespace', 'Admin');
+            $namespace = config('varbox.crud.namespace', 'Admin');
 
             meta()->set('title', $namespace . ($this->title ? ' - ' . $this->title : ''));
 
@@ -495,7 +495,7 @@ trait CanCrud
      */
     protected function throwSoftOrHardException(Exception $exception)
     {
-        if (in_array(get_class($exception), config('varbox.varbox-crud.soft_exceptions', []))) {
+        if (in_array(get_class($exception), config('varbox.crud.soft_exceptions', []))) {
             flash()->error($exception->getMessage(), $exception);
         } else {
             throw $exception;

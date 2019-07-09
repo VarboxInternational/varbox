@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'notifications' => '\\' . config('varbox.varbox-binding.controllers.notifications_controller', \Varbox\Controllers\NotificationsController::class),
+    'notifications' => '\\' . config('varbox.bindings.controllers.notifications_controller', \Varbox\Controllers\NotificationsController::class),
 ];
 
 Route::group([

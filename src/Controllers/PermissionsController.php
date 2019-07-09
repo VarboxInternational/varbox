@@ -54,7 +54,7 @@ class PermissionsController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Permissions';
             $this->view = view('varbox::admin.permissions.index');
@@ -86,7 +86,7 @@ class PermissionsController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.permission_form_request', PermissionRequest::class));
+        app(config('varbox.bindings.form_requests.permission_form_request', PermissionRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -119,7 +119,7 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, PermissionModelContract $permission)
     {
-        app(config('varbox.varbox-binding.form_requests.permission_form_request', PermissionRequest::class));
+        app(config('varbox.bindings.form_requests.permission_form_request', PermissionRequest::class));
 
         return $this->_update(function () use ($request, $permission) {
             $this->item = $permission;

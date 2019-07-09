@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'users' => '\\' . config('varbox.varbox-binding.controllers.users_controller', \Varbox\Controllers\UsersController::class),
+    'users' => '\\' . config('varbox.bindings.controllers.users_controller', \Varbox\Controllers\UsersController::class),
 ];
 
 Route::group([

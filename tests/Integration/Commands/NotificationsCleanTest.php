@@ -27,7 +27,7 @@ class NotificationsCleanTest extends TestCase
     /** @test */
     public function it_can_delete_old_notifications()
     {
-        $this->app['config']->set('varbox.varbox-notification.old_threshold', 30);
+        $this->app['config']->set('varbox.notifications.old_threshold', 30);
 
         $this->assertEquals(4, DatabaseNotification::count());
 
@@ -39,7 +39,7 @@ class NotificationsCleanTest extends TestCase
     /** @test */
     public function it_doesnt_delete_any_notifications_if_the_days_threshold_is_null()
     {
-        $this->app['config']->set('varbox.varbox-notification.old_threshold', null);
+        $this->app['config']->set('varbox.notifications.old_threshold', null);
 
         $this->assertEquals(4, DatabaseNotification::count());
 
@@ -51,7 +51,7 @@ class NotificationsCleanTest extends TestCase
     /** @test */
     public function it_doesnt_delete_any_notifications_if_the_days_threshold_is_zero()
     {
-        $this->app['config']->set('varbox.varbox-notification.old_threshold', 0);
+        $this->app['config']->set('varbox.notifications.old_threshold', 0);
 
         $this->assertEquals(4, DatabaseNotification::count());
 

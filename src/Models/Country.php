@@ -42,7 +42,7 @@ class Country extends Model implements CountryModelContract
      */
     public function states()
     {
-        $state = config('varbox.varbox-binding.models.state_model', State::class);
+        $state = config('varbox.bindings.models.state_model', State::class);
 
         return $this->hasMany($state, 'country_id');
     }
@@ -54,7 +54,7 @@ class Country extends Model implements CountryModelContract
      */
     public function cities()
     {
-        $city = config('varbox.varbox-binding.models.city_model', City::class);
+        $city = config('varbox.bindings.models.city_model', City::class);
 
         return $this->hasMany($city, 'country_id');
     }

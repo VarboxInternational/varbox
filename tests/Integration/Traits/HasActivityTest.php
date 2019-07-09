@@ -67,7 +67,7 @@ class HasActivityTest extends TestCase
     /** @test */
     public function it_ignores_creating_any_activity_log_if_disabled_from_config()
     {
-        $this->app['config']->set('varbox.varbox-activity.enabled', false);
+        $this->app['config']->set('varbox.activity.enabled', false);
 
         $this->createPost()->updatePost()->deletePost();
 

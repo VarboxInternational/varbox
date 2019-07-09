@@ -54,7 +54,7 @@ class AdminsController extends Controller
             $this->items = $this->model->onlyAdmins()
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Admins';
             $this->view = view('varbox::admin.admins.index');
@@ -165,7 +165,7 @@ class AdminsController extends Controller
     protected function initRequest()
     {
         return app(config(
-            'varbox.varbox-binding.form_requests.admin_form_request', AdminRequest::class
+            'varbox.bindings.form_requests.admin_form_request', AdminRequest::class
         ))->merged();
     }
 

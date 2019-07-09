@@ -62,7 +62,7 @@ class RolesController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Roles';
             $this->view = view('varbox::admin.roles.index');
@@ -97,7 +97,7 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.role_form_request', RoleRequest::class));
+        app(config('varbox.bindings.form_requests.role_form_request', RoleRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -135,7 +135,7 @@ class RolesController extends Controller
      */
     public function update(Request $request, RoleModelContract $role)
     {
-        app(config('varbox.varbox-binding.form_requests.role_form_request', RoleRequest::class));
+        app(config('varbox.bindings.form_requests.role_form_request', RoleRequest::class));
 
         return $this->_update(function () use ($request, $role) {
             $this->item = $role;

@@ -47,7 +47,7 @@ class Role extends Model implements RoleModelContract
      */
     public function users()
     {
-        $user = config('varbox.varbox-binding.models.user_model', User::class);
+        $user = config('varbox.bindings.models.user_model', User::class);
 
         return $this->belongsToMany($user, 'user_role')->withTimestamps();
     }
@@ -59,7 +59,7 @@ class Role extends Model implements RoleModelContract
      */
     public function permissions()
     {
-        $permission = config('varbox.varbox-binding.models.permission_model', Permission::class);
+        $permission = config('varbox.bindings.models.permission_model', Permission::class);
 
         return $this->belongsToMany($permission, 'role_permission')->withTimestamps();
     }

@@ -47,7 +47,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function getAllQueryCacheStore(): string
     {
-        return config('varbox.varbox-cache.query.all.store', 'array');
+        return config('varbox.query-cache.query.all.store', 'array');
     }
 
     /**
@@ -57,7 +57,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function getDuplicateQueryCacheStore(): string
     {
-        return config('varbox.varbox-cache.query.duplicate.store', 'array');
+        return config('varbox.query-cache.query.duplicate.store', 'array');
     }
 
     /**
@@ -68,7 +68,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function getAllQueryCachePrefix(): string
     {
-        return config('varbox.varbox-cache.query.all.prefix', 'cache.all_query');
+        return config('varbox.query-cache.query.all.prefix', 'cache.all_query');
     }
 
     /**
@@ -79,7 +79,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function getDuplicateQueryCachePrefix(): string
     {
-        return config('varbox.varbox-cache.query.duplicate.prefix', 'cache.duplicate_query');
+        return config('varbox.query-cache.query.duplicate.prefix', 'cache.duplicate_query');
     }
 
     /**
@@ -89,7 +89,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function shouldCacheAllQueries(): bool
     {
-        return config('varbox.varbox-cache.query.all.enabled', false) === true;
+        return config('varbox.query-cache.query.all.enabled', false) === true;
     }
 
     /**
@@ -99,7 +99,7 @@ class QueryCacheService implements QueryCacheServiceContract
      */
     public function shouldCacheDuplicateQueries(): bool
     {
-        return config('varbox.varbox-cache.query.duplicate.enabled', false) === true;
+        return config('varbox.query-cache.query.duplicate.enabled', false) === true;
     }
 
     /**

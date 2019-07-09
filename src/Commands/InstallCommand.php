@@ -81,7 +81,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>PUBLISHING FILES</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $this->callSilent('vendor:publish', ['--tag' => 'varbox-config']);
+        $this->callSilent('vendor:publish', ['--tag' => 'config']);
         $this->line('<fg=green>SUCCESS |</> Published all config files inside the "config/varbox/" directory.');
 
         $this->callSilent('vendor:publish', ['--tag' => 'varbox-migrations']);

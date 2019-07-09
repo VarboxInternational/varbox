@@ -37,7 +37,7 @@ class ConfigTest extends TestCase
     /** @test */
     public function it_can_return_all_the_allowed_keys()
     {
-        $this->app['config']->set('varbox.varbox-config.keys', [
+        $this->app['config']->set('varbox.config.keys', [
             'app.name', 'auth.guards.default'
         ]);
 

@@ -22,7 +22,7 @@ trait HasRoles
      */
     public function roles()
     {
-        $role = config('varbox.varbox-binding.models.role_model', Role::class);
+        $role = config('varbox.bindings.models.role_model', Role::class);
 
         return $this->belongsToMany($role, 'user_role')->withTimestamps();
     }

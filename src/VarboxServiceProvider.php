@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Spatie\Backup\Events\BackupWasSuccessful;
 use Varbox\Commands\ActivityCleanCommand;
+use Varbox\Commands\ErrorsCleanCommand;
 use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Commands\InstallCommand;
 use Varbox\Composers\AdminMenuComposer;
@@ -130,18 +131,19 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function publishConfigs()
     {
         $this->publishes([
-            __DIR__ . '/../config/varbox-activity.php' => config_path('varbox/varbox-activity.php'),
-            __DIR__ . '/../config/varbox-backup.php' => config_path('varbox/varbox-backup.php'),
-            __DIR__ . '/../config/varbox-binding.php' => config_path('varbox/varbox-binding.php'),
-            __DIR__ . '/../config/varbox-cache.php' => config_path('varbox/varbox-cache.php'),
-            __DIR__ . '/../config/varbox-config.php' => config_path('varbox/varbox-config.php'),
-            __DIR__ . '/../config/varbox-modules.php' => config_path('varbox/varbox-modules.php'),
-            __DIR__ . '/../config/varbox-notification.php' => config_path('varbox/varbox-notification.php'),
-            __DIR__ . '/../config/varbox-breadcrumb.php' => config_path('varbox/varbox-breadcrumb.php'),
-            __DIR__ . '/../config/varbox-crud.php' => config_path('varbox/varbox-crud.php'),
-            __DIR__ . '/../config/varbox-flash.php' => config_path('varbox/varbox-flash.php'),
-            __DIR__ . '/../config/varbox-validation.php' => config_path('varbox/varbox-validation.php'),
-        ], 'varbox-config');
+            __DIR__ . '/../config/activity.php' => config_path('varbox/activity.php'),
+            __DIR__ . '/../config/backup.php' => config_path('varbox/backup.php'),
+            __DIR__ . '/../config/bindings.php' => config_path('varbox/bindings.php'),
+            __DIR__ . '/../config/errors.php' => config_path('varbox/errors.php'),
+            __DIR__ . '/../config/query-cache.php' => config_path('varbox/query-cache.php'),
+            __DIR__ . '/../config/config.php' => config_path('varbox/config.php'),
+            __DIR__ . '/../config/modules.php' => config_path('varbox/modules.php'),
+            __DIR__ . '/../config/notifications.php' => config_path('varbox/notifications.php'),
+            __DIR__ . '/../config/breadcrumbs.php' => config_path('varbox/breadcrumbs.php'),
+            __DIR__ . '/../config/crud.php' => config_path('varbox/crud.php'),
+            __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
+            __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
+        ], 'config');
     }
 
     /**
@@ -151,23 +153,23 @@ class VarboxServiceProvider extends BaseServiceProvider
     {
         $this->config->set(
             'jsvalidation.view',
-            config('varbox.varbox-validation.jsvaldidation_view', 'varbox::helpers.validation.trigger')
+            config('varbox.validation.jsvaldidation_view', 'varbox::helpers.validation.trigger')
         );
 
         $this->config->set([
-            'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
-            'breadcrumbs.missing-route-bound-breadcrumb-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
-            'breadcrumbs.invalid-named-breadcrumb-exception' => $this->config['varbox']['varbox-breadcrumb']['throw_exceptions'] ?? true,
+            'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
+            'breadcrumbs.missing-route-bound-breadcrumb-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
+            'breadcrumbs.invalid-named-breadcrumb-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
         ]);
 
-        $this->config->set('backup.backup.name', config('varbox.varbox-backup.name', 'VarBox'));
-        $this->config->set('backup.backup.source.files.include', config('varbox.varbox-backup.files.include', [base_path()]));
-        $this->config->set('backup.backup.source.files.exclude', config('varbox.varbox-backup.files.exclude', [base_path('vendor'), base_path('node_modules')]));
-        $this->config->set('backup.backup.source.files.followLinks', config('varbox.varbox-backup.files.follow_links', true));
-        $this->config->set('backup.backup.source.databases', config('varbox.varbox-backup.databases', ['mysql']));
-        $this->config->set('backup.backup.gzip_database_dump', config('varbox.varbox-backup.gzip_database_dump', true));
-        $this->config->set('backup.backup.destination.filename_prefix', config('varbox.varbox-backup.destination.filename_prefix', 'backup_'));
-        $this->config->set('backup.backup.destination.disks', config('varbox.varbox-backup.destination.disks', ['backups']));
+        $this->config->set('backup.backup.name', config('varbox.backup.name', 'VarBox'));
+        $this->config->set('backup.backup.source.files.include', config('varbox.backup.files.include', [base_path()]));
+        $this->config->set('backup.backup.source.files.exclude', config('varbox.backup.files.exclude', [base_path('vendor'), base_path('node_modules')]));
+        $this->config->set('backup.backup.source.files.followLinks', config('varbox.backup.files.follow_links', true));
+        $this->config->set('backup.backup.source.databases', config('varbox.backup.databases', ['mysql']));
+        $this->config->set('backup.backup.gzip_database_dump', config('varbox.backup.gzip_database_dump', true));
+        $this->config->set('backup.backup.destination.filename_prefix', config('varbox.backup.destination.filename_prefix', 'backup_'));
+        $this->config->set('backup.backup.destination.disks', config('varbox.backup.destination.disks', ['backups']));
     }
 
     /**
@@ -219,6 +221,7 @@ class VarboxServiceProvider extends BaseServiceProvider
                 InstallCommand::class,
                 ActivityCleanCommand::class,
                 NotificationsCleanCommand::class,
+                ErrorsCleanCommand::class,
             ]);
         }
     }
@@ -245,7 +248,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerViewComposers()
     {
-        $composers = $this->config['varbox.varbox-binding']['view_composers'];
+        $composers = $this->config['varbox.bindings']['view_composers'];
 
         $this->app['view']->composer(
             'varbox::layouts.admin.partials._menu',
@@ -303,7 +306,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function loadBreadcrumbs()
     {
-        if ($this->config['varbox']['varbox-breadcrumb']['enabled'] ?? false === true) {
+        if ($this->config['varbox']['breadcrumbs']['enabled'] ?? false === true) {
             require_once __DIR__ . '/../breadcrumbs/home.php';
             require_once __DIR__ . '/../breadcrumbs/users.php';
             require_once __DIR__ . '/../breadcrumbs/admins.php';
@@ -334,17 +337,18 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function mergeConfigs()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-activity.php', 'varbox.varbox-activity');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-backup.php', 'varbox.varbox-backup');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-cache.php', 'varbox.varbox-cache');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-config.php', 'varbox.varbox-config');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-modules.php', 'varbox.varbox-modules');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-notification.php', 'varbox.varbox-notification');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-binding.php', 'varbox.varbox-binding');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-breadcrumb.php', 'varbox.varbox-breadcrumb');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-crud.php', 'varbox.varbox-crud');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-flash.php', 'varbox.varbox-flash');
-        $this->mergeConfigFrom(__DIR__ . '/../config/varbox-validation.php', 'varbox.varbox-validation');
+        $this->mergeConfigFrom(__DIR__ . '/../config/activity.php', 'varbox.activity');
+        $this->mergeConfigFrom(__DIR__ . '/../config/backup.php', 'varbox.backup');
+        $this->mergeConfigFrom(__DIR__ . '/../config/errors.php', 'varbox.errors');
+        $this->mergeConfigFrom(__DIR__ . '/../config/query-cache.php', 'varbox.query-cache');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'varbox.config');
+        $this->mergeConfigFrom(__DIR__ . '/../config/modules.php', 'varbox.modules');
+        $this->mergeConfigFrom(__DIR__ . '/../config/notifications.php', 'varbox.notifications');
+        $this->mergeConfigFrom(__DIR__ . '/../config/bindings.php', 'varbox.bindings');
+        $this->mergeConfigFrom(__DIR__ . '/../config/breadcrumbs.php', 'varbox.breadcrumbs');
+        $this->mergeConfigFrom(__DIR__ . '/../config/crud.php', 'varbox.crud');
+        $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
+        $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');
     }
 
     /**
@@ -361,7 +365,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerServiceBindings()
     {
-        $binding = $this->config['varbox.varbox-binding'];
+        $binding = $this->config['varbox.bindings'];
 
         $this->app->singleton(QueryCacheServiceContract::class, $binding['services']['query_cache_service'] ?? QueryCacheService::class);
         $this->app->alias(QueryCacheServiceContract::class, 'query_cache.service');
@@ -372,7 +376,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerModelBindings()
     {
-        $binding = $this->config['varbox.varbox-binding'];
+        $binding = $this->config['varbox.bindings'];
 
         $this->app->bind(UserModelContract::class, $binding['models']['user_model'] ?? User::class);
         $this->app->alias(UserModelContract::class, 'user.model');
@@ -413,7 +417,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerHelperBindings()
     {
-        $binding = $this->config['varbox.varbox-binding'];
+        $binding = $this->config['varbox.bindings'];
 
         $this->app->singleton(AdminFormHelperContract::class, $binding['helpers']['admin_form_helper'] ?? AdminFormHelper::class);
         $this->app->alias(AdminFormHelperContract::class, 'admin_form.helper');

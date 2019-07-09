@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'cities' => '\\' . config('varbox.varbox-binding.controllers.cities_controller', \Varbox\Controllers\CitiesController::class),
+    'cities' => '\\' . config('varbox.bindings.controllers.cities_controller', \Varbox\Controllers\CitiesController::class),
 ];
 
 Route::group([

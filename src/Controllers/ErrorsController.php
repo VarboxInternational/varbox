@@ -45,7 +45,7 @@ class ErrorsController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Errors';
             $this->view = view('varbox::admin.errors.index');

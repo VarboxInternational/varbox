@@ -16,7 +16,7 @@ class ActivityCleanCommand extends Command
     protected $signature = 'varbox:clean-activity';
 
     /**
-     * Delete activity records older than the config value from "varbox.varbox-activity.old_threshold".
+     * Delete activity records older than the config value from "varbox.activity.old_threshold".
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class ActivityCleanCommand extends Command
      */
     public function handle(ActivityModelContract $activity)
     {
-        $days = config('varbox.varbox-activity.old_threshold', 30);
+        $days = config('varbox.activity.old_threshold', 30);
 
         if ((int)$days > 0) {
             $count = $activity->where(
@@ -40,7 +40,7 @@ class ActivityCleanCommand extends Command
             $this->info('Activity log cleaned up. ' . $count . ' record(s) were removed.');
         } else {
             $this->line('<fg=red>Could not cleanup the activity because no date threshold is set!</>');
-            $this->comment('Please set the "old_threshold" key value in the "config/varbox/varbox-activity.php" file.');
+            $this->comment('Please set the "old_threshold" key value in the "config/varbox/activity.php" file.');
         }
     }
 }

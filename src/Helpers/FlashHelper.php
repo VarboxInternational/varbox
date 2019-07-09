@@ -24,7 +24,7 @@ class FlashHelper implements FlashHelperContract
      */
     public function __construct($type = null)
     {
-        $this->type = $type ?: Arr::first(config('varbox.varbox-flash.types'), null, 'default');
+        $this->type = $type ?: Arr::first(config('varbox.flash.types'), null, 'default');
     }
 
     /**
@@ -85,7 +85,7 @@ class FlashHelper implements FlashHelperContract
 
         session()->flash('flash_error', $message);
 
-        if (config('varbox.varbox-flash.log_errors', true) && $exception) {
+        if (config('varbox.flash.log_errors', true) && $exception) {
             logger()->error($exception);
         }
     }
@@ -106,7 +106,7 @@ class FlashHelper implements FlashHelperContract
 
         session()->flash('flash_warning', $message);
 
-        if (config('varbox.varbox-flash.log_errors', true) && $exception) {
+        if (config('varbox.flash.log_errors', true) && $exception) {
             logger()->warning($exception);
         }
     }
@@ -127,7 +127,7 @@ class FlashHelper implements FlashHelperContract
 
         session()->flash('flash_info', $message);
 
-        if (config('varbox.varbox-flash.log_errors', true) && $exception) {
+        if (config('varbox.flash.log_errors', true) && $exception) {
             logger()->info($exception);
         }
     }

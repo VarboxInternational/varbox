@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'admins' => '\\' . config('varbox.varbox-binding.controllers.admins_controller', \Varbox\Controllers\AdminsController::class),
+    'admins' => '\\' . config('varbox.bindings.controllers.admins_controller', \Varbox\Controllers\AdminsController::class),
 ];
 
 Route::group([

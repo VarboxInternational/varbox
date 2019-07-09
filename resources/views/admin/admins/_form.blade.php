@@ -77,5 +77,5 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.admin_form_request', Varbox\Requests\AdminRequest::class), '.frm') !!}
+    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.admin_form_request', Varbox\Requests\AdminRequest::class), '.frm') !!}
 @endpush

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'errors' => '\\' . config('varbox.varbox-binding.controllers.errors_controller', \Varbox\Controllers\ErrorsController::class),
+    'errors' => '\\' . config('varbox.bindings.controllers.errors_controller', \Varbox\Controllers\ErrorsController::class),
 ];
 
 Route::group([

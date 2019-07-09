@@ -73,7 +73,7 @@ class AddressesController extends Controller
             $this->items = $this->model->ofUser($user)
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Addresses';
             $this->view = view('varbox::admin.addresses.index');
@@ -111,7 +111,7 @@ class AddressesController extends Controller
      */
     public function store(Request $request, UserModelContract $user)
     {
-        app(config('varbox.varbox-binding.form_requests.address_form_request', AddressRequest::class));
+        app(config('varbox.bindings.form_requests.address_form_request', AddressRequest::class));
 
         return $this->_store(function () use ($request, $user) {
             $this->item = $this->model->create($request->all());
@@ -156,7 +156,7 @@ class AddressesController extends Controller
      */
     public function update(Request $request, UserModelContract $user, AddressModelContract $address)
     {
-        app(config('varbox.varbox-binding.form_requests.address_form_request', AddressRequest::class));
+        app(config('varbox.bindings.form_requests.address_form_request', AddressRequest::class));
 
         return $this->_update(function () use ($request, $user, $address) {
             $this->item = $address;

@@ -22,7 +22,7 @@ class ValidationHelper
      */
     public function __construct($type = null)
     {
-        $this->type = $type ?: Arr::first(config('varbox.varbox-validation.types'), null, 'default');
+        $this->type = $type ?: Arr::first(config('varbox.validation.types'), null, 'default');
     }
 
     /**

@@ -44,7 +44,7 @@ class CountriesController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Countries';
             $this->view = view('varbox::admin.countries.index');
@@ -70,7 +70,7 @@ class CountriesController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.country_form_request', CountryRequest::class));
+        app(config('varbox.bindings.form_requests.country_form_request', CountryRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -100,7 +100,7 @@ class CountriesController extends Controller
      */
     public function update(Request $request, CountryModelContract $country)
     {
-        app(config('varbox.varbox-binding.form_requests.country_form_request', CountryRequest::class));
+        app(config('varbox.bindings.form_requests.country_form_request', CountryRequest::class));
 
         return $this->_update(function () use ($request, $country) {
             $this->item = $country;

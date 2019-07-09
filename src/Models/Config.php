@@ -58,7 +58,7 @@ class Config extends Model implements ConfigModelContract
     {
         $keys = [];
 
-        foreach (config('varbox.varbox-config.keys', []) as $key) {
+        foreach (config('varbox.config.keys', []) as $key) {
             $keys[$key] = ucwords(str_replace('.', ' ', $key));
         }
 

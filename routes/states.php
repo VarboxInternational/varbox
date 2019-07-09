@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'states' => '\\' . config('varbox.varbox-binding.controllers.states_controller', \Varbox\Controllers\StatesController::class),
+    'states' => '\\' . config('varbox.bindings.controllers.states_controller', \Varbox\Controllers\StatesController::class),
 ];
 
 Route::group([

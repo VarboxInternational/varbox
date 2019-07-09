@@ -18,7 +18,7 @@ class OverrideConfigs
     public function handle($request, Closure $next)
     {
         foreach (Config::all() as $config) {
-            if (in_array($config->key, config('varbox.varbox-config.keys', []))) {
+            if (in_array($config->key, config('varbox.config.keys', []))) {
                 config()->set($config->key, $this->parseValue($config->value));
             }
         }

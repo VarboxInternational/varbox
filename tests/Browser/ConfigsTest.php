@@ -48,7 +48,7 @@ class ConfigsTest extends TestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app['config']->set('varbox.varbox-config.keys', ['app.name']);
+        $app['config']->set('varbox.config.keys', ['app.name']);
     }
 
     /** @test */

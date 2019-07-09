@@ -54,7 +54,7 @@ class StatesController extends Controller
             $this->items = $this->model->with('country')
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'States';
             $this->view = view('varbox::admin.states.index');
@@ -86,7 +86,7 @@ class StatesController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.state_form_request', StateRequest::class));
+        app(config('varbox.bindings.form_requests.state_form_request', StateRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -119,7 +119,7 @@ class StatesController extends Controller
      */
     public function update(Request $request, StateModelContract $state)
     {
-        app(config('varbox.varbox-binding.form_requests.state_form_request', StateRequest::class));
+        app(config('varbox.bindings.form_requests.state_form_request', StateRequest::class));
 
         return $this->_update(function () use ($request, $state) {
             $this->item = $state;

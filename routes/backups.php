@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'backups' => '\\' . config('varbox.varbox-binding.controllers.backups_controller', \Varbox\Controllers\BackupsController::class),
+    'backups' => '\\' . config('varbox.bindings.controllers.backups_controller', \Varbox\Controllers\BackupsController::class),
 ];
 
 Route::group([

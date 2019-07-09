@@ -58,7 +58,7 @@ class Activity extends Model implements ActivityModelContract
      */
     public function user()
     {
-        $user = config('varbox.varbox-bindings.models.user_model', User::class);
+        $user = config('varbox.bindingss.models.user_model', User::class);
 
         return $this->belongsTo($user, 'user_id');
     }
@@ -161,7 +161,7 @@ class Activity extends Model implements ActivityModelContract
      */
     public static function deleteOld()
     {
-        if (($days = (int)config('varbox.varbox-activity.old_threshold', 30)) && $days > 0) {
+        if (($days = (int)config('varbox.activity.old_threshold', 30)) && $days > 0) {
             static::where('created_at', '<', today()->subDays($days))->delete();
         }
     }

@@ -93,5 +93,5 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.user_form_request', Varbox\Requests\UserRequest::class), '.frm') !!}
+    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.user_form_request', Varbox\Requests\UserRequest::class), '.frm') !!}
 @endpush

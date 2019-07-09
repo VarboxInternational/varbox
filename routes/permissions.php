@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'permissions' => '\\' . config('varbox.varbox-binding.controllers.permissions_controller', \Varbox\Controllers\PermissionsController::class),
+    'permissions' => '\\' . config('varbox.bindings.controllers.permissions_controller', \Varbox\Controllers\PermissionsController::class),
 ];
 
 Route::group([

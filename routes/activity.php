@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'activity' => '\\' . config('varbox.varbox-binding.controllers.activity_controller', \Varbox\Controllers\ActivityController::class),
+    'activity' => '\\' . config('varbox.bindings.controllers.activity_controller', \Varbox\Controllers\ActivityController::class),
 ];
 
 Route::group([

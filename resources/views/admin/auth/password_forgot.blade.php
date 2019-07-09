@@ -41,5 +41,5 @@
 @endsection
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.password_forgot_form_request', \Varbox\Requests\PasswordForgotRequest::class)) !!}
+    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.password_forgot_form_request', \Varbox\Requests\PasswordForgotRequest::class)) !!}
 @endpush

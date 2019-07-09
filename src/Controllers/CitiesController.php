@@ -60,7 +60,7 @@ class CitiesController extends Controller
             $this->items = $this->model->with(['country', 'state'])
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Cities';
             $this->view = view('varbox::admin.cities.index');
@@ -93,7 +93,7 @@ class CitiesController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.varbox-binding.form_requests.city_form_request', CityRequest::class));
+        app(config('varbox.bindings.form_requests.city_form_request', CityRequest::class));
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -127,7 +127,7 @@ class CitiesController extends Controller
      */
     public function update(Request $request, CityModelContract $city)
     {
-        app(config('varbox.varbox-binding.form_requests.city_form_request', CityRequest::class));
+        app(config('varbox.bindings.form_requests.city_form_request', CityRequest::class));
 
         return $this->_update(function () use ($request, $city) {
             $this->item = $city;

@@ -13,7 +13,7 @@ trait HasAddresses
      */
     public function addresses()
     {
-        $address = config('varbox.varbox-binding.models.address_model', Address::class);
+        $address = config('varbox.bindings.models.address_model', Address::class);
 
         return $this->hasMany($address, 'user_id');
     }

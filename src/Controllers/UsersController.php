@@ -62,7 +62,7 @@ class UsersController extends Controller
             $this->items = $this->model->excludingAdmins()
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.varbox-crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Users';
             $this->view = view('varbox::admin.users.index');
@@ -182,7 +182,7 @@ class UsersController extends Controller
     protected function initRequest()
     {
         return app(config(
-            'varbox.varbox-binding.form_requests.user_form_request', UserRequest::class
+            'varbox.bindings.form_requests.user_form_request', UserRequest::class
         ))->merged();
     }
 

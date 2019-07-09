@@ -52,5 +52,5 @@
 @endsection
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.varbox-binding.form_requests.password_reset_form_request', Varbox\Requests\PasswordResetRequest::class)) !!}
+    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.password_reset_form_request', Varbox\Requests\PasswordResetRequest::class)) !!}
 @endpush

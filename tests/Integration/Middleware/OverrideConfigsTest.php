@@ -35,7 +35,7 @@ class OverrideConfigsTest extends TestCase
     /** @test */
     public function it_overrides_the_config_values_for_the_allowed_keys()
     {
-        $this->app['config']->set('varbox.varbox-config.keys', [
+        $this->app['config']->set('varbox.config.keys', [
             'app.name', 'auth.guards.default'
         ]);
 

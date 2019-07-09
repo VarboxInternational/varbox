@@ -19,7 +19,7 @@ trait HasPermissions
      */
     public function permissions()
     {
-        $permission = config('varbox.varbox-binding.models.permission_model', Permission::class);
+        $permission = config('varbox.bindings.models.permission_model', Permission::class);
 
         return $this->belongsToMany($permission, 'user_permission')->withTimestamps();
     }

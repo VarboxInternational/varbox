@@ -61,7 +61,7 @@ class Address extends Model implements AddressModelContract
      */
     public function user()
     {
-        $user = config('varbox.varbox-binding.models.user_model', User::class);
+        $user = config('varbox.bindings.models.user_model', User::class);
 
         return $this->belongsTo($user, 'user_id');
     }
@@ -73,7 +73,7 @@ class Address extends Model implements AddressModelContract
      */
     public function country()
     {
-        $country = config('varbox.varbox-binding.models.country_model', Country::class);
+        $country = config('varbox.bindings.models.country_model', Country::class);
 
         return $this->belongsTo($country, 'country_id');
     }
@@ -85,7 +85,7 @@ class Address extends Model implements AddressModelContract
      */
     public function state()
     {
-        $state = config('varbox.varbox-binding.models.state_model', State::class);
+        $state = config('varbox.bindings.models.state_model', State::class);
 
         return $this->belongsTo($state, 'state_id');
     }
@@ -97,7 +97,7 @@ class Address extends Model implements AddressModelContract
      */
     public function city()
     {
-        $city = config('varbox.varbox-binding.models.city_model', City::class);
+        $city = config('varbox.bindings.models.city_model', City::class);
 
         return $this->belongsTo($city, 'city_id');
     }

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'dashboard' => '\\' . config('varbox.varbox-binding.controllers.dashboard_controller', \Varbox\Controllers\DashboardController::class),
+    'dashboard' => '\\' . config('varbox.bindings.controllers.dashboard_controller', \Varbox\Controllers\DashboardController::class),
 ];
 
 Route::group([

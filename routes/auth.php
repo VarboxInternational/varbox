@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'login' => '\\' . config('varbox.varbox-binding.controllers.login_controller', \Varbox\Controllers\LoginController::class),
-    'password_forgot' => '\\' . config('varbox.varbox-binding.controllers.password_forgot_controller', \Varbox\Controllers\ForgotPasswordController::class),
-    'password_reset' => '\\' . config('varbox.varbox-binding.controllers.password_reset_controller', \Varbox\Controllers\ResetPasswordController::class),
+    'login' => '\\' . config('varbox.bindings.controllers.login_controller', \Varbox\Controllers\LoginController::class),
+    'password_forgot' => '\\' . config('varbox.bindings.controllers.password_forgot_controller', \Varbox\Controllers\ForgotPasswordController::class),
+    'password_reset' => '\\' . config('varbox.bindings.controllers.password_reset_controller', \Varbox\Controllers\ResetPasswordController::class),
 ];
 
 Route::group([
