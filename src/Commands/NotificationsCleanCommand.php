@@ -2,7 +2,6 @@
 
 namespace Varbox\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Notifications\DatabaseNotification;
 
@@ -32,9 +31,7 @@ class NotificationsCleanCommand extends Command
         $days = config('varbox.notifications.old_threshold', 30);
 
         if ((int)$days > 0) {
-            $count = DatabaseNotification::where(
-                'created_at', '<', Carbon::now()->subDays($days)->format('Y-m-d H:i:s')
-            )->delete();
+            $count = DatabaseNotification::where('created_at', '<', today()->subDays($days))->delete();
 
             $this->info('Notifications cleaned up. ' . $count . ' record(s) were removed.');
         } else {
