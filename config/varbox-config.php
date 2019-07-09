@@ -4,6 +4,13 @@ return [
 
     /*
     |
+    | Flag indicating whether or not configuration values can be modified from admin on runtime.
+    |
+    */
+    'enabled' => true,
+
+    /*
+    |
     | The list of Laravel configurations that can be editable from the admin.
     |
     | Specify any config key from any Laravel configuration file to make it editable.
