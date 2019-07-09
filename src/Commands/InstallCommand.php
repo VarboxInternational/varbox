@@ -127,6 +127,13 @@ class InstallCommand extends Command
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "LOG_ACTIVITY" configuration.');
             }
+
+            if (false === strpos($env, 'SAVE_ERRORS')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nSAVE_ERRORS=true\n");
+                $this->line('<fg=green>SUCCESS |</> Appended "SAVE_ERRORS" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "SAVE_ERRORS" configuration.');
+            }
         } catch (FileNotFoundException $e) {
             $this->line('<fg=red>ERROR   |</> Unable to append the env variables! The file ".env" was not found.');
         }
