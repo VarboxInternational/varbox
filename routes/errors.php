@@ -22,6 +22,7 @@ Route::group([
         Route::get('/', ['as' => 'admin.errors.index', 'uses' => $controllers['errors'] . '@index', 'permissions' => 'errors-list']);
         Route::get('show/{error}', ['as' => 'admin.errors.show', 'uses' => $controllers['errors'] . '@show', 'permissions' => 'errors-view']);
         Route::delete('destroy/{error}', ['as' => 'admin.errors.destroy', 'uses' => $controllers['errors'] . '@destroy', 'permissions' => 'errors-delete']);
-        Route::delete('delete-all', ['as' => 'admin.errors.delete_all', 'uses' => $controllers['errors'] . '@deleteAll', 'permissions' => 'errors-delete']);
+        Route::delete('delete', ['as' => 'admin.errors.delete', 'uses' => $controllers['errors'] . '@delete', 'permissions' => 'errors-delete']);
+        Route::delete('clean', ['as' => 'admin.errors.clean', 'uses' => $controllers['errors'] . '@clean', 'permissions' => 'errors-delete']);
     });
 });

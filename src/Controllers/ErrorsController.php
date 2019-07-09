@@ -2,6 +2,7 @@
 
 namespace Varbox\Controllers;
 
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -49,6 +50,9 @@ class ErrorsController extends Controller
 
             $this->title = 'Errors';
             $this->view = view('varbox::admin.errors.index');
+            $this->vars = [
+                'days' => config('varbox.errors.old_threshold', 30),
+            ];
         });
     }
 
@@ -85,7 +89,7 @@ class ErrorsController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function deleteAll()
+    public function delete()
     {
         try {
             $this->model->truncate();
@@ -93,6 +97,23 @@ class ErrorsController extends Controller
             flash()->success('All errors have been successfully deleted!');
         } catch (\Exception $e) {
             flash()->error('Could not delete the errors! Please try again.', $e);
+        }
+
+        return redirect()->route('admin.errors.index');
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws Exception
+     */
+    public function clean()
+    {
+        try {
+            $this->model->deleteOld();
+
+            flash()->success('Old errors were successfully deleted!');
+        } catch (Exception $e) {
+            flash()->error('Something went wrong! Please try again.', $e);
         }
 
         return redirect()->route('admin.errors.index');

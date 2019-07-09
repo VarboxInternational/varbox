@@ -92,4 +92,20 @@ class Error extends Model implements ErrorModelContract
             'trace' => $exception->getTraceAsString(),
         ]);
     }
+
+    /**
+     * Attempt to clean old errors.
+     *
+     * Errors qualify as being old if:
+     * "created_at" field is smaller than the current date minus the number of days set in the
+     * "old_threshold" key of /config/varbox/errors.php file.
+     *
+     * @return void
+     */
+    public static function deleteOld()
+    {
+        if (($days = (int)config('varbox.errors.old_threshold', 30)) && $days > 0) {
+            static::where('created_at', '<', today()->subDays($days))->delete();
+        }
+    }
 }
