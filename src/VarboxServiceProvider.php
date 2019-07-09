@@ -281,19 +281,21 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function loadRoutes()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes/main.php');
-
-        if (\Varbox::moduleEnabled('audit')) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/audit.php');
-        }
-
-        if (\Varbox::moduleEnabled('geo')) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/geo.php');
-        }
-
-        if (\Varbox::moduleEnabled('sys')) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/sys.php');
-        }
+        $this->loadRoutesFrom(__DIR__ . '/../routes/auth.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/home.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/users.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/admins.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/roles.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/permissions.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/countries.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/states.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/cities.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/addresses.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/activity.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/notifications.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/configs.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/errors.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/backups.php');
     }
 
     /**
@@ -302,19 +304,20 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function loadBreadcrumbs()
     {
         if ($this->config['varbox']['varbox-breadcrumb']['enabled'] ?? false === true) {
-            require __DIR__ . '/../breadcrumbs/main.php';
-
-            if (\Varbox::moduleEnabled('audit')) {
-                require __DIR__ . '/../breadcrumbs/audit.php';
-            }
-
-            if (\Varbox::moduleEnabled('geo')) {
-                require __DIR__ . '/../breadcrumbs/geo.php';
-            }
-
-            if (\Varbox::moduleEnabled('sys')) {
-                require __DIR__ . '/../breadcrumbs/sys.php';
-            }
+            require_once __DIR__ . '/../breadcrumbs/home.php';
+            require_once __DIR__ . '/../breadcrumbs/users.php';
+            require_once __DIR__ . '/../breadcrumbs/admins.php';
+            require_once __DIR__ . '/../breadcrumbs/roles.php';
+            require_once __DIR__ . '/../breadcrumbs/permissions.php';
+            require_once __DIR__ . '/../breadcrumbs/countries.php';
+            require_once __DIR__ . '/../breadcrumbs/states.php';
+            require_once __DIR__ . '/../breadcrumbs/cities.php';
+            require_once __DIR__ . '/../breadcrumbs/addresses.php';
+            require_once __DIR__ . '/../breadcrumbs/activity.php';
+            require_once __DIR__ . '/../breadcrumbs/notifications.php';
+            require_once __DIR__ . '/../breadcrumbs/configs.php';
+            require_once __DIR__ . '/../breadcrumbs/errors.php';
+            require_once __DIR__ . '/../breadcrumbs/backups.php';
         }
     }
 
