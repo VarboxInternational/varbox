@@ -94,6 +94,61 @@ class CheckRolesTest extends TestCase
         $this->fail('Expected Symfony\Component\HttpKernel\Exception\HttpException -> 401');
     }
 
+    /** @test */
+    public function it_allows_user_with_one_role()
+    {
+        $this->user->assignRoles('role1');
+
+        Route::middleware('varbox.check.roles:role1')
+            ->get('/_test/check-roles', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-roles');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
+    }
+
+    /** @test */
+    public function it_allows_user_with_multiple_roles()
+    {
+        $this->user->assignRoles([
+            'role1', 'role2', 'role3'
+        ]);
+
+        Route::middleware('varbox.check.roles:role1,role2,role3')
+            ->get('/_test/check-roles', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-roles');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
+    }
+
+    /** @test */
+    public function it_allows_super_user_even_without_roles()
+    {
+        Role::create([
+            'name' => 'Super',
+            'guard' => config('auth.defaults.guard')
+        ]);
+
+        $this->user->assignRoles('Super');
+
+        Route::middleware('varbox.check.roles:role1,role2,role3')
+            ->get('/_test/check-roles', function () {
+                return 'OK';
+            });
+
+        $response = $this->actingAs($this->user)->get('/_test/check-roles');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getContent());
+    }
+
     /**
      * @return void
      */
