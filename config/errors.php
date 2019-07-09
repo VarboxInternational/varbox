@@ -8,7 +8,7 @@ return [
     | If set to false, no errors will be saved to the database.
     |
     */
-    'enabled' => env('LOG_ERRORS', true),
+    'enabled' => env('SAVE_ERRORS', true),
 
     /*
     |
@@ -21,6 +21,6 @@ return [
     | If set to "null" or "0", no past errors will be deleted whatsoever.
     |
     */
-    'old_threshold' => 1,
+    'old_threshold' => 30,
 
 ];
