@@ -10,7 +10,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Filters\BackupFilter;
@@ -106,14 +105,25 @@ class BackupsController extends Controller
         return $this->_destroy(function () use ($backup) {
             $this->redirect = redirect()->route('admin.backups.index');
 
-            $filesystem = Storage::disk($backup->disk);
-
-            if ($filesystem->exists($backup->path)) {
-                $filesystem->delete($backup->path);
-            }
-
-            $backup->delete();
+            $backup->deleteFromDatabaseAndFilesystem();
         });
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function clean()
+    {
+        try {
+            $this->model->deleteOld();
+
+            flash()->success('Old backups were successfully deleted!');
+        } catch (ModelNotFoundException $e) {
+            flash()->error('Something went wrong! Please try again.', $e);
+        }
+
+        return redirect()->route('admin.backups.index');
     }
 
     /**
@@ -123,15 +133,7 @@ class BackupsController extends Controller
     public function delete()
     {
         try {
-            foreach ($this->model->all() as $backup) {
-                $filesystem = Storage::disk($backup->disk);
-
-                if ($filesystem->exists($backup->path)) {
-                    $filesystem->delete($backup->path);
-                }
-
-                $backup->delete();
-            }
+            $this->model->deleteAll();
 
             flash()->success('All backups were successfully deleted!');
         } catch (ModelNotFoundException $e) {
