@@ -32,6 +32,7 @@ use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
+use Varbox\Events\ErrorSaved;
 use Varbox\Facades\VarboxFacade;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
@@ -39,6 +40,7 @@ use Varbox\Helpers\ButtonHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\ValidationHelper;
+use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Listeners\StoreBackupToDatabase;
 use Varbox\Middleware\AuthenticateSession;
 use Varbox\Middleware\Authenticated;
@@ -329,6 +331,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function listenToEvents()
     {
+        Event::listen(ErrorSaved::class, SendErrorSavedEmail::class);
         Event::listen(BackupWasSuccessful::class, StoreBackupToDatabase::class);
     }
 
