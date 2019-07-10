@@ -167,7 +167,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
             'backup.backup.source' => $this->config['varbox']['backup']['source'] ?? [],
             'backup.backup.destination' => $this->config['varbox']['backup']['destination'] ?? [],
-            'backup.backup.cleanup' => $this->config['varbox']['backup']['cleanup'] ?? [],
             'backup.backup.database_dump_compressor' => $this->config['varbox']['backup']['database_dump_compressor'] ?? null,
         ]);
     }
