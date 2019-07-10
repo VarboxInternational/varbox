@@ -23,4 +23,14 @@ return [
     */
     'old_threshold' => 30,
 
+    /*
+    |
+    | You can be notified via email when an error has occurred in the system.
+    | To do so, specify any email addresses in an array format and each address will receive the notifications.
+    |
+    */
+    'notification_emails' => [
+
+    ]
+
 ];
