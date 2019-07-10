@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Varbox\Events\ErrorSaved;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 use Varbox\Contracts\ErrorModelContract;
@@ -59,11 +60,16 @@ class Error extends Model implements ErrorModelContract
     /**
      * Determine if an error should be saved to the database.
      *
+     * Verify if errors are enabled from the config file.
+     * Verify if the exception to be saved is not registered as an ignored exception.
+     *
+     * @param Exception $exception
      * @return bool
      */
-    public function shouldSaveError()
+    public function shouldSaveError(Exception $exception)
     {
-        return config('varbox.errors.enabled', true) === true;
+        return
+            config('varbox.errors.enabled', true) === true;
     }
 
     /**
@@ -71,10 +77,11 @@ class Error extends Model implements ErrorModelContract
      *
      * @param Exception $exception
      * @return void
+     * @throws Exception
      */
     public function saveError(Exception $exception)
     {
-        if (!$this->shouldSaveError()) {
+        if (!$this->shouldSaveError($exception)) {
             return;
         }
 
@@ -83,20 +90,26 @@ class Error extends Model implements ErrorModelContract
         $message = $exception->getMessage();
         $url = url()->current();
 
-        static::updateOrCreate([
+        $findData = [
             'type' => $type,
             'code' => $code,
             'message' => $message,
             'url' => $url,
-        ], [
-            'type' => $type,
-            'code' => $code,
-            'message' => $message,
-            'url' => $url,
+        ];
+
+        $saveData = $findData + [
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
             'trace' => $exception->getTraceAsString(),
-        ]);
+        ];
+
+        try {
+            $error = static::updateOrCreate($findData, $saveData);
+
+            event(new ErrorSaved($error));
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     /**
