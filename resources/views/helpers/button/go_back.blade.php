@@ -1,3 +1,3 @@
-<a href="{{ $url }}" class="btn-go-back btn no-margin-right" {!! implode(' ', $attributes) !!}>
-    <i class="fa fa-chevron-left"></i>&nbsp; Go Back
+<a href="{{ $url }}" class="btn text-blue mr-auto" {!! implode(' ', $attributes) !!}>
+    <i class="fe fe-chevron-left mr-1"></i>Go Back
 </a>
