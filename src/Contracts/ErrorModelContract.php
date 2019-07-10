@@ -5,9 +5,10 @@ namespace Varbox\Contracts;
 interface ErrorModelContract
 {
     /**
+     * @param \Exception $exception
      * @return bool
      */
-    public function shouldSaveError();
+    public function shouldSaveError(\Exception $exception);
 
     /**
      * @param \Exception $exception

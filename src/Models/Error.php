@@ -69,7 +69,8 @@ class Error extends Model implements ErrorModelContract
     public function shouldSaveError(Exception $exception)
     {
         return
-            config('varbox.errors.enabled', true) === true;
+            config('varbox.errors.enabled', true) === true &&
+            !in_array(get_class($exception), config('varbox.errors.ignore_errors', []));
     }
 
     /**
