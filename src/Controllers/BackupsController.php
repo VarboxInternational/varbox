@@ -78,7 +78,7 @@ class BackupsController extends Controller
                 flash()->success('The process has been queued! Check back shortly to see your backup.');
             }
         } catch (Exception $e) {
-            flash()->success($e->getMessage());
+            flash()->error($e->getMessage(), $e);
         }
 
         return redirect()->route('admin.backups.index');

@@ -95,6 +95,37 @@ return [
 
     /*
     |
+    | You can get notified when specific events occur.
+    |
+    | You can also use your own notification classes.
+    | Just make sure the class is named after one of the "Spatie\Backup\Events" classes.
+    |
+    */
+    'notifications' => [
+        /*
+        |
+        | The notification classes and their method of notification.
+        |
+        */
+        'notifications' => [
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailed::class => [/*'mail'*/],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFound::class => [/*'mail'*/],
+            \Spatie\Backup\Notifications\Notifications\CleanupHasFailed::class => [/*'mail'*/],
+            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessful::class => [/*'mail'*/],
+            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFound::class => [/*'mail'*/],
+            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessful::class => [/*'mail'*/],
+        ],
+
+        /*
+        |
+        | The email address where to send the mail notifications.
+        |
+        */
+        'email' => '',
+    ],
+
+    /*
+    |
     | The database dump can be compressed to decrease disk space usage.
     | If you do not want any compressor at all, set it to "null".
     |
