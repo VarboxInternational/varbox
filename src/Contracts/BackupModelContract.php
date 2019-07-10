@@ -23,4 +23,20 @@ interface BackupModelContract
      * @return int|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download();
+
+    /**
+     * @return void
+     */
+    public function deleteAll();
+
+    /**
+     * @return void
+     */
+    public function deleteOld();
+
+    /**
+     * @throws \Exception
+     * @return void
+     */
+    public function deleteFromDatabaseAndFilesystem();
 }

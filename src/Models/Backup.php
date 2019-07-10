@@ -107,6 +107,55 @@ class Backup extends Model implements BackupModelContract
     }
 
     /**
+     * Delete all backup database records and their corresponding archive.
+     *
+     * @return void
+     */
+    public function deleteAll()
+    {
+        foreach (static::all() as $backup) {
+            $backup->deleteFromDatabaseAndFilesystem();
+        }
+    }
+
+    /**
+     * Attempt to delete old backups.
+     *
+     * Backups qualify as being old if:
+     * "created_at" field is smaller than the current date minus the number of days set in the
+     * "old_threshold" key of /config/varbox/backup.php file.
+     *
+     * @return void
+     */
+    public function deleteOld()
+    {
+        if (($days = (int)config('varbox.backup.old_threshold', 30)) && $days > 0) {
+            $backups = static::where('created_at', '<', today()->subDays($days))->get();
+
+            foreach ($backups as $backup) {
+                $backup->deleteFromDatabaseAndFilesystem();
+            }
+        }
+    }
+
+    /**
+     * Delete a backup's database record and corresponding archive.
+     *
+     * @throws \Exception
+     * @return void
+     */
+    public function deleteFromDatabaseAndFilesystem()
+    {
+        $filesystem = Storage::disk($this->disk);
+
+        if ($filesystem->exists($this->path)) {
+            $filesystem->delete($this->path);
+        }
+
+        $this->delete();
+    }
+
+    /**
      * Set the options for the HasActivity trait.
      *
      * @return ActivityOptions
