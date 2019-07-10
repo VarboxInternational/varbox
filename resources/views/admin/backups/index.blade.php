@@ -11,8 +11,12 @@
                     {!! form()->button('<i class="fe fe-plus mr-2"></i>Create New Backup', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue btn-square btn-block text-left mb-5']) !!}
                     {!! form()->close() !!}
 
+                    {!! form()->open(['url' => route('admin.backups.clean'), 'method' => 'DELETE']) !!}
+                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Backups', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block text-left mb-5']) !!}
+                    {!! form()->close() !!}
+
                     {!! form()->open(['url' => route('admin.backups.delete'), 'method' => 'DELETE']) !!}
-                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete All Backups', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block text-left']) !!}
+                    {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>Delete All Backups', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block text-left']) !!}
                     {!! form()->close() !!}
                 </div>
             </div>
