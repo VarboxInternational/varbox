@@ -65,9 +65,16 @@ class BackupsController extends Controller
         ini_set('max_execution_time', 300);
 
         try {
-            Artisan::call('backup:run');
+            $queueConnection = config('queue.default');
+            $queueDriver = config('queue.connections.' . $queueConnection . '.driver');
 
-            flash()->success('The record was successfully created!');
+            Artisan::queue('backup:run');
+
+            if (in_array($queueDriver, ['sync', 'database'])) {
+                flash()->success('The backup was successfully created!');
+            } else {
+                flash()->success('The process has been queued! Check back shortly to see your backup.');
+            }
         } catch (Exception $e) {
             flash()->success($e->getMessage());
         }
