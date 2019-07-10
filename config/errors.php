@@ -25,6 +25,16 @@ return [
 
     /*
     |
+    | Here you can specify any exceptions that you don't want to be saved/emailed.
+    | You can specify which exceptions to ignore by adding their FQNs in an array format.
+    |
+    */
+    'ignore_errors' => [
+
+    ],
+
+    /*
+    |
     | You can be notified via email when an error has occurred in the system.
     | To do so, specify any email addresses in an array format and each address will receive the notifications.
     |
