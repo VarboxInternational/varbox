@@ -52,6 +52,9 @@ class BackupsController extends Controller
 
             $this->title = 'Backups';
             $this->view = view('varbox::admin.backups.index');
+            $this->vars = [
+                'days' => config('varbox.backup.old_threshold', 30),
+            ];
         });
     }
 
@@ -67,7 +70,7 @@ class BackupsController extends Controller
             $queueConnection = config('queue.default');
             $queueDriver = config('queue.connections.' . $queueConnection . '.driver');
 
-            Artisan::queue('backup:run', ['--disable-notifications']);
+            Artisan::queue('backup:run');
 
             if (in_array($queueDriver, ['sync', 'database'])) {
                 flash()->success('The backup was successfully created!');

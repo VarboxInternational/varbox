@@ -12,7 +12,7 @@
                     {!! form()->close() !!}
 
                     {!! form()->open(['url' => route('admin.backups.clean'), 'method' => 'DELETE']) !!}
-                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Backups', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block text-left mb-5']) !!}
+                    {!! form()->button('<i class="fe fe-trash mr-2"></i>Delete Old Backups', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block text-left mb-5', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Older than ' . $days . ' ' . Str::plural('day', $days)]) !!}
                     {!! form()->close() !!}
 
                     {!! form()->open(['url' => route('admin.backups.delete'), 'method' => 'DELETE']) !!}
