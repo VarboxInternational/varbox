@@ -84,6 +84,20 @@ class BackupsController extends Controller
 
     /**
      * @param BackupModelContract $backup
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function download(BackupModelContract $backup)
+    {
+        try {
+            return $backup->download();
+        } catch (ModelNotFoundException $e) {
+            flash()->error('You are trying to download a backup archive that does not exist!', $e);
+            return redirect()->route('admin.backups.index');
+        }
+    }
+
+    /**
+     * @param BackupModelContract $backup
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
@@ -103,24 +117,10 @@ class BackupsController extends Controller
     }
 
     /**
-     * @param BackupModelContract $backup
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function download(BackupModelContract $backup)
-    {
-        try {
-            return $backup->download();
-        } catch (ModelNotFoundException $e) {
-            flash()->error('You are trying to download a backup archive that does not exist!', $e);
-            return redirect()->route('admin.backups.index');
-        }
-    }
-
-    /**
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function deleteAll()
+    public function delete()
     {
         try {
             foreach ($this->model->all() as $backup) {
