@@ -52,7 +52,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             @if($item->file || $item->line)
-                                Error occured in <strong>{{ $item->file ?: 'N/A' }}</strong> on line <strong>{{ $item->line ?: 'N/A' }}</strong>
+                                Error occurred in <strong>{{ $item->file ?: 'N/A' }}</strong> on line <strong>{{ $item->line ?: 'N/A' }}</strong>
                             @endif
                             <hr>
                             @if($item->trace)
