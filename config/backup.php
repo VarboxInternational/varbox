@@ -103,71 +103,15 @@ return [
 
     /*
     |
-    | The backup cleanup options.
+    | This option accepts an integer, representing the number of days.
+    |
+    | This option is used to delete backups older than the number of days supplied when:
+    | - executing the cli command: "php artisan varbox:clean-backups"
+    | - clicking the "Delete Old Activity" button from the admin panel, inside the activity list view
+    |
+    | If set to "null" or "0", no past activities will be deleted whatsoever.
     |
     */
-    'cleanup' => [
-        /*
-        |
-        | The strategy that will be used to cleanup old backups. The default strategy
-        | will keep all backups for a certain amount of days. After that period only
-        | a daily backup will be kept. After that period only weekly backups will
-        | be kept and so on.
-        |
-        | No matter how you configure it the default strategy will never
-        | delete the newest backup.
-        |
-        */
-        'strategy' => \Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
-
-        /*
-        |
-        | The backup cleanup strategy options.
-        |
-        */
-        'default_strategy' => [
-            /*
-            |
-            | The number of days for which backups must be kept.
-            |
-            */
-            'keep_all_backups_for_days' => 7,
-
-            /*
-            |
-            | The number of days for which daily backups must be kept.
-            |
-            */
-            'keep_daily_backups_for_days' => 16,
-
-            /*
-            |
-            | The number of weeks for which one weekly backup must be kept.
-            |
-            */
-            'keep_weekly_backups_for_weeks' => 8,
-
-            /*
-            |
-            | The number of months for which one monthly backup must be kept.
-            |
-            */
-            'keep_monthly_backups_for_months' => 4,
-
-            /*
-            |
-            | The number of years for which one yearly backup must be kept.
-            |
-            */
-            'keep_yearly_backups_for_years' => 2,
-
-            /*
-            |
-            | After cleaning up the backups remove the oldest backup until this amount of megabytes has been reached.
-            |
-            */
-            'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
-        ],
-    ],
+    'old_threshold' => 30,
 
 ];
