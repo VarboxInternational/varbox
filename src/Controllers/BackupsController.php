@@ -67,7 +67,7 @@ class BackupsController extends Controller
             $queueConnection = config('queue.default');
             $queueDriver = config('queue.connections.' . $queueConnection . '.driver');
 
-            Artisan::queue('backup:run');
+            Artisan::queue('backup:run', ['--disable-notifications']);
 
             if (in_array($queueDriver, ['sync', 'database'])) {
                 flash()->success('The backup was successfully created!');
