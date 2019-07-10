@@ -153,10 +153,9 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function overrideConfigs()
     {
-        $this->config->set(
-            'jsvalidation.view',
-            config('varbox.validation.jsvaldidation_view', 'varbox::helpers.validation.trigger')
-        );
+        $this->config->set([
+            'jsvalidation.view' => $this->config['varbox']['validation']['jsvaldidation_view'] ?? 'varbox::helpers.validation.trigger',
+        ]);
 
         $this->config->set([
             'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
@@ -164,14 +163,13 @@ class VarboxServiceProvider extends BaseServiceProvider
             'breadcrumbs.invalid-named-breadcrumb-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
         ]);
 
-        $this->config->set('backup.backup.name', config('varbox.backup.name', 'VarBox'));
-        $this->config->set('backup.backup.source.files.include', config('varbox.backup.files.include', [base_path()]));
-        $this->config->set('backup.backup.source.files.exclude', config('varbox.backup.files.exclude', [base_path('vendor'), base_path('node_modules')]));
-        $this->config->set('backup.backup.source.files.followLinks', config('varbox.backup.files.follow_links', true));
-        $this->config->set('backup.backup.source.databases', config('varbox.backup.databases', ['mysql']));
-        $this->config->set('backup.backup.gzip_database_dump', config('varbox.backup.gzip_database_dump', true));
-        $this->config->set('backup.backup.destination.filename_prefix', config('varbox.backup.destination.filename_prefix', 'backup_'));
-        $this->config->set('backup.backup.destination.disks', config('varbox.backup.destination.disks', ['backups']));
+        $this->config->set([
+            'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
+            'backup.backup.source' => $this->config['varbox']['backup']['source'] ?? [],
+            'backup.backup.destination' => $this->config['varbox']['backup']['destination'] ?? [],
+            'backup.backup.cleanup' => $this->config['varbox']['backup']['cleanup'] ?? [],
+            'backup.backup.database_dump_compressor' => $this->config['varbox']['backup']['database_dump_compressor'] ?? null,
+        ]);
     }
 
     /**

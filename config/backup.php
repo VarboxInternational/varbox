@@ -101,6 +101,11 @@ return [
     */
     'database_dump_compressor' => Spatie\DbDumper\Compressors\GzipCompressor::class,
 
+    /*
+    |
+    | The backup cleanup options.
+    |
+    */
     'cleanup' => [
         /*
         |
@@ -115,6 +120,11 @@ return [
         */
         'strategy' => \Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
 
+        /*
+        |
+        | The backup cleanup strategy options.
+        |
+        */
         'default_strategy' => [
             /*
             |
