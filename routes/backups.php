@@ -24,5 +24,6 @@ Route::group([
         Route::get('download/{backup}', ['as' => 'admin.backups.download', 'uses' => $controllers['backups'] . '@download', 'permissions' => 'backups-download']);
         Route::delete('destroy/{backup}', ['as' => 'admin.backups.destroy', 'uses' => $controllers['backups'] . '@destroy', 'permissions' => 'backups-delete']);
         Route::delete('delete', ['as' => 'admin.backups.delete', 'uses' => $controllers['backups'] . '@delete', 'permissions' => 'backups-delete']);
+        Route::delete('clean', ['as' => 'admin.backups.clean', 'uses' => $controllers['backups'] . '@clean', 'permissions' => 'backups-delete']);
     });
 });
