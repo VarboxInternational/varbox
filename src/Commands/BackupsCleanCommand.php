@@ -33,7 +33,7 @@ class BackupsCleanCommand extends Command
         $days = config('varbox.backup.old_threshold', 30);
 
         if ((int)$days > 0) {
-            $backups = $backup->where('created_at', '<', today()->subDays($days))->get();
+            $backups = $backup->where('date', '<', today()->subDays($days))->get();
             $count = 0;
 
             foreach ($backups as $backup) {

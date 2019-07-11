@@ -130,7 +130,7 @@ class Backup extends Model implements BackupModelContract
     public function deleteOld()
     {
         if (($days = (int)config('varbox.backup.old_threshold', 30)) && $days > 0) {
-            $backups = static::where('created_at', '<', today()->subDays($days))->get();
+            $backups = static::where('date', '<', today()->subDays($days))->get();
 
             foreach ($backups as $backup) {
                 $backup->deleteFromDatabaseAndFilesystem();
