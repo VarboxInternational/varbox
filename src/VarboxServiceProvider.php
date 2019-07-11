@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Spatie\Backup\Events\BackupWasSuccessful;
 use Varbox\Commands\ActivityCleanCommand;
+use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\ErrorsCleanCommand;
 use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Commands\InstallCommand;
@@ -223,6 +224,7 @@ class VarboxServiceProvider extends BaseServiceProvider
                 ActivityCleanCommand::class,
                 NotificationsCleanCommand::class,
                 ErrorsCleanCommand::class,
+                BackupsCleanCommand::class,
             ]);
         }
     }
