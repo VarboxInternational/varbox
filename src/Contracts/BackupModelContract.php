@@ -25,18 +25,18 @@ interface BackupModelContract
     public function download();
 
     /**
-     * @return void
-     */
-    public function deleteAll();
-
-    /**
-     * @return void
-     */
-    public function deleteOld();
-
-    /**
      * @throws \Exception
      * @return void
      */
-    public function deleteFromDatabaseAndFilesystem();
+    public function deleteRecordAndFile();
+
+    /**
+     * @return void
+     */
+    public static function deleteAll();
+
+    /**
+     * @return void
+     */
+    public static function deleteOld();
 }

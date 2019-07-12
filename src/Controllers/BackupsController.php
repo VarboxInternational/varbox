@@ -108,7 +108,7 @@ class BackupsController extends Controller
         return $this->_destroy(function () use ($backup) {
             $this->redirect = redirect()->route('admin.backups.index');
 
-            $backup->deleteFromDatabaseAndFilesystem();
+            $backup->deleteRecordAndFile();
         });
     }
 
