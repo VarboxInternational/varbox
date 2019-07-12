@@ -3,8 +3,8 @@
 namespace Varbox\Tests\Integration;
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Illuminate\Contracts\Foundation\Application;
+use Orchestra\Testbench\TestCase as Orchestra;
 use Varbox\Facades\VarboxFacade;
 use Varbox\VarboxServiceProvider;
 

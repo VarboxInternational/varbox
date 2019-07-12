@@ -2,8 +2,8 @@
 
 namespace Varbox\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Routing\ControllerDispatcher;
 use Illuminate\Routing\Route;
 use Varbox\Models\Url;

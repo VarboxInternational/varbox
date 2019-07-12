@@ -6,15 +6,15 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Varbox\Contracts\AddressModelContract;
+use Varbox\Contracts\CityModelContract;
+use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\StateModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\AddressModelContract;
-use Varbox\Contracts\CityModelContract;
-use Varbox\Contracts\CountryModelContract;
-use Varbox\Contracts\StateModelContract;
 
 class Address extends Model implements AddressModelContract
 {

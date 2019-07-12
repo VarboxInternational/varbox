@@ -4,9 +4,9 @@ namespace Varbox\Services;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Varbox\Traits\IsCacheable;
-use Varbox\Helpers\RelationHelper;
 use Varbox\Contracts\QueryCacheServiceContract;
+use Varbox\Helpers\RelationHelper;
+use Varbox\Traits\IsCacheable;
 
 class QueryCacheService implements QueryCacheServiceContract
 {

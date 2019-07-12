@@ -7,13 +7,13 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Filters\CityFilter;
 use Varbox\Requests\CityRequest;
 use Varbox\Sorts\CitySort;
+use Varbox\Traits\CanCrud;
 
 class CitiesController extends Controller
 {

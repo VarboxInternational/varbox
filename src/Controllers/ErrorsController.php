@@ -8,10 +8,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Filters\ErrorFilter;
 use Varbox\Sorts\ErrorSort;
+use Varbox\Traits\CanCrud;
 
 class ErrorsController extends Controller
 {

@@ -9,9 +9,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\ActivityModelContract;
+use Varbox\Contracts\UserModelContract;
 use Varbox\Filters\ActivityFilter;
 use Varbox\Sorts\ActivitySort;
-use Varbox\Contracts\UserModelContract;
 use Varbox\Traits\CanCrud;
 
 class ActivityController extends Controller

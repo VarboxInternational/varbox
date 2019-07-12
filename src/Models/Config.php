@@ -4,12 +4,12 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Varbox\Contracts\ConfigModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\ConfigModelContract;
 
 class Config extends Model implements ConfigModelContract
 {

@@ -7,15 +7,15 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Contracts\UserModelContract;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\UserModelContract;
 use Varbox\Filters\AddressFilter;
 use Varbox\Requests\AddressRequest;
 use Varbox\Sorts\AddressSort;
+use Varbox\Traits\CanCrud;
 
 class AddressesController extends Controller
 {

@@ -4,13 +4,13 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\StateModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\CountryModelContract;
-use Varbox\Contracts\StateModelContract;
 
 class State extends Model implements StateModelContract
 {

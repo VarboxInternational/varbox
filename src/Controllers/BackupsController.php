@@ -10,10 +10,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Filters\BackupFilter;
 use Varbox\Sorts\BackupSort;
+use Varbox\Traits\CanCrud;
 
 class BackupsController extends Controller
 {

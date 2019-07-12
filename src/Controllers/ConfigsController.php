@@ -7,11 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\ConfigModelContract;
 use Varbox\Filters\ConfigFilter;
 use Varbox\Requests\ConfigRequest;
 use Varbox\Sorts\ConfigSort;
+use Varbox\Traits\CanCrud;
 
 class ConfigsController extends Controller
 {

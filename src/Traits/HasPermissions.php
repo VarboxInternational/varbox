@@ -4,10 +4,8 @@ namespace Varbox\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Varbox\Contracts\PermissionModelContract;
-use Varbox\Contracts\RoleModelContract;
 use Varbox\Models\Permission;
 
 trait HasPermissions

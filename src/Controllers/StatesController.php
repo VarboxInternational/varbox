@@ -7,12 +7,12 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Filters\StateFilter;
 use Varbox\Requests\StateRequest;
 use Varbox\Sorts\StateSort;
+use Varbox\Traits\CanCrud;
 
 class StatesController extends Controller
 {

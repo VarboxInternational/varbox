@@ -3,7 +3,6 @@
 namespace Varbox\Tests\Integration\Models;
 
 use Exception;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Varbox\Models\Error;

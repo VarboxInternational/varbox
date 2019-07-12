@@ -7,11 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Filters\CountryFilter;
 use Varbox\Requests\CountryRequest;
 use Varbox\Sorts\CountrySort;
+use Varbox\Traits\CanCrud;
 
 class CountriesController extends Controller
 {

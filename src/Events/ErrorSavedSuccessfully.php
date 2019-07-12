@@ -2,9 +2,9 @@
 
 namespace Varbox\Events;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 use Varbox\Contracts\ErrorModelContract;
 
 class ErrorSavedSuccessfully

@@ -3,7 +3,6 @@
 namespace Varbox\Seed;
 
 use Illuminate\Database\Seeder;
-use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\RoleModelContract;
 
 class RolesSeeder extends Seeder

@@ -4,12 +4,12 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Contracts\CountryModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\CountryModelContract;
 
 class Country extends Model implements CountryModelContract
 {

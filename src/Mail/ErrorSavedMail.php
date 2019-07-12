@@ -3,9 +3,9 @@
 namespace Varbox\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Varbox\Contracts\ErrorModelContract;
 
 class ErrorSavedMail extends Mailable implements ShouldQueue

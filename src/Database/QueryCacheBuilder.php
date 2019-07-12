@@ -4,9 +4,9 @@ namespace Varbox\Database;
 
 use Exception;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Varbox\Contracts\QueryCacheServiceContract;
 
 class QueryCacheBuilder extends QueryBuilder
