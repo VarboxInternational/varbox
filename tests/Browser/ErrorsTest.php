@@ -204,7 +204,7 @@ class ErrorsTest extends TestCase
 
         $this->deleteError();
     }
-    
+
     /** @test */
     public function an_admin_can_delete_old_errors_if_it_is_a_super_admin()
     {
@@ -317,6 +317,25 @@ class ErrorsTest extends TestCase
         $this->deleteErrors();
     }
 
+    /** @test */
+    public function an_admin_can_filter_errors_by_keyword()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->createError();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('#search-input', $this->getDisplayedErrorType())
+                ->assertQueryStringHas('search', $this->getDisplayedErrorType())
+                ->assertSee($this->getDisplayedErrorType())
+                ->assertRecordsCount(1);
+        });
+
+        $this->deleteError();
+    }
+    
     /**
      * @return void
      */
