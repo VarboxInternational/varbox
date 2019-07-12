@@ -71,6 +71,17 @@ trait InteractsWithCrud
     }
 
     /**
+     * Click the edit button of table row containing the specified text.
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function clickViewButton($text)
+    {
+        return $this->clickButton($text, 'button-view', 'a');
+    }
+
+    /**
      * Click the delete button of table row containing the specified text.
      *
      * @param string $text
