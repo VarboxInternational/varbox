@@ -204,6 +204,62 @@ class ErrorsTest extends TestCase
 
         $this->deleteError();
     }
+    
+    /** @test */
+    public function an_admin_can_delete_old_errors_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete Old Errors')
+                ->assertPathIs('/admin/errors')
+                ->assertSee('Old errors have been successfully deleted')
+                ->assertRecordsCount(2);
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_delete_old_errors_if_it_has_permission()
+    {
+        $this->admin->grantPermission('errors-list');
+        $this->admin->grantPermission('errors-delete');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete Old Errors')
+                ->assertPathIs('/admin/errors')
+                ->assertSee('Old errors have been successfully deleted')
+                ->assertRecordsCount(2);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_old_errors_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('errors-list');
+        $this->admin->revokePermission('errors-delete');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete Old Errors')
+                ->assertDontSee('Old errors have been successfully deleted')
+                ->assertSee('Unauthorized')
+                ->visit('/admin/errors')
+                ->assertRecordsCount(3);
+        });
+
+        $this->deleteErrors();
+    }
 
     /** @test */
     public function an_admin_can_delete_all_errors_if_it_is_a_super_admin()
@@ -260,7 +316,7 @@ class ErrorsTest extends TestCase
 
         $this->deleteErrors();
     }
-    
+
     /**
      * @return void
      */

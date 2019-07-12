@@ -111,7 +111,7 @@ class ErrorsController extends Controller
         try {
             $this->model->deleteOld();
 
-            flash()->success('Old errors were successfully deleted!');
+            flash()->success('Old errors have been successfully deleted!');
         } catch (Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
         }
