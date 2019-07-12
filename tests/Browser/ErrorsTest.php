@@ -3,6 +3,8 @@
 namespace Varbox\Tests\Browser;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Varbox\Models\Activity;
@@ -19,6 +21,21 @@ class ErrorsTest extends TestCase
      * @var Exception
      */
     protected $errorException;
+
+    /**
+     * @var Error
+     */
+    protected $error1;
+
+    /**
+     * @var Error
+     */
+    protected $error2;
+
+    /**
+     * @var Error
+     */
+    protected $error3;
 
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
@@ -179,7 +196,7 @@ class ErrorsTest extends TestCase
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/errorsc')
+                ->visit('/admin/errors')
                 ->deleteAnyRecord()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
@@ -188,6 +205,62 @@ class ErrorsTest extends TestCase
         $this->deleteError();
     }
 
+    /** @test */
+    public function an_admin_can_delete_all_errors_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete All Errors')
+                ->assertPathIs('/admin/errors')
+                ->assertSee('All errors have been successfully deleted')
+                ->assertSee('No records found');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_delete_all_errors_if_it_has_permission()
+    {
+        $this->admin->grantPermission('errors-list');
+        $this->admin->grantPermission('errors-delete');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete All Errors')
+                ->assertPathIs('/admin/errors')
+                ->assertSee('All errors have been successfully deleted')
+                ->assertSee('No records found');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_all_errors_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('errors-list');
+        $this->admin->revokePermission('errors-delete');
+
+        $this->createErrors();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->clickButtonWithConfirm('Delete All Errors')
+                ->assertDontSee('All errors have been successfully deleted')
+                ->assertSee('Unauthorized')
+                ->visit('/admin/errors')
+                ->assertRecordsCount(3);
+        });
+
+        $this->deleteErrors();
+    }
+    
     /**
      * @return void
      */
@@ -203,9 +276,36 @@ class ErrorsTest extends TestCase
     /**
      * @return void
      */
+    protected function createErrors()
+    {
+        (new Error)->saveError(new Exception);
+        (new Error)->saveError(new AuthenticationException);
+        (new Error)->saveError(new ModelNotFoundException);
+
+        $this->error1 = Error::whereType(Exception::class)->first();
+        $this->error2 = Error::whereType(AuthenticationException::class)->first();
+        $this->error3 = Error::whereType(ModelNotFoundException::class)->first();
+
+        $this->error1->created_at = today()->subDays(31);
+        $this->error1->save();
+    }
+
+    /**
+     * @return void
+     */
     protected function deleteError()
     {
         Error::whereType(NotFoundHttpException::class)->first()->delete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteErrors()
+    {
+        Error::whereType(Exception::class)->first()->delete();
+        Error::whereType(AuthenticationException::class)->first()->delete();
+        Error::whereType(ModelNotFoundException::class)->first()->delete();
     }
 
     /**
