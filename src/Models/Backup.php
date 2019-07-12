@@ -107,44 +107,12 @@ class Backup extends Model implements BackupModelContract
     }
 
     /**
-     * Delete all backup database records and their corresponding archive.
-     *
-     * @return void
-     */
-    public function deleteAll()
-    {
-        foreach (static::all() as $backup) {
-            $backup->deleteFromDatabaseAndFilesystem();
-        }
-    }
-
-    /**
-     * Attempt to delete old backups.
-     *
-     * Backups qualify as being old if:
-     * "created_at" field is smaller than the current date minus the number of days set in the
-     * "old_threshold" key of /config/varbox/backup.php file.
-     *
-     * @return void
-     */
-    public function deleteOld()
-    {
-        if (($days = (int)config('varbox.backup.old_threshold', 30)) && $days > 0) {
-            $backups = static::where('date', '<', today()->subDays($days))->get();
-
-            foreach ($backups as $backup) {
-                $backup->deleteFromDatabaseAndFilesystem();
-            }
-        }
-    }
-
-    /**
-     * Delete a backup's database record and corresponding archive.
+     * Delete a backup's database record and corresponding storage file.
      *
      * @throws \Exception
      * @return void
      */
-    public function deleteFromDatabaseAndFilesystem()
+    public function deleteRecordAndFile()
     {
         $filesystem = Storage::disk($this->disk);
 
@@ -153,6 +121,38 @@ class Backup extends Model implements BackupModelContract
         }
 
         $this->delete();
+    }
+
+    /**
+     * Delete all backup database records and their corresponding storage file.
+     *
+     * @return void
+     */
+    public static function deleteAll()
+    {
+        foreach (static::all() as $backup) {
+            $backup->deleteRecordAndFile();
+        }
+    }
+
+    /**
+     * Attempt to delete old backup database records and their corresponding storage files.
+     *
+     * Backups qualify as being old if:
+     * "created_at" field is smaller than the current date minus the number of days set in the
+     * "old_threshold" key of /config/varbox/backup.php file.
+     *
+     * @return void
+     */
+    public static function deleteOld()
+    {
+        if (($days = (int)config('varbox.backup.old_threshold', 30)) && $days > 0) {
+            $backups = static::where('date', '<', today()->subDays($days))->get();
+
+            foreach ($backups as $backup) {
+                $backup->deleteRecordAndFile();
+            }
+        }
     }
 
     /**
@@ -165,6 +165,10 @@ class Backup extends Model implements BackupModelContract
         return ActivityOptions::instance()
             ->withEntityType('backup')
             ->withEntityName($this->name)
-            ->withEntityUrl(route('admin.backups.index'));
+            ->withEntityUrl(route('admin.backups.index', [
+                'search' => $this->name,
+                'start_date' => $this->date->format('Y-m-d'),
+                'end_date' => $this->date->format('Y-m-d')
+            ]));
     }
 }
