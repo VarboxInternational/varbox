@@ -1,13 +1,13 @@
 <?php
 
-namespace Varbox\Tests\Integration\Models;
+namespace Varbox\Tests\Http\Middleware;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Varbox\Models\Role;
 use Varbox\Models\User;
-use Varbox\Tests\Integration\TestCase;
+use Varbox\Tests\Http\TestCase;
 
 class CheckRolesTest extends TestCase
 {
