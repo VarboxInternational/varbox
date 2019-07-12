@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Varbox\Events\ErrorSaved;
+use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 use Varbox\Contracts\ErrorModelContract;
@@ -107,7 +107,7 @@ class Error extends Model implements ErrorModelContract
         try {
             $error = static::updateOrCreate($findData, $saveData);
 
-            event(new ErrorSaved($error));
+            event(new ErrorSavedSuccessfully($error));
         } catch (Exception $e) {
             throw $e;
         }

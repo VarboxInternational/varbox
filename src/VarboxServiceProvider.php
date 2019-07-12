@@ -33,7 +33,7 @@ use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
-use Varbox\Events\ErrorSaved;
+use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Facades\VarboxFacade;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
@@ -332,7 +332,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function listenToEvents()
     {
-        Event::listen(ErrorSaved::class, SendErrorSavedEmail::class);
+        Event::listen(ErrorSavedSuccessfully::class, SendErrorSavedEmail::class);
         Event::listen(BackupWasSuccessful::class, StoreBackupToDatabase::class);
     }
 

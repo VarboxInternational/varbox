@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Varbox\Contracts\ErrorModelContract;
 
-class ErrorSaved
+class ErrorSavedSuccessfully
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

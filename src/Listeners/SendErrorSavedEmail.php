@@ -5,7 +5,7 @@ namespace Varbox\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
-use Varbox\Events\ErrorSaved;
+use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Mail\ErrorSavedMail;
 
 class SendErrorSavedEmail implements ShouldQueue
@@ -15,10 +15,10 @@ class SendErrorSavedEmail implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param ErrorSaved $event
+     * @param ErrorSavedSuccessfully $event
      * @return void
      */
-    public function handle(ErrorSaved $event)
+    public function handle(ErrorSavedSuccessfully $event)
     {
         $addresses = config('varbox.errors.notification_emails', []);
 
