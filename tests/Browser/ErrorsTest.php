@@ -335,7 +335,61 @@ class ErrorsTest extends TestCase
 
         $this->deleteError();
     }
-    
+
+    /** @test */
+    public function an_admin_can_filter_errors_by_start_date()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->createError();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->visitLastPage('/admin/errors', $this->errorModel)
+                ->assertSee($this->getDisplayedErrorType())
+                ->assertSee($this->errorModel->code)
+                ->visit('/admin/errors')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteError();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_errors_by_end_date()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->createError();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date',$future)
+                ->visitLastPage('/admin/errors', $this->errorModel)
+                ->assertSee($this->getDisplayedErrorType())
+                ->assertSee($this->errorModel->code);
+        });
+
+        $this->deleteError();
+    }
+
     /**
      * @return void
      */
