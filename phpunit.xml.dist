@@ -13,6 +13,9 @@
         <testsuite name="Browser">
             <directory suffix="Test.php">./tests/Browser</directory>
         </testsuite>
+        <testsuite name="Http">
+            <directory suffix="Test.php">./tests/Http</directory>
+        </testsuite>
         <testsuite name="Integration">
             <directory suffix="Test.php">./tests/Integration</directory>
         </testsuite>
