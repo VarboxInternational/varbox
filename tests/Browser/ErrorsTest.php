@@ -337,6 +337,50 @@ class ErrorsTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_filter_errors_by_min_occurrences()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->createError();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('occurrences[0]', 1)
+                ->visitLastPage('/admin/errors', $this->errorModel)
+                ->assertSee($this->getDisplayedErrorType())
+                ->assertSee($this->errorModel->code)
+                ->visit('/admin/errors')
+                ->filterRecordsByText('occurrences[0]', 2)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteError();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_errors_by_max_occurrences()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->createError();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors')
+                ->filterRecordsByText('occurrences[1]', 1)
+                ->visitLastPage('/admin/errors', $this->errorModel)
+                ->assertSee($this->getDisplayedErrorType())
+                ->assertSee($this->errorModel->code)
+                ->visit('/admin/errors')
+                ->filterRecordsByText('occurrences[1]', 0)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteError();
+    }
+
+    /** @test */
     public function an_admin_can_filter_errors_by_start_date()
     {
         $this->admin->grantPermission('errors-list');
