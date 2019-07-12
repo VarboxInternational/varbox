@@ -434,6 +434,25 @@ class ErrorsTest extends TestCase
         $this->deleteError();
     }
 
+    /** @test */
+    public function an_admin_can_clear_error_filters()
+    {
+        $this->admin->grantPermission('errors-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/errors/?search=something&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/errors/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      */
