@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Tests\Integration\Events;
+namespace Varbox\Tests\Integration\Mail;
 
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
