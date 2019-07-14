@@ -12,6 +12,7 @@ use Orchestra\Testbench\Dusk\Options as OrchestraDuskOptions;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 use Proengsoft\JsValidation\JsValidationServiceProvider;
+use Spatie\Backup\BackupServiceProvider;
 use Varbox\Facades\VarboxFacade;
 use Varbox\Models\Role;
 use Varbox\Models\User;
@@ -78,6 +79,7 @@ abstract class TestCase extends OrchestraDuskTestCase
             HtmlServiceProvider::class,
             JsValidationServiceProvider::class,
             BreadcrumbsServiceProvider::class,
+            BackupServiceProvider::class,
         ];
     }
 
