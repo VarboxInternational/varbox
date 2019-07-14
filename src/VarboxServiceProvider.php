@@ -159,6 +159,12 @@ class VarboxServiceProvider extends BaseServiceProvider
             'image-optimizer.optimizers' => $this->config['varbox']['upload']['images']['optimizers'] ?? []
         ]);
 
+        $this->config->set('laravel-ffmpeg', [
+            'default_disk' => $this->config['varbox']['upload']['storage']['disk'] ?? 'local',
+            'ffmpeg.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffmpeg'] ?? 'ffmpeg',
+            'ffprobe.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffprobe'] ?? 'ffprobe',
+        ]);
+
         $this->config->set([
             'jsvalidation.view' => $this->config['varbox']['validation']['jsvaldidation_view'] ?? 'varbox::helpers.validation.trigger',
         ]);
