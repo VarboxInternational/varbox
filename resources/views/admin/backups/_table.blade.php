@@ -21,8 +21,8 @@
                     </span>
                 </td>
                 <td class="d-none d-sm-table-cell">
-                    <div>{{ $item->created_at }}</div>
-                    <div class="text-muted">{{ Carbon\Carbon::parse($item->created_at)->diffForHumans()}}</div>
+                    <div>{{ $item->date }}</div>
+                    <div class="text-muted">{{ Carbon\Carbon::parse($item->date)->diffForHumans()}}</div>
                 </td>
                 <td class="text-right d-table-cell">
                     {!! button()->downloadFile(route('admin.backups.download', $item->getKey())) !!}
