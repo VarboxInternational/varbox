@@ -101,6 +101,23 @@ class CreateVarboxTables extends Migration
             });
         }
 
+        if (!Schema::hasTable('uploads')) {
+            Schema::create('uploads', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name');
+                $table->string('original_name');
+                $table->string('path');
+                $table->string('full_path')->index()->unique();
+                $table->string('extension');
+                $table->integer('size')->default(0);
+                $table->string('mime')->nullable();
+                $table->tinyInteger('type')->default(0);
+
+                $table->timestamps();
+            });
+        }
+
         if (!Schema::hasTable('notifications')) {
             Schema::create('notifications', function (Blueprint $table) {
                 $table->uuid('id')->primary();
@@ -254,6 +271,7 @@ class CreateVarboxTables extends Migration
         Schema::dropIfExists('countries');
         Schema::dropIfExists('activity');
         Schema::dropIfExists('notifications');
+        Schema::dropIfExists('uploads');
         Schema::dropIfExists('role_permission');
         Schema::dropIfExists('user_permission');
         Schema::dropIfExists('user_role');
