@@ -23,6 +23,22 @@ return [
 
         /*
         |
+        | Concrete implementation for the "upload service".
+        | To extend or replace this functionality, change the value below with your full "upload service" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Services\UploadService" class
+        | - or at least implement the "Varbox\Contracts\UploadServiceContract" interface
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - upload() OR app('upload.service') OR app('\Varbox\Contracts\UploadServiceContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'upload_service' => \Varbox\Services\UploadService::class,
+
+        /*
+        |
         | Concrete implementation for the "query cache service".
         | To extend or replace this functionality, change the value below with your full "query cache service" FQN.
         |
@@ -92,6 +108,22 @@ return [
         | - or you could even use your own class as a direct implementation
         */
         'permission_model' => \Varbox\Models\Permission::class,
+
+        /*
+        |
+        | Concrete implementation for the "upload model".
+        | To extend or replace this functionality, change the value below with your full "upload model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Upload" class
+        | - or at least implement the "Varbox\Contracts\UploadModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('upload.model') OR app('\Varbox\Contracts\UploadModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'upload_model' => \Varbox\Models\Upload::class,
 
         /*
         |
@@ -323,6 +355,30 @@ return [
 
         /*
         |
+        | Concrete implementation for the "upload controller".
+        | To extend or replace this functionality, change the value below with your full "upload controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\UploadController" class
+        | - or you'll have to implement the following public methods yourself: upload(), get(), set(), crop(), cut()
+        |
+        */
+        'upload_controller' => \Varbox\Controllers\UploadController::class,
+
+        /*
+        |
+        | Concrete implementation for the "uploads controller".
+        | To extend or replace this functionality, change the value below with your full "uploads controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\UploadsController" class
+        | - or you'll have to implement the following public methods yourself: index(), show(), store(), destroy(), download()
+        |
+        */
+        'uploads_controller' => \Varbox\Controllers\UploadsController::class,
+
+        /*
+        |
         | Concrete implementation for the "notifications controller".
         | To extend or replace this functionality, change the value below with your full "notifications controller" FQN.
         |
@@ -519,6 +575,18 @@ return [
 
         /*
         |
+        | Concrete implementation for the "upload form request".
+        | To extend or replace this functionality, change the value below with your full "upload form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\UploadRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'upload_form_request' => \Varbox\Requests\UploadRequest::class,
+
+        /*
+        |
         | Concrete implementation for the "country form request".
         | To extend or replace this functionality, change the value below with your full "country form request" FQN.
         |
@@ -697,6 +765,38 @@ return [
         |
         */
         'button_helper' => \Varbox\Helpers\ButtonHelper::class,
+
+        /*
+        |
+        | Concrete implementation for the "uploaded helper".
+        | To extend or replace this functionality, change the value below with your full "uploaded helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\UploadedHelper" class
+        | - or at least implement the "Varbox\Contracts\UploadedHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - uploaded() OR app('uploaded.helper') OR app('\Varbox\Contracts\UploadedHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'uploaded_helper' => \Varbox\Helpers\UploadedHelper::class,
+
+        /*
+        |
+        | Concrete implementation for the "uploader helper".
+        | To extend or replace this functionality, change the value below with your full "uploader helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\UploaderHelper" class
+        | - or at least implement the "Varbox\Contracts\UploaderHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - uploader() OR app('uploader.helper') OR app('\Varbox\Contracts\UploaderHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'uploader_helper' => \Varbox\Helpers\UploaderHelper::class,
 
     ],
 
