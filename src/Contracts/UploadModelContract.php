@@ -66,6 +66,11 @@ interface UploadModelContract
     public function scopeLike($query, array $attributes = []);
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeAlphabetically($query);
+
+    /**
      * @return bool
      */
     public function isImage();
