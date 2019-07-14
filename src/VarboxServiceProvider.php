@@ -46,7 +46,7 @@ use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\ValidationHelper;
 use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Listeners\StoreBackupToDatabase;
-use Varbox\Media\Commands\UploadsLinkCommand;
+use Varbox\Commands\UploadsLinkCommand;
 use Varbox\Middleware\Authenticated;
 use Varbox\Middleware\AuthenticateSession;
 use Varbox\Middleware\CheckPermissions;

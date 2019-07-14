@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Media\Commands;
+namespace Varbox\Commands;
 
 use Illuminate\Console\Command;
 
