@@ -152,7 +152,7 @@ class UploadController extends Controller
         $width = array_get($model->getUploadConfig(), "images.styles.{$field}.{$style}.width");
         $height = array_get($model->getUploadConfig(), "images.styles.{$field}.{$style}.height");
 
-        $imageSize = getimagesize(Storage::disk(config('varbox.media.upload.storage.disk', 'uploads'))->path($path));
+        $imageSize = getimagesize(Storage::disk(config('varbox.upload.storage.disk', 'uploads'))->path($path));
         $cropSize = [$width, $height];
         $dCropSize = $cropSize;
 
