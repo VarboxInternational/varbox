@@ -80,11 +80,11 @@ class BackupTest extends TestCase
     {
         $this->createBackup();
 
-        $this->assertTrue($this->backup->local());
+        $this->assertTrue($this->backup->isLocallyStored());
 
         $this->app['config']->set('filesystems.disks.backups.driver', 'not-local');
 
-        $this->assertFalse($this->backup->local());
+        $this->assertFalse($this->backup->isLocallyStored());
     }
 
     /** @test */

@@ -17,7 +17,7 @@ interface BackupModelContract
     /**
      * @return bool
      */
-    public function local();
+    public function isLocallyStored();
 
     /**
      * @return int|\Symfony\Component\HttpFoundation\BinaryFileResponse

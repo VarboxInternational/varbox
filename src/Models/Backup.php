@@ -74,7 +74,7 @@ class Backup extends Model implements BackupModelContract
      *
      * @return bool
      */
-    public function local()
+    public function isLocallyStored()
     {
         return strtolower(config("filesystems.disks.{$this->disk}.driver")) === 'local';
     }
@@ -86,7 +86,7 @@ class Backup extends Model implements BackupModelContract
      */
     public function download()
     {
-        if ($this->local()) {
+        if ($this->isLocallyStored()) {
             return response()->download(
                 Storage::disk($this->disk)->getDriver()->getAdapter()->applyPathPrefix($this->path)
             );
@@ -139,7 +139,7 @@ class Backup extends Model implements BackupModelContract
      * Attempt to delete old backup database records and their corresponding storage files.
      *
      * Backups qualify as being old if:
-     * "created_at" field is smaller than the current date minus the number of days set in the
+     * "date" field is smaller than the current date minus the number of days set in the
      * "old_threshold" key of /config/varbox/backup.php file.
      *
      * @return void
