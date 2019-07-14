@@ -12,7 +12,7 @@ interface ErrorModelContract
 
     /**
      * @param \Exception $exception
-     * @return void
+     * @return \Varbox\Models\Error
      */
     public function saveError(\Exception $exception);
 

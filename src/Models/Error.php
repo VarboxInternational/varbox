@@ -77,7 +77,7 @@ class Error extends Model implements ErrorModelContract
      * Store the registered error in the database.
      *
      * @param Exception $exception
-     * @return void
+     * @return Error
      * @throws Exception
      */
     public function saveError(Exception $exception)
@@ -108,6 +108,8 @@ class Error extends Model implements ErrorModelContract
             $error = static::updateOrCreate($findData, $saveData);
 
             event(new ErrorSavedSuccessfully($error));
+
+            return $error;
         } catch (Exception $e) {
             throw $e;
         }

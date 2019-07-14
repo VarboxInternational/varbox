@@ -5,7 +5,9 @@ namespace Varbox\Tests\Integration\Events;
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
+use Mockery;
 use Varbox\Events\ErrorSavedSuccessfully;
+use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Models\Error;
 use Varbox\Tests\Integration\TestCase;
 
@@ -18,9 +20,11 @@ class ErrorEventsTest extends TestCase
     {
         Event::fake();
 
-        (new Error)->saveError(new Exception);
+        $error = (new Error)->saveError(new Exception);
 
-        Event::assertDispatched(ErrorSavedSuccessfully::class);
+        Event::assertDispatched(ErrorSavedSuccessfully::class, function ($event) use ($error) {
+            return $error->id == $event->error->id;
+        });
     }
 
     /** @test */
@@ -29,9 +33,25 @@ class ErrorEventsTest extends TestCase
         (new Error)->saveError(new Exception);
 
         Event::fakeFor(function () {
-            (new Error)->saveError(new Exception);
+            $error = (new Error)->saveError(new Exception);
 
-            Event::assertDispatched(ErrorSavedSuccessfully::class, 1);
+            Event::assertDispatched(ErrorSavedSuccessfully::class, function ($event) use ($error) {
+                return $error->id == $event->error->id;
+            });
         });
+    }
+
+    /** @test */
+    public function it_triggers_the_listener_to_send_the_notification_emails_upon_dispatching_the_error_saved_event()
+    {
+        $listener = Mockery::spy(SendErrorSavedEmail::class);
+
+        $this->app->instance(SendErrorSavedEmail::class, $listener);
+
+        $error = (new Error)->saveError(new Exception);
+
+        $listener->shouldHaveReceived('handle')->with(Mockery::on(function ($event) use ($error) {
+            return $error->id == $event->error->id;
+        }))->once();
     }
 }
