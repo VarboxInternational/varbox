@@ -19,12 +19,12 @@ class BackupsTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    public function getEnvironmentSetUp($app): void
     {
-        parent::setUp();
+        parent::getEnvironmentSetUp($app);
 
-        $this->app['config']->set('backup.notifications.notifiable', Notifiable::class);
-        $this->app['config']->set('varbox.backup.name', 'VarBox');
+        $app['config']->set('backup.notifications.notifiable', Notifiable::class);
+        $app['config']->set('varbox.backup.name', 'VarBox');
     }
 
     /** @test */
@@ -64,6 +64,66 @@ class BackupsTest extends TestCase
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Backups');
         });
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_new_backup_if_it_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups/')
+                ->clickButtonWithConfirm('Create New Backup')
+                ->assertSee('The backup was successfully created')
+                ->assertRecordsCount(1);
+        });
+
+        $this->backupModel = Backup::first();
+
+        $this->assertFileExists($this->backupPath());
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_new_backup_if_it_has_permission()
+    {
+        $this->admin->grantPermission('backups-list');
+        $this->admin->grantPermission('backups-create');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups/')
+                ->clickButtonWithConfirm('Create New Backup')
+                ->assertSee('The backup was successfully created')
+                ->assertRecordsCount(1);
+        });
+
+        $this->backupModel = Backup::first();
+
+        $this->assertFileExists($this->backupPath());
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_cannot_create_a_new_backup_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('backups-list');
+        $this->admin->revokePermission('backups-create');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups/')
+                ->clickButtonWithConfirm('Create New Backup')
+                ->assertDontSee('The backup was successfully created')
+                ->assertSee('Unauthorized')
+                ->visit('/admin/backups')
+                ->assertSee('No records found');
+        });
+
+        $this->assertEmpty($this->backupFiles());
     }
 
     /** @test */
@@ -164,4 +224,13 @@ class BackupsTest extends TestCase
         return Storage::disk($this->backupModel->disk)->getDriver()->getAdapter()->getPathPrefix() .
             $this->backupModel->path;
     }
+
+    /**
+     * @return array
+     */
+    protected function backupFiles()
+    {
+        return Storage::disk('backups')->allFiles(config('varbox.backup.name'));
+    }
+
 }
