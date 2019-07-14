@@ -146,6 +146,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/crud.php' => config_path('varbox/crud.php'),
             __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
             __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
+            __DIR__ . '/../config/upload.php' => config_path('varbox/upload.php'),
         ], 'config');
     }
 
@@ -353,6 +354,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/crud.php', 'varbox.crud');
         $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
         $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');
+        $this->mergeConfigFrom(__DIR__ . '/../config/upload.php', 'varbox.upload');
     }
 
     /**
