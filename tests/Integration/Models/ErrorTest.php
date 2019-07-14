@@ -66,7 +66,7 @@ class ErrorTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_an_error_when_it_occurres()
+    public function it_stores_an_error_when_it_occurs()
     {
         $this->initErrorAndException();
 
