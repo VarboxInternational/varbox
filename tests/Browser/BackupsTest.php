@@ -381,6 +381,149 @@ class BackupsTest extends TestCase
         });
 
         $this->assertCount(1, $this->backupFiles());
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_backups_by_keyword()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->createBackup();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#search-input', $this->backupModel->name)
+                ->assertQueryStringHas('search', $this->backupModel->name)
+                ->assertSee($this->backupModel->name)
+                ->assertRecordsCount(1)
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#search-input', 'something-returning-no-results')
+                ->assertQueryStringHas('search', 'something-returning-no-results')
+                ->assertDontSee($this->backupModel->name)
+                ->assertSee('No records found');
+        });
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_backups_by_min_size()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->createBackup();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('size[0]', 0)
+                ->visitLastPage('/admin/backups', $this->backupModel)
+                ->assertSee($this->backupModel->name)
+                ->assertSee($this->backupModel->size_in_mb)
+                ->visit('/admin/backups')
+                ->filterRecordsByText('size[0]', 1000)
+                ->assertSee('No records found');
+        });
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_backups_by_max_size()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->createBackup();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('size[1]', 1000)
+                ->visitLastPage('/admin/backups', $this->backupModel)
+                ->assertSee($this->backupModel->name)
+                ->assertSee($this->backupModel->size_in_mb)
+                ->visit('/admin/backups')
+                ->filterRecordsByText('size[1]', 0)
+                ->assertSee('No records found');
+        });
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_backups_by_start_date()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->createBackup();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->visitLastPage('/admin/backups', $this->backupModel)
+                ->assertSee($this->backupModel->name)
+                ->assertSee($this->backupModel->date->toDateTimeString())
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_backups_by_end_date()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->createBackup();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/backups')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date',$future)
+                ->visitLastPage('/admin/backups', $this->backupModel)
+                ->assertSee($this->backupModel->name)
+                ->assertSee($this->backupModel->date->toDateTimeString());
+        });
+
+        $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_backup_filters()
+    {
+        $this->admin->grantPermission('backups-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups/?search=something&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/backups/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
     }
 
     /**
