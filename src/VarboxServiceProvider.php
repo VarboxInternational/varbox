@@ -156,6 +156,10 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function overrideConfigs()
     {
         $this->config->set([
+            'image-optimizer.optimizers' => $this->config['varbox']['upload']['images']['optimizers'] ?? []
+        ]);
+
+        $this->config->set([
             'jsvalidation.view' => $this->config['varbox']['validation']['jsvaldidation_view'] ?? 'varbox::helpers.validation.trigger',
         ]);
 
