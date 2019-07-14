@@ -193,7 +193,7 @@ class BackupsTest extends TestCase
 
         $this->cleanBackups();
     }
-    
+
     /** @test */
     public function an_admin_can_delete_old_backups_if_it_is_a_super_admin()
     {
@@ -307,6 +307,80 @@ class BackupsTest extends TestCase
         $this->assertCount(1, $this->backupFiles());
 
         $this->cleanBackups();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_all_backups_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBackup();
+
+        $this->backupModel->date = today()->subDays(31);
+        $this->backupModel->save();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->clickButtonWithConfirm('Delete All Backups')
+                ->assertPathIs('/admin/backups')
+                ->assertSee('All backups were successfully deleted')
+                ->assertSee('No records found')
+                ->assertDontSee($this->backupModel->name)
+                ->assertDontSee($this->backupModel->size_in_mb)
+                ->assertDontSee($this->backupModel->date->toDateTimeString());
+        });
+
+        $this->assertCount(0, $this->backupFiles());
+    }
+
+    /** @test */
+    public function an_admin_can_delete_all_backups_if_it_has_permission()
+    {
+        $this->admin->grantPermission('backups-list');
+        $this->admin->grantPermission('backups-delete');
+
+        $this->createBackup();
+
+        $this->backupModel->date = today()->subDays(31);
+        $this->backupModel->save();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->clickButtonWithConfirm('Delete All Backups')
+                ->assertPathIs('/admin/backups')
+                ->assertSee('All backups were successfully deleted')
+                ->assertSee('No records found')
+                ->assertDontSee($this->backupModel->name)
+                ->assertDontSee($this->backupModel->size_in_mb)
+                ->assertDontSee($this->backupModel->date->toDateTimeString());
+        });
+
+        $this->assertCount(0, $this->backupFiles());
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_all_backups_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('backups-list');
+        $this->admin->revokePermission('backups-delete');
+
+        $this->createBackup();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/backups')
+                ->clickButtonWithConfirm('Delete All Backups')
+                ->assertDontSee('All backups were successfully deleted')
+                ->assertSee('Unauthorized')
+                ->visit('/admin/backups')
+                ->assertSee($this->backupModel->name)
+                ->assertSee($this->backupModel->size_in_mb)
+                ->assertSee($this->backupModel->date->toDateTimeString());
+        });
+
+        $this->assertCount(1, $this->backupFiles());
     }
 
     /**
