@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 $controllers = [
-    'upload' => '\\' . config('varbox.media.binding.controllers.upload_controller', \Varbox\Controllers\UploadController::class),
-    'uploads' => '\\' . config('varbox.media.binding.controllers.uploads_controller', \Varbox\Controllers\UploadsController::class),
+    'upload' => '\\' . config('varbox.bindings.controllers.upload_controller', \Varbox\Controllers\UploadController::class),
+    'uploads' => '\\' . config('varbox.bindings.controllers.uploads_controller', \Varbox\Controllers\UploadsController::class),
 ];
 
 Route::group([
