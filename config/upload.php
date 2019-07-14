@@ -102,7 +102,7 @@ return [
         /*
         |
         | The allowed extensions for image files.
-        | All image extensions can be found in \Varbox\Media\Services\UploadService::getImageExtensions().
+        | All image extensions can be found in \Varbox\Services\UploadService::getImageExtensions().
         |
         | You can specify allowed extensions by using an array, or a comma "," separated string of extensions.
         | To allow uploading any image files, specify the "null" value for this option.
@@ -224,7 +224,7 @@ return [
         /*
         |
         | The allowed extensions for video files.
-        | All video extensions can be found in \Varbox\Media\Services\UploadService::getVideoExtensions().
+        | All video extensions can be found in \Varbox\Services\UploadService::getVideoExtensions().
         |
         | You can specify allowed extensions by using an array, or a comma "," separated string of extensions.
         | To allow uploading any video files, specify the "null" value for this option.
@@ -303,7 +303,7 @@ return [
         /*
         |
         | The allowed extensions for audio files.
-        | All audio extensions can be found in \Varbox\Media\Services\UploadService::getAudioExtensions().
+        | All audio extensions can be found in \Varbox\Services\UploadService::getAudioExtensions().
         |
         | You can specify allowed extensions by using an array, or a comma "," separated string of extensions.
         | To allow uploading any audio files, specify the "null" value for this option.
