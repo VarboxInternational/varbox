@@ -37,7 +37,7 @@ class BackupsCleanCommand extends Command
             $count = 0;
 
             foreach ($backups as $backup) {
-                $backup->deleteFromDatabaseAndFilesystem();
+                $backup->deleteRecordAndFile();
                 $count++;
             }
 
