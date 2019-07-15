@@ -734,8 +734,8 @@ class UploadService implements UploadServiceContract
      * The uploading will be done based on the file type: image|video|audio|file.
      * Every uploading type has custom logic applicable only for that type.
      *
-     * If saving to database is enabled in config/varbox/media/upload.php, that will be done too.
-     * If forgetting old uploads is enabled in config/varbox/media/upload.php, that will be done too.
+     * If saving to database is enabled in config/varbox/upload.php, that will be done too.
+     * If forgetting old uploads is enabled in config/varbox/upload.php, that will be done too.
      *
      * If anything fails with the uploading process, restore everything and throw a specific error.
      *
@@ -782,7 +782,7 @@ class UploadService implements UploadServiceContract
      * Manage deleting and removing files.
      *
      * Remove the original file and all it's dependencies from storage.
-     * Also, if saving to database is enabled in config/varbox/media/upload.php, the given file will be removed from database too.
+     * Also, if saving to database is enabled in config/varbox/upload.php, the given file will be removed from database too.
      *
      * To apply this method properly, pass in this class' constructor, just the first parameter.
      * The parameter's value should be the full path of an existing file in the database's table set in config/upload.php
@@ -967,7 +967,7 @@ class UploadService implements UploadServiceContract
     /**
      * Simply upload (store) the given file.
      * When uploading, use the generated file name and file path.
-     * The file will be stored on the disk provided in the config/varbox/media/upload.php file.
+     * The file will be stored on the disk provided in the config/varbox/upload.php file.
      *
      * IMPORTANT:
      * If an upload from an existing file is amended, the uploader will just return the original file instance.
@@ -1009,7 +1009,7 @@ class UploadService implements UploadServiceContract
     /**
      * Save details about the newly uploaded file into the database.
      * The details will be saved into the corresponding uploads database column.
-     * The table where to save the file's details, can be set in config/varbox/media/upload.php -> database.table key.
+     * The table where to save the file's details, can be set in config/varbox/upload.php -> database.table key.
      * Please note that the saving will be made only if the database.save key is set to true.
      *
      * @return void
@@ -1117,7 +1117,7 @@ class UploadService implements UploadServiceContract
 
     /**
      * Try generating styles for the original uploaded image.
-     * The styles are defined in the config/varbox/media/upload.php (images -> styles), or overwritten in the model via the getUploadConfig() method.
+     * The styles are defined in the config/varbox/upload.php (images -> styles), or overwritten in the model via the getUploadConfig() method.
      * Also, when creating the styles, the "quality" configuration option is taken into consideration.
      *
      * @param string $path
@@ -1162,7 +1162,7 @@ class UploadService implements UploadServiceContract
 
     /**
      * Try generating thumbnail for the original uploaded image.
-     * The thumbnail generation flag and size are defined in the config/varbox/media/upload.php (images -> generate_thumbnail | thumbnail_style).
+     * The thumbnail generation flag and size are defined in the config/varbox/upload.php (images -> generate_thumbnail | thumbnail_style).
      * Also, when creating the image thumbnail, the "quality" configuration option is taken into consideration.
      *
      * @param string $path
@@ -1230,7 +1230,7 @@ class UploadService implements UploadServiceContract
 
     /**
      * Try generating styles for the original uploaded video.
-     * The styles are defined in the config/varbox/media/upload.php (videos -> styles), or overwritten in the model via the getUploadConfig() method.
+     * The styles are defined in the config/varbox/upload.php (videos -> styles), or overwritten in the model via the getUploadConfig() method.
      * Also, when creating the styles, please keep in mind that the newly generated videos will be WebM encoded for web pages.
      *
      * @param string $path
@@ -1274,7 +1274,7 @@ class UploadService implements UploadServiceContract
 
     /**
      * Verify if the uploaded file's size is bigger than the maximum size allowed.
-     * The maximum size allowed is specified in config/varbox/media/upload.php -> images|videos|audios|files.max_size
+     * The maximum size allowed is specified in config/varbox/upload.php -> images|videos|audios|files.max_size
      *
      * @param string $type
      * @return void
@@ -1294,7 +1294,7 @@ class UploadService implements UploadServiceContract
 
     /**
      * Verify if the uploaded file's extension matches the allowed file extensions.
-     * The allowed file extensions are specified in config/varbox/media/upload.php -> images|videos|audios|files.allowed_extensions
+     * The allowed file extensions are specified in config/varbox/upload.php -> images|videos|audios|files.allowed_extensions
      *
      * @param string $type
      * @return void
@@ -1317,7 +1317,7 @@ class UploadService implements UploadServiceContract
     /**
      * Verify if the uploaded image meets the minimum size requirements for the model field type.
      * The minimum size (width and height) is given by the biggest width and height values specified in "styles" config for image uploads.
-     * These 2 values come by default from the config/varbox/media/upload.php, but they are overwritten inside the "getUploadConfig" method on the model class.
+     * These 2 values come by default from the config/varbox/upload.php, but they are overwritten inside the "getUploadConfig" method on the model class.
      *
      * @return void
      */
