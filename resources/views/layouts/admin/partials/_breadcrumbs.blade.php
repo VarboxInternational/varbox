@@ -7,7 +7,7 @@
                         {{ $breadcrumb->title }}
                     @else
                         <a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a>
-                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true" style="color: #868e96"></i>
+                        <i class="fa fa-angle-right mx-2" aria-hidden="true" style="color: #868e96"></i>
                     @endif
                 </li>
             @endforeach

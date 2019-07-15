@@ -90,7 +90,7 @@ class AdminMenuComposer
             }*/
 
             $menu->add(function ($item) use ($menu) {
-                $auth = $item->name('Access Control')->data('icon', 'fa-sign-in')
+                $auth = $item->name('Access Control')->data('icon', 'fa-sign-in-alt')
                     ->permissions('users-list', 'admins-list', 'roles-list', 'permissions-list', 'activity-list', 'notifications-list')
                     ->active('admin/users/*', 'admin/admins/*', 'admin/roles/*', 'admin/permissions/*', 'admin/activity/*', 'admin/notifications/*');
 
@@ -123,7 +123,7 @@ class AdminMenuComposer
 
             if (\Varbox::moduleEnabled('geo')) {
                 $menu->add(function ($item) use ($menu) {
-                    $geo = $item->name('Geo Location')->data('icon', 'fa-map-marker')
+                    $geo = $item->name('Geo Location')->data('icon', 'fa-map-marker-alt')
                         ->permissions('countries-list', 'states-list', 'cities-list')
                         ->active('admin/countries/*', 'admin/states/*', 'admin/cities/*');
 
