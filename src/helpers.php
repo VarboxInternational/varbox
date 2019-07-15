@@ -106,6 +106,46 @@ if (!function_exists('relation')) {
     }
 }
 
+if (!function_exists('upload')) {
+    /**
+     * @param $file
+     * @param  \Illuminate\Database\Eloquent\Model|null $model
+     * @param null $field
+     * @return \Varbox\Contracts\UploadServiceContract
+     */
+    function upload($file, Illuminate\Database\Eloquent\Model $model = null, $field = null)
+    {
+        return app('upload.service', [
+            'file' => $file,
+            'model' => $model,
+            'field' => $field
+        ]);
+    }
+}
+
+if (!function_exists('uploaded')) {
+    /**
+     * @param string $file
+     * @return \Varbox\Contracts\UploadedHelperContract
+     */
+    function uploaded($file)
+    {
+        return app('uploaded.helper', [
+            'file' => $file
+        ]);
+    }
+}
+
+if (!function_exists('uploader')) {
+    /**
+     * @return \Varbox\Contracts\UploaderHelperContract
+     */
+    function uploader()
+    {
+        return app('uploader.helper');
+    }
+}
+
 if (!function_exists('is_json_format')) {
     /**
      * @param $string
