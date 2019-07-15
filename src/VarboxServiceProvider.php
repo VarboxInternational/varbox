@@ -35,6 +35,7 @@ use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
@@ -287,6 +288,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('user', UserModelContract::class);
         Route::model('role', RoleModelContract::class);
         Route::model('permission', PermissionModelContract::class);
+        Route::model('upload', UploadModelContract::class);
         Route::model('activity', ActivityModelContract::class);
         Route::model('country', CountryModelContract::class);
         Route::model('state', StateModelContract::class);
