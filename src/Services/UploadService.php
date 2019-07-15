@@ -564,7 +564,7 @@ class UploadService implements UploadServiceContract
         if ($this->hasOriginal()) {
             $this->size = $this->original->size;
         } else {
-            $this->size = $this->file->getClientSize();
+            $this->size = $this->file->getSize();
         }
 
         return $this;
