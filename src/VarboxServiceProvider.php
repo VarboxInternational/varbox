@@ -35,6 +35,8 @@ use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\UploadedHelperContract;
+use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Contracts\UserModelContract;
@@ -46,6 +48,8 @@ use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\ButtonHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
+use Varbox\Helpers\UploadedHelper;
+use Varbox\Helpers\UploaderHelper;
 use Varbox\Helpers\ValidationHelper;
 use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Listeners\StoreBackupToDatabase;
@@ -469,6 +473,12 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(ButtonHelperContract::class, $binding['helpers']['button_helper'] ?? ButtonHelper::class);
         $this->app->alias(ButtonHelperContract::class, 'button.helper');
+
+        $this->app->singleton(UploadedHelperContract::class, $binding['helpers']['uploaded_helper'] ?? UploadedHelper::class);
+        $this->app->alias(UploadedHelperContract::class, 'uploaded.helper');
+
+        $this->app->singleton(UploaderHelperContract::class, $binding['helpers']['uploader_helper'] ?? UploaderHelper::class);
+        $this->app->alias(UploaderHelperContract::class, 'uploader.helper');
     }
 
     /**
