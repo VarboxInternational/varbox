@@ -161,7 +161,7 @@ class UploadedHelper implements UploadedHelperContract
      */
     public function setType()
     {
-        $uploadService = config('varbox.media.binding.services.upload_service', UploadService::class);
+        $uploadService = config('varbox.bindings.services.upload_service', UploadService::class);
 
         switch ($this->extension) {
             case in_array($this->extension, $uploadService::getImageExtensions()):
@@ -208,7 +208,7 @@ class UploadedHelper implements UploadedHelperContract
 
         if ($this->type == self::TYPE_VIDEO) {
             $this->file = substr_replace(
-                preg_replace('/\..+$/', '.jpg', $this->file), '_thumbnail_' . $number, strpos($this->file, '.'), 0
+                preg_replace('/\..+$/', '.jpg', $this->file), '_thumbnail_' . ($number ?: 1), strpos($this->file, '.'), 0
             );
         }
 
