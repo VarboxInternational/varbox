@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Spatie\Backup\Events\BackupWasSuccessful;
+use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 use Varbox\Commands\ActivityCleanCommand;
 use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\ErrorsCleanCommand;
@@ -253,10 +254,11 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.check.roles', CheckRoles::class);
         $this->router->aliasMiddleware('varbox.check.permissions', CheckPermissions::class);
 
-        if (\Varbox::moduleEnabled('sys')) {
-            $this->router->aliasMiddleware('varbox.override.configs', OverrideConfigs::class);
-            $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
-        }
+        $this->router->aliasMiddleware('varbox.override.configs', OverrideConfigs::class);
+        $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
+
+        $this->router->aliasMiddleware('varbox.optimize.images', OptimizeImages::class);
+        $this->router->prependMiddlewareToGroup('web', 'varbox.optimize.images');
     }
 
     /**
