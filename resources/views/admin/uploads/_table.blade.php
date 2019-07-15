@@ -5,7 +5,7 @@
             <th class="sortable" data-sort="original_name">
                 <i class="fa fa-sort mr-2"></i>Name
             </th>
-            <th class="sortable d-none d-sm-table-cell" data-sort="size">
+            <th class="sortable d-none d-md-table-cell" data-sort="size">
                 <i class="fa fa-sort mr-2"></i>Size
             </th>
             <th class="text-right d-table-cell"></th>
@@ -14,14 +14,20 @@
             <tr>
                 <td>
                     <a href="{{ uploaded($item->full_path)->url() }}" target="_blank">
-                        <span class="avatar d-block rounded bg-gray-lighter" style="background-image: url({{ uploaded($item->full_path)->thumbnail() }})"></span>
+                        <span class="avatar d-block rounded bg-white" style="background-image: url({{ uploaded($item->full_path)->thumbnail() }})">
+                            @if($item->isAudio())
+                                <i class="fa fa-file-audio text-blue" style="vertical-align: middle; font-size: 245%;"></i>
+                            @elseif($item->isFile())
+                                <i class="fa fa-file-alt text-blue" style="vertical-align: middle; font-size: 245%;"></i>
+                            @endif
+                        </span>
                     </a>
                 </td>
                 <td>
-                    <div>{{ $item->original_name ?: 'N/A' }}</div>
+                    <div class="upload-name text-truncate">{{ $item->original_name ?: 'N/A' }}</div>
                     <div class="small text-muted">{{ $item->mime ?: 'N/A' }}</div>
                 </td>
-                <td class="d-none d-sm-table-cell">
+                <td class="d-none d-md-table-cell">
                     <span class="badge badge badge-default" style="font-size: 90%;">
                         {{ $item->size_mb ?: 0 }} MB
                     </span>
@@ -39,3 +45,13 @@
         @endforelse
     </table>
 </div>
+
+@push('styles')
+    <style>
+        @media (max-width: 768px) {
+            .upload-name {
+                max-width: 85px;
+            }
+        }
+    </style>
+@endpush
