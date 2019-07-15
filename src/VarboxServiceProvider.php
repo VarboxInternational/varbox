@@ -36,6 +36,7 @@ use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UploadModelContract;
+use Varbox\Contracts\UploadServiceContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
@@ -67,6 +68,7 @@ use Varbox\Models\Role;
 use Varbox\Models\State;
 use Varbox\Models\User;
 use Varbox\Services\QueryCacheService;
+use Varbox\Services\UploadService;
 
 class VarboxServiceProvider extends BaseServiceProvider
 {
@@ -390,6 +392,9 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function registerServiceBindings()
     {
         $binding = $this->config['varbox.bindings'];
+
+        $this->app->singleton(UploadServiceContract::class, $binding['services']['upload_service'] ?? UploadService::class);
+        $this->app->alias(UploadServiceContract::class, 'upload.service');
 
         $this->app->singleton(QueryCacheServiceContract::class, $binding['services']['query_cache_service'] ?? QueryCacheService::class);
         $this->app->alias(QueryCacheServiceContract::class, 'query_cache.service');
