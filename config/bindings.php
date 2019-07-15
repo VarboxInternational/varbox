@@ -649,6 +649,99 @@ return [
 
     /*
     | --------------------------------------------------------------------------------------------------------------
+    | Middleware Class Bindings
+    | --------------------------------------------------------------------------------------------------------------
+    */
+    'middleware' => [
+
+        /*
+        |
+        | Concrete implementation for the "authenticate session middleware".
+        | To extend or replace this functionality, change the value below with your full "authenticate session middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.auth.session"
+        |
+        */
+        'authenticate_session_middleware' => \Varbox\Middleware\AuthenticateSession::class,
+
+        /*
+        |
+        | Concrete implementation for the "authenticated middleware".
+        | To extend or replace this functionality, change the value below with your full "authenticated middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.authenticated"
+        |
+        */
+        'authenticated_middleware' => \Varbox\Middleware\Authenticated::class,
+
+        /*
+        |
+        | Concrete implementation for the "not authenticated middleware".
+        | To extend or replace this functionality, change the value below with your full "not authenticated middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.not.authenticated"
+        |
+        */
+        'not_authenticated_middleware' => \Varbox\Middleware\NotAuthenticated::class,
+
+        /*
+        |
+        | Concrete implementation for the "check roles middleware".
+        | To extend or replace this functionality, change the value below with your full "check roles middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.check.roles"
+        |
+        */
+        'check_roles_middleware' => \Varbox\Middleware\CheckRoles::class,
+
+        /*
+        |
+        | Concrete implementation for the "check permissions middleware".
+        | To extend or replace this functionality, change the value below with your full "check permissions middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.check.permissions"
+        |
+        */
+        'check_permissions_middleware' => \Varbox\Middleware\CheckPermissions::class,
+
+        /*
+        |
+        | Concrete implementation for the "override configs middleware".
+        | To extend or replace this functionality, change the value below with your full "override configs middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.override.configs"
+        |
+        */
+        'override_configs_middleware' => \Varbox\Middleware\OverrideConfigs::class,
+
+        /*
+        |
+        | Concrete implementation for the "optimize images middleware".
+        | To extend or replace this functionality, change the value below with your full "optimize images middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.optimize.images"
+        |
+        */
+        'optimize_images_middleware' => \Varbox\Middleware\OptimizeImages::class,
+
+    ],
+
+    /*
+    | --------------------------------------------------------------------------------------------------------------
     | Helper Class Bindings
     | --------------------------------------------------------------------------------------------------------------
     */
@@ -733,22 +826,6 @@ return [
         |
         */
         'validation_helper' => \Varbox\Helpers\ValidationHelper::class,
-
-        /*
-        |
-        | Concrete implementation for the "pagination helper".
-        | To extend or replace this functionality, change the value below with your full "pagination helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\PaginationHelper" class
-        | - or at least implement the "Varbox\Contracts\PaginationHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - pagination() OR app('pagination.helper') OR app('\Varbox\Contracts\PaginationHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'pagination_helper' => \Varbox\Helpers\PaginationHelper::class,
 
         /*
         |
