@@ -19,4 +19,4 @@
 {!! app('html')->favicon('vendor/varbox/images/favicon.ico') !!}
 {!! app('html')->style('vendor/varbox/css/app.css') !!}
 
-@stack('style')
+@stack('styles')
