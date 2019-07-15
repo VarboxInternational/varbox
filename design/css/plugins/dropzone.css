@@ -599,10 +599,10 @@
   width: 100%;
   float: left;}
 .dropzone {
-  border: 2px dashed #B0BEC5;
+  border: 2px dashed #4AAEE3;
   border-radius: 5px;
   margin-top: 10px;
-  background: #FCFCFC;
+  background: #FFF;
   text-align: center; }
 .dropzone > img {
   width: 160px; }
@@ -624,7 +624,8 @@
   font-family: 'Open Sans Bold', sans-serif;
   font-size: 0.875em;
   text-transform: uppercase;
-  color: #9AADB6;
+  color: #4AAEE3;
+  font-weight: 700;
   margin: 0 auto;
 margin-top: 14px;}
 
