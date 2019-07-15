@@ -66,6 +66,7 @@ class InstallCommand extends Command
         $this->modifyUserModel();
         $this->modifyExceptionHandler();
         $this->generateAdminMenu();
+        $this->manageUploads();
         $this->manageBackups();
         $this->migrateTables();
         $this->seedDatabase();
@@ -305,6 +306,59 @@ class InstallCommand extends Command
 
         $this->files->put($file, $contents);
         $this->line('<fg=green>SUCCESS |</> The "AdminMenuComposer.php" file has been copied over to "app/Http/Composers/" directory!');
+    }
+
+    /**
+     * @return void
+     * @throws FileNotFoundException
+     */
+    protected function manageUploads()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>MANAGING UPLOADS</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $uploadsDiskStub = __DIR__ . '/../../resources/stubs/config/upload.disks.stub';
+        $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
+        $uploadsPath = $this->laravel['path.storage'] . '/uploads';
+        $gitignoreFile = $uploadsPath . '/.gitignore';
+
+        if ($this->files->exists($filesystemsConfig)) {
+            $content = $this->files->get($filesystemsConfig);
+
+            if (strpos($content, "'uploads' => [") === false) {
+                $content = str_replace(
+                    "'disks' => [",
+                    "'disks' => [\n\n" . file_get_contents($uploadsDiskStub)
+                    , $content
+                );
+
+                $this->files->put($filesystemsConfig, $content);
+                $this->line('<fg=green>SUCCESS |</> Setup the "uploads" storage disk inside "config/filesystems.php" => "disks".');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The "uploads" storage disk already exists inside "config/filesystems.php" => "disks".');
+            }
+        } else {
+            $this->line('<fg=red>ERROR   |</> The "config/filesystems.php" file does not exist!');
+            $this->line('<fg=red>ERROR   |</> You will have to manually add the "uploads" storage disk.');
+        }
+
+        if ($this->files->exists($gitignoreFile)) {
+            $this->line('<fg=green>SUCCESS |</> The "storage/uploads/" directory already exists.');
+            $this->line('<fg=green>SUCCESS |</> The ".gitignore" file inside the "storage/uploads/" directory already exists.');
+
+            return;
+        } else {
+            $this->files->makeDirectory($uploadsPath);
+            $this->line('<fg=green>SUCCESS |</> Created the "storage/uploads/" directory!');
+
+            $this->files->put($gitignoreFile, "*\n!.gitignore\n");
+            $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/uploads/" directory!');
+
+            $this->callSilent('varbox:uploads-link');
+            $this->line('<fg=green>SUCCESS |</> The "public/uploads/" directory has been linked!');
+        }
     }
 
     /**
