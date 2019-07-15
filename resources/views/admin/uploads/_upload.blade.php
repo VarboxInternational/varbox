@@ -10,7 +10,7 @@
     </div>
 </div>
 
-@push('bottom_scripts')
+@push('scripts')
     <script type="text/javascript">
         Dropzone.options.uploads = {
             success: function(file, response){
