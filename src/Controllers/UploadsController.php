@@ -48,27 +48,13 @@ class UploadsController extends Controller
         $items = $this->model
             ->filtered($request->all(), $filter)
             ->sorted($request->all(), $sort)
-            ->paginate(config('varbox.base.crud.per_page', 10));
+            ->paginate(config('varbox.crud.per_page', 10));
 
         return view('varbox::admin.uploads.index')->with([
             'title' => 'Uploads',
             'items' => $items,
             'types' => Upload::getFileTypes(),
         ]);
-    }
-
-    /**
-     * @param UploadModelContract $upload
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(UploadModelContract $upload)
-    {
-        try {
-            return upload($upload->full_path)->show();
-        } catch (ModelNotFoundException $e) {
-            flash()->error('You are trying to view a record that does not exist!', $e);
-            return redirect()->route('admin.uploads.index');
-        }
     }
 
     /**
@@ -79,7 +65,7 @@ class UploadsController extends Controller
     {
         $status = $message = null;
 
-        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+        if (!($request->hasFile('file') && $request->file('file')->isValid())) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid or missing file',
