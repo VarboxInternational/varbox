@@ -66,6 +66,7 @@ use Varbox\Models\Error;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
 use Varbox\Models\State;
+use Varbox\Models\Upload;
 use Varbox\Models\User;
 use Varbox\Services\QueryCacheService;
 use Varbox\Services\UploadService;
@@ -415,6 +416,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(PermissionModelContract::class, $binding['models']['permission_model'] ?? Permission::class);
         $this->app->alias(PermissionModelContract::class, 'permission.model');
+
+        $this->app->bind(UploadModelContract::class, $binding['models']['upload_model'] ?? Upload::class);
+        $this->app->alias(UploadModelContract::class, 'upload.model');
 
         $this->app->bind(ActivityModelContract::class, $binding['models']['activity_model'] ?? Activity::class);
         $this->app->alias(ActivityModelContract::class, 'activity.model');
