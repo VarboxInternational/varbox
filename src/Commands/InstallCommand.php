@@ -135,6 +135,20 @@ class InstallCommand extends Command
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "SAVE_ERRORS" configuration.');
             }
+
+            if (false === strpos($env, 'FFMPEG_PATH')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nFFMPEG_PATH=ffmpeg");
+                $this->line('<fg=green>SUCCESS |</> Appended "FFMPEG_PATH" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "FFMPEG_PATH" configuration.');
+            }
+
+            if (false === strpos($env, 'FFPROBE_PATH')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nFFPROBE_PATH=ffprobe\n");
+                $this->line('<fg=green>SUCCESS |</> Appended "FFPROBE_PATH" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "FFPROBE_PATH" configuration.');
+            }
         } catch (FileNotFoundException $e) {
             $this->line('<fg=red>ERROR   |</> Unable to append the env variables! The file ".env" was not found.');
         }
