@@ -256,17 +256,18 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerMiddlewares()
     {
-        $this->router->aliasMiddleware('varbox.auth.session', AuthenticateSession::class);
-        $this->router->aliasMiddleware('varbox.authenticated', Authenticated::class);
-        $this->router->aliasMiddleware('varbox.not.authenticated', NotAuthenticated::class);
-        $this->router->aliasMiddleware('varbox.check.roles', CheckRoles::class);
-        $this->router->aliasMiddleware('varbox.check.permissions', CheckPermissions::class);
+        $middleware = $this->config['varbox.bindings']['middleware'];
 
-        $this->router->aliasMiddleware('varbox.override.configs', OverrideConfigs::class);
+        $this->router->aliasMiddleware('varbox.auth.session', $middleware['authenticate_session_middleware'] ?? AuthenticateSession::class);
+        $this->router->aliasMiddleware('varbox.authenticated', $middleware['authenticated_middleware'] ?? Authenticated::class);
+        $this->router->aliasMiddleware('varbox.not.authenticated', $middleware['not_authenticated_middleware'] ?? NotAuthenticated::class);
+        $this->router->aliasMiddleware('varbox.check.roles', $middleware['check_roles_middleware'] ?? CheckRoles::class);
+        $this->router->aliasMiddleware('varbox.check.permissions', $middleware['check_permissions_middleware'] ?? CheckPermissions::class);
+        $this->router->aliasMiddleware('varbox.override.configs', $middleware['override_configs_middleware'] ?? OverrideConfigs::class);
+        $this->router->aliasMiddleware('varbox.optimize.images', $middleware['optimize_images_middleware'] ?? OptimizeImages::class);
+
         $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
-
-        $this->router->aliasMiddleware('varbox.optimize.images', OptimizeImages::class);
-        $this->router->prependMiddlewareToGroup('web', OptimizeImages::class);
+        $this->router->prependMiddlewareToGroup('web', 'varbox.optimize.images');
     }
 
     /**
