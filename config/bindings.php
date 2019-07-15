@@ -372,7 +372,7 @@ return [
         |
         | Your class will have to (first option is recommended):
         | - extend the "Varbox\Controllers\UploadsController" class
-        | - or you'll have to implement the following public methods yourself: index(), show(), store(), destroy(), download()
+        | - or you'll have to implement the following public methods yourself: index(), store(), destroy(), download()
         |
         */
         'uploads_controller' => \Varbox\Controllers\UploadsController::class,
