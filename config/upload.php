@@ -281,8 +281,8 @@ return [
        */
         'binaries' => [
 
-            'ffmpeg' => '/usr/bin/ffmpeg',
-            'ffprobe' => '/usr/bin/ffprobe',
+            'ffmpeg' => env('FFMPEG_PATH', 'ffmpeg'),
+            'ffprobe' => env('FFPROBE_PATH', 'ffprobe'),
 
         ],
 
