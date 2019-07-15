@@ -8,13 +8,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Varbox\Contracts\UploadModelContract;
+use Varbox\Options\ActivityOptions;
 use Varbox\Services\UploadService;
+use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class Upload extends Model implements UploadModelContract
 {
+    use HasActivity;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -326,5 +329,20 @@ class Upload extends Model implements UploadModelContract
             ->references('full_path')
             ->on((new static)->getTable())
             ->onDelete('restrict');
+    }
+
+    /**
+     * Set the options for the HasActivity trait.
+     *
+     * @return ActivityOptions
+     */
+    public function getActivityOptions()
+    {
+        return ActivityOptions::instance()
+            ->withEntityType('upload')
+            ->withEntityName($this->original_name)
+            ->withEntityUrl(route('admin.uploads.index', [
+                'search' => $this->original_name
+            ]));
     }
 }
