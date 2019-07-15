@@ -46,7 +46,7 @@ class ConfigsController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.base.crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Configs';
             $this->view = view('varbox::admin.configs.index');
