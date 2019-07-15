@@ -31,7 +31,6 @@ Route::group([
         'prefix' => 'uploads',
     ], function () use ($controllers) {
         Route::get('/', ['as' => 'admin.uploads.index', 'uses' => $controllers['uploads'] . '@index', 'permissions' => 'uploads-list']);
-        Route::get('show/{upload}', ['as' => 'admin.uploads.show', 'uses' => $controllers['uploads'] . '@show', 'permissions' => 'uploads-list']);
         Route::get('download/{upload}', ['as' => 'admin.uploads.download', 'uses' => $controllers['uploads'] . '@download', 'permissions' => 'uploads-download']);
         Route::post('store', ['as' => 'admin.uploads.store', 'uses' => $controllers['uploads'] . '@store', 'permissions' => 'uploads-upload']);
         Route::delete('destroy/{upload}', ['as' => 'admin.uploads.destroy', 'uses' => $controllers['uploads'] . '@destroy', 'permissions' => 'uploads-delete']);
