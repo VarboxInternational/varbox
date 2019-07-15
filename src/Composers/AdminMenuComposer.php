@@ -177,7 +177,7 @@ class AdminMenuComposer
                 });
             }*/
 
-            /*if (\Varbox::moduleEnabled('media')) {
+            if (\Varbox::moduleEnabled('media')) {
                 $menu->add(function ($item) use ($menu) {
                     $media = $item->name('Media Library')->data('icon', 'fa-copy')
                         ->permissions('uploads-list')
@@ -187,7 +187,7 @@ class AdminMenuComposer
                         $item->name('Uploads')->url(route('admin.uploads.index'))->permissions('uploads-list')->active('admin/uploads/*');
                     });
                 });
-            }*/
+            }
 
             if (\Varbox::moduleEnabled('sys')) {
                 $menu->add(function ($item) use ($menu) {
