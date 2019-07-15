@@ -8,6 +8,7 @@ use FFMpeg\Coordinate\Dimension as FFMpegDimension;
 use FFMpeg\Format\Video\WebM as FFMpegWebM;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -422,7 +423,7 @@ class UploadService implements UploadServiceContract
      */
     public function setConfig(Model $model = null)
     {
-        $this->config = config('varbox.media.upload');
+        $this->config = config('varbox.upload');
 
         if (method_exists($model, 'getUploadConfig')) {
             $this->config = array_replace_recursive($this->config, $model->getUploadConfig());
@@ -439,7 +440,7 @@ class UploadService implements UploadServiceContract
      */
     public function getConfig($key = null)
     {
-        return array_get($this->config, $key);
+        return Arr::get($this->config, $key);
     }
 
     /**
