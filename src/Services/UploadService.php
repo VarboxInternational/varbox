@@ -9,7 +9,7 @@ use FFMpeg\Format\Video\WebM as FFMpegWebM;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -1088,13 +1088,13 @@ class UploadService implements UploadServiceContract
         );
 
         try {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+            Schema::disableForeignKeyConstraints();
 
             app(UploadModelContract::class)->where([
                 'full_path' => $this->getModel()->getOriginal($this->getField())
             ])->delete();
 
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            Schema::enableForeignKeyConstraints();
 
             foreach ($matchingFiles as $file) {
                 Storage::disk($this->getDisk())->delete($file);
