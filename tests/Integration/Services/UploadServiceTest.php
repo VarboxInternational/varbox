@@ -357,11 +357,7 @@ class UploadServiceTest extends TestCase
         Storage::fake($this->disk);
 
         $file = (new UploadService($this->imageFile()))->upload();
-        $path = $file->getPath() . '/' . $file->getName();
-        $extension = $file->getExtension();
-        $thumbnail = substr_replace(
-            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
-        );
+        $thumbnail = $this->imageThumbnail($file);
 
         Storage::disk($this->disk)->assertExists($thumbnail);
     }
@@ -374,11 +370,7 @@ class UploadServiceTest extends TestCase
         Storage::fake($this->disk);
 
         $file = (new UploadService($this->imageFile()))->upload();
-        $path = $file->getPath() . '/' . $file->getName();
-        $extension = $file->getExtension();
-        $thumbnail = substr_replace(
-            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
-        );
+        $thumbnail = $this->imageThumbnail($file);
 
         Storage::disk($this->disk)->assertExists($thumbnail);
     }
@@ -391,14 +383,38 @@ class UploadServiceTest extends TestCase
         Storage::fake($this->disk);
 
         $file = (new UploadService($this->imageFile()))->upload();
-        $path = $file->getPath() . '/' . $file->getName();
-        $extension = $file->getExtension();
-        $thumbnail = substr_replace(
-            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
-        );
+        $thumbnail = $this->imageThumbnail($file);
 
-        Storage::disk($this->disk)->assertExists($path);
         Storage::disk($this->disk)->assertMissing($thumbnail);
+    }
+
+    /** @test */
+    public function it_generates_thumbnail_at_100_x_100_pixels_by_default_when_uploading_an_image()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $thumbnail = $this->imageThumbnail($file);
+        $size = getimagesize(Storage::disk($this->disk)->path($thumbnail));
+
+        $this->assertEquals(100, $size[0]);
+        $this->assertEquals(100, $size[1]);
+    }
+
+    /** @test */
+    public function it_can_generate_thumbnail_at_defined_pixel_value_from_config_when_uploading_an_image()
+    {
+        $this->app['config']->set('varbox.upload.images.thumbnail_style.width', 80);
+        $this->app['config']->set('varbox.upload.images.thumbnail_style.height', 160);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $thumbnail = $this->imageThumbnail($file);
+        $size = getimagesize(Storage::disk($this->disk)->path($thumbnail));
+
+        $this->assertEquals(80, $size[0]);
+        $this->assertEquals(160, $size[1]);
     }
 
 
@@ -436,5 +452,19 @@ class UploadServiceTest extends TestCase
     protected function pdfFile()
     {
         return new UploadedFile(__DIR__ . '/../../Files/test.pdf', 'test.pdf', null, null, true);
+    }
+
+    /**
+     * @param UploadService $original
+     * @return mixed
+     */
+    protected function imageThumbnail(UploadService $original)
+    {
+        $path = $original->getPath() . '/' . $original->getName();
+        $extension = $original->getExtension();
+
+        return substr_replace(
+            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
     }
 }
