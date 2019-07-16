@@ -349,6 +349,63 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+    /** @test */
+    public function it_generates_thumbnail_by_default_when_uploading_an_image()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+        $extension = $file->getExtension();
+        $thumbnail = substr_replace(
+            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
+
+        Storage::disk($this->disk)->assertExists($thumbnail);
+    }
+
+    /** @test */
+    public function it_does_generate_thumbnail_when_uploading_an_image_of_enabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.images.generate_thumbnail', true);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+        $extension = $file->getExtension();
+        $thumbnail = substr_replace(
+            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
+
+        Storage::disk($this->disk)->assertExists($thumbnail);
+    }
+
+    /** @test */
+    public function it_doesnt_generate_thumbnail_when_uploading_an_image_of_disabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.images.generate_thumbnail', false);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+        $extension = $file->getExtension();
+        $thumbnail = substr_replace(
+            preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
+
+        Storage::disk($this->disk)->assertExists($path);
+        Storage::disk($this->disk)->assertMissing($thumbnail);
+    }
+
+
+
+
+
+
     /**
      * @return UploadedFile
      */
