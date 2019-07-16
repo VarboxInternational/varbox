@@ -5,12 +5,14 @@ namespace Varbox\Tests\Models;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class Post extends Model
 {
+    use HasUploads;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;
@@ -32,6 +34,10 @@ class Post extends Model
         'author_id',
         'name',
         'slug',
+        'image',
+        'video',
+        'audio',
+        'file',
         'content',
         'votes',
         'views',
@@ -79,6 +85,16 @@ class Post extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'test_post_tag', 'post_id', 'tag_id');
+    }
+
+    /**
+     * Get the specific upload config parts for this model.
+     *
+     * @return array
+     */
+    public function getUploadConfig()
+    {
+        return [];
     }
 
     /**
