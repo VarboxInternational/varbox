@@ -111,6 +111,64 @@ class UploadServiceTest extends TestCase
 
 
 
+    /** @test */
+    public function it_stores_the_upload_to_database_by_default()
+    {
+        Storage::fake($this->disk);
+        Upload::truncate();
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $upload = Upload::first();
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals($file->getName(), $upload->name);
+        $this->assertEquals('test.jpg', $upload->original_name);
+        $this->assertEquals($file->getPath(), $upload->path);
+        $this->assertEquals($file->getPath() . '/' . $file->getName(), $upload->full_path);
+        $this->assertEquals($file->getExtension(), $upload->extension);
+        $this->assertEquals(UploadService::TYPE_IMAGE, $upload->type);
+    }
+
+    /** @test */
+    public function it_stores_the_upload_to_database_if_enabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.database.save', true);
+
+        Storage::fake($this->disk);
+        Upload::truncate();
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $upload = Upload::first();
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals($file->getName(), $upload->name);
+        $this->assertEquals('test.jpg', $upload->original_name);
+        $this->assertEquals($file->getPath(), $upload->path);
+        $this->assertEquals($file->getPath() . '/' . $file->getName(), $upload->full_path);
+        $this->assertEquals($file->getExtension(), $upload->extension);
+        $this->assertEquals(UploadService::TYPE_IMAGE, $upload->type);
+    }
+
+    /** @test */
+    public function it_doesnt_store_the_upload_to_database_if_disabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.database.save', false);
+
+        Storage::fake($this->disk);
+        Upload::truncate();
+
+        (new UploadService($this->imageFile()))->upload();
+
+        $this->assertEquals(0, Upload::count());
+    }
+
+
+
+
+
+
+
+
     
 
     /**
