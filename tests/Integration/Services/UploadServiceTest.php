@@ -9,6 +9,7 @@ use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
 use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
+use Varbox\Tests\Models\Post;
 
 class UploadServiceTest extends TestCase
 {
@@ -504,6 +505,74 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+
+
+
+
+    /** @test */
+    public function it_doesnt_generate_any_additional_styles_for_an_uploaded_image_by_default()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $thumbnail = $this->imageThumbnail($file);
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+        Storage::disk($this->disk)->assertExists($thumbnail);
+
+        $this->assertCount(2, Storage::disk($this->disk)->files(null, true));
+    }
+
+    /** @test */
+    public function it_can_generate_additional_styles_for_an_uploaded_image_of_a_model_record()
+    {
+        $model = new class extends Post {
+            public function getUploadConfig()
+            {
+                return [
+                    'images' => [
+                        'styles' => [
+                            'image' => [
+                                'portrait' => [
+                                    'width' => '50',
+                                    'height' => '200',
+                                ],
+                                'landscape' => [
+                                    'width' => '210',
+                                    'height' => '60',
+                                ],
+                            ],
+                        ]
+                    ]
+                ];
+            }
+        };
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile(), $model, 'image'))->upload();
+        $portrait = $this->imageStyle($file, 'portrait');
+        $landscape = $this->imageStyle($file, 'landscape');
+
+        $portraitSize = getimagesize(Storage::disk($this->disk)->path($portrait));
+        $landscapeSize = getimagesize(Storage::disk($this->disk)->path($landscape));
+
+        Storage::disk($this->disk)->assertExists($portrait);
+        Storage::disk($this->disk)->assertExists($landscape);
+
+        $this->assertEquals(50, $portraitSize[0]);
+        $this->assertEquals(200, $portraitSize[1]);
+        $this->assertEquals(210, $landscapeSize[0]);
+        $this->assertEquals(60, $landscapeSize[1]);
+    }
+
+
+
+
+
+
     /**
      * @return UploadedFile
      */
@@ -547,6 +616,20 @@ class UploadServiceTest extends TestCase
 
         return substr_replace(
             preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
+    }
+
+    /**
+     * @param UploadService $original
+     * @param string $style
+     * @return mixed
+     */
+    protected function imageStyle(UploadService $original, $style)
+    {
+        $path = $original->getPath() . '/' . $original->getName();
+
+        return substr_replace(
+            $path, '_' . $style, strpos($path, '.'), 0
         );
     }
 
