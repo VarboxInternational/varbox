@@ -77,6 +77,21 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertExists($path);
     }
 
+    /** @test */
+    public function it_uploads_a_file_to_the_specified_disk()
+    {
+        $this->app['config']->set('varbox.upload.storage.disk', 'test');
+
+        Storage::fake($this->disk);
+        Storage::fake('test');
+
+        $upload = (new UploadService($this->pdfFile()))->upload();
+        $path = $upload->getPath() . '/' . $upload->getName();
+
+        Storage::disk($this->disk)->assertMissing($path);
+        Storage::disk('test')->assertExists($path);
+    }
+
     /**
      * @return UploadedFile
      */
