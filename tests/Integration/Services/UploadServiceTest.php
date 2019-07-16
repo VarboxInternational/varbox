@@ -461,7 +461,43 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertMissing($thumbnail);
     }
 
-    
+    /** @test */
+    public function it_generates_3_thumbnails_by_default_when_uploading_a_video()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+        $thumbnail1 = $this->videoThumbnail($file, 1);
+        $thumbnail2 = $this->videoThumbnail($file, 2);
+        $thumbnail3 = $this->videoThumbnail($file, 3);
+
+        Storage::disk($this->disk)->assertExists($thumbnail1);
+        Storage::disk($this->disk)->assertExists($thumbnail2);
+        Storage::disk($this->disk)->assertExists($thumbnail3);
+    }
+
+    /** @test */
+    public function it_generates_number_of_thumbnails_specified_in_config_when_uploading_a_video()
+    {
+        $this->app['config']->set('varbox.upload.videos.thumbnails_number', 5);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+        $thumbnail1 = $this->videoThumbnail($file, 1);
+        $thumbnail2 = $this->videoThumbnail($file, 2);
+        $thumbnail3 = $this->videoThumbnail($file, 3);
+        $thumbnail4 = $this->videoThumbnail($file, 4);
+        $thumbnail5 = $this->videoThumbnail($file, 5);
+        $thumbnail6 = $this->videoThumbnail($file, 6);
+
+        Storage::disk($this->disk)->assertExists($thumbnail1);
+        Storage::disk($this->disk)->assertExists($thumbnail2);
+        Storage::disk($this->disk)->assertExists($thumbnail3);
+        Storage::disk($this->disk)->assertExists($thumbnail4);
+        Storage::disk($this->disk)->assertExists($thumbnail5);
+        Storage::disk($this->disk)->assertMissing($thumbnail6);
+    }
 
 
 
