@@ -363,7 +363,7 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_does_generate_thumbnail_when_uploading_an_image_of_enabled_from_config()
+    public function it_does_generate_thumbnail_when_uploading_an_image_if_enabled_from_config()
     {
         $this->app['config']->set('varbox.upload.images.generate_thumbnail', true);
 
@@ -376,7 +376,7 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_doesnt_generate_thumbnail_when_uploading_an_image_of_disabled_from_config()
+    public function it_doesnt_generate_thumbnail_when_uploading_an_image_if_disabled_from_config()
     {
         $this->app['config']->set('varbox.upload.images.generate_thumbnail', false);
 
@@ -416,6 +416,52 @@ class UploadServiceTest extends TestCase
         $this->assertEquals(80, $size[0]);
         $this->assertEquals(160, $size[1]);
     }
+
+
+
+
+
+
+
+
+    /** @test */
+    public function it_generates_thumbnails_by_default_when_uploading_a_video()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+        $thumbnail = $this->videoThumbnail($file);
+
+        Storage::disk($this->disk)->assertExists($thumbnail);
+    }
+
+    /** @test */
+    public function it_does_generate_thumbnails_when_uploading_a_video_if_enabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.videos.generate_thumbnails', true);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+        $thumbnail = $this->videoThumbnail($file);
+
+        Storage::disk($this->disk)->assertExists($thumbnail);
+    }
+
+    /** @test */
+    public function it_doesnt_generate_thumbnails_when_uploading_a_video_if_disabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.videos.generate_thumbnails', false);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+        $thumbnail = $this->videoThumbnail($file);
+
+        Storage::disk($this->disk)->assertMissing($thumbnail);
+    }
+
+    
 
 
 
@@ -465,6 +511,20 @@ class UploadServiceTest extends TestCase
 
         return substr_replace(
             preg_replace('/\..+$/', '.' . $extension, $path), '_thumbnail', strpos($path, '.'), 0
+        );
+    }
+
+    /**
+     * @param UploadService $original
+     * @param int $number
+     * @return mixed
+     */
+    protected function videoThumbnail(UploadService $original, $number = 1)
+    {
+        $path = $original->getPath() . '/' . $original->getName();
+
+        return substr_replace(
+            preg_replace('/\..+$/', '.jpg', $path), '_thumbnail_' . ($number ?: 1), strpos($path, '.'), 0
         );
     }
 }
