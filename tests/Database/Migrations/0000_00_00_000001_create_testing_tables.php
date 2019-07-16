@@ -26,6 +26,12 @@ class CreateTestingTables extends Migration
             $table->integer('author_id')->unsigned()->index()->nullable();
             $table->string('name');
             $table->string('slug')->unique()->nullable();
+
+            \Varbox\Models\Upload::column('image', $table);
+            \Varbox\Models\Upload::column('video', $table);
+            \Varbox\Models\Upload::column('audio', $table);
+            \Varbox\Models\Upload::column('file', $table);
+
             $table->text('content')->nullable();
             $table->integer('votes')->default(0);
             $table->integer('views')->default(0);
