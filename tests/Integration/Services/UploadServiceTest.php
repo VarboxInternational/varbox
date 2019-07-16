@@ -85,6 +85,49 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+
+
+    /** @test */
+    public function it_can_unload_an_image()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        (new UploadService($file->getPath() . '/' . $file->getName()))->unload();
+
+        $this->assertCount(0, Storage::disk($this->disk)->files(null, true));
+    }
+
+    /** @test */
+    public function it_can_unload_an_image_along_with_the_database_record()
+    {
+        $this->app['config']->set('varbox.upload.database.save', true);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+        $this->assertEquals(1, Upload::count());
+
+        (new UploadService($file->getPath() . '/' . $file->getName()))->unload();
+
+        $this->assertCount(0, Storage::disk($this->disk)->files(null, true));
+        $this->assertEquals(0, Upload::count());
+    }
+
+
+
+
+
+
+
+
     /** @test */
     public function it_uploads_a_file_to_the_uploads_disk_by_default()
     {
