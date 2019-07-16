@@ -643,6 +643,76 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+    /** @test */
+    public function it_keeps_old_uploads_and_records_by_default_when_updating_a_model_upload()
+    {
+        $post = Post::create([
+            'name' => 'Test Post Name',
+        ]);
+
+        Storage::fake($this->disk);
+
+        $oldFile = (new UploadService($this->imageFile(), $post, 'image'))->upload();
+
+        $post->update([
+            'image' => $oldFile->getPath() . '/' . $oldFile->getName()
+        ]);
+
+        $newFile = (new UploadService($this->imageFile(), $post, 'image'))->upload();
+
+        Storage::disk($this->disk)->assertExists($oldFile->getPath() . '/' . $oldFile->getName());
+        Storage::disk($this->disk)->assertExists($newFile->getPath() . '/' . $newFile->getName());
+
+        $this->assertEquals(2, Upload::count());
+        $this->assertEquals($oldFile->getName(), Upload::oldest('id')->first()->name);
+        $this->assertEquals($newFile->getName(), Upload::latest('id')->first()->name);
+    }
+
+    /** @test */
+    public function it_can_remove_old_uploads_and_records_when_updating_a_model_upload_if_specified_in_model_method()
+    {
+        $model = new class extends Post {
+            public function getUploadConfig()
+            {
+                return [
+                    'storage' => [
+                        'keep_old' => false
+                    ]
+                ];
+            }
+        };
+
+        $post = $model->create([
+            'name' => 'Test Post Name',
+        ]);
+
+        Storage::fake($this->disk);
+
+        $oldFile = (new UploadService($this->imageFile(), $post, 'image'))->upload();
+
+        $post->update([
+            'image' => $oldFile->getPath() . '/' . $oldFile->getName()
+        ]);
+
+        $newFile = (new UploadService($this->imageFile(), $post, 'image'))->upload();
+
+        Storage::disk($this->disk)->assertMissing($oldFile->getPath() . '/' . $oldFile->getName());
+        Storage::disk($this->disk)->assertExists($newFile->getPath() . '/' . $newFile->getName());
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals($newFile->getName(), Upload::first()->name);
+    }
+
+
+
+
+
+
+
+
+
     /**
      * @return UploadedFile
      */
