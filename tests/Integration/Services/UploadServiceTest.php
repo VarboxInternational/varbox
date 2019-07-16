@@ -258,6 +258,97 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+    /** @test */
+    public function it_only_uploads_images_with_allowed_extensions()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.images.allowed_extensions', ['jpg', 'jpeg']);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.images.allowed_extensions', ['png']);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::extensionNotAllowed('images',  'png')->getMessage());
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_only_uploads_videos_with_allowed_extensions()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.videos.allowed_extensions', ['mp4']);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.videos.allowed_extensions', ['flv']);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::extensionNotAllowed('videos',  'flv')->getMessage());
+
+        $file = (new UploadService($this->videoFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_only_uploads_audios_with_allowed_extensions()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.audios.allowed_extensions', ['mp3']);
+
+        $file = (new UploadService($this->audioFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.audios.allowed_extensions', ['wav']);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::extensionNotAllowed('audios',  'wav')->getMessage());
+
+        $file = (new UploadService($this->audioFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_only_uploads_files_with_allowed_extensions()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.files.allowed_extensions', ['pdf']);
+
+        $file = (new UploadService($this->pdfFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.files.allowed_extensions', ['txt']);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::extensionNotAllowed('files',  'txt')->getMessage());
+
+        $file = (new UploadService($this->pdfFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+
+
+
+
+
     /**
      * @return UploadedFile
      */
