@@ -5,6 +5,7 @@ namespace Varbox\Tests\Integration\Services;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
 use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
@@ -168,8 +169,94 @@ class UploadServiceTest extends TestCase
 
 
 
+    /** @test */
+    public function it_guards_against_file_sizes_exceeding_the_limit_from_config_when_uploading_images()
+    {
+        Storage::fake($this->disk);
 
-    
+        $this->app['config']->set('varbox.upload.images.max_size', 2);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.images.max_size', 0.1);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::maxSizeExceeded('images',  0.1)->getMessage());
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_guards_against_file_sizes_exceeding_the_limit_from_config_when_uploading_videos()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.videos.max_size', 10);
+
+        $file = (new UploadService($this->videoFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.videos.max_size', 0.1);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::maxSizeExceeded('videos',  0.1)->getMessage());
+
+        $file = (new UploadService($this->videoFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_guards_against_file_sizes_exceeding_the_limit_from_config_when_uploading_audios()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.audios.max_size', 1);
+
+        $file = (new UploadService($this->audioFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.audios.max_size', 0.1);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::maxSizeExceeded('audios',  0.1)->getMessage());
+
+        $file = (new UploadService($this->audioFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_guards_against_file_sizes_exceeding_the_limit_from_config_when_uploading_files()
+    {
+        Storage::fake($this->disk);
+
+        $this->app['config']->set('varbox.upload.files.max_size', 1);
+
+        $file = (new UploadService($this->pdfFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+
+        $this->app['config']->set('varbox.upload.files.max_size', 0.1);
+
+        $this->expectException(UploadException::class);
+        $this->expectExceptionMessage(UploadException::maxSizeExceeded('files',  0.1)->getMessage());
+
+        $file = (new UploadService($this->pdfFile()))->upload();
+
+        Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
+    }
+
+
+
+
+
 
     /**
      * @return UploadedFile
