@@ -713,6 +713,42 @@ class UploadServiceTest extends TestCase
 
 
 
+
+
+
+
+    /** @test */
+    public function it_removes_partially_uploaded_files_from_storage_if_an_error_occurred_along_the_way()
+    {
+        $model = new class extends Post {
+            public function getUploadConfig()
+            {
+                return [
+                    'images' => [
+                        'styles' => [
+                            'image' => [
+                                'portrait' => [
+                                    'width' => '50',
+                                ],
+                            ],
+                        ]
+                    ]
+                ];
+            }
+        };
+
+        Storage::fake($this->disk);
+
+        try {
+            (new UploadService($this->imageFile(), $model, 'image'))->upload();
+        } catch (UploadException $e) {
+            $this->assertCount(0, Storage::disk($this->disk)->files(null, true));
+        }
+    }
+
+
+
+
     /**
      * @return UploadedFile
      */
