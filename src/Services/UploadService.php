@@ -820,14 +820,13 @@ class UploadService implements UploadServiceContract
      * The parameter's value should be the full path of an existing file in the database's table set in config/upload.php
      *
      * @return BinaryFileResponse
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function download()
     {
-        return response(Storage::disk($this->getDisk())->get($this->getOriginal()->full_path), 200, [
-            'Content-Type' => $this->getOriginal()->mime,
-            'Content-Disposition' => 'attachment; filename=' . $this->getOriginal()->original_name,
-        ]);
+        return Storage::disk($this->getDisk())->download(
+            $this->getPath() . '/' . $this->getName(),
+            $this->getFile()->getClientOriginalName()
+        );
     }
 
     /**
