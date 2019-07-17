@@ -49,6 +49,25 @@ class UploadServiceTest extends TestCase
         $response->assertHeader('Content-Disposition', 'attachment; filename=' . $file->getFile()->getClientOriginalName());
     }
 
+    /** @test */
+    public function it_can_show_an_uploaded_file()
+    {
+        $this->withoutExceptionHandling();
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+
+        Route::get('/_test/show-file', function () use ($file) {
+            return $file->show();
+        });
+
+        $response = $this->get('/_test/show-file');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', $file->getFile()->getMimeType());
+    }
+
     /**
      * @return UploadedFile
      */
