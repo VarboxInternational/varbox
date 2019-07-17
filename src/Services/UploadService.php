@@ -840,8 +840,8 @@ class UploadService implements UploadServiceContract
      */
     public function show()
     {
-        return response(Storage::disk($this->getDisk())->get($this->getOriginal()->full_path), 200, [
-            'Content-Type' => $this->getOriginal()->mime,
+        return response(Storage::disk($this->getDisk())->get($this->getPath() . '/' . $this->getName()))->withHeaders([
+            'Content-Type' => $this->getFile()->getMimeType(),
         ]);
     }
 
