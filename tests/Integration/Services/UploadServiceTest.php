@@ -66,6 +66,38 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_return_image_type()
+    {
+        $type = UploadService::getImageType();
+
+        $this->assertEquals(UploadService::TYPE_IMAGE, $type);
+    }
+
+    /** @test */
+    public function it_can_return_video_type()
+    {
+        $type = UploadService::getVideoType();
+
+        $this->assertEquals(UploadService::TYPE_VIDEO, $type);
+    }
+
+    /** @test */
+    public function it_can_return_audio_type()
+    {
+        $type = UploadService::getAudioType();
+
+        $this->assertEquals(UploadService::TYPE_AUDIO, $type);
+    }
+
+    /** @test */
+    public function it_can_return_file_type()
+    {
+        $type = UploadService::getFileType();
+
+        $this->assertEquals(UploadService::TYPE_FILE, $type);
+    }
+
+    /** @test */
     public function it_can_upload_an_image()
     {
         Storage::fake($this->disk);
