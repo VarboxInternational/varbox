@@ -39,6 +39,33 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_return_image_extensions()
+    {
+        $extensions = UploadService::getImageExtensions();
+
+        $this->assertContains('jpg', $extensions);
+        $this->assertContains('png', $extensions);
+    }
+
+    /** @test */
+    public function it_can_return_video_extensions()
+    {
+        $extensions = UploadService::getVideoExtensions();
+
+        $this->assertContains('mp4', $extensions);
+        $this->assertContains('flv', $extensions);
+    }
+
+    /** @test */
+    public function it_can_return_audio_extensions()
+    {
+        $extensions = UploadService::getAudioExtensions();
+
+        $this->assertContains('mp3', $extensions);
+        $this->assertContains('wav', $extensions);
+    }
+
+    /** @test */
     public function it_can_upload_an_image()
     {
         Storage::fake($this->disk);
@@ -77,17 +104,6 @@ class UploadServiceTest extends TestCase
 
         Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
     }
-
-
-
-
-
-
-
-
-
-
-
 
     /** @test */
     public function it_can_unload_an_image()
@@ -217,13 +233,6 @@ class UploadServiceTest extends TestCase
         $this->assertEquals(0, Upload::count());
     }
 
-
-
-
-
-
-
-
     /** @test */
     public function it_uploads_a_file_to_the_uploads_disk_by_default()
     {
@@ -247,12 +256,6 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
         Storage::disk('test')->assertExists($file->getPath() . '/' . $file->getName());
     }
-
-
-
-
-
-
 
     /** @test */
     public function it_stores_the_upload_to_database_by_default()
@@ -304,12 +307,6 @@ class UploadServiceTest extends TestCase
 
         $this->assertEquals(0, Upload::count());
     }
-
-
-
-
-
-
 
     /** @test */
     public function it_guards_against_file_sizes_exceeding_the_limit_from_config_when_uploading_images()
@@ -395,13 +392,6 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
     }
 
-
-
-
-
-
-
-
     /** @test */
     public function it_only_uploads_images_with_allowed_extensions()
     {
@@ -486,13 +476,6 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertMissing($file->getPath() . '/' . $file->getName());
     }
 
-
-
-
-
-
-
-
     /** @test */
     public function it_generates_thumbnail_by_default_when_uploading_an_image()
     {
@@ -558,13 +541,6 @@ class UploadServiceTest extends TestCase
         $this->assertEquals(80, $size[0]);
         $this->assertEquals(160, $size[1]);
     }
-
-
-
-
-
-
-
 
     /** @test */
     public function it_generates_thumbnails_by_default_when_uploading_a_video()
@@ -641,17 +617,6 @@ class UploadServiceTest extends TestCase
         Storage::disk($this->disk)->assertMissing($thumbnail6);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /** @test */
     public function it_doesnt_generate_any_additional_styles_for_an_uploaded_image_by_default()
     {
@@ -709,15 +674,6 @@ class UploadServiceTest extends TestCase
         $this->assertEquals(60, $landscapeSize[1]);
     }
 
-
-
-
-
-
-
-
-
-
     /** @test */
     public function it_doesnt_generate_any_additional_styles_for_an_uploaded_video_by_default()
     {
@@ -773,16 +729,6 @@ class UploadServiceTest extends TestCase
         $this->assertEquals(160, $smallestSize->getWidth());
         $this->assertEquals(90, $smallestSize->getHeight());
     }
-
-
-
-
-
-
-
-
-
-
 
     /** @test */
     public function it_keeps_old_uploads_and_records_by_default_when_updating_a_model_upload()
@@ -844,18 +790,6 @@ class UploadServiceTest extends TestCase
         $this->assertEquals($newFile->getName(), Upload::first()->name);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     /** @test */
     public function it_removes_partially_uploaded_files_from_storage_if_an_error_occurred_along_the_way()
     {
@@ -884,9 +818,6 @@ class UploadServiceTest extends TestCase
             $this->assertCount(0, Storage::disk($this->disk)->files(null, true));
         }
     }
-
-
-
 
     /**
      * @return UploadedFile
