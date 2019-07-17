@@ -98,6 +98,46 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_determine_if_a_file_is_an_image()
+    {
+        Storage::fake($this->disk);
+
+        $file = new UploadService($this->imageFile());
+
+        $this->assertTrue($file->isImage());
+    }
+
+    /** @test */
+    public function it_can_determine_if_a_file_is_a_video()
+    {
+        Storage::fake($this->disk);
+
+        $file = new UploadService($this->videoFile());
+
+        $this->assertTrue($file->isVideo());
+    }
+
+    /** @test */
+    public function it_can_determine_if_a_file_is_an_audio()
+    {
+        Storage::fake($this->disk);
+
+        $file = new UploadService($this->audioFile());
+
+        $this->assertTrue($file->isAudio());
+    }
+
+    /** @test */
+    public function it_can_determine_if_a_file_is_a_file()
+    {
+        Storage::fake($this->disk);
+
+        $file = new UploadService($this->pdfFile());
+
+        $this->assertTrue($file->isFile());
+    }
+
+    /** @test */
     public function it_can_upload_an_image()
     {
         Storage::fake($this->disk);
