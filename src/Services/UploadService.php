@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
+use Varbox\Models\Upload;
 use Varbox\Requests\UploadRequest;
 
 class UploadService implements UploadServiceContract
@@ -797,7 +798,9 @@ class UploadService implements UploadServiceContract
     public function unload()
     {
         if (config('varbox.upload.database.save', true) === true) {
-            $this->getOriginal()->delete();
+            if (($original = $this->getOriginal()) && $original instanceof Upload && $original->exists) {
+                $this->getOriginal()->delete();
+            }
         }
 
         $matchingFiles = preg_grep(
