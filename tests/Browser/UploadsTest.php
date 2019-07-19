@@ -484,6 +484,27 @@ class UploadsTest extends TestCase
         $this->deleteUploads();
     }
 
+    /** @test */
+    public function an_admin_can_clear_upload_filters()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads/?search=something&type=image&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('type')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/uploads/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('typec')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      * @throws UploadException
