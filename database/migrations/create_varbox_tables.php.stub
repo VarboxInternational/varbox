@@ -112,7 +112,7 @@ class CreateVarboxTables extends Migration
                 $table->string('extension');
                 $table->integer('size')->default(0);
                 $table->string('mime')->nullable();
-                $table->tinyInteger('type')->default(0);
+                $table->enum('type', ['image', 'video', 'audio', 'file']);
 
                 $table->timestamps();
             });
