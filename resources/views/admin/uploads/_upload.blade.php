@@ -13,8 +13,12 @@
 @push('scripts')
     <script type="text/javascript">
         Dropzone.options.uploads = {
-            success: function(file, response){
+            success: function(file, response) {
                 if (response.status == true) {
+                    if ($('.dropzone-refresh').length == 0) {
+                        $('<div class="dropzone-refresh text-red font-weight-bold my-3">Refresh the page to see your uploaded files.</div>').insertAfter('.ddTitle');
+                    }
+
                     return file.previewElement.classList.add("dz-success");
                 } else {
                     var node, _i, _len, _ref, _results;
