@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Browser;
 
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -177,6 +176,70 @@ class UploadsTest extends TestCase
 
         $this->assertEquals(1, Upload::count());
         $this->assertEquals(1, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_an_upload_is_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createImage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->deleteRecord($this->image->original_name)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/uploads/', new Upload)
+                ->assertDontSee($this->image->original_name);
+        });
+
+        $this->assertEquals(0, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_an_upload_is_it_has_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-delete');
+
+        $this->createImage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->deleteRecord($this->image->original_name)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/uploads/', new Upload)
+                ->assertDontSee($this->image->original_name);
+        });
+
+        $this->assertEquals(0, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_an_upload_is_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->revokePermission('uploads-delete');
+
+        $this->createImage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->assertEquals(2, count(Storage::disk($this->disk)->files(null, true)) - 1);
 
         $this->deleteUploads();
     }
