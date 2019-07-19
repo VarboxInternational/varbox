@@ -581,13 +581,16 @@ pre code {
 
 @media (min-width: 992px) {
   .container {
-    max-width: 960px;
+    width: 95%;
+    max-width: none;
   }
 }
 
 @media (min-width: 1280px) {
   .container {
-    max-width: 1200px;
+    width: 85%;
+    min-width: 1000px;
+    max-width: none;
   }
 }
 
