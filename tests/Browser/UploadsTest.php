@@ -428,7 +428,61 @@ class UploadsTest extends TestCase
         });
 
         $this->deleteUploads();
-    }g
+    }
+
+    /** @test */
+    public function an_admin_can_filter_uploads_by_start_date()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createFile();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->visit('/admin/uploads')
+                ->assertSee($this->file->original_name)
+                ->assertSee($this->file->size_mb)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_uploads_by_end_date()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createFile();
+
+        $past = today()->subDays(100)->format('Y-m-d');
+        $future = today()->addDays(100)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date',$future)
+                ->visit('/admin/uploads')
+                ->assertSee($this->file->original_name)
+                ->assertSee($this->file->size_mb);
+        });
+
+        $this->deleteUploads();
+    }
 
     /**
      * @return void
