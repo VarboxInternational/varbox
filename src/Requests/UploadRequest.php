@@ -56,7 +56,6 @@ class UploadRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                'numeric',
                 Rule::in(array_keys(Upload::getFileTypes())),
             ],
         ];
