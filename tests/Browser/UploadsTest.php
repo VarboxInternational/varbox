@@ -2,14 +2,12 @@
 
 namespace Varbox\Tests\Browser;
 
-use Carbon\Carbon;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\ImageServiceProvider;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Varbox\Exceptions\UploadException;
-use Varbox\Models\Activity;
-use Varbox\Models\Role;
 use Varbox\Models\Upload;
-use Varbox\Models\User;
 use Varbox\Services\UploadService;
 
 class UploadsTest extends TestCase
@@ -38,18 +36,6 @@ class UploadsTest extends TestCase
      * @var string
      */
     protected $disk = 'uploads';
-
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->app->register(ImageServiceProvider::class);
-    }
 
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
@@ -132,6 +118,18 @@ class UploadsTest extends TestCase
         $file = (new UploadService($this->pdfFile()))->upload();
 
         $this->file = Upload::whereName($file->getName())->first();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteUploads()
+    {
+        Upload::truncate();
+
+        Storage::disk($this->disk)->deleteDirectory(
+            Arr::first(Storage::disk($this->disk)->directories(null))
+        );
     }
 
     /**
