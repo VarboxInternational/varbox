@@ -386,6 +386,50 @@ class UploadsTest extends TestCase
         $this->deleteUploads();
     }
 
+    /** @test */
+    public function an_admin_can_filter_uploads_by_min_size()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createVideo();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->resize(1500, 1000)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('size[0]', 1)
+                ->assertSee($this->video->original_name)
+                ->assertSee($this->video->size_mb)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('size[0]', 100)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_uploads_by_max_size()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createVideo();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->resize(1500, 1000)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('size[1]', 100)
+                ->assertSee($this->video->original_name)
+                ->assertSee($this->video->size_mb)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('size[1]', 1)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteUploads();
+    }g
+
     /**
      * @return void
      * @throws UploadException
