@@ -310,6 +310,82 @@ class UploadsTest extends TestCase
         $this->deleteUploads();
     }
 
+    /** @test */
+    public function an_admin_can_filter_uploads_by_keyword()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createImage();
+        $this->createVideo();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#search-input', $this->image->original_name)
+                ->assertQueryStringHas('search', $this->image->original_name)
+                ->assertRecordsCount(1)
+                ->assertSee($this->image->original_name)
+                ->assertDontSee($this->video->original_name)
+                ->visit('/admin/uploads')
+                ->filterRecordsByText('#search-input', $this->video->original_name)
+                ->assertQueryStringHas('search', $this->video->original_name)
+                ->assertRecordsCount(1)
+                ->assertDontSee($this->image->original_name)
+                ->assertSee($this->video->original_name);
+        });
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_uploads_by_file_type()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createImage();
+        $this->createVideo();
+        $this->createAudio();
+        $this->createFile();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->filterRecordsBySelect('#type-input', UploadService::getImageType())
+                ->assertQueryStringHas('type', UploadService::getImageType())
+                ->assertRecordsCount(1)
+                ->assertSee($this->image->original_name)
+                ->assertDontSee($this->video->original_name)
+                ->assertDontSee($this->audio->original_name)
+                ->assertDontSee($this->file->original_name)
+                ->visit('/admin/uploads')
+                ->filterRecordsBySelect('#type-input', UploadService::getVideoType())
+                ->assertQueryStringHas('type', UploadService::getVideoType())
+                ->assertRecordsCount(1)
+                ->assertDontSee($this->image->original_name)
+                ->assertSee($this->video->original_name)
+                ->assertDontSee($this->audio->original_name)
+                ->assertDontSee($this->file->original_name)
+                ->visit('/admin/uploads')
+                ->filterRecordsBySelect('#type-input', UploadService::getAudioType())
+                ->assertQueryStringHas('type', UploadService::getAudioType())
+                ->assertRecordsCount(1)
+                ->assertDontSee($this->image->original_name)
+                ->assertDontSee($this->video->original_name)
+                ->assertSee($this->audio->original_name)
+                ->assertDontSee($this->file->original_name)
+                ->visit('/admin/uploads')
+                ->filterRecordsBySelect('#type-input', UploadService::getFileType())
+                ->assertQueryStringHas('type', UploadService::getFileType())
+                ->assertRecordsCount(1)
+                ->assertDontSee($this->image->original_name)
+                ->assertDontSee($this->video->original_name)
+                ->assertDontSee($this->audio->original_name)
+                ->assertSee($this->file->original_name);
+        });
+
+        $this->deleteUploads();
+    }
+
     /**
      * @return void
      * @throws UploadException
