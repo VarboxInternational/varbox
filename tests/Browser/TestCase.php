@@ -8,8 +8,12 @@ use Collective\Html\HtmlServiceProvider;
 use DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider;
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Contracts\Foundation\Application;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageServiceProvider;
 use Orchestra\Testbench\Dusk\Options as OrchestraDuskOptions;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
+use Pbmedia\LaravelFFMpeg\FFMpegFacade;
+use Pbmedia\LaravelFFMpeg\FFMpegServiceProvider;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 use Proengsoft\JsValidation\JsValidationServiceProvider;
 use Spatie\Backup\BackupServiceProvider;
@@ -80,6 +84,8 @@ abstract class TestCase extends OrchestraDuskTestCase
             JsValidationServiceProvider::class,
             BreadcrumbsServiceProvider::class,
             BackupServiceProvider::class,
+            ImageServiceProvider::class,
+            FFMpegServiceProvider::class
         ];
     }
 
@@ -97,6 +103,8 @@ abstract class TestCase extends OrchestraDuskTestCase
             'Html' => HtmlFacade::class,
             'Breadcrumbs' => Breadcrumbs::class,
             'JsValidator' => JsValidatorFacade::class,
+            'Image' => Image::class,
+            'FFMpeg' => FFMpegFacade::class,
         ];
     }
 
