@@ -4,7 +4,6 @@ namespace Varbox\Helpers;
 
 use Illuminate\Support\Facades\Storage;
 use Varbox\Contracts\UploadedHelperContract;
-use Varbox\Contracts\UploadModelContract;
 use Varbox\Services\UploadService;
 
 class UploadedHelper implements UploadedHelperContract
@@ -189,6 +188,28 @@ class UploadedHelper implements UploadedHelperContract
     }
 
     /**
+     * Get the parsed file's full url.
+     * You can specify which style instance of the file you want to get.
+     * However, specifying the style is taking into consideration only if the file is an actual image or video.
+     * If "original" is specified as the style, it will just return the original file.
+     *
+     * @param string|null $style
+     * @return string
+     */
+    public function url($style = null)
+    {
+        $this->file = $this->original;
+
+        if ($style && $style != 'original' && ($this->type == self::TYPE_IMAGE || $this->type == self::TYPE_VIDEO)) {
+            $this->file = substr_replace(
+                $this->file, '_' . $style, strpos($this->file, '.'), 0
+            );
+        }
+
+        return Storage::disk($this->disk)->url($this->file);
+    }
+
+    /**
      * Set the $file to the exact path of the provided video's thumbnail.
      * The $number parameter is used to specify which video thumbnail to identify: 1st, 2nd, 3rd, etc.
      * Keep in mind that this method will only have an effect on video type files.
@@ -209,28 +230,6 @@ class UploadedHelper implements UploadedHelperContract
         if ($this->type == self::TYPE_VIDEO) {
             $this->file = substr_replace(
                 preg_replace('/\..+$/', '.jpg', $this->file), '_thumbnail_' . ($number ?: 1), strpos($this->file, '.'), 0
-            );
-        }
-
-        return Storage::disk($this->disk)->url($this->file);
-    }
-
-    /**
-     * Get the parsed file's full url.
-     * You can specify which style instance of the file you want to get.
-     * However, specifying the style is taking into consideration only if the file is an actual image or video.
-     * If "original" is specified as the style, it will just return the original file.
-     *
-     * @param string|null $style
-     * @return string
-     */
-    public function url($style = null)
-    {
-        $this->file = $this->original;
-
-        if ($style && $style != 'original' && ($this->type == self::TYPE_IMAGE || $this->type == self::TYPE_VIDEO)) {
-            $this->file = substr_replace(
-                $this->file, '_' . $style, strpos($this->file, '.'), 0
             );
         }
 
@@ -260,17 +259,6 @@ class UploadedHelper implements UploadedHelperContract
         return $full === true ?
             Storage::disk($this->disk)->getDriver()->getAdapter()->applyPathPrefix($this->file) :
             $this->file;
-    }
-
-    /**
-     * Get the Upload instance representing the field's upload.
-     *
-     * @return UploadModelContract|null
-     */
-    public function load()
-    {
-        return config('varbox.upload.database.save', true) ?
-            app('upload.model')->whereFullPath($this->file)->first() : null;
     }
 
     /**
