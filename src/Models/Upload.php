@@ -157,7 +157,7 @@ class Upload extends Model implements UploadModelContract
             $query->where(function ($q) use ($extensions) {
                 foreach ($extensions as $extension) {
                     if ($extension) {
-                        $q->orWhere('extension', '!=', strtolower($extension));
+                        $q->where('extension', '!=', strtolower($extension));
                     }
                 }
             });
@@ -201,7 +201,7 @@ class Upload extends Model implements UploadModelContract
             $query->where(function ($q) use ($mimes) {
                 foreach ($mimes as $mime) {
                     if ($mime) {
-                        $q->orWhere('mime', '!=', strtolower($mime));
+                        $q->where('mime', '!=', strtolower($mime));
                     }
                 }
             });
