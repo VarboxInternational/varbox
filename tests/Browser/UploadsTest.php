@@ -244,6 +244,72 @@ class UploadsTest extends TestCase
         $this->deleteUploads();
     }
 
+    /** @test */
+    public function an_admin_can_view_an_uploaded_image()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createImage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->clickViewButton($this->image->original_name);
+
+            $browser->driver->switchTo()->window(
+                collect($browser->driver->getWindowHandles())->last()
+            );
+
+            $browser->assertPathIs(uploaded($this->image->full_path)->url());
+        });
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_view_an_uploaded_video()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createVideo();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->clickViewButton($this->video->original_name);
+
+            $browser->driver->switchTo()->window(
+                collect($browser->driver->getWindowHandles())->last()
+            );
+
+            $browser->assertPathIs(uploaded($this->video->full_path)->url());
+        });
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_view_an_uploaded_audio()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->createAudio();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->clickViewButton($this->audio->original_name);
+
+            $browser->driver->switchTo()->window(
+                collect($browser->driver->getWindowHandles())->last()
+            );
+
+            $browser->assertPathIs(uploaded($this->audio->full_path)->url());
+        });
+
+        $this->deleteUploads();
+    }
+
     /**
      * @return void
      * @throws UploadException
