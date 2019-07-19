@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Tests\Models\Integration;
+namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
