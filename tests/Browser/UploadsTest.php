@@ -76,6 +76,111 @@ class UploadsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_upload_a_file_if_it_has_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-upload');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.pdf')
+                ->waitFor('.dz-size')
+                ->visit('/admin/uploads')
+                ->assertRecordsCount(1)
+                ->assertSee('test.pdf');
+        });
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals(1, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_cannot_upload_a_file_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->revokePermission('uploads-upload');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.pdf')
+                ->visit('/admin/uploads')
+                ->assertSee('No records found');
+        });
+
+        $this->assertEquals(0, Upload::count());
+    }
+
+    /** @test */
+    public function an_admin_can_upload_an_image()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-upload');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.jpg')
+                ->waitFor('.dz-complete')
+                ->visit('/admin/uploads')
+                ->assertRecordsCount(1)
+                ->assertSee('test.jpg');
+        });
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals(2, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_upload_a_video()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-upload');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.mp4')
+                ->waitFor('.dz-complete')
+                ->visit('/admin/uploads')
+                ->assertRecordsCount(1)
+                ->assertSee('test.mp4');
+        });
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals(4, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
+    /** @test */
+    public function an_admin_can_upload_an_audio()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-upload');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.mp3')
+                ->waitFor('.dz-complete')
+                ->visit('/admin/uploads')
+                ->assertRecordsCount(1)
+                ->assertSee('test.mp3');
+        });
+
+        $this->assertEquals(1, Upload::count());
+        $this->assertEquals(1, count(Storage::disk($this->disk)->files(null, true)) - 1);
+
+        $this->deleteUploads();
+    }
+
     /**
      * @return void
      * @throws UploadException
