@@ -1214,7 +1214,7 @@ class UploadService implements UploadServiceContract
 
         try {
             $video = FFMpeg::fromDisk($this->getDisk())->open($path);
-            $duration = $video->getDurationInSeconds();
+            $duration = $video->getDurationInSeconds() - 1;
 
             for ($i = 1; $i <= $number; $i++) {
                 $thumbnail = str_replace('.' . $this->getExtension(), '', $path) . '_thumbnail_' . $i . '.jpg';
