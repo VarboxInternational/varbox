@@ -51,7 +51,44 @@ class UploadsTest extends TestCase
         $this->app->register(ImageServiceProvider::class);
     }
 
-    
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertPathIs('/admin/uploads')
+                ->assertSee('Uploads');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertPathIs('/admin/uploads')
+                ->assertSee('Uploads');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->revokePermission('uploads-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Uploads');
+        });
+    }
 
     /**
      * @return void
