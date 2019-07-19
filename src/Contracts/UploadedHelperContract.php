@@ -29,11 +29,6 @@ interface UploadedHelperContract
     public function path($style = null, $full = false);
 
     /**
-     * @return UploadModelContract|null
-     */
-    public function load();
-
-    /**
      * @return bool
      */
     public function exists();
