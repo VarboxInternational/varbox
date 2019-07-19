@@ -128,10 +128,10 @@ class UploadService implements UploadServiceContract
      *
      * @const
      */
-    const TYPE_IMAGE = 1;
-    const TYPE_VIDEO = 2;
-    const TYPE_AUDIO = 3;
-    const TYPE_FILE = 4;
+    const TYPE_IMAGE = 'image';
+    const TYPE_VIDEO = 'video';
+    const TYPE_AUDIO = 'audio';
+    const TYPE_FILE = 'file';
 
     /**
      * All of the available image extensions.
