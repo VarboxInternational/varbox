@@ -11,10 +11,16 @@
                 uploadNewTabButtonSelector = '.js-UploadTabBtn',
                 uploadNewTabContainerSelector = '#tab-UploadTab',
                 uploadNewMessage = '.js-UploadNewMessage',
+                uploadCurrentOpenButtonSelector = '.js-UploadCurrentOpenBtn',
+                uploadCurrentModalSelector = '.js-UploadCurrentModal',
+                uploadCurrentDeleteButtonSelector = '.js-UploadDeleteBtn',
                 uploadInputSelector = '.js-UploadInput',
                 uploadFilesContainerSelector = '.js-UploadFilesContainer',
                 uploadFilesTableSelector = '.js-UploadFilesTable',
-                uploadSelectButtonSelector = '.js-UploadSelectBtn';
+                uploadSelectButtonSelector = '.js-UploadSelectBtn',
+                uploadCropperButtonSelector = '.js-UploadOpenCropper',
+                uploadCropSectionSelector = '.js-UploadCrop',
+                uploadCropContainerSelector = '.js-UploadCropContainer';
 
             let _uploaderPage = 2,
                 _CSRFToken = '{{ csrf_token() }}';
@@ -201,38 +207,32 @@
                     }
                 });
             }, uploadRemove = function (_this) {
-                let index = _this.closest('.upload-current').data('index');
+                let uploadIndex = _this.closest(uploadCurrentModalSelector).data('index');
 
-                $(uploadInputSelector + '-' + index).val('');
-                $('#open-upload-current-' + index).remove();
-                $(uploadNewOpenButtonSelector + '-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
-                $('.upload-current').modal('hide');
+                $(uploadInputSelector + '-' + uploadIndex).val('');
+                $(uploadCurrentOpenButtonSelector + '-' + uploadIndex).remove();
+                $(uploadNewOpenButtonSelector + '-' + uploadIndex).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
+                $(uploadCurrentModalSelector).modal('hide');
             }, uploadCrop = function (_this) {
-                let popup = _this.closest('.upload-current'),
-                    url = _this.data('url'),
-                    path = _this.data('path'),
-                    style = _this.data('style'),
-                    model = popup.data('model'),
-                    field = popup.data('field'),
-                    index = popup.data('index');
+                let uploadModal = _this.closest(uploadCurrentModalSelector);
 
                 $.ajax({
                     type: 'GET',
                     url: '{{ route('admin.uploads.crop') }}',
                     dataType: 'json',
                     data: {
-                        _token : token,
-                        index: index,
-                        model: model,
-                        field: field,
-                        url: url,
-                        path: path,
-                        style: style
+                        _token : _CSRFToken,
+                        index: uploadModal.data('index'),
+                        model: uploadModal.data('model'),
+                        field: uploadModal.data('field'),
+                        url: _this.data('url'),
+                        path: _this.data('path'),
+                        style: _this.data('style')
                     },
                     success: function(data) {
                         if (data.status === true) {
-                            $('#upload-crop-container-' + index).html(data.html);
-                            $('#upload-crop-' + index).modal('show');
+                            $(uploadCropContainerSelector + '-' + uploadModal.data('index')).html(data.html);
+                            $(uploadCropSectionSelector + '-' + uploadModal.data('index')).modal('show');
                         }
                     }
                 });
@@ -246,7 +246,7 @@
             });
 
             //click load
-            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewTabButtonSelector, function(e) {
+            $(document).on('click', uploadNewTabButtonSelector, function(e) {
                 uploadSwitch($(this));
             });
 
@@ -258,38 +258,38 @@
             }, true);
 
             //search load
-            $(document).on('keyup', uploadNewModalSelector + ' ' + uploadNewTabSelector + '.active input[type="search"]', function(e) {
+            $(document).on('keyup', uploadNewTabSelector + '.active input[type="search"]', function(e) {
                 e.preventDefault();
 
                 uploadSearch($(this).closest(uploadNewModalSelector));
             });
 
             //upload new
-            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewFileButtonSelector + ' > input[type="file"]', function (e) {
+            $(document).on('click', uploadNewFileButtonSelector + ' > input[type="file"]', function (e) {
                 uploadUpload($(this).closest(uploadNewModalSelector));
             });
 
             //save new
-            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewSaveButtonSelector, function(e) {
+            $(document).on('click', uploadNewSaveButtonSelector, function(e) {
                 e.preventDefault();
 
                 uploadSave($(this).closest(uploadNewModalSelector));
             });
 
             //cropper load
-            $(document).on('click', '.upload-current:not(.disabled) .open-upload-cropper:not(.disabled)', function (e) {
+            $(document).on('click', uploadCropperButtonSelector + ':not(.disabled)', function (e) {
                 e.preventDefault();
 
                 uploadCrop($(this));
             });
 
             //delete current
-            $(document).on('click', '.upload-current:not(.disabled) .btn-upload-delete', function(){
+            $(document).on('click', uploadCurrentDeleteButtonSelector, function(){
                 uploadRemove($(this));
             });
 
             // select file
-            $(document).on('click', uploadNewModalSelector + ' ' + uploadSelectButtonSelector, function(e){
+            $(document).on('click', uploadSelectButtonSelector, function(e){
                 e.preventDefault();
 
                 $(uploadSelectButtonSelector).removeClass('selected');
