@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Exceptions\UploadException;
+use Varbox\Models\Upload;
 
 class UploaderHelper implements UploaderHelperContract
 {
@@ -248,7 +249,7 @@ class UploaderHelper implements UploaderHelperContract
             'label' => $this->label,
             'model' => $this->model,
             'current' => $this->current,
-            'upload' => $this->current ? $this->current->load() : null,
+            'upload' => $this->current ? Upload::whereFullPath($this->current->getFile())->first() : null,
             'styles' => $this->styles,
             'types' => $this->types,
             'accept' => $this->accept,
