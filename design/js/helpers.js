@@ -2,49 +2,49 @@ var init = {
     UploadManager: function (exists, container, oldIndex, newIndex) {
         window.__UploaderIndex = 1 + Math.floor(Math.random() * 999999);
 
-        container.find('a.js-UploadNewBtn').each(function (i, _container) {
+        container.find('.js-UploadNewBtn').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
             $(_container).attr('data-popup-id', $(_container).attr('data-popup-id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('section.js-UploadNewModal').each(function (i, _container) {
+        container.find('.js-UploadNewModal').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('section.js-UploadNewModal a.upload-save').each(function (i, _container) {
+        container.find('.js-UploadNewModal .js-UploadNewSaveBtn').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('input.upload-input').each(function (i, _container) {
+        container.find('.js-UploadInput').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
         if (exists) {
-            container.find('section.js-UploadNewModal, section.upload-current').each(function (index, _container) {
+            container.find('.js-UploadNewModal, .js-UploadCurrentModal').each(function (index, _container) {
                 if ($(_container).attr('data-field')) {
                     $(_container).attr('data-field', $(_container).attr('data-field').replace(oldIndex, newIndex));
                 }
             });
 
-            container.find('section.upload-input').each(function (index, _container) {
+            container.find('.js-UploadInput').each(function (index, _container) {
                 if ($(_container).attr('name')) {
                     $(_container).attr('name', $(_container).attr('name').replace(oldIndex, newIndex));
                 }
             });
         } else {
-            container.find('a.js-UploadNewBtn').each(function (i, _container) {
+            container.find('.js-UploadNewBtn').each(function (i, _container) {
                 $(_container).removeClass('half').addClass('full');
             });
 
-            container.find('a.open-upload-current, section.upload-current').each(function (i, _container) {
+            container.find('.js-UploadCurrentOpenBtn, .js-UploadCurrentModal').each(function (i, _container) {
                 $(_container).remove();
             });
 
-            container.find('section.js-UploadNewModal').each(function (i, _container) {
+            container.find('.js-UploadNewModal').each(function (i, _container) {
                 $(_container).attr('data-field', $(_container).attr('data-field').replace(/[0-9]+/g, newIndex));
             });
 
-            container.find('input.upload-input').each(function (i, _container) {
+            container.find('.js-UploadInput').each(function (i, _container) {
                 $(_container).attr('name', $(_container).attr('name').replace(/[0-9]+/g, newIndex)).val('');
             });
         }
@@ -152,9 +152,9 @@ var disable = {
             $('form.form select').attr('disabled', true);
 
             //disable uploader
-            $('form.form .upload-current').addClass('disabled');
-            $('form.form .upload-current').find('.open-upload-cropper').addClass('disabled');
-            $('form.form .upload-current').find('.upload-delete').remove();
+            $('form.form .js-UploadCurrentModal').addClass('disabled');
+            $('form.form .js-UploadCurrentModal').find('.js-UploadOpenCropper').addClass('disabled');
+            $('form.form .js-UploadCurrentModal').find('.upload-delete').remove();
             $('form.form .js-UploadNewBtn').addClass('disabled');
             $('form.form .js-UploadNewModal').remove();
 
