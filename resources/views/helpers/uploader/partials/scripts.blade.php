@@ -7,9 +7,11 @@
                 uploadNewModalSelector = '.js-UploadNewModal',
                 uploadNewFileButtonSelector = '.js-UploadNewFileBtn',
                 uploadNewSaveButtonSelector = '.js-UploadNewSaveBtn',
+                uploadNewTabSelector = '.js-UploadTab',
                 uploadNewTabButtonSelector = '.js-UploadTabBtn',
                 uploadNewTabContainerSelector = '#tab-UploadTab',
                 uploadNewMessage = '.js-UploadNewMessage',
+                uploadInputSelector = '.js-UploadInput',
                 uploadFilesContainerSelector = '.js-UploadFilesContainer',
                 uploadFilesTableSelector = '.js-UploadFilesTable',
                 uploadSelectButtonSelector = '.js-UploadSelectBtn';
@@ -19,8 +21,8 @@
 
             var uploadLoad = function (_this) {
                 var popup = _this.next(uploadNewModalSelector),
-                    tab = popup.find('.tab-content').find('.tab-pane.active'),
-                    list = popup.find('.nav-tabs').find('.nav-link.active'),
+                    tab = popup.find(uploadNewTabSelector + '.active'),
+                    list = popup.find(uploadNewTabButtonSelector + '.active'),
                     container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
@@ -82,8 +84,8 @@
                     }
                 });
             }, uploadScroll = function (_this) {
-                var tab = _this.find('.tab-content').find('.tab-pane.active'),
-                    list = _this.find('.nav-tabs').find('.nav-link.active'),
+                var tab = _this.find(uploadNewTabSelector + '.active'),
+                    list = _this.find(uploadNewTabButtonSelector + '.active'),
                     container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
@@ -107,8 +109,8 @@
                     });
                 }
             }, uploadSearch = function (_this) {
-                var tab = _this.find('.tab-content').find('.tab-pane.active'),
-                    list = _this.find('.nav-tabs').find('.nav-link.active'),
+                var tab = _this.find(uploadNewTabSelector + '.active'),
+                    list = _this.find(uploadNewTabButtonSelector + '.active'),
                     container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
@@ -137,7 +139,7 @@
                 }, 300);
             }, uploadUpload = function (_this) {
                 var index = _this.data('index'),
-                    list = _this.find('.nav-tabs').find('.nav-link.active'),
+                    list = _this.find(uploadNewTabButtonSelector + '.active'),
                     accept = list.data('accept');
 
                 _this.fileupload({
@@ -159,7 +161,7 @@
                             _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector).prepend(data.result.html);
                             _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' > p').remove();
 
-                            _this.find('.tab-pane').find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).removeClass('selected');
+                            _this.find(uploadNewTabSelector).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).removeClass('selected');
                             _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().addClass('selected');
 
                             if (_this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().parent().parent().is('tr')) {
@@ -184,7 +186,7 @@
                     }
                 });
             }, uploadSave = function (_this) {
-                var tab = _this.find('.tab-content').find('.tab-pane.active'),
+                var tab = _this.find(uploadNewTabSelector + '.active'),
                     container = tab.find(uploadFilesContainerSelector),
                     model = _this.data('model'),
                     field = _this.data('field'),
@@ -210,7 +212,7 @@
                         _this.find(uploadNewSaveButtonSelector).removeClass('btn-loading');
                     },
                     success: function(data) {
-                        var input = _this.closest('.form-group').find('.upload-input'),
+                        var input = _this.closest('.form-group').find(uploadInputSelector),
                             button = _this.prev(uploadNewOpenButtonSelector),
                             message = _this.find(uploadNewMessage);
 
@@ -230,7 +232,7 @@
             }, uploadRemove = function (_this) {
                 var index = _this.closest('.upload-current').data('index');
 
-                $('#upload-input-' + index).val('');
+                $(uploadInputSelector + '-' + index).val('');
                 $('#open-upload-current-' + index).remove();
                 $(uploadNewOpenButtonSelector + '-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
                 $('.upload-current').modal('hide');
@@ -285,7 +287,7 @@
             }, true);
 
             //search load
-            $(document).on('keyup', uploadNewModalSelector + ' .tab-pane.active input[type="search"]', function(e) {
+            $(document).on('keyup', uploadNewModalSelector + ' ' + uploadNewTabSelector + '.active input[type="search"]', function(e) {
                 e.preventDefault();
 
                 uploadSearch($(this).closest(uploadNewModalSelector));
