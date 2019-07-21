@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
@@ -46,14 +47,15 @@ class UploadController extends Controller
             }
 
             $file = upload($request->file('file'), app($request->input('model')), $request->input('field'))->upload();
+            $type = Str::snake($model->getFileTypes()[$file->getType()]);
             $upload = $model->whereFullPath($file->getPath() . '/' . $file->getName())->firstOrFail();
 
             return response()->json([
                 'status' => true,
                 'message' => 'Upload successful!',
-                'type' => Str::snake($model->getFileTypes()[$file->getType()]),
-                'html' => view()->make('varbox::helpers.uploader.partials.items')->with([
-                    'type' => Str::snake($model->getFileTypes()[$file->getType()]),
+                'type' => $type,
+                'html' => view()->make('varbox::helpers.uploader.partials.items.' . $type)->with([
+                    'type' => $type,
                     'uploads' => collect()->push($upload),
                 ])->render()
             ]);
@@ -79,14 +81,13 @@ class UploadController extends Controller
      */
     public function get(Request $request, UploadModelContract $model, $type = null)
     {
-        $uploads = $model->latest()->onlyTypes($type)->onlyExtensions($request->query('accept'))->like([
+        $uploads = $model->latest()->onlyTypes($type)->withExtensions($request->query('accept'))->like([
             'original_name' => $request->query('keyword'),
         ])->paginate(28);
 
         return response()->json([
             'status' => $request->query('page') > 1 && !$uploads->count() ? false : true,
-            'html' => $request->query('page') > 1 && !$uploads->count() ? '' : view('varbox::helpers.uploader.partials.items')->with([
-                'type' => $type,
+            'html' => $request->query('page') > 1 && !$uploads->count() ? '' : view('varbox::helpers.uploader.partials.items.' . $type)->with([
                 'uploads' => $uploads,
             ])->render()
         ]);
@@ -142,15 +143,15 @@ class UploadController extends Controller
 
         if (isset($model->getUploadConfig()['images']['styles'])) {
             foreach ($model->getUploadConfig()['images']['styles'] as $name => $styles) {
-                if (str_is($name, $field)) {
+                if (Str::is($name, $field)) {
                     $field = $name;
                     break;
                 }
             }
         }
 
-        $width = array_get($model->getUploadConfig(), "images.styles.{$field}.{$style}.width");
-        $height = array_get($model->getUploadConfig(), "images.styles.{$field}.{$style}.height");
+        $width = Arr::get($model->getUploadConfig(), "images.styles.{$field}.{$style}.width");
+        $height = Arr::get($model->getUploadConfig(), "images.styles.{$field}.{$style}.height");
 
         $imageSize = getimagesize(Storage::disk(config('varbox.upload.storage.disk', 'uploads'))->path($path));
         $cropSize = [$width, $height];
