@@ -1,3 +1,8 @@
+*:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 .breadcrumb-item + .breadcrumb-item:before {
     content: none;
 }
@@ -30,4 +35,22 @@ table th.sortable {
 .bootbox-close-button.close::before {
     float: left;
     text-indent: 0;
+}
+
+@media (max-width: 768px) {
+    .upload-name {
+        max-width: 85px;
+    }
+}
+
+a.btn-upload-select:hover {
+    opacity: 0.5;
+}
+
+a.btn-upload-select.selected {
+    opacity: 0.5;
+}
+
+.table-hover tr.hovered {
+    background-color: #f5f5f5;
 }
