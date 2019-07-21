@@ -16,168 +16,144 @@
                 uploadFilesTableSelector = '.js-UploadFilesTable',
                 uploadSelectButtonSelector = '.js-UploadSelectBtn';
 
-            var page = 2,
-                token = '{{ csrf_token() }}';
+            var _uploaderPage = 2,
+                _CSRFToken = '{{ csrf_token() }}';
 
             var uploadLoad = function (_this) {
-                var popup = _this.next(uploadNewModalSelector),
-                    tab = popup.find(uploadNewTabSelector + '.active'),
-                    list = popup.find(uploadNewTabButtonSelector + '.active'),
-                    container = tab.find(uploadFilesContainerSelector),
-                    keyword = tab.find('input[type="search"]').val(),
-                    type = list.data('type'),
-                    accept = list.data('accept'),
-                    url = '{{ route('admin.uploads.get') }}';
+                var uploadModal = _this.next(uploadNewModalSelector),
+                    tabButton = uploadModal.find(uploadNewTabButtonSelector + '.active'),
+                    tabContent = uploadModal.find(uploadNewTabSelector + '.active'),
+                    filesContainer = tabContent.find(uploadFilesContainerSelector);
 
                 $.ajax({
                     type: 'GET',
-                    url: url + '/' + type,
+                    url: '{{ route('admin.uploads.get') }}' + '/' + tabButton.data('type'),
                     dataType: 'json',
                     data: {
-                        _token : token,
-                        accept: accept,
-                        keyword: keyword
-                    },
-                    beforeSend:function(){
-                        popup.show();
-                        container.hide();
-                    },
-                    complete:function(){
-                        container.slideDown(300);
+                        _token : _CSRFToken,
+                        accept: tabButton.data('accept'),
+                        keyword: tabContent.find('input[type="search"]').val()
                     },
                     success: function(data) {
-                        page = 2;
-                        container.html(data.html);
+                        _uploaderPage = 2;
+                        filesContainer.html(data.html);
+
                         $('[data-toggle="tooltip"]').tooltip();
                     }
                 });
             }, uploadSwitch = function (_this) {
-                var popup = _this.closest(uploadNewModalSelector),
-                    type = _this.data('type'),
-                    accept = _this.data('accept'),
-                    index = popup.data('index'),
-                    tab = popup.find('.tab-content').find(uploadNewTabContainerSelector + '-' + type + '-' + index),
-                    container = tab.find(uploadFilesContainerSelector),
-                    keyword = tab.find('input[type="search"]').val(),
-                    url = '{{ route('admin.uploads.get') }}';
+                var uploadModal = _this.closest(uploadNewModalSelector),
+                    tabContent = uploadModal.find(uploadNewTabContainerSelector + '-' + _this.data('type') + '-' + uploadModal.data('index')),
+                    filesContainer = tabContent.find(uploadFilesContainerSelector);
 
                 $.ajax({
                     type: 'GET',
-                    url: url + '/' + type,
+                    url: '{{ route('admin.uploads.get') }}' + '/' + _this.data('type'),
                     dataType: 'json',
                     data: {
-                        _token : token,
-                        accept: accept,
-                        keyword: keyword
-                    },
-                    beforeSend:function(){
-                        popup.show();
-                        container.hide();
-                    },
-                    complete:function(){
-                        container.slideDown(300);
+                        _token : _CSRFToken,
+                        accept: _this.data('accept'),
+                        keyword: tabContent.find('input[type="search"]').val()
                     },
                     success: function(data) {
-                        page = 2;
-                        container.html(data.html);
+                        _uploaderPage = 2;
+                        filesContainer.html(data.html);
+
                         $('[data-toggle="tooltip"]').tooltip();
                     }
                 });
             }, uploadScroll = function (_this) {
-                var tab = _this.find(uploadNewTabSelector + '.active'),
-                    list = _this.find(uploadNewTabButtonSelector + '.active'),
-                    container = tab.find(uploadFilesContainerSelector),
-                    keyword = tab.find('input[type="search"]').val(),
-                    type = list.data('type'),
-                    accept = list.data('accept'),
-                    url = '{{ route('admin.uploads.get') }}';
+                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                    tabButton = _this.find(uploadNewTabButtonSelector + '.active'),
+                    filesContainer = tabContent.find(uploadFilesContainerSelector);
 
-                if(container.scrollTop() + container.innerHeight() >= container[0].scrollHeight) {
+                if(filesContainer.scrollTop() + filesContainer.innerHeight() >= filesContainer[0].scrollHeight) {
                     $.ajax({
                         type : 'GET',
-                        url: url + '/' + type + '?page=' + page,
+                        url: '{{ route('admin.uploads.get') }}' + '/' + tabButton.data('type') + '?page=' + _uploaderPage,
                         data: {
-                            _token: token,
-                            accept: accept,
-                            keyword: keyword
+                            _token: _CSRFToken,
+                            accept: tabButton.data('accept'),
+                            keyword: tabContent.find('input[type="search"]').val()
                         },
                         success : function(data) {
-                            page += 1;
-                            container.append(data.html);
+                            _uploaderPage += 1;
+                            filesContainer.append(data.html);
+
                             $('[data-toggle="tooltip"]').tooltip();
                         }
                     });
                 }
             }, uploadSearch = function (_this) {
-                var tab = _this.find(uploadNewTabSelector + '.active'),
-                    list = _this.find(uploadNewTabButtonSelector + '.active'),
-                    container = tab.find(uploadFilesContainerSelector),
-                    keyword = tab.find('input[type="search"]').val(),
-                    type = list.data('type'),
-                    accept = list.data('accept'),
-                    url = '{{ route('admin.uploads.get') }}',
-                    timer;
+                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                    tabButton = _this.find(uploadNewTabButtonSelector + '.active'),
+                    filesContainer = tabContent.find(uploadFilesContainerSelector),
+                    searchTimer;
 
-                clearInterval(timer);
+                clearInterval(searchTimer);
 
-                timer = setTimeout(function(){
+                searchTimer = setTimeout(function(){
                     $.ajax({
                         type: 'GET',
-                        url: url + '/' + type,
+                        url: '{{ route('admin.uploads.get') }}' + '/' + tabButton.data('type'),
                         dataType: 'json',
                         data: {
-                            _token : token,
-                            accept: accept,
-                            keyword : keyword
+                            _token : _CSRFToken,
+                            accept: tabButton.data('accept'),
+                            keyword : tabContent.find('input[type="search"]').val()
                         },
                         success: function(data) {
-                            page = 2;
-                            container.html(data.html);
+                            _uploaderPage = 2;
+                            filesContainer.html(data.html);
+
                             $('[data-toggle="tooltip"]').tooltip();
                         }
                     });
                 }, 300);
             }, uploadUpload = function (_this) {
-                var index = _this.data('index'),
-                    list = _this.find(uploadNewTabButtonSelector + '.active'),
-                    accept = list.data('accept');
-
                 _this.fileupload({
                     url: '{{ route('admin.uploads.upload') }}',
                     dataType: 'json',
                     formData: {
-                        _token : token,
+                        _token : _CSRFToken,
                         model: _this.data('model'),
                         field: _this.data('field'),
-                        accept: accept
+                        accept: _this.find(uploadNewTabButtonSelector + '.active').data('accept')
                     },
                     done: function (e, data) {
-                        var message = _this.find(uploadNewMessage);
+                        var uploadMessage = _this.find(uploadNewMessage);
 
                         _this.find(uploadFilesContainerSelector).css('opacity', '1');
                         _this.find(uploadNewFileButtonSelector).removeClass('btn-loading');
 
                         if (data.result.status === true) {
-                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector).prepend(data.result.html);
-                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' > p').remove();
+                            var tabContent = _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + _this.data('index'));
 
-                            _this.find(uploadNewTabSelector).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).removeClass('selected');
-                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().addClass('selected');
+                            tabContent.find(uploadFilesContainerSelector).prepend(data.result.html);
+                            tabContent.find(uploadFilesContainerSelector + ' > p').remove();
 
-                            if (_this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().parent().parent().is('tr')) {
+
+                            var selectButton = tabContent.find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first(),
+                                parentTableRow = selectButton.parent().parent();
+
+                            _this.find(uploadNewTabSelector).find(uploadSelectButtonSelector).removeClass('selected');
+
+                            selectButton.addClass('selected');
+
+                            if (parentTableRow.is('tr')) {
                                 $(uploadFilesTableSelector + ' tr').removeClass('hovered');
-                                _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().parent().parent().addClass('hovered');
+                                parentTableRow.addClass('hovered');
                             }
 
-                            message.text(data.result.message).removeClass('text-red').addClass('text-green');
+                            uploadMessage.text(data.result.message).removeClass('text-red').addClass('text-green');
 
                             $('[data-toggle="tooltip"]').tooltip();
                         } else {
-                            message.text(data.result.message).removeClass('text-green').addClass('text-red');
+                            uploadMessage.text(data.result.message).removeClass('text-green').addClass('text-red');
                         }
 
                         setTimeout(function(){
-                            message.text('');
+                            uploadMessage.text('');
                         }, 5000);
                     },
                     progressall: function (e, data) {
@@ -186,22 +162,18 @@
                     }
                 });
             }, uploadSave = function (_this) {
-                var tab = _this.find(uploadNewTabSelector + '.active'),
-                    container = tab.find(uploadFilesContainerSelector),
-                    model = _this.data('model'),
-                    field = _this.data('field'),
-                    path = container.find(uploadSelectButtonSelector + '.selected').data('path'),
-                    url = "{{ route('admin.uploads.set') }}";
+                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                    selectedUpload = tabContent.find(uploadSelectButtonSelector + '.selected');
 
                 $.ajax({
                     type: 'POST',
-                    url: url,
+                    url: "{{ route('admin.uploads.set') }}",
                     dataType: 'json',
                     data: {
-                        _token : token,
-                        path: path,
-                        model: model,
-                        field: field
+                        _token : _CSRFToken,
+                        path: selectedUpload.data('path'),
+                        model: _this.data('model'),
+                        field: _this.data('field')
                     },
                     beforeSend: function () {
                         _this.find(uploadFilesContainerSelector).css('opacity', '0.5');
@@ -212,19 +184,18 @@
                         _this.find(uploadNewSaveButtonSelector).removeClass('btn-loading');
                     },
                     success: function(data) {
-                        var input = _this.closest('.form-group').find(uploadInputSelector),
-                            button = _this.prev(uploadNewOpenButtonSelector),
-                            message = _this.find(uploadNewMessage);
+                        var uploadMessage = _this.find(uploadNewMessage);
 
                         if (data.status === true) {
-                            input.val(data.path);
-                            button.html(data.name);
+                            _this.closest('.form-group').find(uploadInputSelector).val(data.path);
+                            _this.prev(uploadNewOpenButtonSelector).html(data.name);
+
                             $(_this).modal('hide');
                         } else {
-                            message.text(data.message).removeClass('text-green').addClass('text-red');
+                            uploadMessage.text(data.message).removeClass('text-green').addClass('text-red');
 
                             setTimeout(function(){
-                                message.text('');
+                                uploadMessage.text('');
                             }, 5000);
                         }
                     }
