@@ -1,11 +1,5 @@
-@section('bottom_scripts')
+@push('scripts')
     <script type="text/javascript">
-        function initTooltip() {
-            $('.tooltip').tooltipster({
-                theme: 'tooltipster-punk'
-            });
-        }
-
         window.__UploaderIndex = '{{ $index }}';
 
         $(function () {
@@ -14,10 +8,10 @@
 
             var uploadLoad = function (_this) {
                 var popup = _this.next('.upload-new'),
-                    tab = popup.find('.modal-tab.active'),
-                    list = popup.find('ul.modal-tabs').find('li.active'),
-                    container = tab.find('div.modal-items'),
-                    keyword = tab.find('input.search').val(),
+                    tab = popup.find('.tab-content').find('.tab-pane.active'),
+                    list = popup.find('.nav-tabs').find('.nav-link.active'),
+                    container = tab.find('.modal-items'),
+                    keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
                     url = '{{ route('admin.uploads.get') }}';
@@ -41,14 +35,46 @@
                     success: function(data) {
                         page = 2;
                         container.html(data.html);
-                        initTooltip();
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }
+                });
+            }, uploadSwitch = function (_this) {
+                var popup = _this.closest('.upload-new'),
+                    type = _this.data('type'),
+                    accept = _this.data('accept'),
+                    index = popup.data('index'),
+                    tab = popup.find('.tab-content').find('.tab-pane#' + type + '-' + index),
+                    container = tab.find('.modal-items'),
+                    keyword = tab.find('input[type="search"]').val(),
+                    url = '{{ route('admin.uploads.get') }}';
+
+                $.ajax({
+                    type: 'GET',
+                    url: url + '/' + type,
+                    dataType: 'json',
+                    data: {
+                        _token : token,
+                        accept: accept,
+                        keyword: keyword
+                    },
+                    beforeSend:function(){
+                        popup.show();
+                        container.hide();
+                    },
+                    complete:function(){
+                        container.slideDown(300);
+                    },
+                    success: function(data) {
+                        page = 2;
+                        container.html(data.html);
+                        $('[data-toggle="tooltip"]').tooltip();
                     }
                 });
             }, uploadScroll = function (_this) {
-                var tab = _this.find('.modal-tab.active'),
-                    list = _this.find('ul.modal-tabs').find('li.active'),
-                    container = tab.find('div.modal-items'),
-                    keyword = tab.find('input.search').val(),
+                var tab = _this.find('.tab-content').find('.tab-pane.active'),
+                    list = _this.find('.nav-tabs').find('.nav-link.active'),
+                    container = tab.find('.modal-items'),
+                    keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
                     url = '{{ route('admin.uploads.get') }}';
@@ -65,15 +91,15 @@
                         success : function(data) {
                             page += 1;
                             container.append(data.html);
-                            initTooltip();
+                            $('[data-toggle="tooltip"]').tooltip();
                         }
                     });
                 }
             }, uploadSearch = function (_this) {
-                var tab = _this.find('.modal-tab.active'),
-                    list = _this.find('ul.modal-tabs').find('li.active'),
-                    container = tab.find('div.modal-items'),
-                    keyword = tab.find('input.search').val(),
+                var tab = _this.find('.tab-content').find('.tab-pane.active'),
+                    list = _this.find('.nav-tabs').find('.nav-link.active'),
+                    container = tab.find('.modal-items'),
+                    keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
                     url = '{{ route('admin.uploads.get') }}',
@@ -94,12 +120,13 @@
                         success: function(data) {
                             page = 2;
                             container.html(data.html);
-                            initTooltip();
+                            $('[data-toggle="tooltip"]').tooltip();
                         }
                     });
                 }, 300);
             }, uploadUpload = function (_this) {
-                var list = _this.find('ul.modal-tabs').find('li.active'),
+                var index = _this.data('index'),
+                    list = _this.find('.nav-tabs').find('.nav-link.active'),
                     accept = list.data('accept');
 
                 _this.fileupload({
@@ -112,47 +139,45 @@
                         accept: accept
                     },
                     done: function (e, data) {
-                        var message = _this.find('span.upload-message'),
-                            progress = _this.find('.progress');
+                        var message = _this.find('.upload-message');
 
-                        _this.find('.loading').fadeOut(300);
+                        _this.find('.modal-items').css('opacity', '1');
+                        _this.find('.upload-btn').removeClass('btn-loading');
 
                         if (data.result.status === true) {
-                            _this.find('#' + data.result.type).find('.modal-items').prepend(data.result.html);
-                            _this.find('#' + data.result.type).find('.modal-items > p').remove();
+                            _this.find('#' + data.result.type + '-' + index).find('.modal-items').prepend(data.result.html);
+                            _this.find('#' + data.result.type + '-' + index).find('.modal-items > p').remove();
 
-                            _this.find('.modal-tab').find('.modal-items > a').removeClass('active');
-                            _this.find('#' + data.result.type).find('.modal-items > a:first-of-type').addClass('active');
+                            _this.find('.tab-pane').find('.modal-items .btn-upload-select').removeClass('selected');
+                            _this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().addClass('selected');
 
-                            message.text(data.result.message).removeClass('error').addClass('success');
-                            progress.find('.bar').removeClass('error').addClass('success');
+                            if (_this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().parent().parent().is('tr')) {
+                                $('.upload-items-table tr').removeClass('hovered');
+                                _this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().parent().parent().addClass('hovered');
+                            }
 
-                            initTooltip();
+                            message.text(data.result.message).removeClass('text-red').addClass('text-green');
+
+                            $('[data-toggle="tooltip"]').tooltip();
                         } else {
-                            message.text(data.result.message).removeClass('success').addClass('error');
-                            progress.find('.bar').removeClass('success').addClass('error');
+                            message.text(data.result.message).removeClass('text-green').addClass('text-red');
                         }
 
                         setTimeout(function(){
-                            progress.find('.bar').css('width', '0px').removeClass('success').removeClass('error');
                             message.text('');
-                            progress.slideUp(500);
                         }, 5000);
                     },
                     progressall: function (e, data) {
-                        var progress = parseInt(data.loaded / data.total * 100, 10);
-
-                        _this.find('.loading').fadeIn(300);
-                        _this.find('.loading').show();
-                        _this.find('.progress .bar').css('width', progress + '%');
+                        _this.find('.modal-items').css('opacity', '0.5');
+                        _this.find('.upload-btn').addClass('btn-loading');
                     }
                 });
             }, uploadSave = function (_this) {
-                var tab = _this.find('.modal-tab.active'),
-                    container = tab.find('div.modal-items'),
+                var tab = _this.find('.tab-content').find('.tab-pane.active'),
+                    container = tab.find('.modal-items'),
                     model = _this.data('model'),
                     field = _this.data('field'),
-                    path = container.find('a.active').data('path'),
+                    path = container.find('.btn-upload-select.selected').data('path'),
                     url = "{{ route('admin.uploads.set') }}";
 
                 $.ajax({
@@ -166,22 +191,24 @@
                         field: field
                     },
                     beforeSend: function () {
-                        _this.find('.loading').fadeIn(300);
+                        _this.find('.modal-items').css('opacity', '0.5');
+                        _this.find('.btn-upload-save').addClass('btn-loading');
                     },
                     complete: function () {
-                        _this.find('.loading').fadeOut(300);
+                        _this.find('.modal-items').css('opacity', '1');
+                        _this.find('.btn-upload-save').removeClass('btn-loading');
                     },
-                    success: function(data) {
-                        var input = _this.closest('.field-wrapper').next('.upload-input'),
+                    success: function(data) {``
+                        var input = _this.closest('.form-group').find('.upload-input'),
                             button = _this.prev('.open-upload-new'),
-                            message = _this.find('span.upload-message');
+                            message = _this.find('.upload-message');
 
                         if (data.status === true) {
                             input.val(data.path);
                             button.html(data.name);
-                            $('.popup:visible').hide();
+                            $(_this).modal('hide');
                         } else {
-                            message.text(data.message).css('display', 'block').removeClass('success').addClass('error');
+                            message.text(data.message).removeClass('text-green').addClass('text-red');
 
                             setTimeout(function(){
                                 message.text('');
@@ -194,8 +221,8 @@
 
                 $('#upload-input-' + index).val('');
                 $('#open-upload-current-' + index).remove();
-                $('#open-upload-new-' + index).removeClass('half').addClass('full');
-                $('.popup:visible').hide();
+                $('#open-upload-new-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
+                $('.upload-current').modal('hide');
             }, uploadCrop = function (_this) {
                 var popup = _this.closest('.upload-current'),
                     url = _this.data('url'),
@@ -221,7 +248,7 @@
                     success: function(data) {
                         if (data.status === true) {
                             $('#upload-crop-container-' + index).html(data.html);
-                            $('#upload-crop-' + index).show();
+                            $('#upload-crop-' + index).modal('show');
                         }
                     }
                 });
@@ -235,52 +262,60 @@
             });
 
             //click load
-            $(document).on('click', '.upload-new:not(.disabled) ul.modal-tabs > li', function(e) {
-                e.preventDefault();
-
-                $(this).closest('ul.modal-tabs').find('li').removeClass('active');
-                $(this).addClass('active');
-
-                uploadLoad($(this).closest('.upload-new:not(.disabled)').prev('.open-upload-new'));
+            $(document).on('click', '.upload-new:not(.disabled) .nav-tabs .btn-upload-switch', function(e) {
+                uploadSwitch($(this));
             });
 
             //scroll load
             document.addEventListener('scroll', function (event) {
-                if (event.target.classList.contains('uploads')) {
+                if (event.target.classList && event.target.classList.contains('modal-items')) {
                     uploadScroll($(event.target).closest('.upload-new'));
                 }
             }, true);
 
             //search load
-            $(document).on('keyup', '.upload-new:not(.disabled) .modal-tab.active input.search', function(e) {
+            $(document).on('keyup', '.upload-new:not(.disabled) .tab-pane.active input[type="search"]', function(e) {
                 e.preventDefault();
 
                 uploadSearch($(this).closest('.upload-new'));
             });
 
             //upload new
-            $(document).on('click', '.upload-new:not(.disabled) label.upload-btn > input[type="file"]', function (e) {
+            $(document).on('click', '.upload-new:not(.disabled) .upload-btn > input[type="file"]', function (e) {
                 uploadUpload($(this).closest('.upload-new'));
             });
 
             //save new
-            $(document).on('click', '.upload-new .upload-save', function(e) {
+            $(document).on('click', '.upload-new:not(.disabled) .btn-upload-save', function(e) {
                 e.preventDefault();
 
                 uploadSave($(this).closest('.upload-new'));
             });
 
             //cropper load
-            $(document).on('click', '.open-upload-cropper:not(.disabled)', function (e) {
+            $(document).on('click', '.upload-current:not(.disabled) .open-upload-cropper:not(.disabled)', function (e) {
                 e.preventDefault();
 
                 uploadCrop($(this));
             });
 
             //delete current
-            $(document).on('click', '.upload-current:not(.disabled) .upload-delete', function(){
+            $(document).on('click', '.upload-current:not(.disabled) .btn-upload-delete', function(){
                 uploadRemove($(this));
+            });
+
+            // select file
+            $(document).on('click', '.upload-new:not(.disabled) .btn-upload-select', function(e){
+                e.preventDefault();
+
+                $('.btn-upload-select').removeClass('selected');
+                $(this).addClass('selected');
+
+                if ($(this).parent().parent().is('tr')) {
+                    $('.upload-items-table tr').removeClass('hovered');
+                    $(this).parent().parent().addClass('hovered');
+                }
             });
         });
     </script>
-@append
+@endpush
