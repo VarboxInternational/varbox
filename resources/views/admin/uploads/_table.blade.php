@@ -45,13 +45,3 @@
         @endforelse
     </table>
 </div>
-
-@push('styles')
-    <style>
-        @media (max-width: 768px) {
-            .upload-name {
-                max-width: 85px;
-            }
-        }
-    </style>
-@endpush
