@@ -6,7 +6,7 @@
         @include('varbox::helpers.uploader.partials.new')
         @include('varbox::helpers.uploader.partials.current')
     </div>
-    {!! form()->hidden($field, $current ? $current->path('original') : null, ['id' => 'upload-input-' . $index, 'class' => 'upload-input']) !!}
+    {!! form()->hidden($field, $current ? $current->path('original') : null, ['class' => 'js-UploadInput js-UploadInput-' . $index]) !!}
 </div>
 
 @if($i == 0)
