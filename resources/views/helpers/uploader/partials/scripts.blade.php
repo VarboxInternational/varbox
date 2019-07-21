@@ -3,7 +3,7 @@
         window.__UploaderIndex = '{{ $index }}';
 
         $(function () {
-            var uploadNewOpenButtonSelector = '.js-UploadNewOpenBtn',
+            const uploadNewOpenButtonSelector = '.js-UploadNewOpenBtn',
                 uploadNewModalSelector = '.js-UploadNewModal',
                 uploadNewFileButtonSelector = '.js-UploadNewFileBtn',
                 uploadNewSaveButtonSelector = '.js-UploadNewSaveBtn',
@@ -16,11 +16,11 @@
                 uploadFilesTableSelector = '.js-UploadFilesTable',
                 uploadSelectButtonSelector = '.js-UploadSelectBtn';
 
-            var _uploaderPage = 2,
+            let _uploaderPage = 2,
                 _CSRFToken = '{{ csrf_token() }}';
 
-            var uploadLoad = function (_this) {
-                var uploadModal = _this.next(uploadNewModalSelector),
+            let uploadLoad = function (_this) {
+                let uploadModal = _this.next(uploadNewModalSelector),
                     tabButton = uploadModal.find(uploadNewTabButtonSelector + '.active'),
                     tabContent = uploadModal.find(uploadNewTabSelector + '.active'),
                     filesContainer = tabContent.find(uploadFilesContainerSelector);
@@ -42,7 +42,7 @@
                     }
                 });
             }, uploadSwitch = function (_this) {
-                var uploadModal = _this.closest(uploadNewModalSelector),
+                let uploadModal = _this.closest(uploadNewModalSelector),
                     tabContent = uploadModal.find(uploadNewTabContainerSelector + '-' + _this.data('type') + '-' + uploadModal.data('index')),
                     filesContainer = tabContent.find(uploadFilesContainerSelector);
 
@@ -63,7 +63,7 @@
                     }
                 });
             }, uploadScroll = function (_this) {
-                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                let tabContent = _this.find(uploadNewTabSelector + '.active'),
                     tabButton = _this.find(uploadNewTabButtonSelector + '.active'),
                     filesContainer = tabContent.find(uploadFilesContainerSelector);
 
@@ -85,7 +85,7 @@
                     });
                 }
             }, uploadSearch = function (_this) {
-                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                let tabContent = _this.find(uploadNewTabSelector + '.active'),
                     tabButton = _this.find(uploadNewTabButtonSelector + '.active'),
                     filesContainer = tabContent.find(uploadFilesContainerSelector),
                     searchTimer;
@@ -121,19 +121,19 @@
                         accept: _this.find(uploadNewTabButtonSelector + '.active').data('accept')
                     },
                     done: function (e, data) {
-                        var uploadMessage = _this.find(uploadNewMessage);
+                        let uploadMessage = _this.find(uploadNewMessage);
 
                         _this.find(uploadFilesContainerSelector).css('opacity', '1');
                         _this.find(uploadNewFileButtonSelector).removeClass('btn-loading');
 
                         if (data.result.status === true) {
-                            var tabContent = _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + _this.data('index'));
+                            let tabContent = _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + _this.data('index'));
 
                             tabContent.find(uploadFilesContainerSelector).prepend(data.result.html);
                             tabContent.find(uploadFilesContainerSelector + ' > p').remove();
 
 
-                            var selectButton = tabContent.find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first(),
+                            let selectButton = tabContent.find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first(),
                                 parentTableRow = selectButton.parent().parent();
 
                             _this.find(uploadNewTabSelector).find(uploadSelectButtonSelector).removeClass('selected');
@@ -162,7 +162,7 @@
                     }
                 });
             }, uploadSave = function (_this) {
-                var tabContent = _this.find(uploadNewTabSelector + '.active'),
+                let tabContent = _this.find(uploadNewTabSelector + '.active'),
                     selectedUpload = tabContent.find(uploadSelectButtonSelector + '.selected');
 
                 $.ajax({
@@ -184,7 +184,7 @@
                         _this.find(uploadNewSaveButtonSelector).removeClass('btn-loading');
                     },
                     success: function(data) {
-                        var uploadMessage = _this.find(uploadNewMessage);
+                        let uploadMessage = _this.find(uploadNewMessage);
 
                         if (data.status === true) {
                             _this.closest('.form-group').find(uploadInputSelector).val(data.path);
@@ -201,14 +201,14 @@
                     }
                 });
             }, uploadRemove = function (_this) {
-                var index = _this.closest('.upload-current').data('index');
+                let index = _this.closest('.upload-current').data('index');
 
                 $(uploadInputSelector + '-' + index).val('');
                 $('#open-upload-current-' + index).remove();
                 $(uploadNewOpenButtonSelector + '-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
                 $('.upload-current').modal('hide');
             }, uploadCrop = function (_this) {
-                var popup = _this.closest('.upload-current'),
+                let popup = _this.closest('.upload-current'),
                     url = _this.data('url'),
                     path = _this.data('path'),
                     style = _this.data('style'),
