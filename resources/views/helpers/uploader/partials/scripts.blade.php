@@ -3,14 +3,25 @@
         window.__UploaderIndex = '{{ $index }}';
 
         $(function () {
+            var uploadNewOpenButtonSelector = '.js-UploadNewOpenBtn',
+                uploadNewModalSelector = '.js-UploadNewModal',
+                uploadNewFileButtonSelector = '.js-UploadNewFileBtn',
+                uploadNewSaveButtonSelector = '.js-UploadNewSaveBtn',
+                uploadNewTabButtonSelector = '.js-UploadTabBtn',
+                uploadNewTabContainerSelector = '#tab-UploadTab',
+                uploadNewMessage = '.js-UploadNewMessage',
+                uploadFilesContainerSelector = '.js-UploadFilesContainer',
+                uploadFilesTableSelector = '.js-UploadFilesTable',
+                uploadSelectButtonSelector = '.js-UploadSelectBtn';
+
             var page = 2,
                 token = '{{ csrf_token() }}';
 
             var uploadLoad = function (_this) {
-                var popup = _this.next('.upload-new'),
+                var popup = _this.next(uploadNewModalSelector),
                     tab = popup.find('.tab-content').find('.tab-pane.active'),
                     list = popup.find('.nav-tabs').find('.nav-link.active'),
-                    container = tab.find('.modal-items'),
+                    container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
@@ -39,12 +50,12 @@
                     }
                 });
             }, uploadSwitch = function (_this) {
-                var popup = _this.closest('.upload-new'),
+                var popup = _this.closest(uploadNewModalSelector),
                     type = _this.data('type'),
                     accept = _this.data('accept'),
                     index = popup.data('index'),
-                    tab = popup.find('.tab-content').find('.tab-pane#' + type + '-' + index),
-                    container = tab.find('.modal-items'),
+                    tab = popup.find('.tab-content').find(uploadNewTabContainerSelector + '-' + type + '-' + index),
+                    container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     url = '{{ route('admin.uploads.get') }}';
 
@@ -73,7 +84,7 @@
             }, uploadScroll = function (_this) {
                 var tab = _this.find('.tab-content').find('.tab-pane.active'),
                     list = _this.find('.nav-tabs').find('.nav-link.active'),
-                    container = tab.find('.modal-items'),
+                    container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
@@ -98,7 +109,7 @@
             }, uploadSearch = function (_this) {
                 var tab = _this.find('.tab-content').find('.tab-pane.active'),
                     list = _this.find('.nav-tabs').find('.nav-link.active'),
-                    container = tab.find('.modal-items'),
+                    container = tab.find(uploadFilesContainerSelector),
                     keyword = tab.find('input[type="search"]').val(),
                     type = list.data('type'),
                     accept = list.data('accept'),
@@ -139,21 +150,21 @@
                         accept: accept
                     },
                     done: function (e, data) {
-                        var message = _this.find('.upload-message');
+                        var message = _this.find(uploadNewMessage);
 
-                        _this.find('.modal-items').css('opacity', '1');
-                        _this.find('.upload-btn').removeClass('btn-loading');
+                        _this.find(uploadFilesContainerSelector).css('opacity', '1');
+                        _this.find(uploadNewFileButtonSelector).removeClass('btn-loading');
 
                         if (data.result.status === true) {
-                            _this.find('#' + data.result.type + '-' + index).find('.modal-items').prepend(data.result.html);
-                            _this.find('#' + data.result.type + '-' + index).find('.modal-items > p').remove();
+                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector).prepend(data.result.html);
+                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' > p').remove();
 
-                            _this.find('.tab-pane').find('.modal-items .btn-upload-select').removeClass('selected');
-                            _this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().addClass('selected');
+                            _this.find('.tab-pane').find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).removeClass('selected');
+                            _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().addClass('selected');
 
-                            if (_this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().parent().parent().is('tr')) {
-                                $('.upload-items-table tr').removeClass('hovered');
-                                _this.find('#' + data.result.type + '-' + index).find('.modal-items .btn-upload-select').first().parent().parent().addClass('hovered');
+                            if (_this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().parent().parent().is('tr')) {
+                                $(uploadFilesTableSelector + ' tr').removeClass('hovered');
+                                _this.find(uploadNewTabContainerSelector + '-' + data.result.type + '-' + index).find(uploadFilesContainerSelector + ' ' + uploadSelectButtonSelector).first().parent().parent().addClass('hovered');
                             }
 
                             message.text(data.result.message).removeClass('text-red').addClass('text-green');
@@ -168,16 +179,16 @@
                         }, 5000);
                     },
                     progressall: function (e, data) {
-                        _this.find('.modal-items').css('opacity', '0.5');
-                        _this.find('.upload-btn').addClass('btn-loading');
+                        _this.find(uploadFilesContainerSelector).css('opacity', '0.5');
+                        _this.find(uploadNewFileButtonSelector).addClass('btn-loading');
                     }
                 });
             }, uploadSave = function (_this) {
                 var tab = _this.find('.tab-content').find('.tab-pane.active'),
-                    container = tab.find('.modal-items'),
+                    container = tab.find(uploadFilesContainerSelector),
                     model = _this.data('model'),
                     field = _this.data('field'),
-                    path = container.find('.btn-upload-select.selected').data('path'),
+                    path = container.find(uploadSelectButtonSelector + '.selected').data('path'),
                     url = "{{ route('admin.uploads.set') }}";
 
                 $.ajax({
@@ -191,17 +202,17 @@
                         field: field
                     },
                     beforeSend: function () {
-                        _this.find('.modal-items').css('opacity', '0.5');
-                        _this.find('.btn-upload-save').addClass('btn-loading');
+                        _this.find(uploadFilesContainerSelector).css('opacity', '0.5');
+                        _this.find(uploadNewSaveButtonSelector).addClass('btn-loading');
                     },
                     complete: function () {
-                        _this.find('.modal-items').css('opacity', '1');
-                        _this.find('.btn-upload-save').removeClass('btn-loading');
+                        _this.find(uploadFilesContainerSelector).css('opacity', '1');
+                        _this.find(uploadNewSaveButtonSelector).removeClass('btn-loading');
                     },
-                    success: function(data) {``
+                    success: function(data) {
                         var input = _this.closest('.form-group').find('.upload-input'),
-                            button = _this.prev('.open-upload-new'),
-                            message = _this.find('.upload-message');
+                            button = _this.prev(uploadNewOpenButtonSelector),
+                            message = _this.find(uploadNewMessage);
 
                         if (data.status === true) {
                             input.val(data.path);
@@ -221,7 +232,7 @@
 
                 $('#upload-input-' + index).val('');
                 $('#open-upload-current-' + index).remove();
-                $('#open-upload-new-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
+                $(uploadNewOpenButtonSelector + '-' + index).removeClass('w-50').removeClass('border-right-0').addClass('w-100');
                 $('.upload-current').modal('hide');
             }, uploadCrop = function (_this) {
                 var popup = _this.closest('.upload-current'),
@@ -255,41 +266,41 @@
             };
 
             //initial load
-            $(document).on('click', '.open-upload-new:not(.disabled)', function (e) {
+            $(document).on('click', uploadNewOpenButtonSelector + ':not(.disabled)', function (e) {
                 e.preventDefault();
 
                 uploadLoad($(this));
             });
 
             //click load
-            $(document).on('click', '.upload-new:not(.disabled) .nav-tabs .btn-upload-switch', function(e) {
+            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewTabButtonSelector, function(e) {
                 uploadSwitch($(this));
             });
 
             //scroll load
             document.addEventListener('scroll', function (event) {
-                if (event.target.classList && event.target.classList.contains('modal-items')) {
-                    uploadScroll($(event.target).closest('.upload-new'));
+                if (event.target.classList && event.target.classList.contains('js-UploadFilesContainer')) {
+                    uploadScroll($(event.target).closest(uploadNewModalSelector));
                 }
             }, true);
 
             //search load
-            $(document).on('keyup', '.upload-new:not(.disabled) .tab-pane.active input[type="search"]', function(e) {
+            $(document).on('keyup', uploadNewModalSelector + ' .tab-pane.active input[type="search"]', function(e) {
                 e.preventDefault();
 
-                uploadSearch($(this).closest('.upload-new'));
+                uploadSearch($(this).closest(uploadNewModalSelector));
             });
 
             //upload new
-            $(document).on('click', '.upload-new:not(.disabled) .upload-btn > input[type="file"]', function (e) {
-                uploadUpload($(this).closest('.upload-new'));
+            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewFileButtonSelector + ' > input[type="file"]', function (e) {
+                uploadUpload($(this).closest(uploadNewModalSelector));
             });
 
             //save new
-            $(document).on('click', '.upload-new:not(.disabled) .btn-upload-save', function(e) {
+            $(document).on('click', uploadNewModalSelector + ' ' + uploadNewSaveButtonSelector, function(e) {
                 e.preventDefault();
 
-                uploadSave($(this).closest('.upload-new'));
+                uploadSave($(this).closest(uploadNewModalSelector));
             });
 
             //cropper load
@@ -305,14 +316,14 @@
             });
 
             // select file
-            $(document).on('click', '.upload-new:not(.disabled) .btn-upload-select', function(e){
+            $(document).on('click', uploadNewModalSelector + ' ' + uploadSelectButtonSelector, function(e){
                 e.preventDefault();
 
-                $('.btn-upload-select').removeClass('selected');
+                $(uploadSelectButtonSelector).removeClass('selected');
                 $(this).addClass('selected');
 
                 if ($(this).parent().parent().is('tr')) {
-                    $('.upload-items-table tr').removeClass('hovered');
+                    $(uploadFilesTableSelector + ' tr').removeClass('hovered');
                     $(this).parent().parent().addClass('hovered');
                 }
             });
