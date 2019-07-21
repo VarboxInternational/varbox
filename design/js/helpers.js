@@ -2,16 +2,16 @@ var init = {
     UploadManager: function (exists, container, oldIndex, newIndex) {
         window.__UploaderIndex = 1 + Math.floor(Math.random() * 999999);
 
-        container.find('a.open-upload-new').each(function (i, _container) {
+        container.find('a.js-UploadNewBtn').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
             $(_container).attr('data-popup-id', $(_container).attr('data-popup-id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('section.upload-new').each(function (i, _container) {
+        container.find('section.js-UploadNewModal').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('section.upload-new a.upload-save').each(function (i, _container) {
+        container.find('section.js-UploadNewModal a.upload-save').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
@@ -20,7 +20,7 @@ var init = {
         });
 
         if (exists) {
-            container.find('section.upload-new, section.upload-current').each(function (index, _container) {
+            container.find('section.js-UploadNewModal, section.upload-current').each(function (index, _container) {
                 if ($(_container).attr('data-field')) {
                     $(_container).attr('data-field', $(_container).attr('data-field').replace(oldIndex, newIndex));
                 }
@@ -32,7 +32,7 @@ var init = {
                 }
             });
         } else {
-            container.find('a.open-upload-new').each(function (i, _container) {
+            container.find('a.js-UploadNewBtn').each(function (i, _container) {
                 $(_container).removeClass('half').addClass('full');
             });
 
@@ -40,7 +40,7 @@ var init = {
                 $(_container).remove();
             });
 
-            container.find('section.upload-new').each(function (i, _container) {
+            container.find('section.js-UploadNewModal').each(function (i, _container) {
                 $(_container).attr('data-field', $(_container).attr('data-field').replace(/[0-9]+/g, newIndex));
             });
 
@@ -155,8 +155,8 @@ var disable = {
             $('form.form .upload-current').addClass('disabled');
             $('form.form .upload-current').find('.open-upload-cropper').addClass('disabled');
             $('form.form .upload-current').find('.upload-delete').remove();
-            $('form.form .open-upload-new').addClass('disabled');
-            $('form.form .upload-new').remove();
+            $('form.form .js-UploadNewBtn').addClass('disabled');
+            $('form.form .js-UploadNewModal').remove();
 
             //disable chosen selects
             $('form.form select.select-input').prop('disabled', true).trigger("chosen:updated");

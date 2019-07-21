@@ -43,11 +43,11 @@ table th.sortable {
     }
 }
 
-a.btn-upload-select:hover {
+a.js-UploadSelectBtn:hover {
     opacity: 0.5;
 }
 
-a.btn-upload-select.selected {
+.js-UploadSelectBtn.selected {
     opacity: 0.5;
 }
 
