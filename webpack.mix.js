@@ -18,7 +18,7 @@ mix
     .styles([
         'design/css/plugins/dropzone.css',
         'design/css/plugins/froala.css',
-        'design/css/plugins/jscrop.css',
+        'design/css/plugins/jcrop.css',
         'design/css/plugins/jstree.css',
         'design/css/plugins/select2.css',
         'design/css/plugins/select2-bootstrap.css',
