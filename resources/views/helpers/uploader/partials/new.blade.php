@@ -25,7 +25,7 @@
                 <div class="modal-body">
                     <div class="tab-content">
                         @foreach($types as $type)
-                            <div id="tab-UploadTab-{{ $type }}-{{ $index }}" class="tab-pane fade @if($loop->first) show active @endif" role="tabpanel">
+                            <div id="tab-UploadTab-{{ $type }}-{{ $index }}" class="js-UploadTab tab-pane fade @if($loop->first) show active @endif" role="tabpanel">
                                 <input type="search" placeholder="Search for {{ $type }}" class="form-control" />
                                 <div class="js-UploadFilesContainer mt-3" style="height: 325px; overflow-y: auto;">
                                     <p class="px-2 text-muted-dark">No {{ Str::plural($type) }} found</p>
