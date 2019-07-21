@@ -1,5 +1,5 @@
 @if(isset($uploads) && $uploads->count())
-    <table class="upload-items-table table card-table table-vcenter table-md table-borderless table-hover">
+    <table class="js-UploadFilesTable table card-table table-vcenter table-md table-borderless table-hover">
         @foreach($uploads as $upload)
             <tr>
                 <td class="w-1 pl-2">
@@ -13,7 +13,7 @@
                     <a href="{{ $upload->helper->url() }}" target="_blank" class="d-inline btn mr-2 text-yellow">
                         <i class="fe fe-video text-yellow mr-2"></i>Watch
                     </a>
-                    <button class="btn-upload-select no-background d-inline btn text-green" data-path="{{ $upload->full_path }}">
+                    <button class="js-UploadSelectBtn no-background d-inline btn text-green" data-path="{{ $upload->full_path }}">
                         <i class="fe fe-check-square text-green mr-2"></i>Choose
                     </button>
                 </td>
