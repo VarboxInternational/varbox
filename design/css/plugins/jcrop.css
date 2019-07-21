@@ -18,7 +18,7 @@
 /* Selection Border */
 .jcrop-vline,
 .jcrop-hline {
-  background: #ffffff url("/vendor/varbox/images/libs/jcrop/Jcrop.gif");
+  background: #ffffff url("/vendor/varbox/images/plugins/jcrop/Jcrop.gif");
   font-size: 0;
   position: absolute;
 }
