@@ -4,6 +4,7 @@ namespace Varbox\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
@@ -333,7 +334,7 @@ class UploaderHelper implements UploaderHelperContract
     protected function parseLabel()
     {
         if (!$this->label) {
-            $this->label = title_case(str_replace('_', ' ', $this->field));
+            $this->label = Str::title(str_replace('_', ' ', $this->field));
         }
 
         return $this;
