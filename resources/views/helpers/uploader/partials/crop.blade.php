@@ -1,34 +1,34 @@
-<section id="upload-crop-{!! $index !!}" class="upload-crop popup popup-full">
-    <div class="modal">
-        <div class="header">
-            <h1>Crop Image</h1>
-            <a data-popup="close" class="close">
-                <i class="fa fa-close"></i>
-            </a>
-        </div>
-        <div class="content">
-            <img src="{{ $url }}" id="upload-crop-image-{{ $index }}" class="full-element" />
+<div class="modal" id="upload-crop-{{ $index }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog mw-100 w-100 m-0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crop Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <img src="{{ $url }}" id="upload-crop-image-{{ $index }}" class="mx-auto" />
 
-            <div class="upload-crop-inputs-{{ $index }}">
-                {{ form()->hidden('x', 0, ['id' => 'crop-x-' . $index]) }}
-                {{ form()->hidden('y', 0, ['id' => 'crop-y-' . $index]) }}
-                {{ form()->hidden('w', $cropSize[0], ['id' => 'crop-w-' . $index]) }}
-                {{ form()->hidden('h', $cropSize[1], ['id' => 'crop-h-' . $index]) }}
-                {{ form()->hidden('path', $path, ['id' => 'crop-path-' . $index]) }}
-                {{ form()->hidden('style', $style, ['id' => 'crop-style-' . $index]) }}
-                {{ form()->hidden('size', $dCropSize[0], ['id' => 'crop-size-' . $index]) }}
+                <div class="upload-crop-inputs-{{ $index }}">
+                    {{ form()->hidden('x', 0, ['id' => 'crop-x-' . $index]) }}
+                    {{ form()->hidden('y', 0, ['id' => 'crop-y-' . $index]) }}
+                    {{ form()->hidden('w', $cropSize[0], ['id' => 'crop-w-' . $index]) }}
+                    {{ form()->hidden('h', $cropSize[1], ['id' => 'crop-h-' . $index]) }}
+                    {{ form()->hidden('path', $path, ['id' => 'crop-path-' . $index]) }}
+                    {{ form()->hidden('style', $style, ['id' => 'crop-style-' . $index]) }}
+                    {{ form()->hidden('size', $dCropSize[0], ['id' => 'crop-size-' . $index]) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-red btn-square text-white mr-auto" data-dismiss="modal">
+                    <i class="fe fe-x mr-2"></i>Cancel
+                </a>
+                <a id="upload-crop-save-{{ $index }}" class="btn btn-blue btn-square text-white">
+                    <i class="fe fe-check mr-2"></i>Save
+                </a>
             </div>
         </div>
-        <div class="footer">
-            <a id="upload-crop-save-{{ $index }}" class="btn blue right no-margin-top no-margin-bottom no-margin-right">
-                <i class="fa fa-check"></i>&nbsp; Save
-            </a>
-            <a data-popup="close" class="btn cancel right no-margin-top no-margin-bottom no-margin-left">
-                <i class="fa fa-ban"></i>&nbsp; Cancel
-            </a>
-        </div>
     </div>
-</section>
+</div>
 
 <script type="text/javascript">
     var token = "{{ csrf_token() }}";
@@ -56,7 +56,7 @@
                 {{ $dCropSize[1] }}
             ],
             boxWidth: $(window).width() - 50,
-            addClass: 'full-element'
+            addClass: 'mx-auto'
         };
 
         @if($cropSize[0] && $cropSize[1])
@@ -90,14 +90,14 @@
                     h: h
                 },
                 complete: function () {
-                    $('#upload-crop-' + index).hide();
+                    $('#upload-crop-' + index).modal('hide');
                 },
                 success: function(data) {
                     if (data.status === true) {
                         date = new Date();
 
-                        $('#upload-current-' + index +' .modal-tab.active > a > img').attr(
-                            'src', $('#upload-current-' + index +' .modal-tab.active > a > img').attr('src') + '?' + date.getTime()
+                        $('#upload-current-' + index +' .tab-pane.active > a > img').attr(
+                            'src', $('#upload-current-' + index +' .tab-pane.active > a > img').attr('src') + '?' + date.getTime()
                         );
                     } else {
                         init.FlashMessage('error', data.message);
