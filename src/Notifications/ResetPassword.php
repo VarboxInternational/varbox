@@ -47,7 +47,7 @@ class ResetPassword extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        if (\Varbox::moduleEnabled('cms')) {
+        if (\Varbox::emailsEnabled()) {
             $types = app('email.model')->getTypes();
 
             if (array_key_exists('password-recovery', $types)) {
