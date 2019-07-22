@@ -5,6 +5,7 @@ namespace Varbox\Composers;
 use Illuminate\View\View;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Menu\MenuItem;
+use Varbox\Varbox;
 
 class AdminMenuComposer
 {
