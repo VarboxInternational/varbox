@@ -85,12 +85,19 @@ class UploadController extends Controller
             'original_name' => $request->query('keyword'),
         ])->paginate(28);
 
-        return response()->json([
-            'status' => $request->query('page') > 1 && !$uploads->count() ? false : true,
-            'html' => $request->query('page') > 1 && !$uploads->count() ? '' : view('varbox::helpers.uploader.partials.items.' . $type)->with([
-                'uploads' => $uploads,
-            ])->render()
-        ]);
+        if ($request->query('page') > 1 && !$uploads->count()) {
+            return response()->json([
+                'status' => false,
+                'html' => '',
+            ]);
+        } else {
+            return response()->json([
+                'status' => true,
+                'html' => view('varbox::helpers.uploader.partials.items.' . $type)->with([
+                    'uploads' => $uploads,
+                ])->render()
+            ]);
+        }
     }
 
     /**
@@ -154,8 +161,7 @@ class UploadController extends Controller
         $height = Arr::get($model->getUploadConfig(), "images.styles.{$field}.{$style}.height");
 
         $imageSize = getimagesize(Storage::disk(config('varbox.upload.storage.disk', 'uploads'))->path($path));
-        $cropSize = [$width, $height];
-        $dCropSize = $cropSize;
+        $cropSize = $dCropSize = [$width, $height];
 
         if ($dCropSize[0] && !$dCropSize[1]) {
             $dCropSize[1] = floor($dCropSize[0] / $imageSize[0] * $imageSize[1]);
