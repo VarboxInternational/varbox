@@ -51,12 +51,12 @@
 
                 </div>
                 <div class="modal-footer">
-                    <span class="badge badge badge-default" style="font-size: 100%;">
+                    <span class="badge badge badge-default float-left mr-auto" style="font-size: 100%;">
                         {{ $upload->original_name ?: 'N/A' }}
                     </span>
 
                     @if($disabled === false)
-                        <a class="js-UploadDeleteBtn btn btn-square btn-red ml-auto text-white">
+                        <a class="js-UploadDeleteBtn btn btn-square btn-red text-white">
                             <i class="fe fe-x mr-2"></i>Delete
                         </a>
                     @endif

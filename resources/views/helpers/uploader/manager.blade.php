@@ -1,6 +1,6 @@
 <div class="form-group">
     <label class="form-label">
-        {!! $label !!}<span class="form-required">*</span>
+        {!! $label !!}
     </label>
     <div class="d-flex w-100 ">
         @include('varbox::helpers.uploader.partials.new')

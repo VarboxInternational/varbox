@@ -44,11 +44,9 @@
 
                     <p class="js-UploadNewMessage pt-1 font-weight-bold"></p>
 
-                    @permission('uploads-select')
-                        <a class="js-UploadNewSaveBtn btn btn-blue btn-square text-white ml-auto">
-                            <i class="fe fe-check mr-2"></i>Save
-                        </a>
-                    @endpermission
+                    <a class="js-UploadNewSaveBtn btn btn-blue btn-square text-white ml-auto">
+                        <i class="fe fe-check mr-2"></i>Save
+                    </a>
                 </div>
             </div>
         </div>
