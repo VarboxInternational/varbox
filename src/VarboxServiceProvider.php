@@ -150,7 +150,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/errors.php' => config_path('varbox/errors.php'),
             __DIR__ . '/../config/query-cache.php' => config_path('varbox/query-cache.php'),
             __DIR__ . '/../config/config.php' => config_path('varbox/config.php'),
-            __DIR__ . '/../config/modules.php' => config_path('varbox/modules.php'),
+            __DIR__ . '/../config/enable.php' => config_path('varbox/enable.php'),
             __DIR__ . '/../config/notifications.php' => config_path('varbox/notifications.php'),
             __DIR__ . '/../config/breadcrumbs.php' => config_path('varbox/breadcrumbs.php'),
             __DIR__ . '/../config/crud.php' => config_path('varbox/crud.php'),
@@ -373,7 +373,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/errors.php', 'varbox.errors');
         $this->mergeConfigFrom(__DIR__ . '/../config/query-cache.php', 'varbox.query-cache');
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'varbox.config');
-        $this->mergeConfigFrom(__DIR__ . '/../config/modules.php', 'varbox.modules');
+        $this->mergeConfigFrom(__DIR__ . '/../config/enable.php', 'varbox.enable');
         $this->mergeConfigFrom(__DIR__ . '/../config/notifications.php', 'varbox.notifications');
         $this->mergeConfigFrom(__DIR__ . '/../config/bindings.php', 'varbox.bindings');
         $this->mergeConfigFrom(__DIR__ . '/../config/breadcrumbs.php', 'varbox.breadcrumbs');
