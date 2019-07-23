@@ -435,6 +435,62 @@ class PermissionsSeeder extends Seeder
                 'name' => 'backups-delete',
             ],
         ],
+        'Emails' => [
+            'List' => [
+                'group' => 'Emails',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'emails-list',
+            ],
+            'Add' => [
+                'group' => 'Emails',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'emails-add',
+            ],
+            'Edit' => [
+                'group' => 'Emails',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'emails-edit',
+            ],
+            'Duplicate' => [
+                'group' => 'Emails',
+                'label' => 'Duplicate',
+                'guard' => 'admin',
+                'name' => 'emails-duplicate',
+            ],
+            'Preview' => [
+                'group' => 'Emails',
+                'label' => 'Preview',
+                'guard' => 'admin',
+                'name' => 'emails-preview',
+            ],
+            'Deleted' => [
+                'group' => 'Emails',
+                'label' => 'Deleted',
+                'guard' => 'admin',
+                'name' => 'emails-deleted',
+            ],
+            'Restore' => [
+                'group' => 'Emails',
+                'label' => 'Restore',
+                'guard' => 'admin',
+                'name' => 'emails-restore',
+            ],
+            'Soft Delete' => [
+                'group' => 'Emails',
+                'label' => 'Soft Delete',
+                'guard' => 'admin',
+                'name' => 'emails-soft-delete',
+            ],
+            'Force Delete' => [
+                'group' => 'Emails',
+                'label' => 'Force Delete',
+                'guard' => 'admin',
+                'name' => 'emails-force-delete',
+            ],
+        ],
     ];
 
     /**
