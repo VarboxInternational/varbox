@@ -22,13 +22,12 @@ class AdminMenuComposer
                 $item->name('Home')->url(route('admin'))->data('icon', 'fa-home')->active('admin');
             });
 
-            /*
             $menu->add(function ($item) use ($menu) {
-                $cms = $item->name('Manage Content')->data('icon', 'fa-pencil-square-o')
+                $cms = $item->name('Manage Content')->data('icon', 'fa-edit')
                     ->permissions('pages-list', 'menus-list', 'blocks-list', 'emails-list', 'layouts-list')
                     ->active('admin/pages/*', 'admin/menus/*', 'admin/blocks/*', 'admin/emails/*', 'admin/layouts/*');
 
-                $menu->child($cms, function (MenuItem $item) {
+                /*$menu->child($cms, function (MenuItem $item) {
                     $item->name('Pages')->url(route('admin.pages.index'))->permissions('pages-list')->active('admin/pages/*');
                 });
 
@@ -38,17 +37,16 @@ class AdminMenuComposer
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Blocks')->url(route('admin.blocks.index'))->permissions('blocks-list')->active('admin/blocks/*');
-                });
+                });*/
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Emails')->url(route('admin.emails.index'))->permissions('emails-list')->active('admin/emails/*');
                 });
 
-                $menu->child($cms, function (MenuItem $item) {
+                /*$menu->child($cms, function (MenuItem $item) {
                     $item->name('Layouts')->url(route('admin.layouts.index'))->permissions('layouts-list')->active('admin/layouts/*');
-                });
+                });*/
             });
-            */
 
             /*
             $menu->add(function ($item) use ($menu) {
