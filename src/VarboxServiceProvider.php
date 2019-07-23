@@ -27,6 +27,7 @@ use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
 use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\MetaHelperContract;
@@ -66,6 +67,7 @@ use Varbox\Models\Backup;
 use Varbox\Models\City;
 use Varbox\Models\Config;
 use Varbox\Models\Country;
+use Varbox\Models\Email;
 use Varbox\Models\Error;
 use Varbox\Models\Permission;
 use Varbox\Models\Role;
@@ -156,6 +158,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
             __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
             __DIR__ . '/../config/upload.php' => config_path('varbox/upload.php'),
+            __DIR__ . '/../config/emails.php' => config_path('varbox/emails.php'),
         ], 'config');
     }
 
@@ -304,6 +307,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('config', ConfigModelContract::class);
         Route::model('error', ErrorModelContract::class);
         Route::model('backup', BackupModelContract::class);
+        Route::model('email', EmailModelContract::class);
     }
 
     /**
@@ -327,6 +331,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/errors.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/backups.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/uploads.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/emails.php');
     }
 
     /**
@@ -350,6 +355,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             require_once __DIR__ . '/../breadcrumbs/errors.php';
             require_once __DIR__ . '/../breadcrumbs/backups.php';
             require_once __DIR__ . '/../breadcrumbs/uploads.php';
+            require_once __DIR__ . '/../breadcrumbs/emails.php';
         }
     }
 
@@ -379,6 +385,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
         $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');
         $this->mergeConfigFrom(__DIR__ . '/../config/upload.php', 'varbox.upload');
+        $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
     }
 
     /**
@@ -446,6 +453,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(BackupModelContract::class, $binding['models']['backup_model'] ?? Backup::class);
         $this->app->alias(BackupModelContract::class, 'backup.model');
+
+        $this->app->bind(EmailModelContract::class, $binding['models']['email_model'] ?? Email::class);
+        $this->app->alias(EmailModelContract::class, 'email.model');
     }
 
     /**
