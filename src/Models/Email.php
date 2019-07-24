@@ -61,7 +61,7 @@ class Email extends Model implements EmailModelContract
      * @var array
      */
     protected $casts = [
-        'data',
+        'data' => 'array',
     ];
 
     /**
