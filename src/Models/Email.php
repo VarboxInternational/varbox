@@ -278,23 +278,6 @@ class Email extends Model implements EmailModelContract
     }
 
     /**
-     * Get the formatted email types for a select.
-     * Final format will be: [type => image].
-     *
-     * @return array
-     */
-    public static function getImagesForSelect()
-    {
-        $images = [];
-
-        foreach (static::getTypes() as $type => $options) {
-            $images[$type] = $options['preview_image'] ?? null;
-        }
-
-        return $images;
-    }
-
-    /**
      * Get the corresponding body variables for a email type.
      *
      * @param int $type

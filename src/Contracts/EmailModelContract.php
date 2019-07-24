@@ -82,11 +82,6 @@ interface EmailModelContract
     public static function getVariablesForSelect();
 
     /**
-     * @return array
-     */
-    public static function getImagesForSelect();
-
-    /**
      * @param int $type
      * @return array
      */
