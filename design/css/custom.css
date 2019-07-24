@@ -27,6 +27,10 @@ table th.sortable {
     cursor: pointer;
 }
 
+.table-hover tr.hovered {
+    background-color: #f5f5f5;
+}
+
 @media (max-width: 768px) {
     .upload-name {
         max-width: 85px;
@@ -41,8 +45,28 @@ a.js-UploadSelectBtn:hover {
     opacity: 0.5;
 }
 
-.table-hover tr.hovered {
-    background-color: #f5f5f5;
+.js-UploadNewOpenBtn.w-100 {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.js-UploadNewOpenBtn.w-50 {
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.js-UploadCurrentOpenBtn {
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .bootbox-close-button.close {
