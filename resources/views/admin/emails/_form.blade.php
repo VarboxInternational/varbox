@@ -69,12 +69,12 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex text-left">
-                {!! button()->cancelAction(route('admin.countries.index')) !!}
+                {!! button()->cancelAction(route('admin.emails.index')) !!}
                 @if($item->exists)
                     {!! button()->saveAndStay() !!}
                 @else
                     {!! button()->saveAndNew() !!}
-                    {!! button()->saveAndContinue('admin.countries.edit') !!}
+                    {!! button()->saveAndContinue('admin.emails.edit') !!}
                 @endif
                 {!! button()->saveRecord() !!}
             </div>
