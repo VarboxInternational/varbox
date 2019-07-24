@@ -3,6 +3,7 @@
 namespace Varbox\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -291,10 +292,16 @@ class UploaderHelper implements UploaderHelperContract
             return $this;
         }
 
-        if (str_contains($this->field, 'metadata')) {
-            if (Storage::disk(config('varbox.upload.storage.disk', 'uploads'))->exists($this->model->metadata($this->field))) {
-                $this->current = uploaded($this->model->metadata($this->field));
-            }
+        if (Str::contains($this->field, '[') && Str::contains($this->field, ']')) {
+            $attribute = strtok($this->field, '[');
+            $file = Arr::get(
+                get_object_vars_recursive($this->model->{$attribute}),
+                str_replace('][', '.', trim(str_replace($attribute, '', $this->field), '.[]'))
+            );
+
+            $upload = uploaded($file);
+
+            $this->current = $upload->exists() ? $upload : null;
 
             return $this;
         }
