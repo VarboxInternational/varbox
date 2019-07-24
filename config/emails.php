@@ -16,11 +16,6 @@ return [
     | The blade file used for rendering the email.
     | The value here will be relative to the "resources/views/" directory.
     |
-    | --- [Preview Image]:
-    | The name of the image used as email type preview in admin.
-    | This should contain the full path to an image of yours inside the "public/" directory.
-    | The path is relative to the "public/" directory.
-    |
     | --- [Variables]:
     | Array of variables that the respective mail type is allowed to use.
     | Each array item defined here, should represent a key from the "variables" config option defined below.
@@ -31,7 +26,6 @@ return [
         /*'password-recovery' => [
             'class' => 'Varbox\Cms\Mail\PasswordRecovery',
             'view' => 'varbox::emails.password_recovery',
-            'preview_image' => 'vendor/varbox/images/emails/password_recovery.jpg',
             'variables' => [
                 'first_name', 'last_name', 'full_name', 'reset_password_url'
             ],
