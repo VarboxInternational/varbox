@@ -3,8 +3,10 @@
 namespace Varbox\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Options\DuplicateOptions;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -13,6 +15,7 @@ use Varbox\Traits\IsSortable;
 class Post extends Model
 {
     use HasUploads;
+    use HasDuplicates;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;
@@ -41,6 +44,7 @@ class Post extends Model
         'content',
         'votes',
         'views',
+        'approved',
         'published_at'
     ];
 
@@ -95,6 +99,16 @@ class Post extends Model
     public function getUploadConfig()
     {
         return [];
+    }
+
+    /**
+     * Get the options for the HasDuplicates trait.
+     *
+     * @return DuplicateOptions
+     */
+    public function getDuplicateOptions(): DuplicateOptions
+    {
+        return DuplicateOptions::instance();
     }
 
     /**

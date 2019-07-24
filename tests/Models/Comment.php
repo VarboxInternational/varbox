@@ -26,7 +26,26 @@ class Comment extends Model
         'title',
         'content',
         'date',
+        'votes',
         'active',
+    ];
+
+    /**
+     * The attributes that should be casted to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'date',
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
     ];
 
     /**
