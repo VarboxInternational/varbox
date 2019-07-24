@@ -73,21 +73,11 @@ class EmailsController extends Controller
      */
     public function create($type = null)
     {
-        if (!$type || !array_key_exists($type, $this->model->getTypesForSelect())) {
-            meta()->set('title', 'Admin - Add Email');
-
-            return view('varbox::admin.emails.init')->with([
-                'title' => 'Add Email',
-                'types' => $this->model->getTypesForSelect(),
-                'images' => $this->model->getImagesForSelect(),
-            ]);
-        }
-
         return $this->_create(function () use ($type) {
             $this->title = 'Add Email';
             $this->view = view('varbox::admin.emails.add');
             $this->vars = [
-                'type' => $type,
+                'types' => $this->model->getTypesForSelect(),
                 'fromEmail' => $this->model->getFromAddress(),
                 'fromName' => $this->model->getFromName(),
             ];
@@ -121,6 +111,7 @@ class EmailsController extends Controller
             $this->title = 'Edit Email';
             $this->view = view('varbox::admin.emails.edit');
             $this->vars = [
+                'types' => $this->model->getTypesForSelect(),
                 'fromEmail' => $this->model->getFromAddress(),
                 'fromName' => $this->model->getFromName(),
             ];
