@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Varbox\Options\ActivityOptions;
+use Varbox\Options\DuplicateOptions;
 use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -20,7 +22,7 @@ class Email extends Model implements EmailModelContract
     use HasUploads;
     //use HasDrafts;
     //use HasRevisions;
-    //use HasDuplicates;
+    use HasDuplicates;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;
@@ -349,11 +351,11 @@ class Email extends Model implements EmailModelContract
      *
      * @return DuplicateOptions
      */
-    /*public function getDuplicateOptions()
+    public function getDuplicateOptions()
     {
         return DuplicateOptions::instance()
             ->uniqueColumns('name');
-    }*/
+    }
 
     /**
      * Set the options for the HasActivity trait.
