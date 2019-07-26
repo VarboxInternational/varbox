@@ -65,6 +65,40 @@
         </div>
     </div>
 </div>
+@if($item->exists && !empty($variables))
+<div class="col-md-12">
+    <div class="card card-collapsed">
+        <div class="card-status bg-yellow"></div>
+        <div class="card-header" data-toggle="card-collapse" style="cursor: pointer;">
+            <h3 class="card-title">Variables Info</h3>
+            <div class="card-options">
+                <a href="#" class="card-options-collapse"><i class="fe fe-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach($variables as $variable => $attributes)
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="badge badge-default" style="font-size: 90%;">
+                                    {{ $attributes['name'] }}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                {{ $attributes['label'] }}
+                            </div>
+                            <div class="card-footer">
+                                <span class="text-muted">Use in "Message" like:</span> <strong>[{{ $variable }}]</strong>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 <div class="col-12">
     <div class="card">
         <div class="card-body">
