@@ -1,0 +1,4 @@
+        'froala' => [
+            'driver' => 'local',
+            'root' => storage_path('froala'),
+        ],
