@@ -115,6 +115,7 @@ class EmailsController extends Controller
             $this->view = view('varbox::admin.emails.edit');
             $this->vars = [
                 'types' => $this->model->getTypesForSelect(),
+                'variables' => $this->model->getEmailVariables($email->type),
                 'fromEmail' => $this->model->getFromAddress(),
                 'fromName' => $this->model->getFromName(),
             ];
