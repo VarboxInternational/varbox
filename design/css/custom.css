@@ -95,3 +95,8 @@ a.js-UploadSelectBtn:hover {
     border: 1px solid rgba(0,40,100,.12);
     border-radius: 3px !important;
 }
+
+.is-invalid + .select2-container .select2-selection {
+    border: 1px solid #DD7467;
+    border-radius: 3px;
+}
