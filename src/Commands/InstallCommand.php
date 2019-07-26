@@ -68,6 +68,7 @@ class InstallCommand extends Command
         $this->generateAdminMenu();
         $this->manageUploads();
         $this->manageBackups();
+        $this->manageFroala();
         $this->migrateTables();
         $this->seedDatabase();
     }
@@ -383,7 +384,7 @@ class InstallCommand extends Command
     {
         $this->line(PHP_EOL . PHP_EOL);
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
-        $this->line('<fg=yellow>MANAGING Backups</>');
+        $this->line('<fg=yellow>MANAGING BACKUPS</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
         $backupsDiskStub = __DIR__ . '/../../resources/stubs/config/backup.disks.stub';
@@ -422,6 +423,56 @@ class InstallCommand extends Command
 
             $this->files->put($gitignoreFile, "*\n!.gitignore\n");
             $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/backups/" directory!');
+        }
+    }
+
+    /**
+     * @return void
+     * @throws FileNotFoundException
+     */
+    protected function manageFroala()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>SETTING UP FROALA</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $froalaDiskStub = __DIR__ . '/../../resources/stubs/config/froala.disks.stub';
+        $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
+        $froalaPath = $this->laravel['path.storage'] . '/froala';
+        $gitignoreFile = $froalaPath . '/.gitignore';
+
+        if ($this->files->exists($filesystemsConfig)) {
+            $content = $this->files->get($filesystemsConfig);
+
+            if (strpos($content, "'froala' => [") === false) {
+                $content = str_replace(
+                    "'disks' => [",
+                    "'disks' => [\n\n" . file_get_contents($froalaDiskStub)
+                    , $content
+                );
+
+                $this->files->put($filesystemsConfig, $content);
+                $this->line('<fg=green>SUCCESS |</> Setup the "froala" storage disk inside "config/filesystems.php" => "disks".');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The "froala" storage disk already exists inside "config/filesystems.php" => "disks".');
+            }
+        } else {
+            $this->line('<fg=red>ERROR   |</> The "config/filesystems.php" file does not exist!');
+            $this->line('<fg=red>ERROR   |</> You will have to manually add the "froala" storage disk.');
+        }
+
+        if ($this->files->exists($gitignoreFile)) {
+            $this->line('<fg=green>SUCCESS |</> The "storage/froala/" directory already exists.');
+            $this->line('<fg=green>SUCCESS |</> The ".gitignore" file inside the "storage/froala/" directory already exists.');
+
+            return;
+        } else {
+            $this->files->makeDirectory($froalaPath);
+            $this->line('<fg=green>SUCCESS |</> Created the "storage/froala/" directory!');
+
+            $this->files->put($gitignoreFile, "*\n!.gitignore\n");
+            $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/froala/" directory!');
         }
     }
 
