@@ -1,4 +1,6 @@
         'froala' => [
             'driver' => 'local',
             'root' => storage_path('froala'),
+            'url' => env('APP_URL').'/froala',
+            'visibility' => 'public',
         ],
