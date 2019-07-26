@@ -26,6 +26,6 @@ return [
     | Because of that, publishing the actual "jsvalidation.php" config file isn't necessary anymore.
     |
     */
-    'jsvalidation_view' => 'jsvalidation::bootstrap4',
+    'jsvalidation_view' => 'varbox::helpers.validation.trigger',
 
 ];
