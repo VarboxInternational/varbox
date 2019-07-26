@@ -473,6 +473,9 @@ class InstallCommand extends Command
 
             $this->files->put($gitignoreFile, "*\n!.gitignore\n");
             $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/froala/" directory!');
+
+            $this->callSilent('varbox:froala-link');
+            $this->line('<fg=green>SUCCESS |</> The "public/froala/" directory has been linked!');
         }
     }
 
