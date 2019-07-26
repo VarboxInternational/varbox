@@ -51,26 +51,31 @@ var init = {
     },
     Editor: function () {
         var editor = new FroalaEditor('textarea.editor-input', {
-            imageUploadParam: 'froala_image',
-            imageUploadURL: '/froala/upload/image',
             imageUploadMethod: 'POST',
-            imageMaxSize: 1024 * 1024,
-            imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+            imageUploadURL: '/froala/upload/image',
+            imageUploadParam: 'froala_image',
+            imageUploadParams: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            imageAllowedTypes: [
+                'jpeg', 'jpg', 'png', 'gif', 'svg'
+            ],
             events: {
-                'image.beforeUpload': function (images) {
-                    console.log('image before upload');
-                },
-                'image.uploaded': function (response) {
-                    console.log('image uploaded');
-                },
-                'image.inserted': function ($img, response) {
-                    console.log('image inserted');
-                },
-                'image.replaced': function ($img, response) {
-                    console.log('image replaced');
-                },
                 'image.error': function (error, response) {
-                    console.log('image error');
+                    var errorMessage;
+
+                    if (response) {
+                        errorMessage = response;
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+
+                    if (errorMessage) {
+                        editor.popups.get('image.insert')
+                            .find('.fr-image-progress-bar-layer')
+                            .find('h3')
+                            .text(errorMessage);
+                    }
                 }
             }
         });
