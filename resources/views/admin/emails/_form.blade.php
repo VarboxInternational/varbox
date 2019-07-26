@@ -71,6 +71,7 @@
             <div class="d-flex text-left">
                 {!! button()->cancelAction(route('admin.emails.index')) !!}
                 @if($item->exists)
+                    {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
                     {!! button()->saveAndStay() !!}
                 @else
                     {!! button()->saveAndNew() !!}
