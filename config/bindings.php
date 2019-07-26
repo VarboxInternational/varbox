@@ -485,6 +485,18 @@ return [
         */
         'errors_controller' => \Varbox\Controllers\ErrorsController::class,
 
+        /*
+        |
+        | Concrete implementation for the "froala controller".
+        | To extend or replace this functionality, change the value below with your full "froala controller" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Controllers\FroalaController" class
+        | - or you'll have to implement the following public methods yourself: uploadFile(), uploadImage(), uploadVideo()
+        |
+        */
+        'froala_controller' => \Varbox\Controllers\FroalaController::class,
+
     ],
 
     'form_requests' => [
