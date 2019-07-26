@@ -50,7 +50,30 @@ var init = {
         }
     },
     Editor: function () {
-        var editor = new FroalaEditor('textarea.editor-input');
+        var editor = new FroalaEditor('textarea.editor-input', {
+            imageUploadParam: 'froala_image',
+            imageUploadURL: '/froala/upload/image',
+            imageUploadMethod: 'POST',
+            imageMaxSize: 1024 * 1024,
+            imageAllowedTypes: ['jpeg', 'jpg', 'png'],
+            events: {
+                'image.beforeUpload': function (images) {
+                    console.log('image before upload');
+                },
+                'image.uploaded': function (response) {
+                    console.log('image uploaded');
+                },
+                'image.inserted': function ($img, response) {
+                    console.log('image inserted');
+                },
+                'image.replaced': function ($img, response) {
+                    console.log('image replaced');
+                },
+                'image.error': function (error, response) {
+                    console.log('image error');
+                }
+            }
+        });
     },
     Select2: function () {
         $('.select-input').select2({
