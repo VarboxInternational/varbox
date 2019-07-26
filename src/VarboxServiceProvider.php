@@ -14,6 +14,7 @@ use Spatie\Backup\Events\BackupWasSuccessful;
 use Varbox\Commands\ActivityCleanCommand;
 use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\ErrorsCleanCommand;
+use Varbox\Commands\FroalaLinkCommand;
 use Varbox\Commands\InstallCommand;
 use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Composers\AdminMenuComposer;
@@ -245,6 +246,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             $this->commands([
                 InstallCommand::class,
                 UploadsLinkCommand::class,
+                FroalaLinkCommand::class,
                 ActivityCleanCommand::class,
                 NotificationsCleanCommand::class,
                 ErrorsCleanCommand::class,
@@ -332,6 +334,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/backups.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/uploads.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/emails.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
     }
 
     /**
