@@ -178,7 +178,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         ]);
 
         $this->config->set([
-            'jsvalidation.view' => $this->config['varbox']['validation']['jsvaldidation_view'] ?? 'jsvalidation::bootstrap4',
+            'jsvalidation.view' => $this->config['varbox']['validation']['jsvalidation_view'] ?? 'jsvalidation::bootstrap4',
         ]);
 
         $this->config->set([
