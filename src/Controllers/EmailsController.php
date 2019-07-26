@@ -3,22 +3,25 @@
 namespace Varbox\Controllers;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Models\Email;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Filters\EmailFilter;
 use Varbox\Requests\EmailRequest;
 use Varbox\Sorts\EmailSort;
+use Varbox\Traits\CanDuplicate;
 
 class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     //use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
-    use CanCrud;
+    use CanCrud, CanDuplicate;
 
     /**
      * @var EmailModelContract
@@ -231,6 +234,27 @@ class EmailsController extends Controller
             ->setEntityModel($model)
             ->setRedirectUrl('admin.emails.edit');
     }*/
+
+    /**
+     * Get the model to be duplicated.
+     *
+     * @return Model
+     */
+    protected function modelToBeDuplicated(): string
+    {
+        return config('varbox.bindings.models.email_model', Email::class);
+    }
+
+    /**
+     * Get the route name to redirect to after the duplication.
+     *
+     * @param Model $duplicatedModel
+     * @return string
+     */
+    protected function redirectAfterDuplication(Model $duplicatedModel): string
+    {
+        return route('admin.emails.edit', $duplicatedModel->getKey());
+    }
 
     /**
      * Set the options for the CanSoftDelete trait.
