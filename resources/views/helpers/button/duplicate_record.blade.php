@@ -1,3 +1,3 @@
-{!! form()->open(['url' => $url, 'method' => 'POST', 'class' => 'left']) !!}
-{!! form()->button('<i class="fa fa-files-o"></i>&nbsp; Duplicate', ['type' => 'submit', 'class' => 'btn-duplicate-record btn dark-blue', 'onclick' => 'return confirm("Are you sure you want to duplicate this record?")'] + ($attributes ? (array)$attributes : [])) !!}
-{!! form()->close() !!}
+<a data-url="{{ $url }}" formnovalidate class="button-duplicate btn btn-yellow btn-square text-white ml-4" {!! implode(' ', $attributes) !!}>
+    <i class="fe fe-copy mr-2"></i>Duplicate
+</a>
