@@ -5,8 +5,10 @@ namespace Varbox\Tests\Models;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\ActivityOptions;
+use Varbox\Options\RevisionOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
+use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -15,6 +17,7 @@ use Varbox\Traits\IsSortable;
 class Post extends Model
 {
     use HasUploads;
+    use HasRevisions;
     use HasDuplicates;
     use HasActivity;
     use IsCacheable;
@@ -99,6 +102,14 @@ class Post extends Model
     public function getUploadConfig()
     {
         return [];
+    }
+
+    /**
+     * @return RevisionOptions
+     */
+    public function getRevisionOptions()
+    {
+        return RevisionOptions::instance();
     }
 
     /**
