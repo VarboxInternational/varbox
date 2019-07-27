@@ -117,41 +117,6 @@ class UploadedHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_the_url_for_a_style_of_an_uploaded_video()
-    {
-        $model = new class extends Post {
-            public function getUploadConfig()
-            {
-                return [
-                    'videos' => [
-                        'styles' => [
-                            'video' => [
-                                'smaller' => [
-                                    'width' => '320',
-                                    'height' => '180',
-                                ],
-                                'smallest' => [
-                                    'width' => '160',
-                                    'height' => '90',
-                                ],
-                            ],
-                        ]
-                    ]
-                ];
-            }
-        };
-
-        Storage::fake($this->disk);
-
-        $video = (new UploadService($this->videoFile(), $model, 'video'))->upload();
-        $smaller = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->url('smaller');
-        $smallest = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->url('smallest');
-
-        Storage::disk($this->disk)->assertExists(str_replace('/storage', '', $smaller));
-        Storage::disk($this->disk)->assertExists(str_replace('/storage', '', $smallest));
-    }
-
-    /** @test */
     public function it_can_return_the_path_of_an_uploaded_image()
     {
         Storage::fake($this->disk);
@@ -228,41 +193,6 @@ class UploadedHelperTest extends TestCase
 
         Storage::disk($this->disk)->assertExists($portrait);
         Storage::disk($this->disk)->assertExists($landscape);
-    }
-
-    /** @test */
-    public function it_can_return_the_path_for_a_style_of_an_uploaded_video()
-    {
-        $model = new class extends Post {
-            public function getUploadConfig()
-            {
-                return [
-                    'videos' => [
-                        'styles' => [
-                            'video' => [
-                                'smaller' => [
-                                    'width' => '320',
-                                    'height' => '180',
-                                ],
-                                'smallest' => [
-                                    'width' => '160',
-                                    'height' => '90',
-                                ],
-                            ],
-                        ]
-                    ]
-                ];
-            }
-        };
-
-        Storage::fake($this->disk);
-
-        $video = (new UploadService($this->videoFile(), $model, 'video'))->upload();
-        $smaller = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->path('smaller');
-        $smallest = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->path('smallest');
-
-        Storage::disk($this->disk)->assertExists($smaller);
-        Storage::disk($this->disk)->assertExists($smallest);
     }
 
     /** @test */
