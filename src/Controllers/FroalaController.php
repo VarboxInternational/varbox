@@ -83,4 +83,39 @@ class FroalaController extends Controller
             die;
         }
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadVideo(Request $request)
+    {
+        try {
+            $file = $request->file('froala_video');
+
+            $allowedMaxSize = 5 * 1024 * 1024;
+            $allowedExtensions = ['mp4', 'avi', 'flv', 'mov', 'webm'];
+
+            if (!$file->isValid()) {
+                throw new Exception('The video supplied is invalid!');
+            }
+
+            if ($file->getSize() > $allowedMaxSize) {
+                throw new Exception('The video size must be less than 5 MB!');
+            }
+
+            if (!in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+                throw new Exception('Please upload videos with the following extensions: ' . implode(', ', $allowedExtensions));
+            }
+
+            $path = $file->store(null, 'froala');
+
+            return response()->json([
+                'link' => Storage::disk('froala')->url($path),
+            ]);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            die;
+        }
+    }
 }
