@@ -57,18 +57,18 @@ var init = {
             fileUploadParams: {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            fileAllowedTypes: [
-                '*'
-            ],
             imageUploadMethod: 'POST',
             imageUploadURL: '/froala/upload/image',
             imageUploadParam: 'froala_image',
             imageUploadParams: {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            imageAllowedTypes: [
-                'jpeg', 'jpg', 'png', 'gif', 'svg'
-            ],
+            videoUploadMethod: 'POST',
+            videoUploadURL: '/froala/upload/video',
+            videoUploadParam: 'froala_video',
+            videoUploadParams: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
             events: {
                 'file.error': function (error, response) {
                     var errorMessage;
@@ -98,6 +98,22 @@ var init = {
                     if (errorMessage) {
                         editor.popups.get('image.insert')
                             .find('.fr-image-progress-bar-layer')
+                            .find('h3')
+                            .text(errorMessage);
+                    }
+                },
+                'video.error': function (error, response) {
+                    var errorMessage;
+
+                    if (response) {
+                        errorMessage = response;
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+
+                    if (errorMessage) {
+                        editor.popups.get('video.insert')
+                            .find('.fr-video-progress-bar-layer')
                             .find('h3')
                             .text(errorMessage);
                     }
