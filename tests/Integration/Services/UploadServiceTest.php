@@ -747,62 +747,6 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_doesnt_generate_any_additional_styles_for_an_uploaded_video_by_default()
-    {
-        $this->app['config']->set('varbox.upload.videos.generate_thumbnails', false);
-
-        Storage::fake($this->disk);
-
-        $file = (new UploadService($this->videoFile()))->upload();
-
-        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
-
-        $this->assertCount(1, Storage::disk($this->disk)->files(null, true));
-    }
-
-    /** @test */
-    public function it_can_generate_additional_styles_for_an_uploaded_video_of_a_model_record()
-    {
-        $model = new class extends Post {
-            public function getUploadConfig()
-            {
-                return [
-                    'videos' => [
-                        'styles' => [
-                            'video' => [
-                                'smaller' => [
-                                    'width' => '320',
-                                    'height' => '180',
-                                ],
-                                'smallest' => [
-                                    'width' => '160',
-                                    'height' => '90',
-                                ],
-                            ],
-                        ]
-                    ]
-                ];
-            }
-        };
-
-        Storage::fake($this->disk);
-
-        $file = (new UploadService($this->videoFile(), $model, 'video'))->upload();
-        $smaller = $this->videoStyle($file, 'smaller');
-        $smallest = $this->videoStyle($file, 'smallest');
-
-        $smallerSize = \FFMpeg::open($smaller)->getStreams()->videos()->first()->getDimensions();
-        $smallestSize = \FFMpeg::open($smallest)->getStreams()->videos()->first()->getDimensions();
-
-        Storage::disk($this->disk)->assertExists($smaller);
-
-        $this->assertEquals(320, $smallerSize->getWidth());
-        $this->assertEquals(180, $smallerSize->getHeight());
-        $this->assertEquals(160, $smallestSize->getWidth());
-        $this->assertEquals(90, $smallestSize->getHeight());
-    }
-
-    /** @test */
     public function it_keeps_old_uploads_and_records_by_default_when_updating_a_model_upload()
     {
         $post = Post::create([

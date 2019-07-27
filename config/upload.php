@@ -256,29 +256,13 @@ return [
 
         /*
         |
-        | The styles to create from the original uploaded video.
-        | You can specify multiple styles, as an array.
+        | FFMpeg & FFProbe binaries path.
+        | Only used if you try to generate video thumbnails and/or styles.
         |
-        | IMPORTANT
-        | ------------------------------------------------------------------------------------------------------------------------
-        | You should specify this option in the model, using the HasUploads trait method: getUploadConfig().
-        | Note that the getUploadConfig() method is capable of overwriting the config values from this file.
-        | With that said, keep in mind that you can specify other options, not just the video styles.
-        |
-        | To specify the video styles, return an array like: [videos => [styles => [field => [name => [width, height]]]]
+        | This configuration options will be used to override the original "config/laravel-ffmpeg.php" config file.
+        | For more details please see "Pbmedia - Laravel FFMpeg" (https://github.com/pascalbaljetmedia/laravel-ffmpeg)
         |
         */
-        'styles' => [],
-
-        /*
-       |
-       | FFMpeg & FFProbe binaries path.
-       | Only used if you try to generate video thumbnails and/or styles.
-       |
-       | This configuration options will be used to override the original "config/laravel-ffmpeg.php" config file.
-       | For more details please see "Pbmedia - Laravel FFMpeg" (https://github.com/pascalbaljetmedia/laravel-ffmpeg)
-       |
-       */
         'binaries' => [
 
             'ffmpeg' => env('FFMPEG_PATH', 'ffmpeg'),

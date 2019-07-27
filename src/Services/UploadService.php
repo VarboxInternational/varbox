@@ -924,10 +924,6 @@ class UploadService implements UploadServiceContract
                 $this->generateThumbnailsForVideo($video);
             }
 
-            if (!$this->isSimpleUpload()) {
-                $this->generateStylesForVideo($video);
-            }
-
             return $video;
         });
 
@@ -1227,50 +1223,6 @@ class UploadService implements UploadServiceContract
             }
         } catch (Exception $e) {
             throw UploadException::generateVideoThumbnailFailed();
-        }
-    }
-
-    /**
-     * Try generating styles for the original uploaded video.
-     * The styles are defined in the config/varbox/upload.php (videos -> styles), or overwritten in the model via the getUploadConfig() method.
-     * Also, when creating the styles, please keep in mind that the newly generated videos will be WebM encoded for web pages.
-     *
-     * @param string $path
-     * @return void
-     */
-    protected function generateStylesForVideo($path)
-    {
-        if (!$this->getConfig('videos.styles')) {
-            return;
-        }
-
-        if (!Storage::disk($this->getDisk())->exists($path)) {
-            throw UploadException::fileNotFound();
-        }
-
-        try {
-            $original = FFMpeg::fromDisk($this->getDisk())->open($path);
-
-            foreach ($this->getConfig('videos.styles') as $field => $styles) {
-                if ($field != $this->getField()) {
-                    continue;
-                }
-
-                foreach ($styles as $name => $style) {
-                    $path = $this->getPath() . '/' . substr_replace($this->getName(), '_' . $name, strpos($this->getName(), '.' . $this->getExtension()), 0);
-
-                    if (!$this->uploadAlreadyExistsInStorage($path)) {
-                        $original
-                            ->addFilter(function ($filters) use ($style) {
-                                $filters->resize(new FFMpegDimension($style['width'], $style['height']));
-                            })->export()->toDisk($this->getDisk())
-                            ->inFormat(new FFMpegWebM)
-                            ->withVisibility(config('varbox.upload.storage.visibility', 'public'))->save($path);
-                    }
-                }
-            }
-        } catch (Exception $e) {
-            throw UploadException::generateVideoStylesFailed();
         }
     }
 
