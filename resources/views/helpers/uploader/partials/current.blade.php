@@ -23,13 +23,13 @@
                         @foreach($styles as $style)
                             <div id="tab-UploadCurrentTab-{!! $style !!}-{!! $index !!}" class="js-UploadCurrentTab mx-auto tab-pane fade @if($loop->first) show active @endif" role="tabpanel">
                                 @if($upload->isImage())
-                                    @permission('uploads-crop')
+                                    @if($style != 'original' && (auth()->user()->isSuper() || auth()->user()->hasPermission('uploads-crop')))
                                         <a class="js-UploadOpenCropper js-UploadOpenCropper-{{ $index }} open-upload-cropper open-upload-cropper-{{ $index }} @if($disabled) disabled @endif" data-url="{{ $current->url('original') }}" data-path="{{ $current->path('original') }}" data-style="{{ $style }}">
                                             <img src="{!! $current->url($style) !!}" class="d-flex mx-auto" />
                                         </a>
                                     @else
                                         <img src="{!! $current->url($style) !!}" class="d-flex mx-auto" />
-                                    @endpermission
+                                    @endif
                                 @elseif($upload->isVideo())
                                     <video controls class="w-100">
                                         <source src="{{ $current->url() }}" type="{{ $upload->mime }}">
