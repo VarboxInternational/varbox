@@ -34,6 +34,7 @@ use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
+use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UploadedHelperContract;
@@ -71,6 +72,7 @@ use Varbox\Models\Country;
 use Varbox\Models\Email;
 use Varbox\Models\Error;
 use Varbox\Models\Permission;
+use Varbox\Models\Revision;
 use Varbox\Models\Role;
 use Varbox\Models\State;
 use Varbox\Models\Upload;
@@ -302,6 +304,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('role', RoleModelContract::class);
         Route::model('permission', PermissionModelContract::class);
         Route::model('upload', UploadModelContract::class);
+        Route::model('revision', RevisionModelContract::class);
         Route::model('activity', ActivityModelContract::class);
         Route::model('country', CountryModelContract::class);
         Route::model('state', StateModelContract::class);
@@ -434,6 +437,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(UploadModelContract::class, $binding['models']['upload_model'] ?? Upload::class);
         $this->app->alias(UploadModelContract::class, 'upload.model');
+
+        $this->app->bind(RevisionModelContract::class, $this->config['models']['revision_model'] ?? Revision::class);
+        $this->app->alias(RevisionModelContract::class, 'revision.model');
 
         $this->app->bind(ActivityModelContract::class, $binding['models']['activity_model'] ?? Activity::class);
         $this->app->alias(ActivityModelContract::class, 'activity.model');
