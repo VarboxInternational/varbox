@@ -19,5 +19,6 @@ Route::group([
     ], function () use ($controllers) {
         Route::post('file', ['as' => 'froala.upload.file', 'uses' => $controllers['froala'] . '@uploadFile']);
         Route::post('image', ['as' => 'froala.upload.image', 'uses' => $controllers['froala'] . '@uploadImage']);
+        Route::post('video', ['as' => 'froala.upload.video', 'uses' => $controllers['froala'] . '@uploadVideo']);
     });
 });
