@@ -23,18 +23,18 @@ class FroalaController extends Controller
         try {
             $file = $request->file('froala_file');
 
-            $allowedMaxSize = 5 * 1024 * 1024;
-            $allowedExtensions = ['pdf', 'txt', 'doc', 'docx'];
+            $allowedMaxSize = config('varbox.froala.file_max_size');
+            $allowedExtensions = config('varbox.froala.file_allowed_extensions');
 
             if (!$file->isValid()) {
                 throw new Exception('The file supplied is invalid!');
             }
 
-            if ($file->getSize() > $allowedMaxSize) {
+            if ($allowedMaxSize && $file->getSize() > $allowedMaxSize) {
                 throw new Exception('The file size must be less than 5 MB!');
             }
 
-            if (!in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+            if ($allowedExtensions && !in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
                 throw new Exception('Please upload files with the following extensions: ' . implode(', ', $allowedExtensions));
             }
 
@@ -58,18 +58,18 @@ class FroalaController extends Controller
         try {
             $file = $request->file('froala_image');
 
-            $allowedMaxSize = 5 * 1024 * 1024;
-            $allowedExtensions = ['jpeg', 'jpg', 'png', 'gif', 'svg'];
+            $allowedMaxSize = config('varbox.froala.image_max_size');
+            $allowedExtensions = config('varbox.froala.image_allowed_extensions');
 
             if (!$file->isValid()) {
                 throw new Exception('The image supplied is invalid!');
             }
 
-            if ($file->getSize() > $allowedMaxSize) {
+            if ($allowedMaxSize && $file->getSize() > $allowedMaxSize) {
                 throw new Exception('The image size must be less than 5 MB!');
             }
 
-            if (!in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+            if ($allowedExtensions && !in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
                 throw new Exception('Please upload images with the following extensions: ' . implode(', ', $allowedExtensions));
             }
 
@@ -93,18 +93,18 @@ class FroalaController extends Controller
         try {
             $file = $request->file('froala_video');
 
-            $allowedMaxSize = 5 * 1024 * 1024;
-            $allowedExtensions = ['mp4', 'avi', 'flv', 'mov', 'webm'];
+            $allowedMaxSize = config('varbox.froala.video_max_size');
+            $allowedExtensions = config('varbox.froala.video_allowed_extensions');
 
             if (!$file->isValid()) {
                 throw new Exception('The video supplied is invalid!');
             }
 
-            if ($file->getSize() > $allowedMaxSize) {
+            if ($allowedMaxSize && $file->getSize() > $allowedMaxSize) {
                 throw new Exception('The video size must be less than 5 MB!');
             }
 
-            if (!in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
+            if ($allowedExtensions && !in_array($file->getClientOriginalExtension(), $allowedExtensions)) {
                 throw new Exception('Please upload videos with the following extensions: ' . implode(', ', $allowedExtensions));
             }
 
