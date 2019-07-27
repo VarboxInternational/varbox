@@ -248,6 +248,22 @@ return [
         */
         'error_model' => \Varbox\Models\Error::class,
 
+        /*
+        |
+        | Concrete implementation for the "email model".
+        | To extend or replace this functionality, change the value below with your full "email model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Email" class
+        | - or at least implement the "Varbox\Contracts\EmailModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('email.model') OR app('\Varbox\Contracts\EmailModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'email_model' => \Varbox\Models\Email::class,
+
     ],
 
     /*
@@ -262,9 +278,8 @@ return [
         | Concrete implementation for the "dashboard controller".
         | To extend or replace this functionality, change the value below with your full "dashboard controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\DashboardController" class
-        | - or you'll have to implement the following public methods yourself: show(), getAuthenticateOptions()
         |
         */
         'dashboard_controller' => \Varbox\Controllers\DashboardController::class,
@@ -274,9 +289,8 @@ return [
         | Concrete implementation for the "login controller".
         | To extend or replace this functionality, change the value below with your full "login controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\LoginController" class
-        | - or you'll have to implement the following public methods yourself: show(), getAuthenticateOptions()
         |
         */
         'login_controller' => \Varbox\Controllers\LoginController::class,
@@ -286,9 +300,8 @@ return [
         | Concrete implementation for the "password forgot controller".
         | To extend or replace this functionality, change the value below with your full "password forgot controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\ForgotPasswordController" class
-        | - or you'll have to implement the following public methods yourself: show(), sendResetLinkEmail(), getResetPasswordOptions()
         |
         */
         'password_forgot_controller' => \Varbox\Controllers\ForgotPasswordController::class,
@@ -298,9 +311,8 @@ return [
         | Concrete implementation for the "password reset controller".
         | To extend or replace this functionality, change the value below with your full "password reset controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\ResetPasswordController" class
-        | - or you'll have to implement the following public methods yourself: show(), reset(), getResetPasswordOptions()
         |
         */
         'password_reset_controller' => \Varbox\Controllers\ResetPasswordController::class,
@@ -310,9 +322,8 @@ return [
         | Concrete implementation for the "users controller".
         | To extend or replace this functionality, change the value below with your full "users controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\UsersController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy(), impersonate()
         |
         */
         'users_controller' => \Varbox\Controllers\UsersController::class,
@@ -322,9 +333,8 @@ return [
         | Concrete implementation for the "admins controller".
         | To extend or replace this functionality, change the value below with your full "admins controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\AdminsController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'admins_controller' => \Varbox\Controllers\AdminsController::class,
@@ -334,9 +344,8 @@ return [
         | Concrete implementation for the "roles controller".
         | To extend or replace this functionality, change the value below with your full "roles controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\RolesController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'roles_controller' => \Varbox\Controllers\RolesController::class,
@@ -346,9 +355,8 @@ return [
         | Concrete implementation for the "permissions controller".
         | To extend or replace this functionality, change the value below with your full "permissions controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\PermissionsController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'permissions_controller' => \Varbox\Controllers\PermissionsController::class,
@@ -358,9 +366,8 @@ return [
         | Concrete implementation for the "upload controller".
         | To extend or replace this functionality, change the value below with your full "upload controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\UploadController" class
-        | - or you'll have to implement the following public methods yourself: upload(), get(), set(), crop(), cut()
         |
         */
         'upload_controller' => \Varbox\Controllers\UploadController::class,
@@ -370,9 +377,8 @@ return [
         | Concrete implementation for the "uploads controller".
         | To extend or replace this functionality, change the value below with your full "uploads controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\UploadsController" class
-        | - or you'll have to implement the following public methods yourself: index(), store(), destroy(), download()
         |
         */
         'uploads_controller' => \Varbox\Controllers\UploadsController::class,
@@ -382,9 +388,8 @@ return [
         | Concrete implementation for the "notifications controller".
         | To extend or replace this functionality, change the value below with your full "notifications controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\NotificationsController" class
-        | - or you'll have to implement the following public methods yourself: index(), destroy(), actionNotification(), markAsRead(), markAllAsRead(), deleteRead(), deleteOld(), deleteAll()
         |
         */
         'notifications_controller' => \Varbox\Controllers\NotificationsController::class,
@@ -394,9 +399,8 @@ return [
         | Concrete implementation for the "activity controller".
         | To extend or replace this functionality, change the value below with your full "activity controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\ActivityController" class
-        | - or you'll have to implement the following public methods yourself: index(), destroy(), clean(), delete()
         |
         */
         'activity_controller' => \Varbox\Controllers\ActivityController::class,
@@ -406,9 +410,8 @@ return [
         | Concrete implementation for the "countries controller".
         | To extend or replace this functionality, change the value below with your full "countries controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\CountriesController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'countries_controller' => \Varbox\Controllers\CountriesController::class,
@@ -418,9 +421,8 @@ return [
         | Concrete implementation for the "states controller".
         | To extend or replace this functionality, change the value below with your full "states controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\StatesController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy(), get()
         |
         */
         'states_controller' => \Varbox\Controllers\StatesController::class,
@@ -430,9 +432,8 @@ return [
         | Concrete implementation for the "cities controller".
         | To extend or replace this functionality, change the value below with your full "cities controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\CitiesController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy(), get()
         |
         */
         'cities_controller' => \Varbox\Controllers\CitiesController::class,
@@ -442,9 +443,8 @@ return [
         | Concrete implementation for the "addresses controller".
         | To extend or replace this functionality, change the value below with your full "addresses controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\AddressesController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'addresses_controller' => \Varbox\Controllers\AddressesController::class,
@@ -454,9 +454,8 @@ return [
         | Concrete implementation for the "configs controller".
         | To extend or replace this functionality, change the value below with your full "configs controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\ConfigsController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), store(), edit(), update(), destroy()
         |
         */
         'configs_controller' => \Varbox\Controllers\ConfigsController::class,
@@ -466,9 +465,8 @@ return [
         | Concrete implementation for the "backups controller".
         | To extend or replace this functionality, change the value below with your full "backups controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\BackupsController" class
-        | - or you'll have to implement the following public methods yourself: index(), create(), destroy(), download(), clear()
         |
         */
         'backups_controller' => \Varbox\Controllers\BackupsController::class,
@@ -478,9 +476,8 @@ return [
         | Concrete implementation for the "errors controller".
         | To extend or replace this functionality, change the value below with your full "errors controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\ErrorsController" class
-        | - or you'll have to implement the following public methods yourself: index(), show(), destroy(), clear()
         |
         */
         'errors_controller' => \Varbox\Controllers\ErrorsController::class,
@@ -490,12 +487,22 @@ return [
         | Concrete implementation for the "froala controller".
         | To extend or replace this functionality, change the value below with your full "froala controller" FQN.
         |
-        | Your class will have to (first option is recommended):
+        | Your class will have to:
         | - extend the "Varbox\Controllers\FroalaController" class
-        | - or you'll have to implement the following public methods yourself: uploadFile(), uploadImage(), uploadVideo()
         |
         */
         'froala_controller' => \Varbox\Controllers\FroalaController::class,
+
+        /*
+        |
+        | Concrete implementation for the "emails controller".
+        | To extend or replace this functionality, change the value below with your full "emails controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\EmailsController" class
+        |
+        */
+        'emails_controller' => \Varbox\Controllers\EmailsController::class,
 
     ],
 
@@ -656,6 +663,18 @@ return [
         |
         */
         'config_form_request' => \Varbox\Requests\ConfigRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "email form request".
+        | To extend or replace this functionality, change the value below with your full "email form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\EmailRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'email_form_request' => \Varbox\Requests\EmailRequest::class,
 
     ],
 
