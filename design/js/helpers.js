@@ -51,6 +51,15 @@ var init = {
     },
     Editor: function () {
         var editor = new FroalaEditor('textarea.editor-input', {
+            fileUploadMethod: 'POST',
+            fileUploadURL: '/froala/upload/file',
+            fileUploadParam: 'froala_file',
+            fileUploadParams: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            fileAllowedTypes: [
+                '*'
+            ],
             imageUploadMethod: 'POST',
             imageUploadURL: '/froala/upload/image',
             imageUploadParam: 'froala_image',
@@ -61,6 +70,22 @@ var init = {
                 'jpeg', 'jpg', 'png', 'gif', 'svg'
             ],
             events: {
+                'file.error': function (error, response) {
+                    var errorMessage;
+
+                    if (response) {
+                        errorMessage = response;
+                    } else if (error.message) {
+                        errorMessage = error.message;
+                    }
+
+                    if (errorMessage) {
+                        editor.popups.get('file.insert')
+                            .find('.fr-file-progress-bar-layer')
+                            .find('h3')
+                            .text(errorMessage);
+                    }
+                },
                 'image.error': function (error, response) {
                     var errorMessage;
 
@@ -77,7 +102,7 @@ var init = {
                             .text(errorMessage);
                     }
                 }
-            }
+            },
         });
     },
     Select2: function () {
