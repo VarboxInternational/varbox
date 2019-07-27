@@ -118,6 +118,20 @@ class CreateVarboxTables extends Migration
             });
         }
 
+        if (!Schema::hasTable('revisions')) {
+            Schema::create('revisions', function (Blueprint $table) {
+                $table->increments('id');
+                $table->bigInteger('user_id')->unsigned()->index()->nullable();
+
+                $table->morphs('revisionable');
+                $table->json('data')->nullable();
+
+                $table->timestamps();
+
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            });
+        }
+
         if (!Schema::hasTable('notifications')) {
             Schema::create('notifications', function (Blueprint $table) {
                 $table->uuid('id')->primary();
@@ -253,6 +267,20 @@ class CreateVarboxTables extends Migration
                 $table->timestamps();
             });
         }
+
+        if (!Schema::hasTable('emails')) {
+            Schema::create('emails', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name')->unique();
+                $table->string('type');
+                $table->json('data')->nullable();
+
+                $table->timestamps();
+                $table->softDeletes();
+                //Draft::column($table);
+            });
+        }
     }
 
     /**
@@ -262,6 +290,7 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('emails');
         Schema::dropIfExists('backups');
         Schema::dropIfExists('errors');
         Schema::dropIfExists('configs');
@@ -271,6 +300,7 @@ class CreateVarboxTables extends Migration
         Schema::dropIfExists('countries');
         Schema::dropIfExists('activity');
         Schema::dropIfExists('notifications');
+        Schema::dropIfExists('revisions');
         Schema::dropIfExists('uploads');
         Schema::dropIfExists('role_permission');
         Schema::dropIfExists('user_permission');
