@@ -322,13 +322,13 @@ class Upload extends Model implements UploadModelContract
      */
     public static function column($name, Blueprint $table)
     {
-        $table->string($name)
-            ->nullable();
+        $table->string($name)->nullable();
 
         $table->foreign($name)
             ->references('full_path')
             ->on((new static)->getTable())
-            ->onDelete('restrict');
+            ->onDelete('restrict')
+            ->onUpdate('cascade');
     }
 
     /**
