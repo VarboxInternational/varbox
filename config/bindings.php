@@ -127,6 +127,22 @@ return [
 
         /*
         |
+        | Concrete implementation for the "revision model".
+        | To extend or replace this functionality, change the value below with your full "revision model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Revision" class
+        | - or at least implement the "Varbox\Contracts\RevisionModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('revision.model') OR app('\Varbox\Contracts\RevisionModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'revision_model' => \Varbox\Models\Revision::class,
+
+        /*
+        |
         | Concrete implementation for the "activity model".
         | To extend or replace this functionality, change the value below with your full "activity model" FQN.
         |
