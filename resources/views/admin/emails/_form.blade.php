@@ -1,10 +1,15 @@
 {!! validation('admin')->errors() !!}
 
 @if($item->exists)
-    {!! form_admin()->model($item, ['url' => $url, 'method' => 'put', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    @if(isset($on_draft) || isset($on_limbo_draft) || isset($on_revision))
+        {!! form_admin()->model($item, ['method' => isset($on_draft) || isset($on_revision) ? 'POST' : 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    @else
+        {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    @endif
 @else
-    {!! form_admin()->open(['url' => $url, 'method' => 'post', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    {!! form_admin()->open(['url' => $url, 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @endif
+
 <div class="col-md-12">
     <div class="card">
         <div class="card-status bg-blue"></div>
@@ -98,6 +103,10 @@
         </div>
     </div>
 </div>
+@endif
+@if($item->exists && !isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
+    {{--{!! draft()->container($item) !!}--}}
+    {!! revision()->container($item, 'admin.emails.revision') !!}
 @endif
 <div class="col-12">
     <div class="card">
