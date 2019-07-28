@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
+use Varbox\Options\RevisionOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
+use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
@@ -21,7 +23,7 @@ class Email extends Model implements EmailModelContract
 {
     use HasUploads;
     //use HasDrafts;
-    //use HasRevisions;
+    use HasRevisions;
     use HasDuplicates;
     use HasActivity;
     use IsCacheable;
@@ -65,46 +67,6 @@ class Email extends Model implements EmailModelContract
     protected $casts = [
         'data' => 'array',
     ];
-
-    /**
-     * Boot the model.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        /*static::drafting(function (EmailModelContract $email) {
-            if (!$email->isDraftingEnabled()) {
-                return false;
-            }
-        });
-
-        static::revisioning(function (EmailModelContract $email) {
-            if (!$email->isRevisioningEnabled()) {
-                return false;
-            }
-        });
-
-        static::duplicating(function (EmailModelContract $email) {
-            if (!$email->isDuplicatingEnabled()) {
-                return false;
-            }
-        });
-
-        static::restoring(function (EmailModelContract $email) {
-            if (!$email->isSoftDeletingEnabled()) {
-                return false;
-            }
-        });
-
-        static::deleted(function (EmailModelContract $email) {
-            if ($email->forceDeleting === false && !$email->isSoftDeletingEnabled()) {
-                $email->forceDelete();
-            }
-        });*/
-    }
 
     /**
      * Get the from address of an email instance.
@@ -340,11 +302,11 @@ class Email extends Model implements EmailModelContract
     /**
      * @return RevisionOptions
      */
-    /*public function getRevisionOptions()
+    public function getRevisionOptions()
     {
         return RevisionOptions::instance()
-            ->limitRevisionsTo(100);
-    }*/
+            ->limitRevisionsTo(30);
+    }
 
     /**
      * Set the options for the HasDuplicates trait.
