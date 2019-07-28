@@ -26,7 +26,7 @@ Breadcrumbs::register('admin.emails.edit', function($breadcrumbs, $email) {
 
 /* Home > Emails > Edit > Draft */
 /*Breadcrumbs::register('admin.emails.draft', function($breadcrumbs, $draft) {
-    if (!($draft instanceof \Varbox\Base\Contracts\DraftModelContract)) {
+    if (!($draft instanceof \Varbox\Contracts\DraftModelContract)) {
         $draft = app('draft.model')->find($draft);
     }
 
@@ -35,11 +35,11 @@ Breadcrumbs::register('admin.emails.edit', function($breadcrumbs, $email) {
 });*/
 
 /* Home > Emails > Edit > Revision */
-/*Breadcrumbs::register('admin.emails.revision', function($breadcrumbs, $revision) {
-    if (!($revision instanceof \Varbox\Base\Contracts\RevisionModelContract)) {
-        $revision = app('revision.model')->find($revision);
+Breadcrumbs::register('admin.emails.revision', function($breadcrumbs, $revision) {
+    if (!($revision instanceof \Varbox\Contracts\RevisionModelContract)) {
+        $revision = app(\Varbox\Contracts\RevisionModelContract::class)->find($revision);
     }
 
     $breadcrumbs->parent('admin.emails.edit', $revision->revisionable);
     $breadcrumbs->push('Revision', route('admin.emails.revision', $revision));
-});*/
+});
