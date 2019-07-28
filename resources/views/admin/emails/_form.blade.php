@@ -81,6 +81,15 @@
             </div>
         </div>
         <div class="card-body">
+            <div class="alert alert-warning col-12 mb-5">
+                <div class="d-inline-block float-left text-left mx-auto" style="margin-top: 2px;">
+                    <i class="fe fe-alert-circle mr-2" aria-hidden="true"></i>
+                </div>
+                <div class="d-inline-block">
+                    You can use the variables below in your email message, in order to display dynamic content.<br />
+                    The syntax required for using variables is: <strong>[variable_name]</strong>
+                </div>
+            </div>
             <div class="row">
                 @foreach($variables as $variable => $attributes)
                     <div class="col-md-4">
