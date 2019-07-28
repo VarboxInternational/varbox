@@ -19,8 +19,8 @@ Route::group([
     Route::group([
         'prefix' => 'revisions',
     ], function () use ($controllers) {
-        Route::get('/', ['as' => 'admin.revisions.get', 'uses' => $controllers['revisions'] . '@getRevisions', 'permissions' => 'revisions-list']);
-        Route::match(['post', 'put'], 'rollback/{revision}', ['as' => 'admin.revisions.rollback', 'uses' => $controllers['revisions'] . '@rollbackRevision', 'permissions' => 'revisions-rollback']);
-        Route::delete('destroy/{revision}', ['as' => 'admin.revisions.remove', 'uses' => $controllers['revisions'] . '@removeRevision', 'permissions' => 'revisions-delete']);
+        Route::get('/', ['as' => 'admin.revisions.index', 'uses' => $controllers['revisions'] . '@index', 'permissions' => 'revisions-list']);
+        Route::delete('destroy/{revision}', ['as' => 'admin.revisions.destroy', 'uses' => $controllers['revisions'] . '@destroy', 'permissions' => 'revisions-delete']);
+        Route::match(['post', 'put'], 'rollback/{revision}', ['as' => 'admin.revisions.rollback', 'uses' => $controllers['revisions'] . '@rollback', 'permissions' => 'revisions-rollback']);
     });
 });
