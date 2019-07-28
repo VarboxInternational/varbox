@@ -216,33 +216,33 @@ var disable = {
     form: function () {
         setTimeout(function () {
             //disable normal inputs
-            $('form.form input').attr('disabled', true);
-            $('form.form textarea').attr('disabled', true);
-            $('form.form select').attr('disabled', true);
+            $('form.frm input').attr('disabled', true);
+            $('form.frm textarea').attr('disabled', true);
+            $('form.frm select').attr('disabled', true);
 
-            //disable uploader
-            $('form.form .js-UploadCurrentModal').addClass('disabled');
-            $('form.form .js-UploadCurrentModal').find('.js-UploadOpenCropper').addClass('disabled');
-            $('form.form .js-UploadCurrentModal').find('.upload-delete').remove();
-            $('form.form .js-UploadNewBtn').addClass('disabled');
-            $('form.form .js-UploadNewModal').remove();
+            //disable uploaders
+            $('form.frm .js-UploadNewOpenBtn').addClass('disabled');
+            $('form.frm .js-UploadCurrentModal').find('.js-UploadOpenCropper').addClass('disabled');
+            $('form.frm .js-UploadCurrentModal').find('.js-UploadDeleteBtn').remove();
+            $('form.frm .js-UploadCurrentModal').next('.js-UploadCropContainer').remove();
+            $('form.frm .js-UploadNewBtn').addClass('disabled');
+            $('form.frm .js-UploadNewModal').remove();
 
-            //disable chosen selects
-            $('form.form select.select-input').prop('disabled', true).trigger("chosen:updated");
+            //disable select2
+            $('form.frm select.select-input').prop('disabled', true);
 
             //disable block specific buttons
-            $('form.form #multiple-add-item').remove();
-            $('form.form .multiple-move-item-up').remove();
-            $('form.form .multiple-move-item-down').remove();
-            $('form.form .multiple-delete-item').remove();
-            $('form.form .multiple-item br').remove();
-        }, 500);
+            $('form.frm #multiple-add-item').remove();
+            $('form.frm .multiple-move-item-up').remove();
+            $('form.frm .multiple-move-item-down').remove();
+            $('form.frm .multiple-delete-item').remove();
+            $('form.frm .multiple-item br').remove();
 
-        setTimeout(function () {
-            //disable tinymce editors
-            if (tinymce.activeEditor) {
-                tinymce.activeEditor.getBody().setAttribute('contenteditable', false);
-            }
-        }, 1000);
+            //disabloe froala editors
+            var editor = new FroalaEditor('textarea.editor-input');
+
+            editor.edit.off();
+            editor.edit.disableDesign();
+        }, 500);
     }
 };
