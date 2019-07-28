@@ -15,15 +15,15 @@ trait CanDuplicate
      *
      * @return Model
      */
-    abstract protected function modelToBeDuplicated(): string;
+    abstract protected function duplicateModel(): string;
 
     /**
      * Get the url to redirect after duplication
      *
-     * @param Model $duplicatedModel
+     * @param Model $duplicate
      * @return string
      */
-    abstract protected function redirectAfterDuplication(Model $duplicatedModel): string;
+    abstract protected function duplicateRedirectTo(Model $duplicate): string;
 
     /**
      * Duplicate the given entity record.
@@ -35,7 +35,7 @@ trait CanDuplicate
      */
     public function duplicate(Request $request, $model)
     {
-        $class = $this->modelToBeDuplicated();
+        $class = $this->duplicateModel();
         $entity = app($class);
 
         if (!$this->canBeDuplicated($entity)) {
@@ -62,8 +62,8 @@ trait CanDuplicate
 
             flash()->success($this->duplicateSuccessMessage());
 
-            //return redirect()->route($this->routeToRedirectAfterDuplication(), $duplicate->id);
-            return redirect($this->redirectAfterDuplication($duplicate));
+            //return redirect()->route($this->routeToduplicateRedirectTo(), $duplicate->id);
+            return redirect($this->duplicateRedirectTo($duplicate));
         } catch (Exception $e) {
             flash()->error($this->duplicateFailedMessage(), $e);
 
@@ -73,7 +73,7 @@ trait CanDuplicate
 
     /**
      * Verify if a model can be duplicated.
-     * It has to use the Varbox\Base\Traits\HasDuplicates trait.
+     * It has to use the Varbox\Traits\HasDuplicates trait.
      *
      * @param Model $model
      * @return bool
