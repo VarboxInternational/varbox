@@ -221,7 +221,7 @@
   cursor: pointer;
   float: right;
   font-weight: bold;
-  margin-right: 3px;
+  margin-right: 10px;
 }
 
 .select2-container--bootstrap .select2-selection__clear:hover {
@@ -368,7 +368,7 @@
 }
 
 .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .select2-container--bootstrap .select2-selection--single.input-sm,
