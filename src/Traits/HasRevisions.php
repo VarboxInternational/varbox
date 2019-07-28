@@ -180,6 +180,8 @@ trait HasRevisions
                         }
                     }
                 }
+
+                $revision->delete();
             });
 
             return true;
