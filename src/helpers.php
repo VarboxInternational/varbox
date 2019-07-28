@@ -30,6 +30,16 @@ if (!function_exists('form_admin')) {
     }
 }
 
+if (!function_exists('revision')) {
+    /**
+     * @return \Varbox\Contracts\RevisionHelperContract
+     */
+    function revision()
+    {
+        return app('revision.helper');
+    }
+}
+
 if (!function_exists('menu_admin')) {
     /**
      * @return \Varbox\Contracts\AdminMenuHelperContract
