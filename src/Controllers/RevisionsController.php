@@ -40,7 +40,7 @@ class RevisionsController extends Controller
      * @return \Illuminate\View\View
      * @throws Throwable
      */
-    public function getRevisions(Request $request)
+    public function index(Request $request)
     {
         if (!$request->ajax()) {
             return response()->json([
@@ -57,16 +57,41 @@ class RevisionsController extends Controller
 
             return response()->json([
                 'status' => true,
-                'html' => $this->buildTableHtml(),
+                'html' => $this->buildeRevisionsTable(),
             ]);
 
         } catch (Exception $e) {
-            dd($e);
-            logger()->error($e);
+            throw $e;
+        }
+    }
 
-            return response()->json([
-                'status' => false,
-            ]);
+    /**
+     * Remove a revision.
+     *
+     * @param Request $request
+     * @param RevisionModelContract $revision
+     * @return array|mixed
+     * @throws Exception
+     */
+    public function destroy(Request $request, RevisionModelContract $revision)
+    {
+        $this->validateRevisionableAjaxData($request);
+
+        try {
+            return DB::transaction(function () use ($request, $revision) {
+                $revision->delete();
+
+                $this->revisions = $this->getRevisionRecords($request);
+                $this->route = $request->input('route');
+                $this->parameters = $request->input('parameters');
+
+                return [
+                    'status' => true,
+                    'html' => $this->buildeRevisionsTable(),
+                ];
+            });
+        } catch (Exception $e) {
+            throw $e;
         }
     }
 
@@ -75,12 +100,11 @@ class RevisionsController extends Controller
      *
      * @param RevisionModelContract $revision
      * @return array|mixed
+     * @throws Exception
      */
-    public function rollbackRevision(RevisionModelContract $revision)
+    public function rollback(RevisionModelContract $revision)
     {
         try {
-            $redirect = session()->pull('revision_back_url_' . $revision->id);
-
             $revision->revisionable->rollbackToRevision($revision);
 
             flash()->success('The revision was successfully rolled back!');
@@ -91,46 +115,10 @@ class RevisionsController extends Controller
                 ];
             }
 
-            return $redirect ? redirect($redirect) : back();
+            return ($redirect = session()->pull('revision_back_url_' . $revision->getKey())) ?
+                redirect($redirect) : back();
         } catch (Exception $e) {
-            logger()->error($e);
-
-            return [
-                'status' => false,
-            ];
-        }
-    }
-
-    /**
-     * Remove a revision.
-     *
-     * @param Request $request
-     * @param RevisionModelContract $revision
-     * @return array|mixed
-     */
-    public function removeRevision(Request $request, RevisionModelContract $revision)
-    {
-        $this->validateRevisionableAjaxData($request);
-
-        try {
-            return DB::transaction(function () use ($request, $revision) {
-                $revision->delete();
-
-                $this->revisions = $this->getRevisionRecords($request);
-                $this->route = $request->input('route');
-                $this->parameters = json_decode($request->input('parameters'), true);
-
-                return [
-                    'status' => true,
-                    'html' => $this->buildTableHtml(),
-                ];
-            });
-        } catch (Exception $e) {
-            logger()->error($e);
-
-            return [
-                'status' => false,
-            ];
+            throw $e;
         }
     }
 
@@ -156,7 +144,7 @@ class RevisionsController extends Controller
      * @throws Exception
      * @throws Throwable
      */
-    protected function buildTableHtml()
+    protected function buildeRevisionsTable()
     {
         return view('varbox::helpers.revision.partials.table')->with([
             'revisions' => $this->revisions,
