@@ -12,5 +12,3 @@
         </div>
     </div>
 </div>
-
-@include('varbox::layouts.admin.partials._flash')

@@ -10,6 +10,10 @@
 
             <div class="my-3 my-md-5">
                 <div class="container">
+                    @include('varbox::layouts.admin.partials._flash')
+
+                    @yield('top')
+
                     @include('varbox::layouts.admin.partials._top')
 
                     @yield('content')
