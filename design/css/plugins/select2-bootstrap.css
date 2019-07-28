@@ -229,7 +229,8 @@
 }
 
 .select2-container--bootstrap.select2-container--disabled .select2-selection {
-  border-color: #E0E5ED;
+  border: 1px solid rgba(0,40,100,.12);
+  opacity: .65;
 }
 
 .select2-container--bootstrap.select2-container--disabled .select2-selection,
@@ -239,7 +240,7 @@
 
 .select2-container--bootstrap.select2-container--disabled .select2-selection,
 .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {
-  background-color: #eeeeee;
+  background-color: #FFFFFF;
 }
 
 .select2-container--bootstrap.select2-container--disabled .select2-selection__clear,
