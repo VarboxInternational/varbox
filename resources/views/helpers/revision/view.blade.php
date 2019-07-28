@@ -1,4 +1,4 @@
-@section('message')
+@section('top')
     <div class="alert alert-info col-lg-12 mb-5">
         <div class="d-inline-block float-left text-left mx-auto" style="margin-top: 2px;">
             <i class="fe fe-info mr-2" aria-hidden="true"></i>
