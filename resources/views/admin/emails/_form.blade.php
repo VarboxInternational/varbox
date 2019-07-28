@@ -117,6 +117,7 @@
     {{--{!! draft()->container($item) !!}--}}
     {!! revision()->container($item, 'admin.emails.revision') !!}
 @endif
+@if(!isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
 <div class="col-12">
     <div class="card">
         <div class="card-body">
@@ -134,8 +135,11 @@
         </div>
     </div>
 </div>
+@endif
 {!! form_admin()->close() !!}
 
-@push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.email_form_request', \Varbox\Requests\EmailRequest::class), '.frm') !!}
-@endpush
+@if(!isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
+    @push('scripts')
+        {!! JsValidator::formRequest(config('varbox.bindings.form_requests.email_form_request', \Varbox\Requests\EmailRequest::class), '.frm') !!}
+    @endpush
+@endif
