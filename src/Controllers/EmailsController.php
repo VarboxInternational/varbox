@@ -9,7 +9,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\RevisionModelContract;
+use Varbox\Models\Revision;
+use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
+use Varbox\Options\RevisionOptions;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Filters\EmailFilter;
@@ -21,7 +25,7 @@ class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     //use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
-    use CanCrud, CanDuplicate;
+    use CanCrud, CanRevision, CanDuplicate;
 
     /**
      * @var EmailModelContract
@@ -207,22 +211,6 @@ class EmailsController extends Controller
     }*/
 
     /**
-     * Set the options for the CanRevision trait.
-     *
-     * @return RevisionOptions
-     */
-    /*public function getRevisionOptions()
-    {
-        return RevisionOptions::instance()
-            ->setPageTitle('Email Revision')
-            ->setPageview('varbox::admin.emails.revision')
-            ->setViewVariables([
-                'fromEmail' => $this->model->getFromAddress(),
-                'fromName' => $this->model->getFromName(),
-            ]);
-    }*/
-
-    /**
      * Set the options for the CanDuplicate trait.
      *
      * @return DuplicateOptions
@@ -237,11 +225,53 @@ class EmailsController extends Controller
     }*/
 
     /**
+     * Get the title to be used on the revision view.
+     *
+     * The title will be used in:
+     * - page title
+     * - meta title
+     *
+     * @return string
+     */
+    protected function revisionPageTitle(): string
+    {
+        return 'Email Revision';
+    }
+
+    /**
+     * Get the blade view to be rendered as the revision view.
+     *
+     * @return string
+     */
+    protected function revisionView(): string
+    {
+        return 'varbox::admin.emails.revision';
+    }
+
+    /**
+     * Get additional view variables to be assigned to the revision view.
+     * If no additional variables are needed, return an empty array.
+     *
+     * @param Model $revisionable
+     * @param RevisionModelContract $revision
+     * @return array
+     */
+    protected function revisionViewVariables(Model $revisionable): array
+    {
+        return [
+            'types' => $this->model->getTypesForSelect(),
+            'variables' => $this->model->getEmailVariables($revisionable->type),
+            'fromEmail' => $this->model->getFromAddress(),
+            'fromName' => $this->model->getFromName(),
+        ];
+    }
+
+    /**
      * Get the model to be duplicated.
      *
      * @return Model
      */
-    protected function modelToBeDuplicated(): string
+    protected function duplicateModel(): string
     {
         return config('varbox.bindings.models.email_model', Email::class);
     }
@@ -249,12 +279,12 @@ class EmailsController extends Controller
     /**
      * Get the route name to redirect to after the duplication.
      *
-     * @param Model $duplicatedModel
+     * @param Model $duplicate
      * @return string
      */
-    protected function redirectAfterDuplication(Model $duplicatedModel): string
+    protected function duplicateRedirectTo(Model $duplicate): string
     {
-        return route('admin.emails.edit', $duplicatedModel->getKey());
+        return route('admin.emails.edit', $duplicate->getKey());
     }
 
     /**
