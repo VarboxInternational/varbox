@@ -316,7 +316,8 @@ class Email extends Model implements EmailModelContract
     public function getDuplicateOptions()
     {
         return DuplicateOptions::instance()
-            ->uniqueColumns('name');
+            ->uniqueColumns('name')
+            ->excludeRelations('revisions', 'activity');
     }
 
     /**
