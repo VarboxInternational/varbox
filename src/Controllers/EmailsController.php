@@ -9,23 +9,21 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Contracts\RevisionModelContract;
-use Varbox\Models\Revision;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
-use Varbox\Options\RevisionOptions;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Filters\EmailFilter;
 use Varbox\Requests\EmailRequest;
 use Varbox\Sorts\EmailSort;
 use Varbox\Traits\CanDuplicate;
+use Varbox\Traits\CanSoftDelete;
 
 class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     //use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
-    use CanCrud, CanRevision, CanDuplicate;
+    use CanCrud, CanRevision, CanDuplicate, CanSoftDelete;
 
     /**
      * @var EmailModelContract
@@ -54,12 +52,21 @@ class EmailsController extends Controller
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();
 
-            /*if ($this->model->isDraftingEnabled()) {
-                $query->withDrafts()->publishedOrNot($request->query('published'));
+            if ($request->filled('trashed')) {
+                switch ($request->query('trashed')) {
+                    case 1:
+                        $query->onlyTrashed();
+                        break;
+                    case 2:
+                        $query->withoutTrashed();
+                        break;
+                }
+            } else {
+                $query->withTrashed();
             }
 
-            if ($this->model->isSoftDeletingEnabled()) {
-                $query->withTrashed()->trashedOrNot($request->query('trashed'));
+            /*if ($this->model->isDraftingEnabled()) {
+                $query->withDrafts()->publishedOrNot($request->query('published'));
             }*/
 
             $query->filtered($request->all(), $filter)->sorted($request->all(), $sort);
@@ -253,7 +260,6 @@ class EmailsController extends Controller
      * If no additional variables are needed, return an empty array.
      *
      * @param Model $revisionable
-     * @param RevisionModelContract $revision
      * @return array
      */
     protected function revisionViewVariables(Model $revisionable): array
@@ -277,7 +283,7 @@ class EmailsController extends Controller
     }
 
     /**
-     * Get the route name to redirect to after the duplication.
+     * Get the url to redirect to after the duplication.
      *
      * @param Model $duplicate
      * @return string
@@ -288,14 +294,22 @@ class EmailsController extends Controller
     }
 
     /**
-     * Set the options for the CanSoftDelete trait.
+     * Get the model to be soft deleted.
      *
-     * @return SoftDeleteOptions
+     * @return Model
      */
-    /*public function getSoftDeleteOptions()
+    protected function softDeleteModel(): string
     {
-        return SoftDeleteOptions::instance()
-            ->setEntityModel(config('varbox.cms.binding.models.email_model', Email::class))
-            ->setRedirectUrl('admin.emails.index');
-    }*/
+        return config('varbox.bindings.models.email_model', Email::class);
+    }
+
+    /**
+     * Get the url to redirect to after the soft deletion.
+     *
+     * @return string
+     */
+    protected function softDeleteRedirectTo(): string
+    {
+        return route('admin.emails.index');
+    }
 }
