@@ -16,12 +16,12 @@ class RevisionHelper implements RevisionHelperContract
      * @param array $parameters
      * @return \Illuminate\View\View
      */
-    public function container(Model $model, $route, $parameters = [])
+    public function container(Model $model, $routeName, $routeParameters = [])
     {
         return view('varbox::helpers.revision.container')->with([
             'model' => $model,
-            'route' => $route,
-            'parameters' => $parameters,
+            'routeName' => $routeName,
+            'routeParameters' => $routeParameters,
         ]);
     }
 

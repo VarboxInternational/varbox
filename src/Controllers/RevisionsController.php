@@ -110,9 +110,7 @@ class RevisionsController extends Controller
             flash()->success('The revision was successfully rolled back!');
 
             if (request()->ajax()) {
-                return [
-                    'status' => true
-                ];
+                return ['status' => true];
             }
 
             return ($redirect = session()->pull('revision_back_url_' . $revision->getKey())) ?
