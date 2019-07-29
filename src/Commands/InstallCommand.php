@@ -190,7 +190,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>MODIFYING USER MODEL</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $authGuardsStub = __DIR__ . '/../../resources/stubs/config/auth.guards.stub';
+        $authGuardsStub = __DIR__ . '/../../resources/stubs/config/auth/guards.stub';
         $userModelFile = $this->laravel['path'] . '/User.php';
         $authConfig = $this->laravel['path.config'] . '/auth.php';
 
@@ -304,7 +304,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>GENERATING ADMIN MENU</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $stub = __DIR__ . '/../../resources/stubs/menu/menu.stub';
+        $stub = __DIR__ . '/../../resources/stubs/composers/menu/admin_menu.stub';
         $path = "{$this->laravel['path']}/Http/Composers";
         $file = "{$path}/AdminMenuComposer.php";
         $contents = str_replace('DummyNamespace', $this->laravel->getNamespace() . 'Http\\Composers', $this->files->get($stub));
@@ -334,7 +334,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>MANAGING UPLOADS</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $uploadsDiskStub = __DIR__ . '/../../resources/stubs/config/upload.disks.stub';
+        $uploadsDiskStub = __DIR__ . '/../../resources/stubs/config/upload/disks.stub';
         $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
         $uploadsPath = $this->laravel['path.storage'] . '/uploads';
         $gitignoreFile = $uploadsPath . '/.gitignore';
@@ -387,7 +387,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>MANAGING BACKUPS</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $backupsDiskStub = __DIR__ . '/../../resources/stubs/config/backup.disks.stub';
+        $backupsDiskStub = __DIR__ . '/../../resources/stubs/config/backup/disks.stub';
         $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
         $backupsPath = $this->laravel['path.storage'] . '/backups';
         $gitignoreFile = $backupsPath . '/.gitignore';
@@ -437,7 +437,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>SETTING UP FROALA</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $froalaDiskStub = __DIR__ . '/../../resources/stubs/config/froala.disks.stub';
+        $froalaDiskStub = __DIR__ . '/../../resources/stubs/config/froala/disks.stub';
         $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
         $froalaPath = $this->laravel['path.storage'] . '/froala';
         $gitignoreFile = $froalaPath . '/.gitignore';
