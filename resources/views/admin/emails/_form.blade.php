@@ -72,7 +72,7 @@
 </div>
 @if($item->exists && !empty($variables))
 <div class="col-md-12">
-    <div class="card card-collapsed">
+    <div class="card">
         <div class="card-status bg-yellow"></div>
         <div class="card-header" data-toggle="card-collapse" style="cursor: pointer;">
             <h3 class="card-title">Variables Info</h3>
