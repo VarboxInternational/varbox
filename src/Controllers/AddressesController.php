@@ -67,8 +67,6 @@ class AddressesController extends Controller
      */
     public function index(Request $request, AddressFilter $filter, AddressSort $sort, UserModelContract $user)
     {
-        $this->displayOwnerUserMessage($user);
-
         return $this->_index(function () use ($request, $filter, $sort, $user) {
             $this->items = $this->model->ofUser($user)
                 ->filtered($request->all(), $filter)
@@ -91,8 +89,6 @@ class AddressesController extends Controller
      */
     public function create(UserModelContract $user)
     {
-        $this->displayOwnerUserMessage($user);
-
         return $this->_create(function () use ($user) {
             $this->title = 'Add Address';
             $this->view = view('varbox::admin.addresses.add');
@@ -127,8 +123,6 @@ class AddressesController extends Controller
      */
     public function edit(UserModelContract $user, AddressModelContract $address)
     {
-        $this->displayOwnerUserMessage($user);
-
         return $this->_edit(function () use ($user, $address) {
             $this->item = $address;
             $this->title = 'Edit Address';
@@ -180,17 +174,5 @@ class AddressesController extends Controller
 
             $this->item->delete();
         });
-    }
-
-    /**
-     * @param UserModelContract $user
-     * @return void
-     */
-    protected function displayOwnerUserMessage(UserModelContract $user)
-    {
-        flash()->info(
-            'You are viewing the addresses for user: ' .
-            '<strong><a href="' . route('admin.users.edit', $user->id) . '" style="color: #24587e;">' . $user->email . '</a></strong>'
-        );
     }
 }
