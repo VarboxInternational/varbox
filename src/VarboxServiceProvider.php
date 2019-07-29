@@ -16,6 +16,7 @@ use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\ErrorsCleanCommand;
 use Varbox\Commands\FroalaLinkCommand;
 use Varbox\Commands\InstallCommand;
+use Varbox\Commands\MailMakeCommand;
 use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Composers\AdminMenuComposer;
 use Varbox\Composers\NotificationsComposer;
@@ -252,6 +253,7 @@ class VarboxServiceProvider extends BaseServiceProvider
                 InstallCommand::class,
                 UploadsLinkCommand::class,
                 FroalaLinkCommand::class,
+                MailMakeCommand::class,
                 ActivityCleanCommand::class,
                 NotificationsCleanCommand::class,
                 ErrorsCleanCommand::class,
