@@ -29,13 +29,18 @@
                     </span>
                 </td>
                 <td class="d-none d-sm-table-cell">
-                    <span class="badge badge badge-success">
-                        No
+                    <span class="badge @if($item->trashed()) badge-danger @else badge-success @endif">
+                        {{ $item->trashed() ? 'Yes' : 'No' }}
                     </span>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
-                    {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
+                    @if($item->trashed())
+                        {!! button()->restoreRecord(route('admin.emails.restore', $item->getKey())) !!}
+                        {!! button()->deleteRecord(route('admin.emails.delete', $item->getKey())) !!}
+                    @else
+                        {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
+                        {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
+                    @endif
                 </td>
             </tr>
         @empty
