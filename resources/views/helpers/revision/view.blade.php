@@ -5,11 +5,7 @@
         </div>
         <div class="d-inline-block">
             <h4>You are currently viewing a revision of the model!</h4>
-            <p>
-                "Rollback Revision" will populate the original record with the details below.<br />
-                "View Original" will redirect you to the latest version of this record.
-            </p>
-            <div class="btn-list">
+            <div class="btn-list mt-4">
                 @permission('revisions-rollback')
                 {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}
                 <button type="submit" class="button-rollback-revision btn btn-blue">
