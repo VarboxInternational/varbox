@@ -15,7 +15,7 @@
                 @endpermission
 
                 <a href="{{ session('revision_back_url_' . $revision->getKey()) }}" class="btn btn-secondary ml-4">
-                    <i class="fe fe-eye mr-2"></i>View Original
+                    <i class="fe fe-arrow-left mr-2"></i>Back To Original
                 </a>
             </div>
         </div>
