@@ -90,7 +90,25 @@ class HasRevisionsTest extends TestCase
 
         $this->post->rollbackToRevision($this->post->revisions()->first());
 
-        $this->assertEquals(2, Revision::count());
+        $this->assertEquals(1, Revision::count());
+    }
+
+    /** @test */
+    public function it_deletes_the_rolled_back_revision()
+    {
+        $model = new class extends Post {
+            public function getRevisionOptions() : RevisionOptions
+            {
+                return parent::getRevisionOptions()->disableRevisioningWhenRollingBack();
+            }
+        };
+
+        $this->createPost($model);
+        $this->modifyPost();
+
+        $this->post->rollbackToRevision($this->post->revisions()->first());
+
+        $this->assertEquals(0, Revision::count());
     }
 
     /** @test */
