@@ -1,0 +1,49 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
+use Varbox\Mail\Mailable;
+
+class DummyName extends Mailable implements ShouldQueue
+{
+    use Queueable, SerializesModels;
+
+    /**
+     * Get the type of the email.
+     * It must be a string representing one of the keys from "config/varbox/emails.php" -> "types" config option.
+     *
+     * @return string
+     */
+    protected function emailType()
+    {
+        return 'the-email-type';
+    }
+
+    /**
+     * Get the subject of the email.
+     * This will be used only if no subject has been supplied from the admin panel.
+     *
+     * @return string
+     */
+    protected function defaultSubject()
+    {
+        return 'The email subject';
+    }
+
+    /**
+     * Return an array containing:
+     * - keys: each variable name as defined inside the "config/varbox/emails.php" -> "variables" config option
+     * - values: the actual value that the respective variable (key) should be transformed to
+     *
+     * @return array
+     */
+    protected function mapVariables()
+    {
+        return [
+// the email variables
+       ];
+    }
+}
