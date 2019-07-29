@@ -13,7 +13,7 @@
             {!! form_admin()->select('published', 'Publish', ['' => '---', 1 => 'Published', 0 => 'Not Published'], request()->query('published') ?: null, ['style' => 'width: 48%;']) !!}
         </div>
         <div class="col">
-            {!! form_admin()->select('trashed', 'Trash', ['' => 'Un/Del', 1 => 'Trashed', 0 => 'Not Trashed'], request()->query('trashed') ?: null, ['style' => 'width: 48%;']) !!}
+            {!! form_admin()->select('trashed', 'Trash', ['' => '---', 1 => 'Trashed', 2 => 'Not Trashed'], request()->query('trashed') ?: null, ['style' => 'width: 48%;']) !!}
         </div>
     </div>
     <div class="row">
