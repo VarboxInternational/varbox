@@ -23,13 +23,13 @@ return [
     */
     'types' => [
 
-        /*'password-recovery' => [
-            'class' => 'Varbox\Cms\Mail\PasswordRecovery',
-            'view' => 'varbox::emails.password_recovery',
+        'test-mail' => [
+            'class' => 'Varbox\Cms\Mail\TestMail',
+            'view' => 'varbox::emails.test_mail',
             'variables' => [
-                'first_name', 'last_name', 'full_name', 'reset_password_url'
+                'first_name', 'last_name', 'full_name'
             ],
-        ],*/
+        ],
 
     ],
 
@@ -58,7 +58,6 @@ return [
         'first_name' => [
             'name' => 'First Name',
             'label' => 'The first name of the logged in user.',
-            'description' => 'If used in an email, but no logged in user exists, this variable will not render anything.',
         ],
 
         'last_name' => [
@@ -70,13 +69,11 @@ return [
         'full_name' => [
             'name' => 'Full Name',
             'label' => 'The full name of the logged in user.',
-            'description' => 'If used in an email, but no logged in user exists, this variable will not render anything.',
         ],
 
         'home_url' => [
             'name' => 'Home URL',
             'label' => 'The home URL of the site.',
-            'description' => 'This URL will direct the users to the site\'s homepage.',
         ],
 
     ],
