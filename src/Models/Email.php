@@ -15,6 +15,7 @@ use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 use Varbox\Contracts\EmailModelContract;
@@ -23,10 +24,10 @@ use Varbox\Exceptions\EmailException;
 class Email extends Model implements EmailModelContract
 {
     use HasUploads;
-    //use HasDrafts;
     use HasRevisions;
     use HasDuplicates;
     use HasActivity;
+    use IsDraftable;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -291,14 +292,6 @@ class Email extends Model implements EmailModelContract
     {
         return [];
     }
-
-    /**
-     * @return DraftOptions
-     */
-    /*public function getDraftOptions()
-    {
-        return DraftOptions::instance();
-    }*/
 
     /**
      * @return RevisionOptions
