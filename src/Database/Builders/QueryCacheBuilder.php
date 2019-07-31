@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Database;
+namespace Varbox\Database\Builders;
 
 use Exception;
 use Illuminate\Database\ConnectionInterface;
