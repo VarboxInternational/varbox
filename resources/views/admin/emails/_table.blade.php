@@ -4,9 +4,6 @@
             <th class="sortable" data-sort="name">
                 <i class="fa fa-sort mr-2"></i>Name
             </th>
-            <th class="sortable d-none d-sm-table-cell" data-sort="type">
-                <i class="fa fa-sort mr-2"></i>Type
-            </th>
             <th class="sortable d-none d-sm-table-cell" data-sort="drafted_at">
                 <i class="fa fa-sort mr-2"></i>Published
             </th>
@@ -18,14 +15,14 @@
         @forelse($items as $index => $item)
             <tr>
                 <td>
-                    {{ $item->name ?: 'N/A' }}
+                    <div>{{ $item->name ?: 'N/A' }}</div>
+                    @if($item->type)
+                        <div class="small text-muted">{{ $item->type }}</div>
+                    @endif
                 </td>
                 <td class="d-none d-sm-table-cell">
-                    {{ $item->type ?: 'N/A' }}
-                </td>
-                <td class="d-none d-sm-table-cell">
-                    <span class="badge badge badge-success">
-                        Yes
+                    <span class="badge @if($item->isDrafted()) badge-danger @else badge-success @endif">
+                        {{ $item->isDrafted() ? 'No' : 'Yes' }}
                     </span>
                 </td>
                 <td class="d-none d-sm-table-cell">

@@ -10,10 +10,10 @@
     {!! form_admin()->select('type', 'Type', ['' => 'All Types'] + $types, request()->query('type') ?: null) !!}
     <div class="row">
         <div class="col">
-            {!! form_admin()->select('published', 'Publish', ['' => '---', 1 => 'Published', 0 => 'Not Published'], request()->query('published') ?: null, ['style' => 'width: 48%;']) !!}
+            {!! form_admin()->select('drafted', 'Published', ['' => '---', 1 => 'Yes', 2 => 'No'], request()->query('drafted') ?: null) !!}
         </div>
         <div class="col">
-            {!! form_admin()->select('trashed', 'Trash', ['' => '---', 1 => 'Trashed', 2 => 'Not Trashed'], request()->query('trashed') ?: null, ['style' => 'width: 48%;']) !!}
+            {!! form_admin()->select('trashed', 'Trashed', ['' => '---', 1 => 'Yes', 2 => 'No'], request()->query('trashed') ?: null) !!}
         </div>
     </div>
     <div class="row">

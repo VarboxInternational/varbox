@@ -1,14 +1,19 @@
 {!! validation('admin')->errors() !!}
 
 @if($item->exists)
-    @if(isset($on_draft) || isset($on_limbo_draft) || isset($on_revision))
-        {!! form_admin()->model($item, ['method' => isset($on_draft) || isset($on_revision) ? 'POST' : 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    @if(isset($on_revision))
+        {!! form_admin()->model($item, ['class' => 'frm row row-cards']) !!}
     @else
         {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
     @endif
 @else
     {!! form_admin()->open(['url' => $url, 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @endif
+
+{!! form()->hidden('draft[model_id]', $item->exists ? $item->id : null) !!}
+{!! form()->hidden('draft[model_class]', config('varbox.bindings.models.email_model', \Varbox\Models\Email::class)) !!}
+{!! form()->hidden('draft[validation_request]', config('varbox.bindings.form_requests.email_form_request', \Varbox\Requests\EmailRequest::class)) !!}
+{!! form()->hidden('draft[redirect_route]', 'admin.emails.edit') !!}
 
 <div class="col-md-12">
     <div class="card">
@@ -113,11 +118,46 @@
     </div>
 </div>
 @endif
-@if($item->exists && !isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
-    {{--{!! draft()->container($item) !!}--}}
+@if($item->exists && !isset($on_revision))
     {!! revision()->container($item, 'admin.emails.revision') !!}
 @endif
-@if(!isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
+@if($item->exists && $item->isDrafted() && !isset($on_revision))
+
+
+
+
+
+@section('top')
+    <div class="alert alert-info col-lg-12 mb-5">
+        <div class="d-inline-block float-left text-left mx-auto" style="margin-top: 2px;">
+            <i class="fe fe-info mr-2" aria-hidden="true"></i>
+        </div>
+        <div class="d-inline-block">
+            <h4>This record is currently drafted!</h4>
+            <p>
+                Please note that if you have un-saved changes,
+                you will have to save them before publishing the draft for them to be persisted.
+            </p>
+            <div class="btn-list mt-4">
+                @permission('drafts-publish')
+                {!! form()->open(['url' => route('admin.drafts.publish'), 'method' => 'PUT', 'class' => 'float-left d-inline']) !!}
+                {!! form()->hidden('_id', $item->getKey()) !!}
+                {!! form()->hidden('_class', $item->getMorphClass()) !!}
+                {!! form()->button(' <i class="fe fe-check mr-2"></i>Publish Draft', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
+                {!! form()->close() !!}
+                @endpermission
+            </div>
+        </div>
+    </div>
+@append
+
+
+
+
+
+
+@endif
+@if(!isset($on_revision))
 <div class="col-12">
     <div class="card">
         <div class="card-body">
@@ -125,9 +165,13 @@
                 {!! button()->cancelAction(route('admin.emails.index')) !!}
                 @if($item->exists)
                     {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
+                    @if(!$item->isDrafted())
+                        {!! button()->saveAsDraft(route('admin.drafts.save')) !!}
+                    @endif
                     {!! button()->saveAndStay() !!}
                 @else
                     {!! button()->saveAndNew() !!}
+                    {!! button()->saveAsDraft(route('admin.drafts.save')) !!}
                     {!! button()->saveAndContinue('admin.emails.edit') !!}
                 @endif
                 {!! button()->saveRecord() !!}
@@ -138,8 +182,6 @@
 @endif
 {!! form_admin()->close() !!}
 
-@if(!isset($on_draft) && !isset($on_limbo_draft) && !isset($on_revision))
-    @push('scripts')
-        {!! JsValidator::formRequest(config('varbox.bindings.form_requests.email_form_request', \Varbox\Requests\EmailRequest::class), '.frm') !!}
-    @endpush
-@endif
+@push('scripts')
+    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.email_form_request', \Varbox\Requests\EmailRequest::class), '.frm') !!}
+@endpush
