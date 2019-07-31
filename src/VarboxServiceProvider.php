@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Illuminate\Support\Str;
 use Spatie\Backup\Events\BackupWasSuccessful;
 use Varbox\Commands\ActivityCleanCommand;
 use Varbox\Commands\BackupsCleanCommand;
@@ -317,7 +318,16 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('config', ConfigModelContract::class);
         Route::model('error', ErrorModelContract::class);
         Route::model('backup', BackupModelContract::class);
-        Route::model('email', EmailModelContract::class);
+
+        Route::bind('email', function ($id) {
+            $query = app(EmailModelContract::class)->whereId($id);
+
+            if (Str::startsWith(Route::current()->uri(), 'admin/')) {
+                $query->withTrashed()->withDrafts();
+            }
+
+            return $query->first() ?? abort(404);
+        });
     }
 
     /**
@@ -341,6 +351,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/errors.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/backups.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/uploads.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/drafts.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/revisions.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/emails.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
