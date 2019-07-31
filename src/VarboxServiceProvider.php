@@ -131,6 +131,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadBreadcrumbs();
         $this->listenToEvents();
         $this->registerBladeDirectives();
+        $this->registerBladeExtensions();
     }
 
     /**
@@ -555,6 +556,23 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         Blade::{'if'}('hasallroles', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllRoles($roles));
+        });
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerBladeExtensions()
+    {
+        Blade::directive('pushonce', function ($expression) {
+            $name = substr($expression, 1, -1);
+            $displayed = '__pushonce_'.$name;
+
+            return "<?php if(!isset(\$__env->{$displayed})): \$__env->{$displayed} = true; \$__env->startPush('{$name}'); ?>";
+        });
+
+        Blade::directive('endpushonce', function ($expression) {
+            return '<?php $__env->stopPush(); endif; ?>';
         });
     }
 }
