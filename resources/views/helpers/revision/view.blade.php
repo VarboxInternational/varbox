@@ -8,9 +8,7 @@
             <div class="btn-list mt-4">
                 @permission('revisions-rollback')
                 {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}
-                <button type="submit" class="button-rollback-revision btn btn-blue">
-                    <i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision
-                </button>
+                {!! form()->button(' <i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
                 {!! form()->close() !!}
                 @endpermission
 
@@ -26,31 +24,6 @@
     <script type="text/javascript">
         $(function () {
             disable.form();
-
-            $('.button-rollback-revision').click(function (e) {
-                e.preventDefault();
-
-                let _this = $(this);
-
-                bootbox.confirm({
-                    message: "Are you sure?",
-                    buttons: {
-                        cancel: {
-                            label: 'No',
-                            className: 'btn-secondary btn-default btn-square px-5 mr-auto'
-                        },
-                        confirm: {
-                            label: 'Yes',
-                            className: 'btn-primary btn-square px-5'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result === true) {
-                            _this.closest('form').submit();
-                        }
-                    }
-                });
-            });
         });
     </script>
 @endpush
