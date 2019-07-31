@@ -120,13 +120,6 @@ interface ButtonHelperContract
     public function saveElsewhere($url, array $attributes = []);
 
     /**
-     * @param string $url
-     * @param array $attributes
-     * @return \Illuminate\View\View
-     */
-    public function saveAsNew($url, array $attributes = []);
-
-    /**
      * @param array $attributes
      * @return \Illuminate\View\View
      */

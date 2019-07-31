@@ -246,21 +246,6 @@ class ButtonHelper implements ButtonHelperContract
     }
 
     /**
-     * Render the save new button.
-     *
-     * @param string $url
-     * @param array $attributes
-     * @return \Illuminate\View\View
-     */
-    public function saveAsNew($url, array $attributes = [])
-    {
-        return view('varbox::helpers.button.save_new')->with([
-            'url' => $url,
-            'attributes' => self::buildAttributes($attributes)
-        ]);
-    }
-
-    /**
      * Render save and stay button.
      *
      * @param array $attributes
@@ -281,7 +266,7 @@ class ButtonHelper implements ButtonHelperContract
      */
     public function saveAndNew(array $attributes = [])
     {
-        return view('varbox::helpers.button.save_and_new')->with([
+        return view('varbox::helpers.button.save_new')->with([
             'attributes' => self::buildAttributes($attributes)
         ]);
     }
