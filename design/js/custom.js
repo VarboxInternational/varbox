@@ -1,6 +1,5 @@
 $(document).ready(function () {
     setups();
-    buttons();
     sort();
     generators();
     confirms();
@@ -9,68 +8,6 @@ $(document).ready(function () {
 function setups() {
     init.Editor();
     init.Select2();
-}
-
-function buttons() {
-    $(document).on('click', '.button-save-stay, .button-save-new', function (e) {
-        e.preventDefault();
-
-        $(this).closest('form').append('<input type="hidden" name="save_stay" value="1" />').submit();
-    });
-
-    $(document).on('click', '.button-save-continue', function (e) {
-        e.preventDefault();
-
-        var form = $(this).closest('form');
-
-        if ($(this).data('route-parameters')) {
-            $.each($(this).data('route-parameters'), function (key, value) {
-                form.append('<input type="hidden" name="save_continue_route_parameters[' + key + ']" value="' + value + '" />')
-            })
-        }
-
-        form
-            .append('<input type="hidden" name="save_continue" value="1" />')
-            .append('<input type="hidden" name="save_continue_route" value="' + $(this).data('route-name') + '" />')
-            .submit();
-    });
-
-    $(document).on('click', '.button-duplicate', function (e) {
-        e.preventDefault();
-
-        var _this = $(this);
-
-        bootbox.confirm({
-            message: "Are you sure?",
-            buttons: {
-                cancel: {
-                    label: 'No',
-                    className: 'btn-secondary btn-default btn-square px-5 mr-auto'
-                },
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-primary btn-square px-5'
-                }
-            },
-            callback: function (result) {
-                if (result === true) {
-                    _this.closest('form').validate().settings.ignore = "*";
-
-                    _this.closest('form').find('input[name="_method"]').remove();
-                    _this.closest('form').removeClass('frm')
-                        .attr('action', _this.data('url')).attr('method', 'POST')
-                        .submit();
-                }
-            }
-        });
-    });
-
-    /*$(document).on('click', '.button-duplicate', function (e) {
-        e.preventDefault();
-
-        $(this).closest('form').find('input[name="_method"]').remove();
-        $(this).closest('form').attr('action', $(this).data('url')).attr('method', 'POST').submit();
-    });*/
 }
 
 function sort() {
