@@ -401,6 +401,17 @@ return [
 
         /*
         |
+        | Concrete implementation for the "drafts controller".
+        | To extend or replace this functionality, change the value below with your full "drafts controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\DraftsController" class
+        |
+        */
+        'drafts_controller' => \Varbox\Controllers\DraftsController::class,
+
+        /*
+        |
         | Concrete implementation for the "revisions controller".
         | To extend or replace this functionality, change the value below with your full "revisions controller" FQN.
         |
