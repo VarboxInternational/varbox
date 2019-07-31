@@ -22,7 +22,6 @@ use Varbox\Traits\CanSoftDelete;
 class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    //use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
     use CanCrud, CanRevision, CanDuplicate, CanSoftDelete;
 
     /**
@@ -63,6 +62,19 @@ class EmailsController extends Controller
                 }
             } else {
                 $query->withTrashed();
+            }
+
+            if ($request->filled('drafted')) {
+                switch ($request->query('drafted')) {
+                    case 1:
+                        $query->withoutDrafts();
+                        break;
+                    case 2:
+                        $query->onlyDrafts();
+                        break;
+                }
+            } else {
+                $query->withDrafts();
             }
 
             /*if ($this->model->isDraftingEnabled()) {
@@ -191,44 +203,6 @@ class EmailsController extends Controller
 
         return (new Markdown(view(), config('mail.markdown')))
             ->render($view, $data);
-    }*/
-
-    /**
-     * Set the options for the CanDraft trait.
-     *
-     * @return DraftOptions
-     */
-    /*public function getDraftOptions()
-    {
-        $model = config('varbox.cms.binding.models.email_model', Email::class);
-        $request = config('varbox.cms.binding.form_requests.email_form_request', EmailRequest::class);
-
-        return DraftOptions::instance()
-            ->setEntityModel($model)
-            ->setValidatorRequest(new $request)
-            ->setTitle('Email Draft')
-            ->setDraftView('varbox::admin.emails.draft')
-            ->setLimboView('varbox::admin.emails.limbo')
-            ->setRedirectUrl('admin.emails.index')
-            ->setViewVariables([
-                'types' => $this->model->getTypesForSelect(),
-                'fromEmail' => $this->model->getFromAddress(),
-                'fromName' => $this->model->getFromName(),
-            ]);
-    }*/
-
-    /**
-     * Set the options for the CanDuplicate trait.
-     *
-     * @return DuplicateOptions
-     */
-    /*public function getDuplicateOptions()
-    {
-        $model = config('varbox.cms.binding.models.email_model', Email::class);
-
-        return DuplicateOptions::instance()
-            ->setEntityModel($model)
-            ->setRedirectUrl('admin.emails.edit');
     }*/
 
     /**
