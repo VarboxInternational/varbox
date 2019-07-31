@@ -25,14 +25,7 @@ class EmailRequest extends FormRequest
      */
     public function rules()
     {
-        $model = null;
-
-        if ($this->route('email')) {
-            $model = $this->route('email');
-        } elseif ($this->route('id')) {
-            //$model = app('email.model')->withDrafts()->withTrashed()->find($this->route('id'));
-            $model = app(EmailModelContract::class)->find($this->route('id'));
-        }
+        $model = $this->model();
 
         return [
             'name' => [
@@ -46,5 +39,26 @@ class EmailRequest extends FormRequest
                 Rule::in(array_keys(app(EmailModelContract::class)->getTypes()))
             ],
         ];
+    }
+
+    /**
+     * Get the model by extracting it from one of the following:\
+     * - implicit/explicit route model binding
+     * - model id as route parameter
+     *
+     * @return \Illuminate\Routing\Route|object|string|null
+     */
+    protected function model()
+    {
+        if ($this->route('email')) {
+            return $this->route('email');
+        }
+
+        if ($this->route('id')) {
+            return app(EmailModelContract::class)->withDrafts()->withTrashed()
+                ->find($this->route('id'));
+        }
+
+        return null;
     }
 }
