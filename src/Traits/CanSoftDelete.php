@@ -95,7 +95,7 @@ trait CanSoftDelete
 
     /**
      * Verify if a model can be duplicated.
-     * It has to use the Varbox\Base\Traits\HasDuplicates trait.
+     * It has to use the Varbox\Traits\HasDuplicates trait.
      *
      * @param Model $model
      * @return bool
