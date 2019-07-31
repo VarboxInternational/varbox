@@ -33,15 +33,9 @@ Route::group([
         Route::delete('delete/{id}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-force-delete']);
 
         /**
-         * Draft Actions.
-         */
-        Route::get('draft/{draft}', ['as' => 'admin.emails.draft', 'uses' => $controllers['emails'] . '@draft', 'permissions' => 'drafts-view']);
-        Route::match(['get', 'put'], 'limbo/{id}', ['as' => 'admin.emails.limbo', 'uses' => $controllers['emails'] . '@limbo', 'permissions' => 'drafts-save']);
-
-        /**
          * Revision Actions.
          */
-        Route::get('revision/{revision}', ['as' => 'admin.emails.revision', 'uses' => $controllers['emails'] . '@revision', 'permissions' => 'revisions-view']);
+        Route::get('revision/{revision}', ['as' => 'admin.emails.revision', 'uses' => $controllers['emails'] . '@revision', 'permissions' => 'emails-edit']);
 
         /**
          * Duplicate Actions.
