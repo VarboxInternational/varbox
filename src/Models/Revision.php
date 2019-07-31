@@ -5,7 +5,9 @@ namespace Varbox\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Varbox\Contracts\RevisionModelContract;
+use Varbox\Traits\IsDraftable;
 
 class Revision extends Model implements RevisionModelContract
 {
@@ -56,7 +58,18 @@ class Revision extends Model implements RevisionModelContract
      */
     public function revisionable()
     {
-        return $this->morphTo();
+        $morph = $this->morphTo();
+        $related = $morph->getRelated();
+
+        if (in_array(SoftDeletes::class, class_uses($related))) {
+            $morph->withTrashed();
+        }
+
+        if (in_array(IsDraftable::class, class_uses($related))) {
+            $morph->withDrafts();
+        }
+
+        return $morph;
     }
 
     /**
