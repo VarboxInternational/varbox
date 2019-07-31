@@ -4,7 +4,7 @@ namespace Varbox\Traits;
 
 use Illuminate\Database\Query\Builder;
 use Varbox\Contracts\QueryCacheServiceContract;
-use Varbox\Database\QueryCacheBuilder;
+use Varbox\Database\Builders\QueryCacheBuilder;
 
 trait IsCacheable
 {
