@@ -1,5 +1,7 @@
 <?php
 
+use Varbox\Contracts\RevisionModelContract;
+
 /* Home > Emails */
 Breadcrumbs::register('admin.emails.index', function($breadcrumbs) {
     $breadcrumbs->parent('admin');
@@ -18,26 +20,10 @@ Breadcrumbs::register('admin.emails.edit', function($breadcrumbs, $email) {
     $breadcrumbs->push('Edit', route('admin.emails.edit', $email));
 });
 
-/* Home > Emails > Draft */
-/*Breadcrumbs::register('admin.emails.limbo', function($breadcrumbs, $draft) {
-    $breadcrumbs->parent('admin.emails.index');
-    $breadcrumbs->push('Draft', route('admin.emails.draft', $draft));
-});*/
-
-/* Home > Emails > Edit > Draft */
-/*Breadcrumbs::register('admin.emails.draft', function($breadcrumbs, $draft) {
-    if (!($draft instanceof \Varbox\Contracts\DraftModelContract)) {
-        $draft = app('draft.model')->find($draft);
-    }
-
-    $breadcrumbs->parent('admin.emails.edit', $draft->draftable);
-    $breadcrumbs->push('Draft', route('admin.emails.draft', $draft));
-});*/
-
 /* Home > Emails > Edit > Revision */
 Breadcrumbs::register('admin.emails.revision', function($breadcrumbs, $revision) {
-    if (!($revision instanceof \Varbox\Contracts\RevisionModelContract)) {
-        $revision = app(\Varbox\Contracts\RevisionModelContract::class)->find($revision);
+    if (!($revision instanceof RevisionModelContract)) {
+        $revision = app(RevisionModelContract::class)->find($revision);
     }
 
     $breadcrumbs->parent('admin.emails.edit', $revision->revisionable);
