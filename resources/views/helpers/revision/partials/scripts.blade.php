@@ -11,8 +11,8 @@
                     _token: _CSRFToken,
                     revisionable_id: revisionsContainer.data('revisionable-id'),
                     revisionable_type: revisionsContainer.data('revisionable-type'),
-                    route: '{{ $routeName }}',
-                    parameters: @json($routeParameters)
+                    route: '{{ $route }}',
+                    parameters: @json($parameters)
                 },
                 success : function(data) {
                     if (data.status) {
@@ -53,8 +53,8 @@
                     _token: _CSRFToken,
                     revisionable_id: revisionsContainer.data('revisionable-id'),
                     revisionable_type: revisionsContainer.data('revisionable-type'),
-                    route: '{{ $routeName }}',
-                    parameters: @json($routeParameters)
+                    route: '{{ $route }}',
+                    parameters: @json($parameters)
                 },
                 success : function(data) {
                     if (data.status) {

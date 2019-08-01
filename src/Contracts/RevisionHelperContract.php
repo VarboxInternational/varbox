@@ -6,18 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 interface RevisionHelperContract
 {
-/**
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $route
-     * @param array $parameters
-     * @return \Illuminate\View\View
-     */
-    public function container(Model $model, $route, $parameters = []);
-
     /**
-     * @param RevisionModelContract $revision
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @return \Illuminate\View\View
+     * @param string $route
+     * @param Model $model
+     * @param RevisionModelContract|null $revision
+     * @param array $parameters
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function view(RevisionModelContract $revision, Model $model);
+    public function container($route, Model $model, RevisionModelContract $revision = null, $parameters = []);
 }
