@@ -401,17 +401,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "drafts controller".
-        | To extend or replace this functionality, change the value below with your full "drafts controller" FQN.
-        |
-        | Your class will have to:
-        | - extend the "Varbox\Controllers\DraftsController" class
-        |
-        */
-        'drafts_controller' => \Varbox\Controllers\DraftsController::class,
-
-        /*
-        |
         | Concrete implementation for the "revisions controller".
         | To extend or replace this functionality, change the value below with your full "revisions controller" FQN.
         |
@@ -943,6 +932,22 @@ return [
         |
         */
         'uploader_helper' => \Varbox\Helpers\UploaderHelper::class,
+
+        /*
+        |
+        | Concrete implementation for the "draft helper".
+        | To extend or replace this functionality, change the value below with your full "draft helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\RevisionHelper" class
+        | - or at least implement the "Varbox\Contracts\RevisionHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - draft() OR app('draft.helper') OR app('\Varbox\Contracts\DraftHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'draft_helper' => \Varbox\Helpers\DraftHelper::class,
 
         /*
         |
