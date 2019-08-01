@@ -30,6 +30,7 @@ use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
 use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\DraftHelperContract;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
@@ -51,6 +52,7 @@ use Varbox\Facades\VarboxFacade;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\ButtonHelper;
+use Varbox\Helpers\DraftHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\RevisionHelper;
@@ -351,7 +353,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/errors.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/backups.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/uploads.php');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/drafts.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/revisions.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/emails.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
@@ -515,6 +516,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderHelperContract::class, $binding['helpers']['uploader_helper'] ?? UploaderHelper::class);
         $this->app->alias(UploaderHelperContract::class, 'uploader.helper');
+
+        $this->app->singleton(DraftHelperContract::class, $binding['helpers']['draft_helper'] ?? DraftHelper::class);
+        $this->app->alias(DraftHelperContract::class, 'draft.helper');
 
         $this->app->singleton(RevisionHelperContract::class, $binding['helpers']['revision_helper'] ?? RevisionHelper::class);
         $this->app->alias(RevisionHelperContract::class, 'revision.helper');
