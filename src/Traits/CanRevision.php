@@ -49,7 +49,7 @@ trait CanRevision
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function revision(QueryCacheServiceContract $cache, RevisionModelContract $revision)
+    public function showRevision(QueryCacheServiceContract $cache, RevisionModelContract $revision)
     {
         if (!($revision instanceof RevisionModelContract && $revision->exists)) {
             $revision = Route::current()->parameter('revision');

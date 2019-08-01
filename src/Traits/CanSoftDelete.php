@@ -5,7 +5,6 @@ namespace Varbox\Traits;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Http\Request;
 
@@ -27,24 +26,49 @@ trait CanSoftDelete
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param Model|int $model
      * @return \Illuminate\Http\RedirectResponse
      * @throws Exception
      */
-    public function restore(Request $request, $id)
+    public function delete(Request $request, $model)
     {
-        $entity = app($this->softDeleteModel());
-
-        if (!$this->canBeSoftDeleted($entity)) {
-            flash()->error('This entity cannot be restored because it\'s not soft-deletable!');
-
-            return back();
-        }
+        $class = $this->softDeleteModel();
 
         try {
-            $model = $entity->newQueryWithoutScopes()
-                ->withGlobalScope(SoftDeletingScope::class, new SoftDeletingScope)
-                ->onlyTrashed()->findOrFail($id);
+            if (!($model instanceof $class)) {
+                $model = (new $class)->newQueryWithoutScopes()
+                    ->withGlobalScope(SoftDeletingScope::class, new SoftDeletingScope)
+                    ->onlyTrashed()->findOrFail($model);
+            }
+
+            $model->forceDelete();
+
+            flash()->success($this->forceDeleteSuccessMessage());
+
+            return redirect($this->softDeleteRedirectTo());
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Model|int $model
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws Exception
+     */
+    public function restore(Request $request, $model)
+    {
+        $class = $this->softDeleteModel();
+
+        try {
+            if (!($model instanceof $class)) {
+                $model = (new $class)->newQueryWithoutScopes()
+                    ->withGlobalScope(SoftDeletingScope::class, new SoftDeletingScope)
+                    ->onlyTrashed()->findOrFail($model);
+            }
 
             /*if (in_array(HasBlocks::class, class_uses($entity))) {
                 $model->doNotSaveBlocks();
@@ -63,46 +87,13 @@ trait CanSoftDelete
     }
 
     /**
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws Exception
-     */
-    public function delete(Request $request, $id)
-    {
-        $entity = app($this->softDeleteModel());
-
-        if (!$this->canBeSoftDeleted($entity)) {
-            flash()->error('This entity cannot be force-deleted because it\'s not soft-deletable!');
-
-            return back();
-        }
-
-        try {
-            $entity->newQueryWithoutScopes()
-                ->withGlobalScope(SoftDeletingScope::class, new SoftDeletingScope)
-                ->onlyTrashed()->findOrFail($id)->forceDelete();
-
-            flash()->success($this->forceDeleteSuccessMessage());
-
-            return redirect($this->softDeleteRedirectTo());
-        } catch (ModelNotFoundException $e) {
-            abort(404);
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
-    /**
-     * Verify if a model can be duplicated.
-     * It has to use the Varbox\Traits\HasDuplicates trait.
+     * Get the message to display after a "force delete" process has been executed successfully.
      *
-     * @param Model $model
-     * @return bool
+     * @return string
      */
-    protected function canBeSoftDeleted(Model $model)
+    protected function forceDeleteSuccessMessage()
     {
-        return in_array(SoftDeletes::class, class_uses($model));
+        return 'The record was successfully force deleted!';
     }
 
     /**
@@ -113,15 +104,5 @@ trait CanSoftDelete
     protected function restoreSuccessMessage()
     {
         return 'The record was successfully restored!';
-    }
-
-    /**
-     * Get the message to display after a "force delete" process has been executed successfully.
-     *
-     * @return string
-     */
-    protected function forceDeleteSuccessMessage()
-    {
-        return 'The record was successfully force deleted!';
     }
 }
