@@ -161,44 +161,6 @@ class PermissionsSeeder extends Seeder
                 'name' => 'uploads-delete',
             ],
         ],
-        'Drafts' => [
-            'List' => [
-                'group' => 'Drafts',
-                'label' => 'List',
-                'guard' => 'admin',
-                'name' => 'drafts-list',
-            ],
-            'view' => [
-                'group' => 'Drafts',
-                'label' => 'View',
-                'guard' => 'admin',
-                'name' => 'drafts-view',
-            ],
-            'Save' => [
-                'group' => 'Drafts',
-                'label' => 'Save',
-                'guard' => 'admin',
-                'name' => 'drafts-save',
-            ],
-            'Approval' => [
-                'group' => 'Drafts',
-                'label' => 'Approval',
-                'guard' => 'admin',
-                'name' => 'drafts-approval',
-            ],
-            'Publish' => [
-                'group' => 'Drafts',
-                'label' => 'Publish',
-                'guard' => 'admin',
-                'name' => 'drafts-publish',
-            ],
-            'Delete' => [
-                'group' => 'Drafts',
-                'label' => 'Delete',
-                'guard' => 'admin',
-                'name' => 'drafts-delete',
-            ],
-        ],
         'Revisions' => [
             'List' => [
                 'group' => 'Revisions',
@@ -466,12 +428,6 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'emails-preview',
             ],
-            'Deleted' => [
-                'group' => 'Emails',
-                'label' => 'Deleted',
-                'guard' => 'admin',
-                'name' => 'emails-deleted',
-            ],
             'Restore' => [
                 'group' => 'Emails',
                 'label' => 'Restore',
@@ -489,6 +445,18 @@ class PermissionsSeeder extends Seeder
                 'label' => 'Force Delete',
                 'guard' => 'admin',
                 'name' => 'emails-force-delete',
+            ],
+            'Draft' => [
+                'group' => 'Emails',
+                'label' => 'Draft',
+                'guard' => 'admin',
+                'name' => 'emails-draft',
+            ],
+            'Publish' => [
+                'group' => 'Emails',
+                'label' => 'Publish',
+                'guard' => 'admin',
+                'name' => 'emails-publish',
             ],
         ],
     ];
