@@ -29,13 +29,19 @@ Route::group([
         /**
          * Soft Delete Actions.
          */
-        Route::put('restore/{id}', ['as' => 'admin.emails.restore', 'uses' => $controllers['emails'] . '@restore', 'permissions' => 'emails-restore']);
-        Route::delete('delete/{id}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-force-delete']);
+        Route::put('restore/{email}', ['as' => 'admin.emails.restore', 'uses' => $controllers['emails'] . '@restore', 'permissions' => 'emails-restore']);
+        Route::delete('delete/{email}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-force-delete']);
+
+        /**
+         * Draft Actions.
+         */
+        Route::post('draft/{email?}', ['as' => 'admin.emails.draft', 'uses' => $controllers['emails'] . '@saveDraft', 'permissions' => 'emails-draft']);
+        Route::put('publish/{email}', ['as' => 'admin.emails.publish', 'uses' => $controllers['emails'] . '@publishDraft', 'permissions' => 'emails-publish']);
 
         /**
          * Revision Actions.
          */
-        Route::get('revision/{revision}', ['as' => 'admin.emails.revision', 'uses' => $controllers['emails'] . '@revision', 'permissions' => 'emails-edit']);
+        Route::get('revision/{revision}', ['as' => 'admin.emails.revision', 'uses' => $controllers['emails'] . '@showRevision', 'permissions' => 'emails-edit']);
 
         /**
          * Duplicate Actions.
