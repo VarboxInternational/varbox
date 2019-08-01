@@ -32,11 +32,13 @@ class EmailRequest extends FormRequest
                 'required',
                 'min:3',
                 Rule::unique('emails', 'name')
-                    ->ignore($model && $model->exists ? $model->id : null),
+                    ->ignore($model && $model->exists ? $model->getKey() : null),
             ],
             'type' => [
                 'required',
-                Rule::in(array_keys(app(EmailModelContract::class)->getTypes()))
+                Rule::in(array_keys(app(EmailModelContract::class)->getTypes())),
+                Rule::unique('emails', 'type')
+                    ->ignore($model && $model->exists ? $model->getKey() : null),
             ],
         ];
     }
