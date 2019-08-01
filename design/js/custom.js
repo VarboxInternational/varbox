@@ -138,6 +138,22 @@ function buttons()
             }
         });
     });
+
+    $('.button-preview').click(function () {
+        var form = $(this).closest('form'),
+            action = $(form).attr('action'),
+            input = form.find('input[name="_method"]'),
+            method = input.val();
+
+        input.remove();
+        form.validate().settings.ignore = "*";
+        form.attr('action', $(this).data('url')).attr('method', 'POST').attr('target', '_blank').submit();
+
+        setTimeout(function () {
+            $(form).attr('action', action).removeAttr('target')
+                .append('<input type="hidden" name="_method" value="' + method + '" />');
+        }, 1000);
+    });
 }
 
 function generators() {
