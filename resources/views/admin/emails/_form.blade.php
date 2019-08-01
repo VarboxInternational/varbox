@@ -130,6 +130,9 @@
             <div class="card-body">
                 <div class="d-flex text-left">
                     {!! button()->cancelAction(route('admin.emails.index')) !!}
+                    <a data-url="{{ route('admin.emails.preview', $item->getKey()) }}" class="button-preview btn btn-dark btn-square text-white ml-4" {!! implode(' ', $attributes) !!}>
+                        <i class="fe fe-eye mr-2"></i>Preview
+                    </a>
                     @if($item->exists)
                         {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
                         @if(!$item->isDrafted())

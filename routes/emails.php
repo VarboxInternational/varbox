@@ -51,6 +51,6 @@ Route::group([
         /**
          * Preview Actions.
          */
-        Route::match(['post', 'put'], 'preview/{email?}', ['as' => 'admin.emails.preview', 'uses' => $controllers['emails'] . '@preview', 'permissions' => 'emails-preview']);
+        Route::post('preview/{email?}', ['as' => 'admin.emails.preview', 'uses' => $controllers['emails'] . '@preview', 'permissions' => 'emails-preview']);
     });
 });

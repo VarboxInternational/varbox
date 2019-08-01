@@ -8,7 +8,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Markdown;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
@@ -180,7 +182,7 @@ class EmailsController extends Controller
      * @param EmailModelContract $email
      * @return \Illuminate\Support\HtmlString
      */
-    /*public function preview(Request $request, EmailModelContract $email = null)
+    public function preview(Request $request, EmailModelContract $email = null)
     {
         app(config('varbox.cms.binding.form_requests.email_form_request', EmailRequest::class));
 
@@ -192,15 +194,14 @@ class EmailsController extends Controller
             $email = $this->model->create($request->all());
         }
 
-        $types = $this->model->getTypes();
-        $view = $types[$email->type]['view'];
-        $data = (array)$email->metadata;
+        $view = $this->model->getTypes()[$email->type]['view'];
+        $data = $email->data;
 
         DB::rollBack();
 
         return (new Markdown(view(), config('mail.markdown')))
             ->render($view, $data);
-    }*/
+    }
 
     /**
      * Get the title to be used on the revision view.
