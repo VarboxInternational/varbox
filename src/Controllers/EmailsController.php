@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
 use Varbox\Traits\CanCrud;
@@ -22,7 +23,7 @@ use Varbox\Traits\CanSoftDelete;
 class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use CanCrud, CanRevision, CanDuplicate, CanSoftDelete;
+    use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
 
     /**
      * @var EmailModelContract
@@ -76,10 +77,6 @@ class EmailsController extends Controller
             } else {
                 $query->withDrafts();
             }
-
-            /*if ($this->model->isDraftingEnabled()) {
-                $query->withDrafts()->publishedOrNot($request->query('published'));
-            }*/
 
             $query->filtered($request->all(), $filter)->sorted($request->all(), $sort);
 
@@ -226,7 +223,7 @@ class EmailsController extends Controller
      */
     protected function revisionView(): string
     {
-        return 'varbox::admin.emails.revision';
+        return 'varbox::admin.emails.edit';
     }
 
     /**
@@ -244,6 +241,37 @@ class EmailsController extends Controller
             'fromEmail' => $this->model->getFromAddress(),
             'fromName' => $this->model->getFromName(),
         ];
+    }
+
+    /**
+     * Get the model to be drafted.
+     *
+     * @return string
+     */
+    protected function draftModel(): string
+    {
+        return config('varbox.bindings.models.email_model', Email::class);
+    }
+
+    /**
+     * Get the form request to validate the draft upon.
+     *
+     * @return string|null
+     */
+    protected function draftRequest(): ?string
+    {
+        return config('varbox.bindings.form_requests.email_form_request', EmailRequest::class);
+    }
+
+    /**
+     * Get the url to redirect after drafting/publishing.
+     *
+     * @param Model $model
+     * @return string
+     */
+    protected function draftRedirectTo(Model $model): string
+    {
+        return route('admin.emails.edit', $model->getKey());
     }
 
     /**
