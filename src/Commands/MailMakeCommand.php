@@ -206,9 +206,13 @@ class MailMakeCommand extends Command
      */
     protected function buildClass()
     {
-        $useQueue = $this->choice('Do you want to make the mail queueable?', [
-            true => 'yes', false => 'no'
-        ], true);
+        if ($this->option('no-interaction') == true) {
+            $useQueue = false;
+        } else {
+            $useQueue = $this->choice('Do you want to make the mail queueable?', [
+                true => 'yes', false => 'no'
+            ], true);
+        }
 
         $content = $this->files->get($this->getClassStub());
         $content = str_replace('DummyNamespace', trim(substr($this->class, 0, strrpos($this->class, '\\')), '\\'), $content);
