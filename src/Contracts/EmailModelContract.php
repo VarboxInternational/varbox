@@ -5,87 +5,52 @@ namespace Varbox\Contracts;
 interface EmailModelContract
 {
     /**
-     * @return mixed
+     * @return string
      */
     public function getFromAddressAttribute();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFromNameAttribute();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSubjectAttribute();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMessageAttribute();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getReplyToAttribute();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAttachmentAttribute();
+
+    /**
+     * @return string
+     * @throws \Varbox\Exceptions\EmailException
+     */
+    public function getViewAttribute();
+
+    /**
+     * Get the corresponding body variables for a email type.
+     *
+     * @return array
+     */
+    public function getVariablesAttribute();
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeAlphabetically($query);
-
-    /**
-     * @param array $data
-     * @return array
-     */
-    public function getData(array $data = []);
-
-    /**
-     * @return mixed
-     */
-    public static function getFromAddress();
-
-    /**
-     * @return mixed
-     */
-    public static function getFromName();
-
-    /**
-     * @return array
-     */
-    public static function getTypes();
-
-    /**
-     * @return array
-     */
-    public static function getVariables();
-
-    /**
-     * @return mixed
-     * @throws \Varbox\Exceptions\EmailException
-     */
-    public function getView();
-
-    /**
-     * @return array
-     */
-    public static function getTypesForSelect();
-
-    /**
-     * @return array
-     */
-    public static function getVariablesForSelect();
-
-    /**
-     * @param int $type
-     * @return array
-     */
-    public static function getEmailVariables($type);
 
     /**
      * @param string $type

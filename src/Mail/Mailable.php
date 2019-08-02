@@ -50,7 +50,7 @@ abstract class Mailable extends BaseMailable
         $this->from($this->getFromAddress(), $this->getFromName());
         $this->subject($this->getSubject() ?: $this->defaultSubject());
 
-        $this->markdown($this->email->getView(), [
+        $this->markdown($this->email->view, [
             'message' => $this->parseMessage(),
         ]);
 

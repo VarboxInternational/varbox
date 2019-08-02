@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Markdown;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
@@ -86,7 +87,7 @@ class EmailsController extends Controller
             $this->title = 'Emails';
             $this->view = view('varbox::admin.emails.index');
             $this->vars = [
-                'types' => $this->model->getTypesForSelect(),
+                'types' => $this->typesToArray(),
             ];
         });
     }
@@ -102,9 +103,9 @@ class EmailsController extends Controller
             $this->title = 'Add Email';
             $this->view = view('varbox::admin.emails.add');
             $this->vars = [
-                'types' => $this->model->getTypesForSelect(),
-                'fromEmail' => $this->model->getFromAddress(),
-                'fromName' => $this->model->getFromName(),
+                'types' => $this->typesToArray(),
+                'fromEmail' => config('mail.from.address', null),
+                'fromName' => config('mail.from.address', null),
             ];
         });
     }
@@ -136,10 +137,10 @@ class EmailsController extends Controller
             $this->title = 'Edit Email';
             $this->view = view('varbox::admin.emails.edit');
             $this->vars = [
-                'types' => $this->model->getTypesForSelect(),
-                'variables' => $this->model->getEmailVariables($email->type),
-                'fromEmail' => $this->model->getFromAddress(),
-                'fromName' => $this->model->getFromName(),
+                'variables' => $email->variables,
+                'types' => $this->typesToArray(),
+                'fromEmail' => config('mail.from.address', null),
+                'fromName' => config('mail.from.address', null),
             ];
         });
     }
@@ -194,13 +195,10 @@ class EmailsController extends Controller
             $email = $this->model->create($request->all());
         }
 
-        $view = $this->model->getTypes()[$email->type]['view'];
-        $data = $email->data;
-
         DB::rollBack();
 
         return (new Markdown(view(), config('mail.markdown')))
-            ->render($view, $data);
+            ->render($email->view, $email->data);
     }
 
     /**
@@ -237,10 +235,10 @@ class EmailsController extends Controller
     protected function revisionViewVariables(Model $revisionable): array
     {
         return [
-            'types' => $this->model->getTypesForSelect(),
-            'variables' => $this->model->getEmailVariables($revisionable->type),
-            'fromEmail' => $this->model->getFromAddress(),
-            'fromName' => $this->model->getFromName(),
+            'variables' => $revisionable->type,
+            'types' => $this->typesToArray(),
+            'fromEmail' => config('mail.from.address', null),
+            'fromName' => config('mail.from.address', null),
         ];
     }
 
@@ -314,5 +312,22 @@ class EmailsController extends Controller
     protected function softDeleteRedirectTo(): string
     {
         return route('admin.emails.index');
+    }
+
+    /**
+     * Get the formatted email types for a select.
+     * Final format will be: [type => title-cased type].
+     *
+     * @return array
+     */
+    protected function typesToArray()
+    {
+        $types = [];
+
+        foreach (array_keys((array)config('varbox.emails.types', [])) as $type) {
+            $types[$type] = Str::title(str_replace(['_', '-', '.'], ' ', $type));
+        }
+
+        return $types;
     }
 }

@@ -36,7 +36,7 @@ class EmailRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                Rule::in(array_keys(app(EmailModelContract::class)->getTypes())),
+                Rule::in(array_keys((array)config('varbox.emails.types', []))),
                 Rule::unique('emails', 'type')
                     ->ignore($model && $model->exists ? $model->getKey() : null),
             ],

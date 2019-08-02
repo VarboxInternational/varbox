@@ -26,6 +26,11 @@ class MailMakeTest extends TestCase
      */
     protected $mailView;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -33,10 +38,6 @@ class MailMakeTest extends TestCase
         $this->mailType = 'test-mail';
         $this->mailClass = app_path('Mail/TestMail.php');
         $this->mailView = resource_path('views/emails/test_mail.blade.php');
-
-        File::delete([
-            $this->mailClass, $this->mailView
-        ]);
 
         $this->app['config']->set('varbox.emails.types', [
             $this->mailType => [
@@ -58,6 +59,7 @@ class MailMakeTest extends TestCase
 
         File::exists(app_path('Mail/TestMail.php'));
         File::exists(resource_path('views/emails/test_mail.blade.php'));
+        File::delete([$this->mailClass, $this->mailView]);
     }
 
     /** @test */
@@ -70,6 +72,8 @@ class MailMakeTest extends TestCase
         $this->artisan('varbox:make-mail', ['type' => $this->mailType, '--no-interaction' => true])
             ->expectsOutput('The mailable class for the "' . $this->mailType . '" email type already exists!')
             ->assertExitCode(0);
+
+        File::delete([$this->mailClass, $this->mailView]);
     }
 
     /** @test */
@@ -78,6 +82,8 @@ class MailMakeTest extends TestCase
         $this->artisan('varbox:make-mail', ['type' => 'test-type', '--no-interaction' => true])
             ->expectsOutput('There is no email type called "test-type".')
             ->assertExitCode(0);
+
+        File::delete([$this->mailClass, $this->mailView]);
     }
 
     /** @test */
@@ -87,10 +93,12 @@ class MailMakeTest extends TestCase
             ->expectsQuestion('Do you want to make the mail queueable?', 'no')
             ->expectsOutput('Mailable created successfully!')
             ->assertExitCode(0);
+
+        File::delete([$this->mailClass, $this->mailView]);
     }
 
     /** @test */
-    public function itcan__generate_the_mailable_class_without_queue_support()
+    public function it_can__generate_the_mailable_class_without_queue_support()
     {
         $this->artisan('varbox:make-mail', ['type' => $this->mailType])
             ->expectsQuestion('Do you want to make the mail queueable?', 'no')
@@ -101,6 +109,8 @@ class MailMakeTest extends TestCase
 
         $this->assertFalse(Str::contains($contents, 'implements ShouldQueue'));
         $this->assertFalse(Str::contains($contents, 'Queueable,'));
+
+        File::delete([$this->mailClass, $this->mailView]);
     }
 
     /** @test */
@@ -115,5 +125,7 @@ class MailMakeTest extends TestCase
 
         $this->assertTrue(Str::contains($contents, 'implements ShouldQueue'));
         $this->assertTrue(Str::contains($contents, 'Queueable,'));
+
+        File::delete([$this->mailClass, $this->mailView]);
     }
 }

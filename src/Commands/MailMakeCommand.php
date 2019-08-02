@@ -111,7 +111,7 @@ class MailMakeCommand extends Command
     public function handle()
     {
         $this->type = $this->argument('type');
-        $this->types = $this->model->getTypes();
+        $this->types = (array)config('varbox.emails.types', []);
 
         if (!$this->isValidEmailType()) {
             return $this->invalidEmailTypeError();
@@ -311,7 +311,7 @@ class MailMakeCommand extends Command
         $this->error('There is no email type called "' . $this->type . '".');
         $this->line(PHP_EOL . 'The available email types are:');
 
-        foreach (array_keys($this->model->getTypes()) as $type) {
+        foreach (array_keys($this->types) as $type) {
             $this->comment('<bg=yellow> </> ' .  $type);
         }
 

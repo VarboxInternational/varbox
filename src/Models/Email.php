@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
@@ -73,7 +72,7 @@ class Email extends Model implements EmailModelContract
     /**
      * Get the from address of an email instance.
      *
-     * @return mixed
+     * @return string
      */
     public function getFromAddressAttribute()
     {
@@ -83,7 +82,7 @@ class Email extends Model implements EmailModelContract
     /**
      * Get the from name of an email instance.
      *
-     * @return mixed
+     * @return string
      */
     public function getFromNameAttribute()
     {
@@ -91,19 +90,9 @@ class Email extends Model implements EmailModelContract
     }
 
     /**
-     * Get the reply to address of an email instance.
-     *
-     * @return mixed
-     */
-    public function getReplyToAttribute()
-    {
-        return $this->data['reply_to'] ?? config('mail.from.address');
-    }
-
-    /**
      * Get the subject of an email instance.
      *
-     * @return mixed
+     * @return string
      */
     public function getSubjectAttribute()
     {
@@ -113,7 +102,7 @@ class Email extends Model implements EmailModelContract
     /**
      * Get the message of an email instance.
      *
-     * @return mixed
+     * @return string
      */
     public function getMessageAttribute()
     {
@@ -121,13 +110,63 @@ class Email extends Model implements EmailModelContract
     }
 
     /**
+     * Get the reply to address of an email instance.
+     *
+     * @return string
+     */
+    public function getReplyToAttribute()
+    {
+        return $this->data['reply_to'] ?? config('mail.from.address');
+    }
+
+    /**
      * Get the subject of an email instance.
      *
-     * @return mixed
+     * @return string
      */
     public function getAttachmentAttribute()
     {
         return $this->data['attachment'] ?? null;
+    }
+
+    /**
+     * Get the corresponding view from the types config property, for a loaded email instance.
+     *
+     * @return string
+     */
+    public function getViewAttribute()
+    {
+        $types = (array)config('varbox.emails.types', []);
+
+        if (!isset($types[$this->type]['view'])) {
+            throw EmailException::viewNotFound();
+        }
+
+        return $types[$this->type]['view'];
+    }
+
+    /**
+     * Get the corresponding body variables for a email type.
+     *
+     * @return array
+     */
+    public function getVariablesAttribute()
+    {
+        $types = (array)config('varbox.emails.types', []);
+        $vars = (array)config('varbox.emails.variables', []);
+        $variables = [];
+
+        if (!isset($types[$this->type]['variables']) || empty($types[$this->type]['variables'])) {
+            return [];
+        }
+
+        foreach ($types[$this->type]['variables'] as $variable) {
+            if (isset($vars[$variable])) {
+                $variables[$variable] = $vars[$variable];
+            }
+        }
+
+        return $variables;
     }
 
     /**
@@ -138,134 +177,6 @@ class Email extends Model implements EmailModelContract
     public function scopeAlphabetically($query)
     {
         $query->orderBy('name', 'asc');
-    }
-
-    /**
-     * Get the corresponding data for a loaded email instance.
-     * Also, at the email data, append the additional provided data from this method.
-     *
-     * @param array $data
-     * @return array
-     */
-    public function getData(array $data = [])
-    {
-        return array_merge((array)$this->data ?? [], $data);
-    }
-
-    /**
-     * Get the from email setting option.
-     *
-     * @return mixed
-     */
-    public static function getFromAddress()
-    {
-        return config('mail.from.address');
-    }
-
-    /**
-     * Get the from name setting option.
-     *
-     * @return mixed
-     */
-    public static function getFromName()
-    {
-        return config('mail.from.name');
-    }
-
-    /**
-     * Get all email types defined inside the "config/varbox/emails.php" file.
-     *
-     * @return array
-     */
-    public static function getTypes()
-    {
-        return (array)config('varbox.emails.types', []);
-    }
-
-    /**
-     * Get all email types defined inside the "config/varbox/emails.php" file.
-     *
-     * @return array
-     */
-    public static function getVariables()
-    {
-        return (array)config('varbox.emails.variables', []);
-    }
-
-    /**
-     * Get the corresponding view from the types config property, for a loaded email instance.
-     *
-     * @return mixed
-     * @throws EmailException
-     */
-    public function getView()
-    {
-        $types = static::getTypes();
-
-        if (!isset($types[$this->type]['view'])) {
-            throw EmailException::viewNotFound();
-        }
-
-        return $types[$this->type]['view'];
-    }
-
-    /**
-     * Get the formatted email types for a select.
-     * Final format will be: [type => title-cased type].
-     *
-     * @return array
-     */
-    public static function getTypesForSelect()
-    {
-        $types = [];
-
-        foreach (array_keys(static::getTypes()) as $type) {
-            $types[$type] = Str::title(str_replace(['_', '-', '.'], ' ', $type));
-        }
-
-        return $types;
-    }
-
-    /**
-     * Get the formatted email variables for a select.
-     * Final format will be: [variable => title-cased variable].
-     *
-     * @return array
-     */
-    public static function getVariablesForSelect()
-    {
-        $variables = [];
-
-        foreach (array_keys(static::getVariables()) as $variable) {
-            $variables[$variable] = title_case(str_replace(['_', '-', '.'], ' ', $variable));
-        }
-
-        return $variables;
-    }
-
-    /**
-     * Get the corresponding body variables for a email type.
-     *
-     * @param int $type
-     * @return array
-     */
-    public static function getEmailVariables($type)
-    {
-        $types = static::getTypes();
-        $vars = static::getVariables();
-        $variables = [];
-
-        if (!isset($types[$type]['variables']) || empty($types[$type]['variables'])) {
-            return [];
-        }
-
-        foreach ($types[$type]['variables'] as $variable) {
-            if (isset($vars[$variable])) {
-                $variables[$variable] = $vars[$variable];
-            }
-        }
-
-        return $variables;
     }
 
     /**
