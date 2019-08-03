@@ -11,6 +11,7 @@ use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
@@ -20,6 +21,7 @@ class Post extends Model
     use HasRevisions;
     use HasDuplicates;
     use HasActivity;
+    use IsDraftable;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
@@ -49,6 +51,15 @@ class Post extends Model
         'views',
         'approved',
         'published_at'
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'drafted_at',
     ];
 
     /**
