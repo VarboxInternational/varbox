@@ -25,6 +25,26 @@ class EmailsTest extends TestCase
      */
     protected $emailNameModified = 'Test Email Name Modified';
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.emails.types', [
+            $this->emailType => [
+                'class' => 'App\Mail\TestMail',
+                'view' => 'emails.test_mail',
+                'variables' => [
+                    'first_name', 'last_name', 'full_name'
+                ],
+            ]
+        ]);
+    }
+
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
     {
@@ -108,6 +128,62 @@ class EmailsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->clickEditButton($this->emailName)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('Edit Email');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->clickEditButton($this->emailName)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('Edit Email');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_edit_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->revokePermission('emails-edit');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->clickEditButton($this->emailName)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Edit Email');
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
@@ -128,7 +204,7 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmail()
     {
-        Email::whereName($this->emailName)->first()->delete();
+        Email::whereName($this->emailName)->first()->forceDelete();
     }
 
     /**
@@ -136,6 +212,6 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmailModified()
     {
-        Email::whereName($this->emailNameModified)->first()->delete();
+        Email::whereName($this->emailNameModified)->first()->forceDelete();
     }
 }
