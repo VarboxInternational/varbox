@@ -3,6 +3,7 @@
 namespace Varbox\Traits;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Exceptions\UploadException;
@@ -49,7 +50,7 @@ trait HasUploads
      */
     public function downloadFile($field)
     {
-        $file = $this->normalizeFileValue($field);
+        $file = $this->normalizeFileField($field);
 
         return upload($file)->download();
     }
@@ -62,7 +63,7 @@ trait HasUploads
      */
     public function showFile($field)
     {
-        $file = $this->normalizeFileValue($field);
+        $file = $this->normalizeFileField($field);
 
         return upload($file)->show();
     }
@@ -76,7 +77,7 @@ trait HasUploads
      */
     public function uploadedFile($field)
     {
-        $file = $this->normalizeFileValue($field);
+        $file = $this->normalizeFileField($field);
 
         return uploaded($file);
     }
@@ -88,9 +89,17 @@ trait HasUploads
      * @param string $field
      * @return mixed
      */
-    protected function normalizeFileValue($field)
+    protected function normalizeFileField($field)
     {
-        return Str::startsWith($field, 'metadata') && array_key_exists(HasMetadata::class, class_uses(static::class)) ?
-            $this->metadata($field) : $this->{$field};
+        if (Str::contains($field, '[') && Str::contains($field, ']')) {
+            $attribute = strtok($field, '[');
+
+            return Arr::get(
+                get_object_vars_recursive($this->{$attribute}),
+                str_replace('][', '.', trim(str_replace($attribute, '', $field), '.[]'))
+            );
+        }
+
+        return $this->{$field};
     }
 }
