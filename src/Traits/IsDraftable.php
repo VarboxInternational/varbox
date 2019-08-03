@@ -66,7 +66,7 @@ trait IsDraftable
 
             $draft->fireModelEvent('drafted', true);
 
-            return $draft;
+            return $draft->fresh();
         } catch (Exception $e) {
             throw $e;
         }
