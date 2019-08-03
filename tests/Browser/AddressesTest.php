@@ -160,7 +160,7 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
                 ->assertSee('Addresses')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently viewing the addresses for user: ' . $this->user->email);
         });
     }
 
@@ -174,7 +174,7 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
                 ->assertSee('Addresses')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently viewing the addresses for user: ' . $this->user->email);
         });
     }
 
@@ -202,7 +202,7 @@ class AddressesTest extends TestCase
                 ->clickLink('Add New')
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/create')
                 ->assertSee('Add Address')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently adding an address for user: ' . $this->user->email);
         });
     }
 
@@ -218,7 +218,7 @@ class AddressesTest extends TestCase
                 ->clickLink('Add New')
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/create')
                 ->assertSee('Add Address')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently adding an address for user: ' . $this->user->email);
         });
     }
 
@@ -250,7 +250,7 @@ class AddressesTest extends TestCase
                 ->clickEditButton($this->addressAddress)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
                 ->assertSee('Edit Address')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently editing an address of user: ' . $this->user->email);
         });
 
         $this->deleteAddress();
@@ -270,7 +270,7 @@ class AddressesTest extends TestCase
                 ->clickEditButton($this->addressAddress)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
                 ->assertSee('Edit Address')
-                ->assertSee('You are viewing the addresses for user: ' . $this->user->email);
+                ->assertSee('You are currently editing an address of user: ' . $this->user->email);
         });
 
         $this->deleteAddress();
