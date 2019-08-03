@@ -36,9 +36,12 @@ class CreateTestingTables extends Migration
             $table->integer('votes')->default(0);
             $table->integer('views')->default(0);
             $table->boolean('approved')->default(false);
+
             $table->timestamp('published_at')->nullable();
-            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade')->onUpdate('set null');
+            $table->timestamp('drafted_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade')->onUpdate('set null');
         });
 
         Schema::create('test_reviews', function (Blueprint $table) {
