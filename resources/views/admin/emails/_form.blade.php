@@ -58,13 +58,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    {!! form_admin()->text('data[from_name]', 'From Name', $item && $item->exists ? $item->data['from_name'] : null, ['placeholder' => 'default is ' . $fromName]) !!}
+                    {!! form_admin()->text('data[from_name]', 'From Name', null, ['placeholder' => 'default is ' . $fromName]) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! form_admin()->text('data[from_email]', 'From Email', $item && $item->exists ? $item->data['from_email'] : null, ['placeholder' => 'default is ' . $fromEmail]) !!}
+                    {!! form_admin()->text('data[from_email]', 'From Email', null, ['placeholder' => 'default is ' . $fromEmail]) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! form_admin()->text('data[reply_to]', 'Reply To', $item && $item->exists ? $item->data['reply_to'] : null, ['placeholder' => 'default is ' . $fromEmail]) !!}
+                    {!! form_admin()->text('data[reply_to]', 'Reply To', null, ['placeholder' => 'default is ' . $fromEmail]) !!}
                 </div>
             </div>
         </div>
