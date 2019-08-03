@@ -64,6 +64,50 @@ class EmailsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/emails/create')
+                ->assertSee('Add Email');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/emails/create')
+                ->assertSee('Add Email');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->revokePermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Add Email');
+        });
+    }
+
     /**
      * @return void
      */
