@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageServiceProvider;
 use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
 
@@ -27,7 +28,7 @@ class UploadServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
+        $this->app->register(ImageServiceProvider::class);
     }
 
     /** @test */
