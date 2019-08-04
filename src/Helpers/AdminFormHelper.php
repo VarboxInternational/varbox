@@ -189,7 +189,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function text($name, $label = null, $value = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -210,7 +210,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function textarea($name, $label = null, $value = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -234,7 +234,7 @@ class AdminFormHelper implements AdminFormHelperContract
         $list = $list instanceof Collection ? $list->toArray() : $list;
         $selected = $selected instanceof Collection ? $selected->toArray() : $selected;
 
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control select-input ' . ($options['class'] ?? '');
         $options['data-selected'] = is_array($selected) ? json_encode($selected) : $selected;
 
@@ -255,7 +255,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function password($name, $label = null, array $options = [], $generate = false)
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
 
         if ($generate) {
@@ -280,7 +280,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function file($name, $label = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'custom-file-input ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -300,7 +300,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function number($name, $label = null, $value = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
         $options['data-value'] = $value;
 
@@ -324,7 +324,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function checkbox($name, $label = null, $subLabel = null, $value = 1, $checked = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'custom-control-input ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -349,7 +349,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function radio($name, $label = null, $subLabel = null, $value = 1, $checked = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'custom-control-input ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -374,7 +374,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function yesno($name, $label = null, $subLabel = null, $value = 1, $checked = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'custom-switch-input ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -398,7 +398,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function date($name, $label = null, $value = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
         $options['data-mask'] = '0000-00-00';
         $options['data-mask-clearifnotmatch'] = 'true';
@@ -422,7 +422,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function time($name, $label = null, $value = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
         $options['data-mask'] = '00:00';
         $options['data-mask-clearifnotmatch'] = 'true';
@@ -446,7 +446,7 @@ class AdminFormHelper implements AdminFormHelperContract
     public function datetime($name, $label = null, $value = null, array $options = [])
     {
         $options['data-value'] = $value;
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control ' . ($options['class'] ?? '');
         $options['data-mask'] = '0000-00-00 00:00';
         $options['data-mask-clearifnotmatch'] = 'true';
@@ -469,7 +469,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function editor($name, $label = null, $value = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'editor-input ' . ($options['class'] ?? '');
 
         return $this->wrap(
@@ -489,7 +489,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function calendar($name, $label = null, $value = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'date-input ' . ($options['class'] ?? '');
         $options['data-value'] = $value;
 
@@ -512,7 +512,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function selectRange($name, $label = null, $start = 0, $end = 0, $selected = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'select-input ' . ($options['class'] ?? '');
         $options['data-selected'] = $selected;
 
@@ -535,7 +535,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function selectYear($name, $label = null, $start = null, $end = null, $selected = null, array $options = [])
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'form-control select-input ' . ($options['class'] ?? '');
         $options['data-selected'] = is_array($selected) ? json_encode($selected) : $selected;
 
@@ -557,7 +557,7 @@ class AdminFormHelper implements AdminFormHelperContract
      */
     public function selectMonth($name, $label = null, $selected = null, array $options = [], $format = '%B')
     {
-        $options['id'] = $options['id'] ?? $name . '-input';
+        $options['id'] = $options['id'] ?? str_replace(['[', ']'], '-', $name) . '-input';
         $options['class'] = 'select-input ' . ($options['class'] ?? '');
         $options['data-selected'] = $selected;
 
@@ -607,7 +607,7 @@ class AdminFormHelper implements AdminFormHelperContract
 
         $_label = [];
 
-        $_label[] = '<label class="form-label" for="' . (empty($options['id']) ? $name . '-input' : $options['id']) . '">';
+        $_label[] = '<label class="form-label" for="' . (empty($options['id']) ? str_replace(['[', ']'], '-', $name) . '-input' : $options['id']) . '">';
         $_label[] = $label ?: ucfirst(preg_replace("/[^a-zA-Z0-9\s]/", " ", $name));
 
         if (in_array('required', $options, true) || array_key_exists('required', $options)) {
