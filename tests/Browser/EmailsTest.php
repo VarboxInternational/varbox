@@ -261,6 +261,64 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_update_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/emails')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/emails', $this->emailModel)
+                ->assertSee($this->emailNameModified);
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_update_an_email_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->emailNameModified);
+        });
+
+        $this->deleteEmailModified();
+    }
+
+
+
+
+
+
+
     /**
      * @return void
      */
