@@ -4,11 +4,17 @@ namespace Varbox\Tests\Browser\Browsers;
 
 use Laravel\Dusk\Browser as DuskBrowser;
 use Laravel\Dusk\ElementResolver;
-use Varbox\Tests\Browser\Concerns\InteractsWithCrud;
+use Varbox\Tests\Browser\Concerns\InteractsWithButtons;
+use Varbox\Tests\Browser\Concerns\InteractsWithEditors;
+use Varbox\Tests\Browser\Concerns\InteractsWithFilters;
+use Varbox\Tests\Browser\Concerns\InteractsWithRecords;
 
 class VarboxBrowser extends DuskBrowser
 {
-    use InteractsWithCrud;
+    use InteractsWithRecords;
+    use InteractsWithButtons;
+    use InteractsWithFilters;
+    use InteractsWithEditors;
 
     /**
      * Create a browser instance.
