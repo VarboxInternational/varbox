@@ -261,11 +261,6 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
-
-
-
-
-
     /** @test */
     public function an_admin_can_update_an_email()
     {
@@ -313,11 +308,47 @@ class EmailsTest extends TestCase
         $this->deleteEmailModified();
     }
 
+    /** @test */
+    public function an_admin_can_soft_delete_an_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-soft-delete');
 
+        $this->createEmail();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->assertSourceMissing('button-restore')
+                ->deleteRecord($this->emailName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->assertSourceHas('button-restore');
+        });
 
+        $this->deleteEmail();
+    }
 
+    /** @test */
+    public function an_admin_cannot_soft_delete_an_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->revokePermission('emails-soft-delete');
 
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteEmail();
+    }
 
     /**
      * @return void
@@ -339,7 +370,7 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmail()
     {
-        Email::whereName($this->emailName)->first()->forceDelete();
+        Email::withTrashed()->whereName($this->emailName)->first()->forceDelete();
     }
 
     /**
@@ -347,7 +378,7 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmailModified()
     {
-        Email::whereName($this->emailNameModified)->first()->forceDelete();
+        Email::withTrashed()->whereName($this->emailNameModified)->first()->forceDelete();
     }
 
     /**
