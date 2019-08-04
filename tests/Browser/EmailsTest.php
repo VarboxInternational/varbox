@@ -350,6 +350,51 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_force_delete_an_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->grantPermission('emails-force-delete');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->deleteRecord($this->emailName)
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->deleteRecord($this->emailName)
+                ->assertSee('The record was successfully force deleted!')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertDontSee($this->emailName);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_force_delete_an_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->revokePermission('emails-force-delete');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->assertSee($this->emailName)
+                ->deleteRecord($this->emailName)
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->deleteRecord($this->emailName)
+                ->assertDontSee('The record was successfully force deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
