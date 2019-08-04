@@ -2,6 +2,8 @@
 
 namespace Varbox\Tests\Browser;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Str;
 use Varbox\Models\Email;
 
 class EmailsTest extends TestCase
@@ -26,15 +28,13 @@ class EmailsTest extends TestCase
     protected $emailNameModified = 'Test Email Name Modified';
 
     /**
-     * Setup the test environment.
-     *
-     * @return void
+     * @param Application $app
      */
-    public function setUp(): void
+    protected function getEnvironmentSetUp($app)
     {
-        parent::setUp();
+        parent::getEnvironmentSetUp($app);
 
-        $this->app['config']->set('varbox.emails.types', [
+        $app['config']->set('varbox.emails.types', [
             $this->emailType => [
                 'class' => 'App\Mail\TestMail',
                 'view' => 'emails.test_mail',
@@ -184,6 +184,83 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_create_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->type('#data-subject--input', $this->emailSubject)
+                ->froala('data-message--input', $this->emailMessage)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/emails')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/emails/', new Email)
+                ->assertSee($this->emailName);
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_email_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->type('#data-subject--input', $this->emailSubject)
+                ->froala('data-message--input', $this->emailMessage)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/emails/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_email_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+        $this->admin->grantPermission('emails-edit');
+
+        $this->browse(function ($browser) {
+            $browser->resize(2000, 2000)->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->type('#data-subject--input', $this->emailSubject)
+                ->froala('data-message--input', $this->emailMessage)
+                ->screenshot('aaa')
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/emails/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->emailName)
+                ->assertSee($this->emailTypeFormatted())
+                ->assertInputValue('#data-subject--input', $this->emailSubject)
+                ->assertSee($this->emailMessage);
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
@@ -213,5 +290,13 @@ class EmailsTest extends TestCase
     protected function deleteEmailModified()
     {
         Email::whereName($this->emailNameModified)->first()->forceDelete();
+    }
+
+    /**
+     * @return string
+     */
+    protected function emailTypeFormatted()
+    {
+        return Str::title(str_replace(['_', '-', '.'], ' ', $this->emailType));
     }
 }
