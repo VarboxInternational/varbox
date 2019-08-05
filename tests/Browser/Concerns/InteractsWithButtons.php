@@ -71,4 +71,15 @@ trait InteractsWithButtons
     {
         return $this->clickButton($text, 'button-delete');
     }
+
+    /**
+     * Click the restore button of table row containing the specified text.
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function clickRestoreButton($text)
+    {
+        return $this->clickButton($text, 'button-restore');
+    }
 }
