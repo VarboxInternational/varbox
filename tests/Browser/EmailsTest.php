@@ -439,6 +439,148 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_filter_emails_by_keyword()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#search-input', $this->emailName)
+                ->assertQueryStringHas('search', $this->emailName)
+                ->assertSee($this->emailName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#search-input', $this->emailNameModified)
+                ->assertQueryStringHas('search', $this->emailNameModified)
+                ->assertDontSee($this->emailName)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_emails_by_type()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsBySelect('#type-input', $this->emailTypeFormatted())
+                ->assertQueryStringHas('type', $this->emailType)
+                ->assertRecordsCount(1)
+                ->assertSee($this->emailName);
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_emails_by_published()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsBySelect('#drafted-input', 'Yes')
+                ->assertQueryStringHas('drafted', 1)
+                ->assertRecordsCount(1)
+                ->assertSee($this->emailName)
+                ->visit('/admin/emails')
+                ->filterRecordsBySelect('#drafted-input', 'No')
+                ->assertQueryStringHas('drafted', 2)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_emails_by_trashed()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsBySelect('#trashed-input', 'No')
+                ->assertQueryStringHas('trashed', 2)
+                ->assertRecordsCount(1)
+                ->assertSee($this->emailName)
+                ->visit('/admin/emails')
+                ->filterRecordsBySelect('#trashed-input', 'Yes')
+                ->assertQueryStringHas('trashed', 1)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_users_by_start_date()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_emails_by_end_date()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->createEmail();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/emails')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/emails', $this->emailModel)
+                ->assertSee($this->emailName);
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
