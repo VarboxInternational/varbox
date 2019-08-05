@@ -320,12 +320,10 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName)
-                ->assertSourceMissing('button-restore')
                 ->deleteRecord($this->emailName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSee($this->emailName)
-                ->assertSourceHas('button-restore');
+                ->assertSee($this->emailName);
         });
 
         $this->deleteEmail();
@@ -389,6 +387,52 @@ class EmailsTest extends TestCase
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->deleteRecord($this->emailName)
                 ->assertDontSee('The record was successfully force deleted!')
+                ->assertSee('Unauthorized');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_restore_an_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->grantPermission('emails-restore');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->deleteRecord($this->emailName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->assertSee($this->emailName)
+                ->restoreRecord($this->emailName)
+                ->assertSee('The record was successfully restored!');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_restore_an_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->revokePermission('emails-restore');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->deleteRecord($this->emailName)
+                ->visitLastPage('/admin/emails/', $this->emailModel)
+                ->restoreRecord($this->emailName)
+                ->assertDontSee('The record was successfully restored!')
                 ->assertSee('Unauthorized');
         });
 
