@@ -75,4 +75,19 @@ trait InteractsWithRecords
 
         return $this;
     }
+
+    /**
+     * Restore the record in list corresponding to the table row containing the specified text.
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function restoreRecord($text)
+    {
+        $this->clickRestoreButton($text)->whenAvailable('.bootbox-confirm', function ($modal) {
+            $modal->assertSee('Are you sure?')->press('Yes');
+        });
+
+        return $this;
+    }
 }
