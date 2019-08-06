@@ -82,4 +82,14 @@ trait InteractsWithButtons
     {
         return $this->clickButton($text, 'button-restore');
     }
+
+    /**
+     * Click the draft button.
+     *
+     * @return $this
+     */
+    public function clickDraftButton()
+    {
+        return $this->clickButtonWithConfirm('Save As Draft', 'a');
+    }
 }
