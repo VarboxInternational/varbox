@@ -931,6 +931,73 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_duplicate_an_email_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->clickDuplicateButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertPathBeginsWith('/admin/emails/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->emailName . ' (1)');
+        });
+
+        $this->deleteEmail();
+        $this->deleteDuplicatedEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_duplicate_an_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('emails-duplicate');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->clickDuplicateButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertPathBeginsWith('/admin/emails/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->emailName . ' (1)');
+        });
+
+        $this->deleteEmail();
+        $this->deleteDuplicatedEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_duplicate_an_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->revokePermission('emails-duplicate');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertDontSee('Duplicate');
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
@@ -976,6 +1043,15 @@ class EmailsTest extends TestCase
     protected function deleteEmailModified()
     {
         Email::withTrashed()->withDrafts()->whereName($this->emailNameModified)
+            ->first()->forceDelete();
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteDuplicatedEmail()
+    {
+        Email::withTrashed()->withDrafts()->whereName($this->emailName . ' (1)')
             ->first()->forceDelete();
     }
 
