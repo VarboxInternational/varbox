@@ -2,6 +2,8 @@
 
 namespace Varbox\Composers;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Menu\MenuItem;
@@ -10,13 +12,24 @@ use Varbox\Varbox;
 class AdminMenuComposer
 {
     /**
+     * @var Authenticatable
+     */
+    protected $user;
+
+    /**
+     * @var Collection
+     */
+    protected $permissions;
+
+    /**
      * Construct the admin menu.
      *
      * @param View $view
      */
     public function compose(View $view)
     {
-        $user = auth()->user();
+        $this->user = auth()->user();
+
         $menu = menu_admin()->make(function (AdminMenuHelper $menu) {
             $menu->add(function (MenuItem $item) {
                 $item->name('Home')->url(route('admin'))->data('icon', 'fa-home')->active('admin');
@@ -40,7 +53,7 @@ class AdminMenuComposer
                 });*/
 
                 $menu->child($cms, function (MenuItem $item) {
-                    $item->name('Emails')->url(route('admin.emails.index'))->permissions('emails-list')->active('admin/emails/*');
+                    $item->name('Emails')->url(route('admin.emails.index'))->permissions('emails-list', 'aa')->active('admin/emails/*');
                 });
 
                 /*$menu->child($cms, function (MenuItem $item) {
@@ -199,10 +212,35 @@ class AdminMenuComposer
                     $item->name('Backups')->url(route('admin.backups.index'))->permissions('backups-list')->active('admin/backups/*');
                 });
             });
-        })->filter(function (MenuItem $item) use ($user) {
-            return $user->isSuper() || $user->hasAnyPermission($item->permissions());
+        })->filter(function (MenuItem $item) {
+            return $this->user->isSuper() || $this->userHasAnyMenuPermission($item->permissions());
         });
 
         $view->with('menu', $menu);
+    }
+
+    /**
+     * Determine if the user has any of the given permissions.
+     *
+     * @param array $permissions
+     * @return bool
+     */
+    protected function userHasAnyMenuPermission(array $permissions = [])
+    {
+        if (empty($permissions)) {
+            return true;
+        }
+
+        if (!$this->permissions) {
+            $this->permissions = $this->user->getPermissions()->pluck('name');
+        }
+
+        foreach ($permissions as $permission) {
+            if ($this->permissions->contains($permission)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
