@@ -416,35 +416,17 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'emails-edit',
             ],
-            'Duplicate' => [
+            'Delete' => [
                 'group' => 'Emails',
-                'label' => 'Duplicate',
+                'label' => 'Delete',
                 'guard' => 'admin',
-                'name' => 'emails-duplicate',
-            ],
-            'Preview' => [
-                'group' => 'Emails',
-                'label' => 'Preview',
-                'guard' => 'admin',
-                'name' => 'emails-preview',
+                'name' => 'emails-delete',
             ],
             'Restore' => [
                 'group' => 'Emails',
                 'label' => 'Restore',
                 'guard' => 'admin',
                 'name' => 'emails-restore',
-            ],
-            'Soft Delete' => [
-                'group' => 'Emails',
-                'label' => 'Soft Delete',
-                'guard' => 'admin',
-                'name' => 'emails-soft-delete',
-            ],
-            'Force Delete' => [
-                'group' => 'Emails',
-                'label' => 'Force Delete',
-                'guard' => 'admin',
-                'name' => 'emails-force-delete',
             ],
             'Draft' => [
                 'group' => 'Emails',
@@ -457,6 +439,18 @@ class PermissionsSeeder extends Seeder
                 'label' => 'Publish',
                 'guard' => 'admin',
                 'name' => 'emails-publish',
+            ],
+            'Duplicate' => [
+                'group' => 'Emails',
+                'label' => 'Duplicate',
+                'guard' => 'admin',
+                'name' => 'emails-duplicate',
+            ],
+            'Preview' => [
+                'group' => 'Emails',
+                'label' => 'Preview',
+                'guard' => 'admin',
+                'name' => 'emails-preview',
             ],
         ],
     ];
