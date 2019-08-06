@@ -24,13 +24,13 @@ Route::group([
         Route::post('store', ['as' => 'admin.emails.store', 'uses' => $controllers['emails'] . '@store', 'permissions' => 'emails-add']);
         Route::get('edit/{email}', ['as' => 'admin.emails.edit', 'uses' => $controllers['emails'] . '@edit', 'permissions' => 'emails-edit']);
         Route::put('update/{email}', ['as' => 'admin.emails.update', 'uses' => $controllers['emails'] . '@update', 'permissions' => 'emails-edit']);
-        Route::delete('destroy/{email}', ['as' => 'admin.emails.destroy', 'uses' => $controllers['emails'] . '@destroy', 'permissions' => 'emails-soft-delete']);
+        Route::delete('destroy/{email}', ['as' => 'admin.emails.destroy', 'uses' => $controllers['emails'] . '@destroy', 'permissions' => 'emails-delete']);
 
         /**
          * Soft Delete Actions.
          */
         Route::put('restore/{email}', ['as' => 'admin.emails.restore', 'uses' => $controllers['emails'] . '@restore', 'permissions' => 'emails-restore']);
-        Route::delete('delete/{email}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-force-delete']);
+        Route::delete('delete/{email}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-delete']);
 
         /**
          * Draft Actions.
