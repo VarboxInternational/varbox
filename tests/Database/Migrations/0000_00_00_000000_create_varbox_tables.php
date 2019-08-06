@@ -273,7 +273,7 @@ class CreateVarboxTables extends Migration
                 $table->increments('id');
 
                 $table->string('name')->unique();
-                $table->string('type');
+                $table->string('type')->nullable();
                 $table->json('data')->nullable();
 
                 $table->softDeletes();
