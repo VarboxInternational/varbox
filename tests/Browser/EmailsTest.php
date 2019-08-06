@@ -247,7 +247,6 @@ class EmailsTest extends TestCase
                 ->select2('#type-input', $this->emailTypeFormatted())
                 ->type('#data-subject--input', $this->emailSubject)
                 ->froala('data-message--input', $this->emailMessage)
-                ->screenshot('aaa')
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/emails/edit')
@@ -860,12 +859,77 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_publish_a_drafted_email_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
 
+        $this->createEmail();
 
+        $this->emailModel = $this->emailModel->saveAsDraft();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->clickPublishButton()
+                ->pause(500)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
 
+        $this->deleteEmail();
+    }
 
+    /** @test */
+    public function an_admin_can_publish_a_drafted_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('emails-publish');
 
+        $this->createEmail();
+
+        $this->emailModel = $this->emailModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->clickPublishButton()
+                ->pause(500)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_publish_a_drafted_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->revokePermission('emails-publish');
+
+        $this->createEmail();
+
+        $this->emailModel = $this->emailModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deleteEmail();
+    }
 
     /**
      * @return void
