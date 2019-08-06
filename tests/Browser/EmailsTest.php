@@ -529,7 +529,7 @@ class EmailsTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_filter_users_by_start_date()
+    public function an_admin_can_filter_emails_by_start_date()
     {
         $this->admin->grantPermission('emails-list');
 
@@ -581,6 +581,31 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_clear_email_filters()
+    {
+        $this->admin->grantPermission('emails-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails/?search=list&type=test&drafted=1&trashed=2&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('type')
+                ->assertQueryStringHas('drafted')
+                ->assertQueryStringHas('trashed')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/emails/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('type')
+                ->assertQueryStringMissing('drafted')
+                ->assertQueryStringMissing('trashed')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      */
@@ -588,6 +613,21 @@ class EmailsTest extends TestCase
     {
         $this->emailModel = Email::create([
             'name' => $this->emailName,
+            'type' => $this->emailType,
+            'data' => [
+                'subject' => $this->emailSubject,
+                'message' => $this->emailMessage,
+            ],
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function createEmailModified()
+    {
+        $this->emailModel = Email::create([
+            'name' => $this->emailNameModified,
             'type' => $this->emailType,
             'data' => [
                 'subject' => $this->emailSubject,
