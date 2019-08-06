@@ -8,9 +8,9 @@
                 <h4>You are currently viewing a revision of the model!</h4>
                 <div class="btn-list mt-4">
                     @permission('revisions-rollback')
-                    {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}
-                    {!! form()->button(' <i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
-                    {!! form()->close() !!}
+                        {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}
+                        {!! form()->button(' <i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
+                        {!! form()->close() !!}
                     @endpermission
 
                     <a href="{{ session('revision_back_url_' . $revision->getKey()) }}" class="btn btn-secondary ml-4">
