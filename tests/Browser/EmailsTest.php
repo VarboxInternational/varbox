@@ -606,6 +606,62 @@ class EmailsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_creating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function it_requires_a_type_when_creating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+    }
+
     /**
      * @return void
      */
