@@ -662,6 +662,75 @@ class EmailsTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_name_when_updating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', '')
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_updating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+
+        $this->createEmail();
+        $this->createEmailModified();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailNameModified)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deleteEmailModified();
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function it_requires_a_type_when_updating_an_email()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->resize(1600, 1600)
+                ->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailName)
+                ->click('.select2-selection__clear')
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+
+        $this->deleteEmail();
+    }
+
     /**
      * @return void
      */
