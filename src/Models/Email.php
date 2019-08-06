@@ -222,6 +222,7 @@ class Email extends Model implements EmailModelContract
     {
         return DuplicateOptions::instance()
             ->uniqueColumns('name')
+            ->excludeColumns('type')
             ->excludeRelations('revisions', 'activity');
     }
 
