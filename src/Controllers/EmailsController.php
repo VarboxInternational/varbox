@@ -235,7 +235,7 @@ class EmailsController extends Controller
     protected function revisionViewVariables(Model $revisionable): array
     {
         return [
-            'variables' => $revisionable->type,
+            'variables' => $revisionable->variables,
             'types' => $this->typesToArray(),
             'fromEmail' => config('mail.from.address', null),
             'fromName' => config('mail.from.address', null),

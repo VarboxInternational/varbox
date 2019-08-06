@@ -117,10 +117,10 @@
 
 @if($item->exists)
     @if(isset($revision))
-        {!! revision()->container('admin.emails.revision', $item, $revision) !!}
+        {!! revision()->container($item, 'admin.emails.revision', $revision) !!}
     @else
-        {!! revision()->container('admin.emails.revision', $item) !!}
-        {!! draft()->container('admin.emails.publish', $item) !!}
+        {!! revision()->container($item, 'admin.emails.revision') !!}
+        {!! draft()->container($item, 'admin.emails.publish', 'emails-publish') !!}
     @endif
 @endif
 
@@ -130,16 +130,21 @@
             <div class="card-body">
                 <div class="d-flex text-left">
                     {!! button()->cancelAction(route('admin.emails.index')) !!}
-                    {!! button()->previewRecord(route('admin.emails.preview', $item->getKey())) !!}
-                    @if($item->exists)
-                        {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
-                        @if(!$item->isDrafted())
-                            {!! button()->saveAsDraft(route('admin.emails.draft', $item->getKey())) !!}
+                    @permission('emails-preview')
+                        {!! button()->previewRecord(route('admin.emails.preview', $item->getKey())) !!}
+                    @endpermission
+                    @permission('emails-draft')
+                        @if(!($item->exists && $item->isDrafted()))
+                        {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
                         @endif
+                    @endpermission
+                    @if($item->exists)
+                        @permission('emails-duplicate')
+                        {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
+                        @endpermission
                         {!! button()->saveAndStay() !!}
                     @else
                         {!! button()->saveAndNew() !!}
-                        {!! button()->saveAsDraft(route('admin.emails.draft')) !!}
                         {!! button()->saveAndContinue('admin.emails.edit') !!}
                     @endif
                     {!! button()->saveRecord() !!}
