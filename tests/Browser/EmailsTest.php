@@ -726,13 +726,6 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_create_a_drafted_email_if_it_is_a_super_admin()
     {
@@ -796,6 +789,75 @@ class EmailsTest extends TestCase
                 ->clickLink('Add New')
                 ->assertDontSee('Save As Draft');
         });
+    }
+
+    /** @test */
+    public function an_admin_can_save_an_email_as_draft_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailNameModified)
+                ->clickDraftButton()
+                ->pause(500)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('The draft was successfully updated!')
+                ->assertInputValue('#name-input', $this->emailNameModified)
+                ->assertSee('This record is currently drafted')
+                ->assertSee('Publish Draft');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_save_an_email_as_draft_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('emails-draft');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->type('#name-input', $this->emailNameModified)
+                ->clickDraftButton()
+                ->pause(500)
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertSee('The draft was successfully updated!')
+                ->assertInputValue('#name-input', $this->emailNameModified)
+                ->assertSee('This record is currently drafted')
+                ->assertSee('Publish Draft');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_save_an_email_as_draft_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->revokePermission('emails-draft');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertDontSee('Save As Draft');
+        });
+
+        $this->deleteEmail();
     }
 
 
