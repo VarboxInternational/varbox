@@ -312,7 +312,7 @@ class EmailsTest extends TestCase
     public function an_admin_can_soft_delete_an_email_if_it_has_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->grantPermission('emails-delete');
 
         $this->createEmail();
 
@@ -333,7 +333,7 @@ class EmailsTest extends TestCase
     public function an_admin_cannot_soft_delete_an_email_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->revokePermission('emails-soft-delete');
+        $this->admin->revokePermission('emails-delete');
 
         $this->createEmail();
 
@@ -352,8 +352,7 @@ class EmailsTest extends TestCase
     public function an_admin_can_force_delete_an_email_if_it_has_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-soft-delete');
-        $this->admin->grantPermission('emails-force-delete');
+        $this->admin->grantPermission('emails-delete');
 
         $this->createEmail();
 
@@ -374,19 +373,15 @@ class EmailsTest extends TestCase
     public function an_admin_cannot_force_delete_an_email_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-soft-delete');
-        $this->admin->revokePermission('emails-force-delete');
+        $this->admin->revokePermission('emails-delete');
 
         $this->createEmail();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->assertSee($this->emailName)
-                ->deleteRecord($this->emailName)
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->deleteRecord($this->emailName)
-                ->assertDontSee('The record was successfully force deleted!')
+                ->deleteAnyRecord()
+                ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
 
@@ -397,7 +392,7 @@ class EmailsTest extends TestCase
     public function an_admin_can_restore_an_email_if_it_has_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->grantPermission('emails-delete');
         $this->admin->grantPermission('emails-restore');
 
         $this->createEmail();
@@ -421,7 +416,7 @@ class EmailsTest extends TestCase
     public function an_admin_cannot_restore_an_email_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-soft-delete');
+        $this->admin->grantPermission('emails-delete');
         $this->admin->revokePermission('emails-restore');
 
         $this->createEmail();
@@ -731,6 +726,85 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_create_a_drafted_email_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->clickDraftButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/emails/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->emailName)
+                ->assertSee('This record is currently drafted')
+                ->assertSee('Publish Draft');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_drafted_email_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('emails-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->type('#name-input', $this->emailName)
+                ->select2('#type-input', $this->emailTypeFormatted())
+                ->clickDraftButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/emails/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->emailName)
+                ->assertSee('This record is currently drafted')
+                ->assertSee('Publish Draft');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_create_a_drafted_email_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-add');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->revokePermission('emails-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickLink('Add New')
+                ->assertDontSee('Save As Draft');
+        });
+    }
+
+
+
+
+
+
+
+
     /**
      * @return void
      */
@@ -766,7 +840,8 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmail()
     {
-        Email::withTrashed()->whereName($this->emailName)->first()->forceDelete();
+        Email::withTrashed()->withDrafts()->whereName($this->emailName)
+            ->first()->forceDelete();
     }
 
     /**
@@ -774,7 +849,8 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmailModified()
     {
-        Email::withTrashed()->whereName($this->emailNameModified)->first()->forceDelete();
+        Email::withTrashed()->withDrafts()->whereName($this->emailNameModified)
+            ->first()->forceDelete();
     }
 
     /**
