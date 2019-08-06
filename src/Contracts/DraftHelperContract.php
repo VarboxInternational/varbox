@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 interface DraftHelperContract
 {
     /**
-     * @param string $route
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $route
+     * @param string|null $permission
      * @return \Illuminate\View\View
      */
-    public function container($route, Model $model);
+    public function container(Model $model, $route, $permission = null);
 }

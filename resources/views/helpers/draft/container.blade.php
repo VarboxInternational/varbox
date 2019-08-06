@@ -6,15 +6,17 @@
             </div>
             <div class="d-inline-block">
                 <h4>This record is currently drafted!</h4>
-                <p>
+                <p @if(!$showPublishButton) class="mb-0" @endif>
                     Please note that if you have un-saved changes,
                     you will have to save them before publishing the draft for them to be persisted.
                 </p>
-                <div class="btn-list mt-4">
-                    {!! form()->open(['url' => route($route, $model->getKey()), 'method' => 'PUT', 'class' => 'float-left d-inline']) !!}
-                    {!! form()->button(' <i class="fe fe-check mr-2"></i>Publish Draft', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
-                    {!! form()->close() !!}
-                </div>
+                @if($showPublishButton)
+                    <div class="btn-list mt-4">
+                        {!! form()->open(['url' => route($route, $model->getKey()), 'method' => 'PUT', 'class' => 'float-left d-inline']) !!}
+                        {!! form()->button(' <i class="fe fe-check mr-2"></i>Publish Draft', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
+                        {!! form()->close() !!}
+                    </div>
+                @endif
             </div>
         </div>
     @append

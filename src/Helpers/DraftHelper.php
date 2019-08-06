@@ -10,15 +10,23 @@ class DraftHelper implements DraftHelperContract
     /**
      * Build the draft container html.
      *
-     * @param string $route
      * @param Model $model
+     * @param string $route
+     * @param string|null $permission
      * @return \Illuminate\View\View
      */
-    public function container($route, Model $model)
+    public function container(Model $model, $route, $permission = null)
     {
+        $showPublishButton = true;
+
+        if ($permission) {
+            $showPublishButton = auth()->user()->isSuper() || auth()->user()->hasPermission($permission);
+        }
+
         return view('varbox::helpers.draft.container')->with([
-            'route' => $route,
             'model' => $model,
+            'route' => $route,
+            'showPublishButton' => $showPublishButton,
         ]);
     }
 }
