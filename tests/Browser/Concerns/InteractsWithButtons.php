@@ -102,4 +102,14 @@ trait InteractsWithButtons
     {
         return $this->clickButtonWithConfirm('Publish', 'button');
     }
+
+    /**
+     * Click the draft button.
+     *
+     * @return $this
+     */
+    public function clickDuplicateButton()
+    {
+        return $this->clickButtonWithConfirm('Duplicate', 'a');
+    }
 }
