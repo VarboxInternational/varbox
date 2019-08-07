@@ -168,12 +168,6 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'revisions-list',
             ],
-            'View' => [
-                'group' => 'Revisions',
-                'label' => 'View',
-                'guard' => 'admin',
-                'name' => 'revisions-view',
-            ],
             'Rollback' => [
                 'group' => 'Revisions',
                 'label' => 'Rollback',
