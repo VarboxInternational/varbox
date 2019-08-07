@@ -26,11 +26,9 @@
                 <div class="small text-muted">{{ optional($revision->created_at)->diffForHumans() ?: 'N/A' }}</div>
             </td>
             <td class="text-right d-table-cell">
-                @permission('revisions-view')
-                    <a href="{{ route($route, (array)$parameters + ['revision' => $revision->getKey()]) }}" class="button-view-revision d-inline btn icon px-0 mr-4" data-toggle="tooltip" data-placement="top" title="View">
-                        <i class="fe fe-eye text-yellow"></i>
-                    </a>
-                @endpermission
+                <a href="{{ route($route, (array)$parameters + ['revision' => $revision->getKey()]) }}" class="button-view-revision d-inline btn icon px-0 mr-4" data-toggle="tooltip" data-placement="top" title="View">
+                    <i class="fe fe-eye text-yellow"></i>
+                </a>
                 @permission('revisions-rollback')
                 <a href="{{ route('admin.revisions.rollback', $revision->getKey()) }}" class="button-rollback-revision d-inline btn icon px-0 mr-4" data-toggle="tooltip" data-placement="top" title="Rollback">
                     <i class="fe fe-refresh-ccw text-blue"></i>

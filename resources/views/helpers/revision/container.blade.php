@@ -9,7 +9,7 @@
                 <div class="btn-list mt-4">
                     @permission('revisions-rollback')
                         {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}
-                        {!! form()->button(' <i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-blue']) !!}
+                        {!! form()->button('<i class="fe fe-refresh-ccw mr-2"></i>Rollback Revision', ['type' => 'submit', 'class' => 'button-rollback-revision confirm-are-you-sure btn btn-blue']) !!}
                         {!! form()->close() !!}
                     @endpermission
 
@@ -42,7 +42,7 @@
     @permission('revisions-list')
         <div class="col-md-12">
             <div class="card card-collapsed">
-                <div class="card-header" data-toggle="card-collapse" style="cursor: pointer;">
+                <div class="card-header revisions-list-header" data-toggle="card-collapse" style="cursor: pointer;">
                     <h3 class="card-title">Revisions Info</h3>
                     <div class="card-options">
                         <a href="#" class="card-options-collapse"><i class="fe fe-chevron-up"></i></a>
