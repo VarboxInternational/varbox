@@ -29,12 +29,38 @@ trait InteractsWithButtons
      * Click the edit button of table row containing the specified text.
      *
      * @param string $text
+     * @return $this
+     */
+    public function pressButtonWithConfirm($text)
+    {
+        return $this->press($text)->whenAvailable('.bootbox-confirm', function ($modal) {
+            $modal->assertSee('Are you sure?')->press('Yes');
+        });
+    }
+
+    /**
+     * Click the edit button of table row containing the specified text.
+     *
+     * @param string $text
      * @param string $element
      * @return $this
      */
     public function clickButtonWithConfirm($text, $element = 'button')
     {
         return $this->clickLink($text, $element)->whenAvailable('.bootbox-confirm', function ($modal) {
+            $modal->assertSee('Are you sure?')->press('Yes');
+        });
+    }
+
+    /**
+     * Click the edit button of table row containing the specified text.
+     *
+     * @param $selector
+     * @return $this
+     */
+    public function clickButtonWithConfirmBySelector($selector)
+    {
+        return $this->click($selector)->whenAvailable('.bootbox-confirm', function ($modal) {
             $modal->assertSee('Are you sure?')->press('Yes');
         });
     }
@@ -111,5 +137,55 @@ trait InteractsWithButtons
     public function clickDuplicateButton()
     {
         return $this->clickButtonWithConfirm('Duplicate', 'a');
+    }
+
+    /**
+     * Click the rollback button.
+     *
+     * @return $this
+     */
+    public function clickViewRevisionButton()
+    {
+        return $this->click('.button-view-revision');
+    }
+
+    /**
+     * Click the rollback button.
+     *
+     * @return $this
+     */
+    public function clickRollbackRevisionButton()
+    {
+        return $this->clickButtonWithConfirmBySelector('.button-rollback-revision');
+    }
+
+    /**
+     * Click the rollback button.
+     *
+     * @return $this
+     */
+    public function pressRollbackRevisionButton()
+    {
+        return $this->pressButtonWithConfirm('Rollback Revision');
+    }
+
+    /**
+     * Click the delete button.
+     *
+     * @return $this
+     */
+    public function clickDeleteRevisionButton()
+    {
+        return $this->clickButtonWithConfirmBySelector('.button-delete-revision');
+    }
+
+    /**
+     * Click the revisions container to open it.
+     *
+     * @return $this
+     */
+    public function openRevisionsContainer()
+    {
+        return $this->click('.revisions-list-header');
     }
 }
