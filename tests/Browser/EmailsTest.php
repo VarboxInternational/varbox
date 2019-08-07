@@ -196,8 +196,6 @@ class EmailsTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
                 ->select2('#type-input', $this->emailTypeFormatted())
-                ->type('#data-subject--input', $this->emailSubject)
-                ->froala('data-message--input', $this->emailMessage)
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/emails')
@@ -221,8 +219,6 @@ class EmailsTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
                 ->select2('#type-input', $this->emailTypeFormatted())
-                ->type('#data-subject--input', $this->emailSubject)
-                ->froala('data-message--input', $this->emailMessage)
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/emails/create')
@@ -240,21 +236,17 @@ class EmailsTest extends TestCase
         $this->admin->grantPermission('emails-edit');
 
         $this->browse(function ($browser) {
-            $browser->resize(2000, 2000)->loginAs($this->admin, 'admin')
+            $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
                 ->select2('#type-input', $this->emailTypeFormatted())
-                ->type('#data-subject--input', $this->emailSubject)
-                ->froala('data-message--input', $this->emailMessage)
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/emails/edit')
                 ->assertSee('The record was successfully created!')
                 ->assertInputValue('#name-input', $this->emailName)
-                ->assertSee($this->emailTypeFormatted())
-                ->assertInputValue('#data-subject--input', $this->emailSubject)
-                ->assertSee($this->emailMessage);
+                ->assertSee($this->emailTypeFormatted());
         });
 
         $this->deleteEmail();
@@ -711,8 +703,7 @@ class EmailsTest extends TestCase
         $this->createEmail();
 
         $this->browse(function ($browser) {
-            $browser->resize(1600, 1600)
-                ->loginAs($this->admin, 'admin')
+            $browser->resize(1250, 2500)->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
                 ->clickEditButton($this->emailName)
                 ->type('#name-input', $this->emailName)
@@ -741,8 +732,7 @@ class EmailsTest extends TestCase
                 ->assertPathBeginsWith('/admin/emails/edit')
                 ->assertSee('The draft was successfully created!')
                 ->assertInputValue('#name-input', $this->emailName)
-                ->assertSee('This record is currently drafted')
-                ->assertSee('Publish Draft');
+                ->assertSee('This record is currently drafted');
         });
 
         $this->deleteEmail();
@@ -767,8 +757,7 @@ class EmailsTest extends TestCase
                 ->assertPathBeginsWith('/admin/emails/edit')
                 ->assertSee('The draft was successfully created!')
                 ->assertInputValue('#name-input', $this->emailName)
-                ->assertSee('This record is currently drafted')
-                ->assertSee('Publish Draft');
+                ->assertSee('This record is currently drafted');
         });
 
         $this->deleteEmail();
@@ -807,8 +796,7 @@ class EmailsTest extends TestCase
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully updated!')
                 ->assertInputValue('#name-input', $this->emailNameModified)
-                ->assertSee('This record is currently drafted')
-                ->assertSee('Publish Draft');
+                ->assertSee('This record is currently drafted');
         });
 
         $this->deleteEmailModified();
@@ -833,8 +821,7 @@ class EmailsTest extends TestCase
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully updated!')
                 ->assertInputValue('#name-input', $this->emailNameModified)
-                ->assertSee('This record is currently drafted')
-                ->assertSee('Publish Draft');
+                ->assertSee('This record is currently drafted');
         });
 
         $this->deleteEmailModified();
@@ -998,6 +985,331 @@ class EmailsTest extends TestCase
         $this->deleteEmail();
     }
 
+    /** @test */
+    public function an_admin_can_see_email_revisions_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertSourceHas('button-view-revision')
+                ->assertSourceHas('button-rollback-revision')
+                ->assertSourceHas('button-delete-revision');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_see_email_revisions_if_it_is_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertDontSee('There are no revisions for this record');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_see_email_revisions_if_it_is_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->revokePermission('revisions-list');
+
+        $this->createEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailName)
+                ->assertDontSee('Revisions Info');
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_view_an_email_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/emails/revision')
+                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('Email Revision')
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_view_an_email_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/emails/revision')
+                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('Email Revision')
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_rollback_an_email_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmail();
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_can_rollback_an_email_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-rollback');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmail();
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
+                ->assertInputValue('#name-input', $this->emailName);
+        });
+
+        $this->deleteEmail();
+    }
+
+    /** @test */
+    public function an_admin_cannot_rollback_an_email_revision_if_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-rollback');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deleteEmailModified();
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->assertDontSee('Rollback Revision')
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_an_email_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_an_email_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-delete');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deleteEmailModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_an_email_revision_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('emails-list');
+        $this->admin->grantPermission('emails-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-delete');
+
+        $this->createEmail();
+        $this->updateEmail();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/emails')
+                ->clickEditButton($this->emailNameModified)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-delete-revision');
+        });
+
+        $this->deleteEmailModified();
+    }
+
     /**
      * @return void
      */
@@ -1010,6 +1322,16 @@ class EmailsTest extends TestCase
                 'subject' => $this->emailSubject,
                 'message' => $this->emailMessage,
             ],
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateEmail()
+    {
+        $this->emailModel->fresh()->update([
+            'name' => $this->emailNameModified
         ]);
     }
 
