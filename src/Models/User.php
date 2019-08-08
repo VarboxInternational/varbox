@@ -10,14 +10,14 @@ use Varbox\Notifications\ResetPassword;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasAddresses;
-use Varbox\Traits\HasRoles;
+use Varbox\Traits\HasRolesAndPermissions;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class User extends Authenticatable implements UserModelContract
 {
-    use HasRoles;
+    use HasRolesAndPermissions;
     use HasAddresses;
     use HasActivity;
     use IsCacheable;

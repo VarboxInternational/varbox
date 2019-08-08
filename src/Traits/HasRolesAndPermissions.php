@@ -3,17 +3,25 @@
 namespace Varbox\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Str;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Models\Permission;
 use Varbox\Models\Role;
 
-trait HasRoles
+trait HasRolesAndPermissions
 {
-    use HasPermissions;
+    /**
+     * @var SupportCollection
+     */
+    protected $allowedDirectPermissions;
+
+    /**
+     * @var SupportCollection
+     */
+    protected $allowedPermissionsViaRoles;
 
     /**
      * A user belongs to many roles.
@@ -25,6 +33,18 @@ trait HasRoles
         $role = config('varbox.bindings.models.role_model', Role::class);
 
         return $this->belongsToMany($role, 'user_role')->withTimestamps();
+    }
+
+    /**
+     * A user belongs to many permissions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function permissions()
+    {
+        $permission = config('varbox.bindings.models.permission_model', Permission::class);
+
+        return $this->belongsToMany($permission, 'user_permission')->withTimestamps();
     }
 
     /**
@@ -109,6 +129,20 @@ trait HasRoles
     }
 
     /**
+     * @return array
+     */
+    public function getAllGuards()
+    {
+        $guards = [];
+
+        foreach (config('auth.guards') as $guard => $options) {
+            $guards[$guard] = Str::title($guard);
+        }
+
+        return $guards;
+    }
+
+    /**
      * Assign roles to the a user.
      *
      * @param string|array|RoleModelContract|Collection $roles
@@ -123,7 +157,7 @@ trait HasRoles
                 $this->roles()->saveMany(
                     collect($roles)->flatten()->map(function ($role) {
                         return is_array($role) || is_a($role, Collection::class) ?
-                            app('role.model')->getRoles($role) : app('role.model')->getRole($role);
+                            app(RoleModelContract::class)->getRoles($role) : app(RoleModelContract::class)->getRole($role);
                     })->all()
                 );
             }
@@ -151,7 +185,7 @@ trait HasRoles
             $this->roles()->detach(
                 (new Collection($roles))->map(function ($role) {
                     return is_array($role) || is_a($role, Collection::class) ?
-                        app('role.model')->getRoles($role) : app('role.model')->getRole($role);
+                        app(RoleModelContract::class)->getRoles($role) : app(RoleModelContract::class)->getRole($role);
                 })
             );
         }
@@ -176,13 +210,78 @@ trait HasRoles
     }
 
     /**
+     * @param string|array|PermissionModelContract|Collection $permissions
+     * @return HasPermissions
+     */
+    public function grantPermission($permissions)
+    {
+        try {
+            if ($permissions instanceof PermissionModelContract) {
+                $this->permissions()->save($permissions);
+            } else {
+                $this->permissions()->saveMany(
+                    collect($permissions)->flatten()->map(function ($permission) {
+                        return is_array($permission) || is_a($permission, Collection::class) ?
+                            app('permission.model')->getPermissions($permission) : app('permission.model')->getPermission($permission);
+                    })->all()
+                );
+            }
+
+            $this->load('permissions');
+        } catch (QueryException $e) {
+            $this->revokePermission($permissions);
+            $this->grantPermission($permissions);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string|array|PermissionModelContract|Collection $permissions
+     * @return $this
+     */
+    public function revokePermission($permissions)
+    {
+        if ($permissions instanceof PermissionModelContract) {
+            $this->permissions()->detach($permissions);
+        } else {
+            $this->permissions()->detach(
+                (new Collection($permissions))->map(function ($permission) {
+                    return is_array($permission) || is_a($permission, Collection::class) ?
+                        app('permission.model')->getPermissions($permission) : app('permission.model')->getPermission($permission);
+                })
+            );
+        }
+
+        $this->load('permissions');
+
+        return $this;
+    }
+
+    /**
+     * @param string|array|PermissionModelContract|Collection $permissions
+     * @return $this
+     */
+    public function syncPermissions($permissions)
+    {
+        $this->permissions()->detach();
+        $this->grantPermission($permissions);
+
+        return $this;
+    }
+
+    /**
      * Check if a user has a given role.
      *
-     * @param string|RoleModelContract $role
+     * @param RoleModelContract|string|int $role
      * @return bool
      */
     public function hasRole($role)
     {
+        if ($role instanceof RoleModelContract) {
+            return $this->roles->contains($role->getKeyName(), $role->getKey());
+        }
+
         if (is_numeric($role)) {
             return $this->roles->contains('id', $role);
         }
@@ -191,13 +290,13 @@ trait HasRoles
             return $this->roles->contains('name', $role);
         }
 
-        return $this->roles->contains('id', $role->id);
+        return false;
     }
 
     /**
      * Check if a user has any role from a collection of given roles.
      *
-     * @param array|Collection $roles
+     * @param Collection|array $roles
      * @return bool
      */
     public function hasAnyRole($roles)
@@ -206,10 +305,13 @@ trait HasRoles
             return true;
         }
 
-        return (bool)(new Collection($roles))->map(function ($role) {
-            return is_array($role) || is_a($role, Collection::class) ?
-                app('role.model')->getRoles($role) : app('role.model')->getRole($role);
-        })->intersect($this->roles)->count();
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -220,13 +322,17 @@ trait HasRoles
      */
     public function hasAllRoles($roles)
     {
-        $collection = collect()->make($roles)->map(function ($role) {
-            return $role instanceof RoleModelContract ? $role->name : $role;
-        });
+        if (!$roles || empty($roles)) {
+            return true;
+        }
 
-        return $collection == $collection->intersect(
-            $this->roles->pluck(is_numeric(Arr::first($roles)) ? 'id' : 'name')
-        );
+        foreach ($roles as $role) {
+            if (!$this->hasRole($role)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -237,14 +343,6 @@ trait HasRoles
      */
     public function hasPermission($permission)
     {
-        if (is_string($permission)) {
-            try {
-                $permission = app(PermissionModelContract::class)->findByName($permission);
-            } catch (ModelNotFoundException $e) {
-                return false;
-            }
-        }
-
         return $this->hasDirectPermission($permission) || $this->hasPermissionViaRole($permission);
     }
 
@@ -277,6 +375,10 @@ trait HasRoles
      */
     public function hasAllPermissions($permissions)
     {
+        if (!$permissions || empty($permissions)) {
+            return true;
+        }
+
         foreach ($permissions as $permission) {
             if (!$this->hasPermission($permission)) {
                 return false;
@@ -294,23 +396,26 @@ trait HasRoles
      */
     protected function hasDirectPermission($permission)
     {
+        if (!$this->allowedDirectPermissions) {
+            $this->allowedDirectPermissions = $this->getDirectPermissions();
+        }
+
+        if ($permission instanceof PermissionModelContract) {
+            return $this->allowedDirectPermissions
+                ->pluck($permission->getKeyName())->contains($permission->getKey());
+        }
+
         if (is_string($permission)) {
-            try {
-                $permission = app(PermissionModelContract::class)->findByName($permission);
-            } catch (ModelNotFoundException $e) {
-                return false;
-            }
+            return $this->allowedDirectPermissions
+                ->pluck('name')->contains($permission);
         }
 
         if (is_numeric($permission)) {
-            try {
-                $permission = app(PermissionModelContract::class)->findOrFail($permission);
-            } catch (ModelNotFoundException $e) {
-                return false;
-            }
+            return $this->allowedDirectPermissions
+                ->pluck('id')->contains($permission);
         }
 
-        return $this->permissions->contains('id', $permission->id);
+        return false;
     }
 
     /**
@@ -321,29 +426,32 @@ trait HasRoles
      */
     protected function hasPermissionViaRole($permission)
     {
+        if (!$this->allowedPermissionsViaRoles) {
+            $this->allowedPermissionsViaRoles = $this->getPermissionsViaRoles();
+        }
+
+        if ($permission instanceof PermissionModelContract) {
+            return $this->allowedPermissionsViaRoles
+                ->pluck($permission->getKeyName())->contains($permission->getKey());
+        }
+
         if (is_string($permission)) {
-            try {
-                $permission = app(PermissionModelContract::class)->findByName($permission);
-            } catch (ModelNotFoundException $e) {
-                return false;
-            }
+            return $this->allowedPermissionsViaRoles
+                ->pluck('name')->contains($permission);
         }
 
         if (is_numeric($permission)) {
-            try {
-                $permission = app(PermissionModelContract::class)->findOrFail($permission);
-            } catch (ModelNotFoundException $e) {
-                return false;
-            }
+            return $this->allowedPermissionsViaRoles
+                ->pluck('id')->contains($permission);
         }
 
-        return $permission->roles->count() > 0 && $this->hasAnyRole($permission->roles);
+        return false;
     }
 
     /**
      * Get all user's permissions, both direct or via roles.
      *
-     * @return \Illuminate\Support\Collection
+     * @return SupportCollection
      */
     public function getPermissions()
     {
@@ -355,7 +463,7 @@ trait HasRoles
     /**
      * Get a user's direct permissions.
      *
-     * @return \Illuminate\Support\Collection
+     * @return SupportCollection
      */
     protected function getDirectPermissions()
     {
@@ -365,7 +473,7 @@ trait HasRoles
     /**
      * Get a user's permissions assigned via a role.
      *
-     * @return \Illuminate\Support\Collection
+     * @return SupportCollection
      */
     protected function getPermissionsViaRoles()
     {

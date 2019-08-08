@@ -18,8 +18,12 @@
                     </span>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.permissions.edit', $item)) !!}
-                    {!! button()->deleteRecord(route('admin.permissions.destroy', $item)) !!}
+                    @permission('permissions-edit')
+                        {!! button()->editRecord(route('admin.permissions.edit', $item)) !!}
+                    @endpermission
+                    @permission('permissions-delete')
+                        {!! button()->deleteRecord(route('admin.permissions.destroy', $item)) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

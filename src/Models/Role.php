@@ -10,14 +10,12 @@ use Illuminate\Support\Arr;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
-use Varbox\Traits\HasPermissions;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
 class Role extends Model implements RoleModelContract
 {
-    use HasPermissions;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;
