@@ -111,7 +111,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditButton($this->roleName)
+                ->clickEditRecordButton($this->roleName)
                 ->assertPathIs('/admin/roles/edit/' . $this->roleModel->id)
                 ->assertSee('Edit Role');
         });
@@ -130,7 +130,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditButton($this->roleName)
+                ->clickEditRecordButton($this->roleName)
                 ->assertPathIs('/admin/roles/edit/' . $this->roleModel->id)
                 ->assertSee('Edit Role');
         });
@@ -149,7 +149,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditButton($this->roleName)
+                ->clickEditRecordButton($this->roleName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Role');
         });
@@ -232,7 +232,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditButton($this->roleName)
+                ->clickEditRecordButton($this->roleName)
                 ->type('#name-input', $this->roleNameModified)
                 ->press('Save')
                 ->pause(500)
@@ -256,7 +256,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditButton($this->roleName)
+                ->clickEditRecordButton($this->roleName)
                 ->type('#name-input', $this->roleNameModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -280,7 +280,7 @@ class RolesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles/', $this->roleModel)
                 ->assertSee($this->roleName)
-                ->deleteRecord($this->roleName)
+                ->clickDeleteRecordButton($this->roleName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/roles/', $this->roleModel)
                 ->assertDontSee($this->roleName);
@@ -296,7 +296,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/roles')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

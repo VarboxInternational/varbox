@@ -37,7 +37,7 @@ trait InteractsWithFilters
             $this->click('.filter-records-container')->waitForText('Filter');
         }
 
-        $this->select2($selector, $value)->press('Filter');
+        $this->typeSelect2($selector, $value)->press('Filter');
 
         return $this;
     }

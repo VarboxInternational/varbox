@@ -85,7 +85,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors', $this->errorModel)
-                ->clickViewButton($this->errorModel->code)
+                ->clickViewRecordButton($this->errorModel->code)
                 ->assertPathIs('/admin/errors/show/' . $this->errorModel->id)
                 ->assertSee('View Error');
         });
@@ -104,7 +104,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors', $this->errorModel)
-                ->clickViewButton($this->errorModel->code)
+                ->clickViewRecordButton($this->errorModel->code)
                 ->assertPathIs('/admin/errors/show/' . $this->errorModel->id)
                 ->assertSee('View Error');
         });
@@ -123,7 +123,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors', $this->errorModel)
-                ->clickViewButton($this->errorModel->code)
+                ->clickViewRecordButton($this->errorModel->code)
                 ->assertPathIs('/admin/errors/show/' . $this->errorModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Errors');
@@ -147,7 +147,7 @@ class ErrorsTest extends TestCase
                 ->assertSee($this->errorModel->code)
                 ->assertSee($this->errorModel->occurrences)
                 ->assertSee($this->errorModel->created_at->toDateTimeString())
-                ->deleteRecord($this->errorModel->code)
+                ->clickDeleteRecordButton($this->errorModel->code)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertDontSee($this->getDisplayedErrorType())
@@ -174,7 +174,7 @@ class ErrorsTest extends TestCase
                 ->assertSee($this->errorModel->code)
                 ->assertSee($this->errorModel->occurrences)
                 ->assertSee($this->errorModel->created_at->toDateTimeString())
-                ->deleteRecord($this->errorModel->code)
+                ->clickDeleteRecordButton($this->errorModel->code)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertDontSee($this->getDisplayedErrorType())
@@ -196,7 +196,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/errors')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

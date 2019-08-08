@@ -190,7 +190,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->deleteRecord($this->image->original_name)
+                ->clickDeleteRecordButton($this->image->original_name)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/uploads/', new Upload)
                 ->assertDontSee($this->image->original_name);
@@ -212,7 +212,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->deleteRecord($this->image->original_name)
+                ->clickDeleteRecordButton($this->image->original_name)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/uploads/', new Upload)
                 ->assertDontSee($this->image->original_name);
@@ -234,7 +234,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -254,7 +254,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->clickViewButton($this->image->original_name);
+                ->clickViewRecordButton($this->image->original_name);
 
             $browser->driver->switchTo()->window(
                 collect($browser->driver->getWindowHandles())->last()
@@ -276,7 +276,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->clickViewButton($this->video->original_name);
+                ->clickViewRecordButton($this->video->original_name);
 
             $browser->driver->switchTo()->window(
                 collect($browser->driver->getWindowHandles())->last()
@@ -298,7 +298,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->clickViewButton($this->audio->original_name);
+                ->clickViewRecordButton($this->audio->original_name);
 
             $browser->driver->switchTo()->window(
                 collect($browser->driver->getWindowHandles())->last()

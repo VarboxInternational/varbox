@@ -117,7 +117,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditButton($this->permissionName)
+                ->clickEditRecordButton($this->permissionName)
                 ->assertPathIs('/admin/permissions/edit/' . $this->permissionModel->id)
                 ->assertSee('Edit Permission');
         });
@@ -136,7 +136,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditButton($this->permissionName)
+                ->clickEditRecordButton($this->permissionName)
                 ->assertPathIs('/admin/permissions/edit/' . $this->permissionModel->id)
                 ->assertSee('Edit Permission');
         });
@@ -155,7 +155,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditButton($this->permissionName)
+                ->clickEditRecordButton($this->permissionName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Permission');
         });
@@ -246,7 +246,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditButton($this->permissionName)
+                ->clickEditRecordButton($this->permissionName)
                 ->type('#name-input', $this->permissionNameModified)
                 ->press('Save')
                 ->pause(500)
@@ -270,7 +270,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditButton($this->permissionName)
+                ->clickEditRecordButton($this->permissionName)
                 ->type('#name-input', $this->permissionNameModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -294,7 +294,7 @@ class PermissionsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions/', $this->permissionModel)
                 ->assertSee($this->permissionName)
-                ->deleteRecord($this->permissionName)
+                ->clickDeleteRecordButton($this->permissionName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/permissions/', $this->permissionModel)
                 ->assertDontSee($this->permissionName);
@@ -310,7 +310,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/permissions')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

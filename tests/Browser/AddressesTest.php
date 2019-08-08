@@ -247,7 +247,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
                 ->assertSee('Edit Address')
                 ->assertSee('You are currently editing an address of user: ' . $this->user->email);
@@ -267,7 +267,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
                 ->assertSee('Edit Address')
                 ->assertSee('You are currently editing an address of user: ' . $this->user->email);
@@ -287,7 +287,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->assertSee('Unauthorized');
         });
 
@@ -309,9 +309,9 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->clickLink('Add New')
                 ->type('#address-input', $this->addressAddress)
-                ->select2('#country_id-input', $this->countryName)
-                ->select2('#state_id-input', $this->stateName)
-                ->select2('#city_id-input', $this->cityName)
+                ->typeSelect2('#country_id-input', $this->countryName)
+                ->typeSelect2('#state_id-input', $this->stateName)
+                ->typeSelect2('#city_id-input', $this->cityName)
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses')
@@ -344,9 +344,9 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->clickLink('Add New')
                 ->type('#address-input', $this->addressAddress)
-                ->select2('#country_id-input', $this->countryName)
-                ->select2('#state_id-input', $this->stateName)
-                ->select2('#city_id-input', $this->cityName)
+                ->typeSelect2('#country_id-input', $this->countryName)
+                ->typeSelect2('#state_id-input', $this->stateName)
+                ->typeSelect2('#city_id-input', $this->cityName)
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/users/' . $this->user->id . '/addresses/create')
@@ -375,9 +375,9 @@ class AddressesTest extends TestCase
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->clickLink('Add New')
                 ->type('#address-input', $this->addressAddress)
-                ->select2('#country_id-input', $this->countryName)
-                ->select2('#state_id-input', $this->stateName)
-                ->select2('#city_id-input', $this->cityName)
+                ->typeSelect2('#country_id-input', $this->countryName)
+                ->typeSelect2('#state_id-input', $this->stateName)
+                ->typeSelect2('#city_id-input', $this->cityName)
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/users/' . $this->user->id . '/addresses/edit')
@@ -408,7 +408,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->type('#address-input', $this->addressAddressModified)
                 ->press('Save')
                 ->pause(500)
@@ -438,7 +438,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->type('#address-input', $this->addressAddressModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -465,7 +465,7 @@ class AddressesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
                 ->assertSee($this->addressAddress)
-                ->deleteRecord($this->addressAddress)
+                ->clickDeleteRecordButton($this->addressAddress)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
                 ->assertDontSee($this->addressAddress);
@@ -483,7 +483,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -640,9 +640,9 @@ class AddressesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
                 ->clickLink('Add New')
-                ->select2('#country_id-input', $this->countryName)
-                ->select2('#state_id-input', $this->stateName)
-                ->select2('#city_id-input', $this->cityName)
+                ->typeSelect2('#country_id-input', $this->countryName)
+                ->typeSelect2('#state_id-input', $this->stateName)
+                ->typeSelect2('#city_id-input', $this->cityName)
                 ->press('Save')
                 ->waitForText('The address field is required')
                 ->assertSee('The address field is required');
@@ -667,11 +667,11 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
-                ->clickEditButton($this->addressAddress)
+                ->clickEditRecordButton($this->addressAddress)
                 ->type('#address-input', '')
-                ->select2('#country_id-input', $this->countryName)
-                ->select2('#state_id-input', $this->stateName)
-                ->select2('#city_id-input', $this->cityName)
+                ->typeSelect2('#country_id-input', $this->countryName)
+                ->typeSelect2('#state_id-input', $this->stateName)
+                ->typeSelect2('#city_id-input', $this->cityName)
                 ->press('Save')
                 ->waitForText('The address field is required')
                 ->assertSee('The address field is required');

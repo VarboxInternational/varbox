@@ -138,7 +138,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('Edit Email');
         });
@@ -157,7 +157,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('Edit Email');
         });
@@ -176,7 +176,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Email');
         });
@@ -195,7 +195,7 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/emails')
@@ -218,7 +218,7 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/emails/create')
@@ -240,7 +240,7 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/emails/edit')
@@ -263,7 +263,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailNameModified)
                 ->press('Save')
                 ->pause(500)
@@ -287,7 +287,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailNameModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -311,7 +311,7 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName)
-                ->deleteRecord($this->emailName)
+                ->clickDeleteRecordButton($this->emailName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName);
@@ -331,7 +331,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -351,9 +351,9 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName)
-                ->deleteRecord($this->emailName)
+                ->clickDeleteRecordButton($this->emailName)
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->deleteRecord($this->emailName)
+                ->clickDeleteRecordButton($this->emailName)
                 ->assertSee('The record was successfully force deleted!')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertDontSee($this->emailName);
@@ -371,7 +371,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -392,11 +392,11 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName)
-                ->deleteRecord($this->emailName)
+                ->clickDeleteRecordButton($this->emailName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertSee($this->emailName)
-                ->restoreRecord($this->emailName)
+                ->clickRestoreRecordButton($this->emailName)
                 ->assertSee('The record was successfully restored!');
         });
 
@@ -415,9 +415,9 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->deleteRecord($this->emailName)
+                ->clickDeleteRecordButton($this->emailName)
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->restoreRecord($this->emailName)
+                ->clickRestoreRecordButton($this->emailName)
                 ->assertDontSee('The record was successfully restored!')
                 ->assertSee('Unauthorized');
         });
@@ -602,7 +602,7 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->press('Save')
                 ->waitForText('The name field is required')
                 ->assertSee('The name field is required');
@@ -622,7 +622,7 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->press('Save')
                 ->waitForText('The name has already been taken')
                 ->assertSee('The name has already been taken');
@@ -659,9 +659,9 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', '')
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->press('Save')
                 ->waitForText('The name field is required')
                 ->assertSee('The name field is required');
@@ -682,9 +682,9 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailNameModified)
-                ->select2('#type-input', $this->emailTypeFormatted())
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
                 ->press('Save')
                 ->waitForText('The name has already been taken')
                 ->assertSee('The name has already been taken');
@@ -705,7 +705,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->resize(1250, 2500)->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailName)
                 ->click('.select2-selection__clear')
                 ->press('Save')
@@ -726,8 +726,8 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
-                ->clickDraftButton()
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
+                ->clickSaveDraftRecordButton()
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/emails/edit')
                 ->assertSee('The draft was successfully created!')
@@ -751,8 +751,8 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->clickLink('Add New')
                 ->type('#name-input', $this->emailName)
-                ->select2('#type-input', $this->emailTypeFormatted())
-                ->clickDraftButton()
+                ->typeSelect2('#type-input', $this->emailTypeFormatted())
+                ->clickSaveDraftRecordButton()
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/emails/edit')
                 ->assertSee('The draft was successfully created!')
@@ -789,9 +789,9 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailNameModified)
-                ->clickDraftButton()
+                ->clickSaveDraftRecordButton()
                 ->pause(500)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully updated!')
@@ -814,9 +814,9 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->type('#name-input', $this->emailNameModified)
-                ->clickDraftButton()
+                ->clickSaveDraftRecordButton()
                 ->pause(500)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully updated!')
@@ -839,7 +839,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertDontSee('Save As Draft');
         });
 
@@ -858,8 +858,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
-                ->clickPublishButton()
+                ->clickEditRecordButton($this->emailName)
+                ->clickPublishRecordButton()
                 ->pause(500)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully published!')
@@ -884,8 +884,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
-                ->clickPublishButton()
+                ->clickEditRecordButton($this->emailName)
+                ->clickPublishRecordButton()
                 ->pause(500)
                 ->assertPathIs('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('The draft was successfully published!')
@@ -910,7 +910,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertSee('This record is currently drafted')
                 ->assertDontSee('Publish Draft');
         });
@@ -928,8 +928,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
-                ->clickDuplicateButton()
+                ->clickEditRecordButton($this->emailName)
+                ->clickDuplicateRecordButton()
                 ->pause(500)
                 ->assertPathIsNot('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertPathBeginsWith('/admin/emails/edit')
@@ -953,8 +953,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
-                ->clickDuplicateButton()
+                ->clickEditRecordButton($this->emailName)
+                ->clickDuplicateRecordButton()
                 ->pause(500)
                 ->assertPathIsNot('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertPathBeginsWith('/admin/emails/edit')
@@ -978,7 +978,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertDontSee('Duplicate');
         });
 
@@ -995,7 +995,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertSee('Revisions Info')
                 ->openRevisionsContainer()
                 ->pause(500)
@@ -1007,7 +1007,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->assertSee('Revisions Info')
                 ->openRevisionsContainer()
                 ->pause(500)
@@ -1032,7 +1032,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertSee('Revisions Info')
                 ->openRevisionsContainer()
                 ->pause(500)
@@ -1044,7 +1044,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->assertSee('Revisions Info')
                 ->openRevisionsContainer()
                 ->pause(500)
@@ -1067,7 +1067,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailName)
+                ->clickEditRecordButton($this->emailName)
                 ->assertDontSee('Revisions Info');
         });
 
@@ -1085,7 +1085,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->pause(500)
                 ->clickViewRevisionButton()
@@ -1111,7 +1111,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->pause(500)
                 ->clickViewRevisionButton()
@@ -1135,7 +1135,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickRollbackRevisionButton()
                 ->pause(500)
@@ -1151,7 +1151,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickViewRevisionButton()
                 ->pressRollbackRevisionButton()
@@ -1178,7 +1178,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickRollbackRevisionButton()
                 ->pause(500)
@@ -1194,7 +1194,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickViewRevisionButton()
                 ->pressRollbackRevisionButton()
@@ -1221,7 +1221,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->assertSourceMissing('class="button-rollback-revision');
         });
@@ -1233,7 +1233,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickViewRevisionButton()
                 ->assertDontSee('Rollback Revision')
@@ -1254,7 +1254,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickDeleteRevisionButton()
                 ->pause(500)
@@ -1278,7 +1278,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->clickDeleteRevisionButton()
                 ->pause(500)
@@ -1302,7 +1302,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickEditButton($this->emailNameModified)
+                ->clickEditRecordButton($this->emailNameModified)
                 ->openRevisionsContainer()
                 ->assertSourceMissing('class="button-delete-revision');
         });

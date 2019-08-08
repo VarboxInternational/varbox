@@ -7,7 +7,7 @@ use Facebook\WebDriver\WebDriverBy;
 trait InteractsWithButtons
 {
     /**
-     * Click the edit button of table row containing the specified text.
+     * Click a button of table row containing the specified text.
      *
      * @param string $text
      * @param string $class
@@ -26,20 +26,7 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the edit button of table row containing the specified text.
-     *
-     * @param string $text
-     * @return $this
-     */
-    public function pressButtonWithConfirm($text)
-    {
-        return $this->press($text)->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure?')->press('Yes');
-        });
-    }
-
-    /**
-     * Click the edit button of table row containing the specified text.
+     * Click a button of table row containing the specified text and confirm the popup.
      *
      * @param string $text
      * @param string $element
@@ -53,7 +40,7 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the edit button of table row containing the specified text.
+     * Click a button and confirm the popup.
      *
      * @param $selector
      * @return $this
@@ -66,81 +53,113 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the edit button of table row containing the specified text.
+     * Press a submit button and confirm popup.
      *
      * @param string $text
      * @return $this
      */
-    public function clickEditButton($text)
+    public function pressButtonWithConfirm($text)
+    {
+        return $this->press($text)->whenAvailable('.bootbox-confirm', function ($modal) {
+            $modal->assertSee('Are you sure?')->press('Yes');
+        });
+    }
+
+    /**
+     * Click the edit record button.
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function clickEditRecordButton($text)
     {
         return $this->clickButton($text, 'button-edit', 'a');
     }
 
     /**
-     * Click the edit button of table row containing the specified text.
+     * Click the view record button.
      *
      * @param string $text
      * @return $this
      */
-    public function clickViewButton($text)
+    public function clickViewRecordButton($text)
     {
         return $this->clickButton($text, 'button-view', 'a');
     }
 
     /**
-     * Click the delete button of table row containing the specified text.
+     * Click the delete record button.
      *
      * @param string $text
      * @return $this
      */
-    public function clickDeleteButton($text)
+    public function clickDeleteRecordButton($text)
     {
-        return $this->clickButton($text, 'button-delete');
+        return $this->clickButton($text, 'button-delete')
+            ->whenAvailable('.bootbox-confirm', function ($modal) {
+                $modal->assertSee('Are you sure?')->press('Yes');
+            });
     }
 
     /**
-     * Click the restore button of table row containing the specified text.
+     * Click any delete record button.
+     *
+     * @return $this
+     */
+    public function clickDeleteAnyRecordButton()
+    {
+        return $this->click('.button-delete')
+            ->whenAvailable('.bootbox-confirm', function ($modal) {
+                $modal->assertSee('Are you sure?')->press('Yes');
+            });
+    }
+
+    /**
+     * Click the restore record button.
      *
      * @param string $text
      * @return $this
      */
-    public function clickRestoreButton($text)
+    public function clickRestoreRecordButton($text)
     {
-        return $this->clickButton($text, 'button-restore');
+        return $this->clickButton($text, 'button-restore')
+            ->whenAvailable('.bootbox-confirm', function ($modal) {
+                $modal->assertSee('Are you sure?')->press('Yes');
+            });
     }
 
     /**
-     * Click the draft button.
+     * Click the save record as draft button.
      *
      * @return $this
      */
-    public function clickDraftButton()
+    public function clickSaveDraftRecordButton()
     {
         return $this->clickButtonWithConfirm('Save As Draft', 'a');
     }
 
     /**
-     * Click the draft button.
+     * Click the publish record button.
      *
      * @return $this
      */
-    public function clickPublishButton()
+    public function clickPublishRecordButton()
     {
         return $this->clickButtonWithConfirm('Publish', 'button');
     }
 
     /**
-     * Click the draft button.
+     * Click the duplicate record button.
      *
      * @return $this
      */
-    public function clickDuplicateButton()
+    public function clickDuplicateRecordButton()
     {
         return $this->clickButtonWithConfirm('Duplicate', 'a');
     }
 
     /**
-     * Click the rollback button.
+     * Click the view revision button.
      *
      * @return $this
      */
@@ -150,7 +169,7 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the rollback button.
+     * Click the rollback revision button.
      *
      * @return $this
      */
@@ -160,7 +179,7 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the rollback button.
+     * Press the rollback revision button.
      *
      * @return $this
      */
@@ -170,22 +189,12 @@ trait InteractsWithButtons
     }
 
     /**
-     * Click the delete button.
+     * Click the delete revision button.
      *
      * @return $this
      */
     public function clickDeleteRevisionButton()
     {
         return $this->clickButtonWithConfirmBySelector('.button-delete-revision');
-    }
-
-    /**
-     * Click the revisions container to open it.
-     *
-     * @return $this
-     */
-    public function openRevisionsContainer()
-    {
-        return $this->click('.revisions-list-header');
     }
 }

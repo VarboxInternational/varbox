@@ -128,7 +128,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/states', $this->stateModel)
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->assertPathIs('/admin/states/edit/' . $this->stateModel->id)
                 ->assertSee('Edit State');
         });
@@ -149,7 +149,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/states', $this->stateModel)
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->assertPathIs('/admin/states/edit/' . $this->stateModel->id)
                 ->assertSee('Edit State');
         });
@@ -170,7 +170,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/states', $this->stateModel)
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit State');
         });
@@ -193,7 +193,7 @@ class StatesTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#name-input', $this->stateName)
                 ->type('#code-input', $this->stateCode)
-                ->select2('#country_id-input', $this->countryName)
+                ->typeSelect2('#country_id-input', $this->countryName)
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/states')
@@ -222,7 +222,7 @@ class StatesTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#name-input', $this->stateName)
                 ->type('#code-input', $this->stateCode)
-                ->select2('#country_id-input', $this->countryName)
+                ->typeSelect2('#country_id-input', $this->countryName)
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/states/create')
@@ -248,7 +248,7 @@ class StatesTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#name-input', $this->stateName)
                 ->type('#code-input', $this->stateCode)
-                ->select2('#country_id-input', $this->countryName)
+                ->typeSelect2('#country_id-input', $this->countryName)
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/states/edit')
@@ -274,7 +274,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/states', $this->stateModel)
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->type('#name-input', $this->stateNameModified)
                 ->press('Save')
                 ->pause(500)
@@ -300,7 +300,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/states', $this->stateModel)
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->type('#name-input', $this->stateNameModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -328,7 +328,7 @@ class StatesTest extends TestCase
                 ->assertSee($this->stateName)
                 ->assertSee($this->countryName)
                 ->assertSee($this->stateCode)
-                ->deleteRecord($this->stateName)
+                ->clickDeleteRecordButton($this->stateName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/states/', $this->stateModel)
                 ->assertDontSee($this->stateName)
@@ -351,7 +351,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -498,7 +498,7 @@ class StatesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
                 ->clickLink('Add New')
-                ->select2('#country_id-input', $this->countryName)
+                ->typeSelect2('#country_id-input', $this->countryName)
                 ->type('#code-input', $this->stateCode)
                 ->press('Save')
                 ->waitForText('The name field is required')
@@ -520,7 +520,7 @@ class StatesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
                 ->clickLink('Add New')
-                ->select2('#country_id-input', $this->countryName)
+                ->typeSelect2('#country_id-input', $this->countryName)
                 ->type('#name-input', $this->stateName)
                 ->press('Save')
                 ->waitForText('The code field is required')
@@ -564,10 +564,10 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->type('#name-input', '')
                 ->type('#code-input', $this->stateCode)
-                ->select2('#copuntry_id-input', $this->countryName)
+                ->typeSelect2('#copuntry_id-input', $this->countryName)
                 ->press('Save')
                 ->waitForText('The name field is required')
                 ->assertSee('The name field is required');
@@ -589,10 +589,10 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->type('#name-input', $this->stateName)
                 ->type('#code-input', '')
-                ->select2('#copuntry_id-input', $this->countryName)
+                ->typeSelect2('#copuntry_id-input', $this->countryName)
                 ->press('Save')
                 ->waitForText('The code field is required')
                 ->assertSee('The code field is required');
@@ -614,7 +614,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
-                ->clickEditButton($this->stateName)
+                ->clickEditRecordButton($this->stateName)
                 ->type('#name-input', $this->stateName)
                 ->type('#code-input', $this->stateCode)
                 ->click('.select2-selection__clear')

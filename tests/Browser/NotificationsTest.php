@@ -99,7 +99,7 @@ class NotificationsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/notifications/', $this->notification1Model)
                 ->assertSee($this->notification1Subject)
-                ->deleteRecord($this->notification1Subject)
+                ->clickDeleteRecordButton($this->notification1Subject)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/notifications/', $this->notification1Model)
                 ->assertDontSee($this->notification1Subject);
@@ -118,7 +118,7 @@ class NotificationsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/notifications/', $this->notification1Model)
                 ->assertSee($this->notification1Subject)
-                ->deleteRecord($this->notification1Subject)
+                ->clickDeleteRecordButton($this->notification1Subject)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/notifications/', $this->notification1Model)
                 ->assertDontSee($this->notification1Subject);
@@ -136,7 +136,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

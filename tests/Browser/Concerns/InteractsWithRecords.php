@@ -48,46 +48,12 @@ trait InteractsWithRecords
     }
 
     /**
-     * Delete the record in list corresponding to the table row containing the specified text.
-     *
-     * @param string $text
-     * @return $this
-     */
-    public function deleteRecord($text)
-    {
-        $this->clickDeleteButton($text)->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure?')->press('Yes');
-        });
-
-        return $this;
-    }
-
-    /**
-     * Delete a record from a list by clicking any delete button
+     * Click the revisions container to open it.
      *
      * @return $this
      */
-    public function deleteAnyRecord()
+    public function openRevisionsContainer()
     {
-        $this->click('.button-delete')->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure?')->press('Yes');
-        });
-
-        return $this;
-    }
-
-    /**
-     * Restore the record in list corresponding to the table row containing the specified text.
-     *
-     * @param string $text
-     * @return $this
-     */
-    public function restoreRecord($text)
-    {
-        $this->clickRestoreButton($text)->whenAvailable('.bootbox-confirm', function ($modal) {
-            $modal->assertSee('Are you sure?')->press('Yes');
-        });
-
-        return $this;
+        return $this->click('.revisions-list-header');
     }
 }

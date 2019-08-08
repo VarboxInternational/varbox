@@ -139,7 +139,7 @@ class BackupsTest extends TestCase
                 ->assertSee($this->backupModel->name)
                 ->assertSee($this->backupModel->size_in_mb)
                 ->assertSee($this->backupModel->date->toDateTimeString())
-                ->deleteRecord($this->backupModel->name)
+                ->clickDeleteRecordButton($this->backupModel->name)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/backups/', $this->backupModel)
                 ->assertDontSee($this->backupModel->name)
@@ -164,7 +164,7 @@ class BackupsTest extends TestCase
                 ->assertSee($this->backupModel->name)
                 ->assertSee($this->backupModel->size_in_mb)
                 ->assertSee($this->backupModel->date->toDateTimeString())
-                ->deleteRecord($this->backupModel->name)
+                ->clickDeleteRecordButton($this->backupModel->name)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/backups/', $this->backupModel)
                 ->assertDontSee($this->backupModel->name)
@@ -186,7 +186,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

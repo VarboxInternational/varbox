@@ -115,7 +115,7 @@ class ActivityTest extends TestCase
                 ->assertSee($this->activityName)
                 ->assertSee($this->activityType)
                 ->assertSee($this->activityEvent)
-                ->deleteRecord($this->activityName)
+                ->clickDeleteRecordButton($this->activityName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/activity/', $this->activityModel)
                 ->assertDontSee($this->activityName)
@@ -138,7 +138,7 @@ class ActivityTest extends TestCase
                 ->assertSee($this->activityName)
                 ->assertSee($this->activityType)
                 ->assertSee($this->activityEvent)
-                ->deleteRecord($this->activityName)
+                ->clickDeleteRecordButton($this->activityName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/activity/', $this->activityModel)
                 ->assertDontSee($this->activityName)
@@ -158,7 +158,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

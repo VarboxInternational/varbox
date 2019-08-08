@@ -115,7 +115,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditButton($this->countryName)
+                ->clickEditRecordButton($this->countryName)
                 ->assertPathIs('/admin/countries/edit/' . $this->countryModel->id)
                 ->assertSee('Edit Country');
         });
@@ -134,7 +134,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditButton($this->countryName)
+                ->clickEditRecordButton($this->countryName)
                 ->assertPathIs('/admin/countries/edit/' . $this->countryModel->id)
                 ->assertSee('Edit Country');
         });
@@ -153,7 +153,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditButton($this->countryName)
+                ->clickEditRecordButton($this->countryName)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Country');
         });
@@ -241,7 +241,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditButton($this->countryName)
+                ->clickEditRecordButton($this->countryName)
                 ->type('#name-input', $this->countryNameModified)
                 ->press('Save')
                 ->pause(500)
@@ -265,7 +265,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditButton($this->countryName)
+                ->clickEditRecordButton($this->countryName)
                 ->type('#name-input', $this->countryNameModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -290,7 +290,7 @@ class CountriesTest extends TestCase
                 ->visitLastPage('/admin/countries/', $this->countryModel)
                 ->assertSee($this->countryName)
                 ->assertSee($this->countryCode)
-                ->deleteRecord($this->countryName)
+                ->clickDeleteRecordButton($this->countryName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/countries/', $this->countryModel)
                 ->assertDontSee($this->countryName)
@@ -307,7 +307,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/countries')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });

@@ -119,7 +119,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->assertPathIs('/admin/admins/edit/' . $this->adminModel->id)
                 ->assertSee('Edit Admin');
         });
@@ -138,7 +138,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->assertPathIs('/admin/admins/edit/' . $this->adminModel->id)
                 ->assertSee('Edit Admin');
         });
@@ -157,7 +157,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Admin');
         });
@@ -176,7 +176,7 @@ class AdminsTest extends TestCase
                 ->visit('/admin/admins')
                 ->clickLink('Add New')
                 ->type('#email-input', $this->adminEmail)
-                ->select2('#roles-input', 'Admin')
+                ->typeSelect2('#roles-input', 'Admin')
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
                 ->type('#first_name-input', $this->adminFirstName)
@@ -256,7 +256,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->type('#email-input', $this->adminEmailModified)
                 ->press('Save')
                 ->pause(500)
@@ -280,7 +280,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->type('#email-input', $this->adminEmailModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -304,7 +304,7 @@ class AdminsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins/', $this->adminModel)
                 ->assertSee($this->adminEmail)
-                ->deleteRecord($this->adminEmail)
+                ->clickDeleteRecordButton($this->adminEmail)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/admins/', $this->adminModel)
                 ->assertDontSee($this->adminEmail);
@@ -322,7 +322,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -518,7 +518,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->type('#email-input', '')
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
@@ -543,7 +543,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
@@ -568,7 +568,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->clickEditButton($this->adminEmail)
+                ->clickEditRecordButton($this->adminEmail)
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)

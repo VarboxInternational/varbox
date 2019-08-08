@@ -144,7 +144,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditButton($this->configKeys[$this->configKey])
+                ->clickEditRecordButton($this->configKeys[$this->configKey])
                 ->assertPathIs('/admin/configs/edit/' . $this->configModel->id)
                 ->assertSee('Edit Config');
         });
@@ -163,7 +163,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditButton($this->configKeys[$this->configKey])
+                ->clickEditRecordButton($this->configKeys[$this->configKey])
                 ->assertPathIs('/admin/configs/edit/' . $this->configModel->id)
                 ->assertSee('Edit Config');
         });
@@ -182,7 +182,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditButton($this->configKeys[$this->configKey])
+                ->clickEditRecordButton($this->configKeys[$this->configKey])
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Config');
         });
@@ -200,7 +200,7 @@ class ConfigsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
                 ->clickLink('Add New')
-                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->typeSelect2('#key-input', $this->configKeys[$this->configKey])
                 ->type('#value-input', $this->configValue)
                 ->press('Save')
                 ->pause(500)
@@ -224,7 +224,7 @@ class ConfigsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
                 ->clickLink('Add New')
-                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->typeSelect2('#key-input', $this->configKeys[$this->configKey])
                 ->type('#value-input', $this->configValue)
                 ->clickLink('Save & New')
                 ->pause(500)
@@ -246,7 +246,7 @@ class ConfigsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
                 ->clickLink('Add New')
-                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->typeSelect2('#key-input', $this->configKeys[$this->configKey])
                 ->type('#value-input', $this->configValue)
                 ->clickLink('Save & Continue')
                 ->pause(500)
@@ -270,7 +270,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditButton($this->configKeys[$this->configKey])
+                ->clickEditRecordButton($this->configKeys[$this->configKey])
                 ->type('#value-input', $this->configValueModified)
                 ->press('Save')
                 ->pause(500)
@@ -294,7 +294,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditButton($this->configKeys[$this->configKey])
+                ->clickEditRecordButton($this->configKeys[$this->configKey])
                 ->type('#value-input', $this->configValueModified)
                 ->clickLink('Save & Stay')
                 ->pause(500)
@@ -319,7 +319,7 @@ class ConfigsTest extends TestCase
                 ->visitLastPage('/admin/configs/', $this->configModel)
                 ->assertSee($this->configKeys[$this->configKey])
                 ->assertSee($this->configValue)
-                ->deleteRecord($this->configKeys[$this->configKey])
+                ->clickDeleteRecordButton($this->configKeys[$this->configKey])
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/configs/', $this->configModel)
                 ->assertDontSee($this->configKeys[$this->configKey])
@@ -338,7 +338,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
-                ->deleteAnyRecord()
+                ->clickDeleteAnyRecordButton()
                 ->assertDontSee('The record was successfully deleted!')
                 ->assertSee('Unauthorized');
         });
@@ -476,7 +476,7 @@ class ConfigsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
                 ->clickLink('Add New')
-                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->typeSelect2('#key-input', $this->configKeys[$this->configKey])
                 ->press('Save')
                 ->waitForText('The value field is required')
                 ->assertSee('The value field is required');
@@ -517,7 +517,7 @@ class ConfigsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
                 ->click('.button-edit')
-                ->select2('#key-input', $this->configKeys[$this->configKey])
+                ->typeSelect2('#key-input', $this->configKeys[$this->configKey])
                 ->type('#value-input', '')
                 ->press('Save')
                 ->waitForText('The value field is required')
