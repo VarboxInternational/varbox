@@ -4,6 +4,7 @@ namespace Varbox\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Varbox\Contracts\RoleModelContract;
 
 class AdminRequest extends FormRequest
 {
@@ -86,7 +87,7 @@ class AdminRequest extends FormRequest
     protected function mergeRoles()
     {
         $hasAdminRole = false;
-        $adminRole = app('role.model')->findByName('Admin');
+        $adminRole = app(RoleModelContract::class)->findByName('Admin');
 
         foreach ((array)$this->get('roles') as $roleId) {
             if ($roleId == $adminRole->id) {

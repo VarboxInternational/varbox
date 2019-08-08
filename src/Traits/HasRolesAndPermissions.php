@@ -51,7 +51,7 @@ trait HasRolesAndPermissions
      * Filter the query by the given roles.
      *
      * @param $query
-     * @param int|string|array|RoleModelContract|Collection $roles
+     * @param RoleModelContract|Collection|int|string|array $roles
      * @return mixed
      */
     public function scopeWithRoles($query, $roles)
@@ -71,7 +71,7 @@ trait HasRolesAndPermissions
      * Filter the query excluding the given roles.
      *
      * @param $query
-     * @param int|string|array|RoleModelContract|Collection $roles
+     * @param RoleModelContract|Collection|int|string|array $roles
      */
     public function scopeWithoutRoles($query, $roles)
     {
@@ -90,7 +90,7 @@ trait HasRolesAndPermissions
      * Filter the query by the given permissions.
      *
      * @param $query
-     * @param string|array|RoleModelContract|Collection $permissions
+     * @param RoleModelContract|Collection|string|array $permissions
      * @return mixed
      */
     public function scopeWithPermissions($query, $permissions)
@@ -110,7 +110,7 @@ trait HasRolesAndPermissions
      * Filter the query excluding the given permissions.
      *
      * @param $query
-     * @param string|array|RoleModelContract|Collection $permissions
+     * @param RoleModelContract|Collection|string|array $permissions
      * @return mixed
      */
     public function scopeWithoutPermissions($query, $permissions)
@@ -145,7 +145,7 @@ trait HasRolesAndPermissions
     /**
      * Assign roles to the a user.
      *
-     * @param string|array|RoleModelContract|Collection $roles
+     * @param RoleModelContract|Collection|string|array $roles
      * @return $this
      */
     public function assignRoles($roles)
@@ -174,7 +174,7 @@ trait HasRolesAndPermissions
     /**
      * Remove roles from the a user.
      *
-     * @param string|array|RoleModelContract|Collection $roles
+     * @param RoleModelContract|Collection|string|array $roles
      * @return $this
      */
     public function removeRoles($roles)
@@ -198,7 +198,7 @@ trait HasRolesAndPermissions
     /**
      * Sync a user's roles.
      *
-     * @param string|array|RoleModelContract|Collection $roles
+     * @param RoleModelContract|Collection|string|array $roles
      * @return $this
      */
     public function syncRoles($roles)
@@ -210,8 +210,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param string|array|PermissionModelContract|Collection $permissions
-     * @return HasPermissions
+     * @param PermissionModelContract|Collection|string|array $permissions
+     * @return $this
      */
     public function grantPermission($permissions)
     {
@@ -222,7 +222,8 @@ trait HasRolesAndPermissions
                 $this->permissions()->saveMany(
                     collect($permissions)->flatten()->map(function ($permission) {
                         return is_array($permission) || is_a($permission, Collection::class) ?
-                            app('permission.model')->getPermissions($permission) : app('permission.model')->getPermission($permission);
+                            app(PermissionModelContract::class)->getPermissions($permission) :
+                            app(PermissionModelContract::class)->getPermission($permission);
                     })->all()
                 );
             }
@@ -237,7 +238,7 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param string|array|PermissionModelContract|Collection $permissions
+     * @param PermissionModelContract|Collection|string|array $permissions
      * @return $this
      */
     public function revokePermission($permissions)
@@ -248,7 +249,7 @@ trait HasRolesAndPermissions
             $this->permissions()->detach(
                 (new Collection($permissions))->map(function ($permission) {
                     return is_array($permission) || is_a($permission, Collection::class) ?
-                        app('permission.model')->getPermissions($permission) : app('permission.model')->getPermission($permission);
+                        app(PermissionModelContract::class)->getPermissions($permission) : app(PermissionModelContract::class)->getPermission($permission);
                 })
             );
         }
@@ -259,7 +260,7 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param string|array|PermissionModelContract|Collection $permissions
+     * @param PermissionModelContract|Collection|string|array $permissions
      * @return $this
      */
     public function syncPermissions($permissions)
@@ -317,7 +318,7 @@ trait HasRolesAndPermissions
     /**
      * Check if a user has every role from a collection of given roles.
      *
-     * @param array|Collection $roles
+     * @param Collection|array $roles
      * @return bool
      */
     public function hasAllRoles($roles)
@@ -349,7 +350,7 @@ trait HasRolesAndPermissions
     /**
      * Check if a user has any permission from a collection of given permissions.
      *
-     * @param array|Collection $permissions
+     * @param Collection|array $permissions
      * @return bool
      */
     public function hasAnyPermission($permissions)
@@ -370,7 +371,7 @@ trait HasRolesAndPermissions
     /**
      * Check if a user has every permission from a collection of given permissions.
      *
-     * @param array|Collection $permissions
+     * @param Collection|array $permissions
      * @return bool
      */
     public function hasAllPermissions($permissions)
@@ -421,7 +422,7 @@ trait HasRolesAndPermissions
     /**
      * Check if a user has a permission granted via a role assigned.
      *
-     * @param string|PermissionModelContract $permission
+     * @param PermissionModelContract|string|int $permission
      * @return bool
      */
     protected function hasPermissionViaRole($permission)
@@ -485,7 +486,7 @@ trait HasRolesAndPermissions
     /**
      * Convert permissions to Permission models.
      *
-     * @param string|array|RoleModelContract|SupportCollection $roles
+     * @param RoleModelContract|SupportCollection|string|array $roles
      * @return array
      */
     protected function convertToRoleModels($roles)
@@ -502,7 +503,7 @@ trait HasRolesAndPermissions
     /**
      * Convert permissions to Permission models.
      *
-     * @param string|array|PermissionModelContract|SupportCollection $permissions
+     * @param PermissionModelContract|SupportCollection|string|array $permissions
      * @return array
      */
     protected function convertToPermissionModels($permissions)
