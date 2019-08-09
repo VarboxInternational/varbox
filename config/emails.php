@@ -10,7 +10,7 @@ return [
     | --- [Class]:
     | The mailable class used for sending the email.
     | This gets generated automatically when running "php artisan varbox:make-mail", but you can also create it manually.
-    | If your create this class manually, don't forget it will have to extend the abstract "Varbox\Cms\Mail\Mailable" class.
+    | If your create this class manually, don't forget it will have to extend the abstract "Varbox\Mail\Mailable" class.
     |
     | --- [View]:
     | The blade file used for rendering the email.
@@ -23,13 +23,13 @@ return [
     */
     'types' => [
 
-        'test-mail' => [
-            'class' => 'Varbox\Cms\Mail\TestMail',
-            'view' => 'varbox::emails.test_mail',
+        /*'test-mail' => [
+            'class' => 'App\Mail\TestMail',
+            'view' => 'emails.test_mail',
             'variables' => [
                 'first_name', 'last_name', 'full_name'
             ],
-        ],
+        ],*/
 
     ],
 
@@ -63,7 +63,6 @@ return [
         'last_name' => [
             'name' => 'Last Name',
             'label' => 'The last name of the logged in user.',
-            'description' => 'If used in an email, but no logged in user exists, this variable will not render anything.',
         ],
 
         'full_name' => [
