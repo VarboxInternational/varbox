@@ -29,23 +29,11 @@ class NotificationsController extends Controller
         meta()->set('title', 'Admin - Notifications');
 
         if ($request->filled('user')) {
-            try {
-                $usr = app(UserModelContract::class)->findOrFail((int)$request->get('user'));
+            $usr = app(UserModelContract::class)->findOrFail((int)$request->get('user'));
 
-                if ($user->id != $usr->id) {
-                    $user = $usr;
-                    $isAnotherUser = true;
-
-                    flash()->warning('
-                        <span class="font-weight-bold d-inline">You are now viewing another user\'s notifications!</span><br />
-                        Interactive actions are not available.
-                    ');
-                }
-            } catch (ModelNotFoundException $e) {
-                flash()->error('
-                    <span class="font-weight-bold d-inline">Failed viewing another user\'s notifications!</span><br />
-                    You are now seeing your own notifications.
-                ', $e);
+            if ($user->id != $usr->id) {
+                $user = $usr;
+                $isAnotherUser = true;
             }
         }
 
