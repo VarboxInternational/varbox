@@ -32,11 +32,19 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @if($item->trashed())
-                        {!! button()->restoreRecord(route('admin.emails.restore', $item->getKey())) !!}
-                        {!! button()->deleteRecord(route('admin.emails.delete', $item->getKey())) !!}
+                        @permission('emails-restore')
+                            {!! button()->restoreRecord(route('admin.emails.restore', $item->getKey())) !!}
+                        @endpermission
+                        @permission('emails-delete')
+                            {!! button()->deleteRecord(route('admin.emails.delete', $item->getKey())) !!}
+                        @endpermission
                     @else
-                        {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
-                        {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
+                        @permission('emails-edit')
+                            {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
+                        @endpermission
+                        @permission('emails-delete')
+                            {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
+                        @endpermission
                     @endif
                 </td>
             </tr>

@@ -5,7 +5,9 @@
 @section('content')
     <div class="row row-cards">
         <div class="col-lg-3">
-            {!! button()->addRecord(route('admin.admins.create')) !!}
+            @permission('admins-add')
+                {!! button()->addRecord(route('admin.admins.create')) !!}
+            @endpermission
 
             @include('varbox::admin.admins._filter')
         </div>

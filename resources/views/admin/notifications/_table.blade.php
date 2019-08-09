@@ -38,11 +38,14 @@
                             <i class="fe fe-check-square text-blue"></i>
                         </a>
 
-                        {!! form()->open(['url' => route('admin.notifications.mark_as_read', $item->id), 'method' => 'PUT', 'class' => 'd-inline']) !!}
-                        {!! form()->button('<i class="fe fe-eye text-green"></i>', ['type' => 'submit', 'class' => 'button-mark-as-read btn icon d-inline bg-white px-0', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Mark As Read']) !!}
-                        {!! form()->close() !!}
-
-                        {!! button()->deleteRecord(route('admin.notifications.destroy', $item->getKey())) !!}
+                        @permission('notifications-read')
+                            {!! form()->open(['url' => route('admin.notifications.mark_as_read', $item->id), 'method' => 'PUT', 'class' => 'd-inline']) !!}
+                            {!! form()->button('<i class="fe fe-eye text-green"></i>', ['type' => 'submit', 'class' => 'button-mark-as-read btn icon d-inline bg-white px-0', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Mark As Read']) !!}
+                            {!! form()->close() !!}
+                        @endpermission
+                        @permission('notifications-delete')
+                            {!! button()->deleteRecord(route('admin.notifications.destroy', $item->getKey())) !!}
+                        @endpermission
                     </td>
                 @endif
             </tr>

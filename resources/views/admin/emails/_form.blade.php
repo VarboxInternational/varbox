@@ -1,11 +1,7 @@
 {!! validation('admin')->errors() !!}
 
 @if($item->exists)
-    @if(isset($revision))
-        {!! form_admin()->model($item, ['class' => 'frm row row-cards']) !!}
-    @else
-        {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
-    @endif
+    {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @else
     {!! form_admin()->open(['url' => $url, 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @endif
@@ -133,17 +129,20 @@
                     @permission('emails-preview')
                         {!! button()->previewRecord(route('admin.emails.preview', $item->getKey())) !!}
                     @endpermission
-                    @permission('emails-draft')
-                        @if(!($item->exists && $item->isDrafted()))
-                        {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
-                        @endif
-                    @endpermission
                     @if($item->exists)
                         @permission('emails-duplicate')
                         {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
                         @endpermission
+                        @permission('emails-draft')
+                            @if(!$item->isDrafted())
+                                {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
+                            @endif
+                        @endpermission
                         {!! button()->saveAndStay() !!}
                     @else
+                        @permission('emails-draft')
+                            {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
+                        @endpermission
                         {!! button()->saveAndNew() !!}
                         {!! button()->saveAndContinue('admin.emails.edit') !!}
                     @endif

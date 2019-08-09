@@ -18,8 +18,12 @@
                     @endif
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.cities.edit', $item)) !!}
-                    {!! button()->deleteRecord(route('admin.cities.destroy', $item)) !!}
+                    @permission('cities-edit')
+                        {!! button()->editRecord(route('admin.cities.edit', $item)) !!}
+                    @endpermission
+                    @permission('cities-delete')
+                        {!! button()->deleteRecord(route('admin.cities.destroy', $item)) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

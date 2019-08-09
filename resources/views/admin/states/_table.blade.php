@@ -21,8 +21,12 @@
                     </span>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.states.edit', $item)) !!}
-                    {!! button()->deleteRecord(route('admin.states.destroy', $item)) !!}
+                    @permission('states-edit')
+                        {!! button()->editRecord(route('admin.states.edit', $item)) !!}
+                    @endpermission
+                    @permission('states-delete')
+                        {!! button()->deleteRecord(route('admin.states.destroy', $item)) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

@@ -28,19 +28,24 @@
                     <div class="small text-muted">{{ $item->created_at ? $item->created_at->diffForHumans() : 'N/A' }}</div>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.users.edit', $item->getKey())) !!}
-                    {!! button()->deleteRecord(route('admin.users.destroy', $item->getKey())) !!}
-
-                    <div class="item-action dropdown" data-toggle="tooltip" data-placement="top" title="More">
-                        <a href="javascript:void(0)" data-toggle="dropdown" class="d-inline btn icon px-0" aria-expanded="false" >
-                            <i class="fe fe-more-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            {!! form()->open(['url' => route('admin.users.impersonate', $item->getKey()), 'method' => 'post', 'target' => '_blank']) !!}
-                            {!! form()->button('<i class="dropdown-icon fe fe-user mr-2"></i>Impersonate', ['type' => 'submit', 'class' => 'dropdown-item', 'style' => 'cursor: pointer;']) !!}
-                            {!! form()->close() !!}
+                    @permission('users-edit')
+                        {!! button()->editRecord(route('admin.users.edit', $item->getKey())) !!}
+                    @endpermission
+                    @permission('users-delete')
+                        {!! button()->deleteRecord(route('admin.users.destroy', $item->getKey())) !!}
+                    @endpermission
+                    @permission('users-impersonate')
+                        <div class="item-action dropdown" data-toggle="tooltip" data-placement="top" title="More">
+                            <a href="javascript:void(0)" data-toggle="dropdown" class="d-inline btn icon px-0" aria-expanded="false" >
+                                <i class="fe fe-more-vertical"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; transform: translate3d(15px, 20px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                {!! form()->open(['url' => route('admin.users.impersonate', $item->getKey()), 'method' => 'post', 'target' => '_blank']) !!}
+                                {!! form()->button('<i class="dropdown-icon fe fe-user mr-2"></i>Impersonate', ['type' => 'submit', 'class' => 'dropdown-item', 'style' => 'cursor: pointer;']) !!}
+                                {!! form()->close() !!}
+                            </div>
                         </div>
-                    </div>
+                    @endpermission
                 </td>
             </tr>
         @empty

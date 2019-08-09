@@ -25,8 +25,12 @@
                     <div class="text-muted">{{ Carbon\Carbon::parse($item->date)->diffForHumans()}}</div>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->downloadFile(route('admin.backups.download', $item->getKey())) !!}
-                    {!! button()->deleteRecord(route('admin.backups.destroy', $item->getKey())) !!}
+                    @permission('backups-download')
+                        {!! button()->downloadFile(route('admin.backups.download', $item->getKey())) !!}
+                    @endpermission
+                    @permission('backups-delete')
+                        {!! button()->deleteRecord(route('admin.backups.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

@@ -28,8 +28,12 @@
                     <div class="small text-muted">{{ $item->created_at ? $item->created_at->diffForHumans() : 'N/A' }}</div>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.admins.edit', $item->getKey())) !!}
-                    {!! button()->deleteRecord(route('admin.admins.destroy', $item->getKey())) !!}
+                    @permission('admins-edit')
+                        {!! button()->editRecord(route('admin.admins.edit', $item->getKey())) !!}
+                    @endpermission
+                    @permission('admins-delete')
+                        {!! button()->deleteRecord(route('admin.admins.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

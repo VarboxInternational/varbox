@@ -44,8 +44,12 @@
                     <div class="text-muted">{{ $item->updated_at->diffForHumans()}}</div>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->viewRecord(route('admin.errors.show', $item->getKey())) !!}
-                    {!! button()->deleteRecord(route('admin.errors.destroy', $item->getKey())) !!}
+                    @permission('errors-view')
+                        {!! button()->viewRecord(route('admin.errors.show', $item->getKey())) !!}
+                    @endpermission
+                    @permission('errors-delete')
+                        {!! button()->deleteRecord(route('admin.errors.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

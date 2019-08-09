@@ -33,9 +33,15 @@
                     </span>
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->downloadFile(route('admin.uploads.download', $item->getKey())) !!}
+                    @permission('uploads-download')
+                        {!! button()->downloadFile(route('admin.uploads.download', $item->getKey())) !!}
+                    @endpermission
+
                     {!! button()->viewRecord(uploaded($item->full_path)->url(), ['target' => '_blank']) !!}
-                    {!! button()->deleteRecord(route('admin.uploads.destroy', $item->getKey())) !!}
+
+                    @permission('uploads-delete')
+                        {!! button()->deleteRecord(route('admin.uploads.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

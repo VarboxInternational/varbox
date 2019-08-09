@@ -21,7 +21,9 @@
                     @endif
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->deleteRecord(route('admin.activity.destroy', $item->getKey())) !!}
+                    @permission('activity-delete')
+                        {!! button()->deleteRecord(route('admin.activity.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty
