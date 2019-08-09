@@ -123,8 +123,8 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors', $this->errorModel)
-                ->clickViewRecordButton($this->errorModel->code)
-                ->assertPathIs('/admin/errors/show/' . $this->errorModel->id)
+                ->assertSourceMissing('button-view')
+                ->visit('/admin/errors/show/' . $this->errorModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Errors');
         });
@@ -196,9 +196,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/errors')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteError();
@@ -250,11 +248,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/errors')
-                ->clickButtonWithConfirm('Delete Old Errors')
-                ->assertDontSee('Old errors have been successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/errors')
-                ->assertRecordsCount(3);
+                ->assertDontSee('Delete Old Errors');
         });
 
         $this->deleteErrors();
@@ -306,11 +300,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/errors')
-                ->clickButtonWithConfirm('Delete All Errors')
-                ->assertDontSee('All errors have been successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/errors')
-                ->assertRecordsCount(3);
+                ->assertDontSee('Delete All Errors');
         });
 
         $this->deleteErrors();

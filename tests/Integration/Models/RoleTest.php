@@ -10,7 +10,6 @@ use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Traits\HasActivity;
-use Varbox\Traits\HasPermissions;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
@@ -34,12 +33,6 @@ class RoleTest extends TestCase
         parent::setUp();
 
         $this->setUpTestingConditions();
-    }
-
-    /** @test */
-    public function it_uses_the_has_permissions_trait()
-    {
-        $this->assertArrayHasKey(HasPermissions::class, class_uses(Role::class));
     }
 
     /** @test */

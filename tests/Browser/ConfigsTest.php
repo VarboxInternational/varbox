@@ -128,7 +128,8 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/configs/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Config');
         });
@@ -182,7 +183,8 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/configs', $this->configModel)
-                ->clickEditRecordButton($this->configKeys[$this->configKey])
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/configs/edit/' . $this->configModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Config');
         });
@@ -338,9 +340,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteConfig();

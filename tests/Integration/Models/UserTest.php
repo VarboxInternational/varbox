@@ -8,7 +8,7 @@ use Varbox\Models\User;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasAddresses;
-use Varbox\Traits\HasRoles;
+use Varbox\Traits\HasRolesAndPermissions;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
@@ -35,9 +35,9 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_has_roles_trait()
+    public function it_uses_the_has_roles_and_permissions_trait()
     {
-        $this->assertArrayHasKey(HasRoles::class, class_uses(User::class));
+        $this->assertArrayHasKey(HasRolesAndPermissions::class, class_uses(User::class));
     }
 
     /** @test */

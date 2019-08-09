@@ -95,7 +95,8 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/roles')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/roles/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Role');
         });
@@ -149,7 +150,8 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/roles', $this->roleModel)
-                ->clickEditRecordButton($this->roleName)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/roles/edit/' . $this->roleModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Role');
         });
@@ -296,9 +298,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/roles')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
     }
 

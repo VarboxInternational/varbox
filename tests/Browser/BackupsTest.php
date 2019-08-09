@@ -116,11 +116,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups/')
-                ->clickButtonWithConfirm('Create New Backup')
-                ->assertDontSee('The backup was successfully created')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/backups')
-                ->assertSee('No records found');
+                ->assertDontSee('Create New Backup');
         });
 
         $this->assertEmpty($this->backupFiles());
@@ -186,9 +182,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->cleanBackups();
@@ -295,13 +289,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->clickButtonWithConfirm('Delete Old Backups')
-                ->assertDontSee('Old backups were successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/backups')
-                ->assertSee($this->backupModel->name)
-                ->assertSee($this->backupModel->size_in_mb)
-                ->assertSee($this->backupModel->date->toDateTimeString());
+                ->assertDontSee('Delete Old Backups');
         });
 
         $this->assertCount(1, $this->backupFiles());
@@ -371,13 +359,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->clickButtonWithConfirm('Delete All Backups')
-                ->assertDontSee('All backups were successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/backups')
-                ->assertSee($this->backupModel->name)
-                ->assertSee($this->backupModel->size_in_mb)
-                ->assertSee($this->backupModel->date->toDateTimeString());
+                ->assertDontSee('Delete All Backups');
         });
 
         $this->assertCount(1, $this->backupFiles());

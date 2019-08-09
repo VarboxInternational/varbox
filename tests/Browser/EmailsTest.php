@@ -122,7 +122,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/emails/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Email');
         });
@@ -176,7 +177,8 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails', $this->emailModel)
-                ->clickEditRecordButton($this->emailName)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/emails/edit/' . $this->emailModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Email');
         });
@@ -331,9 +333,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertDontSee('button-delete');
         });
 
         $this->deleteEmail();
@@ -371,9 +371,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteEmail();
@@ -415,11 +413,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->clickDeleteRecordButton($this->emailName)
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->clickRestoreRecordButton($this->emailName)
-                ->assertDontSee('The record was successfully restored!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-restore');
         });
 
         $this->deleteEmail();

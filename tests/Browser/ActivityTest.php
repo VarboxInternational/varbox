@@ -158,9 +158,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteActivity();
@@ -216,11 +214,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickButtonWithConfirm('Delete Old Activity')
-                ->assertDontSee('Old activity was successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/activity')
-                ->assertRecordsCount(3);
+                ->assertDontSee('Delete Old Activity');
         });
 
         $this->deleteActivities();
@@ -276,11 +270,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->clickButtonWithConfirm('Delete All Activity')
-                ->assertDontSee('All activity was successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/activity')
-                ->assertRecordsCount(3);
+                ->assertDontSee('Delete All Activity');
         });
 
         $this->deleteActivities();

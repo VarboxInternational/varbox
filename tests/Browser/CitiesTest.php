@@ -118,7 +118,8 @@ class CitiesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/cities')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/cities/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add City');
         });
@@ -182,7 +183,8 @@ class CitiesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/cities', $this->cityModel)
-                ->clickEditRecordButton($this->cityName)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/cities/edit/' . $this->cityModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit City');
         });
@@ -377,9 +379,7 @@ class CitiesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/cities')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteCity();

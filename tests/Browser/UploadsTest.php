@@ -106,9 +106,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->attach('input.dz-hidden-input', __DIR__ . '/../Files/test.pdf')
-                ->visit('/admin/uploads')
-                ->assertSee('No records found');
+                ->assertSourceMissing('dropzone');
         });
 
         $this->assertEquals(0, Upload::count());
@@ -234,9 +232,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->assertEquals(2, count(Storage::disk($this->disk)->files(null, true)) - 1);

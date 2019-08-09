@@ -101,7 +101,8 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/permissions')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/permissions/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Permission');
         });
@@ -155,7 +156,8 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
-                ->clickEditRecordButton($this->permissionName)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/permissions/edit/' . $this->permissionModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Permission');
         });
@@ -260,7 +262,7 @@ class PermissionsTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_update_a_permission_and_stay_to_continue_editing_id()
+    public function an_admin_can_update_a_permission_and_stay_to_continue_editing_it()
     {
         $this->admin->grantPermission('permissions-list');
         $this->admin->grantPermission('permissions-edit');
@@ -310,9 +312,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/permissions')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
     }
 

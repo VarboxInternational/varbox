@@ -99,7 +99,8 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/countries')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/countries/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Country');
         });
@@ -153,7 +154,8 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/countries', $this->countryModel)
-                ->clickEditRecordButton($this->countryName)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/countries/edit/' . $this->countryModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Country');
         });
@@ -307,9 +309,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/countries')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
     }
 

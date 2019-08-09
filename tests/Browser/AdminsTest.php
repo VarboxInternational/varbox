@@ -103,7 +103,8 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/admins/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Admin');
         });
@@ -157,7 +158,8 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/admins', $this->adminModel)
-                ->clickEditRecordButton($this->adminEmail)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/admins/edit/' . $this->adminModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Admin');
         });
@@ -322,9 +324,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteAdmin();

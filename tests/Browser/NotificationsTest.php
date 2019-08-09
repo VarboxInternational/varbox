@@ -136,9 +136,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteNotification();
@@ -196,11 +194,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/notifications', $this->notification1Model)
-                ->clickButton($this->notification1Subject, 'button-mark-as-read')
-                ->assertDontSee('The notification has been successfully marked as read')
-                ->assertSee('Unauthorized')
-                ->visitLastPage('/admin/notifications', $this->notification1Model)
-                ->assertSeeIn('.badge', 'No');
+                ->assertSourceMissing('button-mark-as-read');
         });
 
         $this->deleteNotification();
@@ -270,18 +264,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->assertPresent('.badge-success')
-                ->assertSeeIn('.badge-success', 'Yes')
-                ->assertPresent('.badge-danger')
-                ->assertSeeIn('.badge-danger', 'No')
-                ->clickButtonWithConfirm('Mark All As Read')
-                ->assertSee('Unauthorized')
-                ->assertDontSee('All unread notifications have been successfully marked as read')
-                ->visit('/admin/notifications')
-                ->assertPresent('.badge-success')
-                ->assertSeeIn('.badge-success', 'Yes')
-                ->assertPresent('.badge-danger')
-                ->assertSeeIn('.badge-danger', 'No');
+                ->assertDontSee('Mark All As Read');
         });
 
         $this->deleteNotifications();
@@ -345,16 +328,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->assertRecordsCount(2)
-                ->assertPresent('.badge-success')
-                ->assertSeeIn('.badge-success', 'Yes')
-                ->clickButtonWithConfirm('Delete Read Notifications')
-                ->assertDontSee('All read notifications have been successfully deleted')
-                ->assertSee('Unauthorized')
-                ->visit('/admin/notifications')
-                ->assertRecordsCount(2)
-                ->assertPresent('.badge-success')
-                ->assertSeeIn('.badge-success', 'Yes');
+                ->assertDontSee('Delete Read Notifications');
         });
 
         $this->deleteNotifications();
@@ -412,12 +386,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->assertRecordsCount(2)
-                ->clickButtonWithConfirm('Delete Old Notifications')
-                ->assertSee('Unauthorized')
-                ->assertDontSee('Old notifications were successfully deleted')
-                ->visit('/admin/notifications')
-                ->assertRecordsCount(2);
+                ->assertDontSee('Delete Old Notifications');
         });
 
         $this->deleteNotifications();
@@ -475,12 +444,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->assertRecordsCount(2)
-                ->clickButtonWithConfirm('Delete All Notifications')
-                ->assertSee('Unauthorized')
-                ->assertDontSee('All notifications were successfully deleted')
-                ->visit('/admin/notifications')
-                ->assertRecordsCount(2);
+                ->assertDontSee('Delete All Notifications');
         });
 
         $this->deleteNotifications();
