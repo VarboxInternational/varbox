@@ -185,7 +185,7 @@ class EmailsController extends Controller
      */
     public function preview(Request $request, EmailModelContract $email = null)
     {
-        app(config('varbox.binding.form_requests.email_form_request', EmailRequest::class));
+        app(config('varbox.bindings.form_requests.email_form_request', EmailRequest::class));
 
         DB::beginTransaction();
 
