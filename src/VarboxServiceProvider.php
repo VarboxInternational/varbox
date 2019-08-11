@@ -26,6 +26,7 @@ use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\BackupModelContract;
+use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
@@ -72,6 +73,7 @@ use Varbox\Middleware\OverrideConfigs;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
 use Varbox\Models\Backup;
+use Varbox\Models\Block;
 use Varbox\Models\City;
 use Varbox\Models\Config;
 use Varbox\Models\Country;
@@ -487,6 +489,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(EmailModelContract::class, $binding['models']['email_model'] ?? Email::class);
         $this->app->alias(EmailModelContract::class, 'email.model');
+
+        $this->app->bind(BlockModelContract::class, $binding['models']['block_model'] ?? Block::class);
+        $this->app->alias(BlockModelContract::class, 'block.model');
     }
 
     /**
