@@ -447,6 +447,74 @@ class PermissionsSeeder extends Seeder
                 'name' => 'emails-preview',
             ],
         ],
+        'Blocks' => [
+            'List' => [
+                'group' => 'Blocks',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'blocks-list',
+            ],
+            'Show' => [
+                'group' => 'Blocks',
+                'label' => 'Show',
+                'guard' => 'admin',
+                'name' => 'blocks-show',
+            ],
+            'Add' => [
+                'group' => 'Blocks',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'blocks-add',
+            ],
+            'Edit' => [
+                'group' => 'Blocks',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'blocks-edit',
+            ],
+            'Delete' => [
+                'group' => 'Blocks',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'blocks-delete',
+            ],
+            'Restore' => [
+                'group' => 'Blocks',
+                'label' => 'Restore',
+                'guard' => 'admin',
+                'name' => 'blocks-restore',
+            ],
+            'Draft' => [
+                'group' => 'Emails',
+                'label' => 'Draft',
+                'guard' => 'admin',
+                'name' => 'emails-draft',
+            ],
+            'Publish' => [
+                'group' => 'Emails',
+                'label' => 'Publish',
+                'guard' => 'admin',
+                'name' => 'emails-publish',
+            ],
+            'Duplicate' => [
+                'group' => 'Emails',
+                'label' => 'Duplicate',
+                'guard' => 'admin',
+                'name' => 'emails-duplicate',
+            ],
+            'Assign' => [
+                'group' => 'Blocks',
+                'label' => 'Assign',
+                'guard' => 'admin',
+                'name' => 'blocks-assign',
+            ],
+            'Un-Assign' => [
+                'group' => 'Blocks',
+                'label' => 'Un-Assign',
+                'guard' => 'admin',
+                'name' => 'blocks-unassign',
+            ],
+        ],
     ];
 
     /**
