@@ -46,11 +46,11 @@ class AdminMenuComposer
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Menus')->url(route('admin.menus.locations'))->permissions('menus-list')->active('admin/menus/*');
-                });
+                });*/
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Blocks')->url(route('admin.blocks.index'))->permissions('blocks-list')->active('admin/blocks/*');
-                });*/
+                });
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Emails')->url(route('admin.emails.index'))->permissions('emails-list', 'aa')->active('admin/emails/*');
