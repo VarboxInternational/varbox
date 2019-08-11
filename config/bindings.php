@@ -547,6 +547,17 @@ return [
         */
         'emails_controller' => \Varbox\Controllers\EmailsController::class,
 
+        /*
+        |
+        | Concrete implementation for the "blocks controller".
+        | To extend or replace this functionality, change the value below with your full "blocks controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\BlocksController" class
+        |
+        */
+        'blocks_controller' => \Varbox\Controllers\BlocksController::class,
+
     ],
 
     'form_requests' => [
