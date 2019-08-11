@@ -281,6 +281,34 @@ class CreateVarboxTables extends Migration
                 $table->timestamps();
             });
         }
+
+        if (!Schema::hasTable('blocks')) {
+            Schema::create('blocks', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name')->unique();
+                $table->string('type')->nullable();
+                $table->json('data')->nullable();
+
+                $table->softDeletes();
+                $table->timestamp('drafted_at')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('blockables')) {
+            Schema::create('blockables', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('block_id')->unsigned()->index();
+                $table->morphs('blockable');
+                $table->string('location')->nullable();
+                $table->integer('ord')->default(0);
+
+                $table->timestamps();
+
+                $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade')->onUpdate('cascade');
+            });
+        }
     }
 
     /**
@@ -290,6 +318,8 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('blockables');
+        Schema::dropIfExists('blocks');
         Schema::dropIfExists('emails');
         Schema::dropIfExists('backups');
         Schema::dropIfExists('errors');
