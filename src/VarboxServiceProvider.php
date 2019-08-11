@@ -26,6 +26,7 @@ use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\BackupModelContract;
+use Varbox\Contracts\BlockHelperContract;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\CityModelContract;
@@ -52,6 +53,7 @@ use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Facades\VarboxFacade;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
+use Varbox\Helpers\BlockHelper;
 use Varbox\Helpers\ButtonHelper;
 use Varbox\Helpers\DraftHelper;
 use Varbox\Helpers\FlashHelper;
@@ -552,6 +554,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(RevisionHelperContract::class, $binding['helpers']['revision_helper'] ?? RevisionHelper::class);
         $this->app->alias(RevisionHelperContract::class, 'revision.helper');
+
+        $this->app->singleton(BlockHelperContract::class, $binding['helpers']['block_helper'] ?? BlockHelper::class);
+        $this->app->alias(BlockHelperContract::class, 'block.helper');
     }
 
     /**
