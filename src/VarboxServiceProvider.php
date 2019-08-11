@@ -333,6 +333,16 @@ class VarboxServiceProvider extends BaseServiceProvider
 
             return $query->first() ?? abort(404);
         });
+
+        Route::bind('block', function ($id) {
+            $query = app(BlockModelContract::class)->whereId($id);
+
+            if (Str::startsWith(Route::current()->uri(), 'admin/')) {
+                $query->withTrashed()->withDrafts();
+            }
+
+            return $query->first() ?? abort(404);
+        });
     }
 
     /**
