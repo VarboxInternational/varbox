@@ -355,6 +355,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/uploads.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/revisions.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/emails.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/blocks.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
     }
 
