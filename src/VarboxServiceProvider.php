@@ -131,10 +131,11 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerMiddlewares();
         $this->registerViewComposers();
         $this->registerRouteBindings();
+        $this->registerViewNamespaces();
+        $this->registerBladeDirectives();
         $this->loadRoutes();
         $this->loadBreadcrumbs();
         $this->listenToEvents();
-        $this->registerBladeDirectives();
     }
 
     /**
@@ -343,6 +344,16 @@ class VarboxServiceProvider extends BaseServiceProvider
 
             return $query->first() ?? abort(404);
         });
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerViewNamespaces()
+    {
+        foreach ((array)config('varbox.blocks.types', []) as $type => $options) {
+            view()->addNamespace("blocks_{$type}", realpath(base_path($options['views_path'])));
+        }
     }
 
     /**
