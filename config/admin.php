@@ -9,6 +9,6 @@ return [
     | For security purposes we suggest changing this to other than "admin".
     |
     */
-    'prefix' => 'varbox-admin',
+    'prefix' => 'admin',
 
 ];
