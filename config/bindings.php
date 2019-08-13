@@ -730,6 +730,18 @@ return [
         */
         'email_form_request' => \Varbox\Requests\EmailRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "block form request".
+        | To extend or replace this functionality, change the value below with your full "block form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\BlockRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'block_form_request' => \Varbox\Requests\BlockRequest::class,
+
     ],
 
     /*
