@@ -403,6 +403,48 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_restore_a_block_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-delete');
+        $this->admin->grantPermission('blocks-restore');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->assertSee($this->blockName)
+                ->clickDeleteRecordButton($this->blockName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->assertSee($this->blockName)
+                ->clickRestoreRecordButton($this->blockName)
+                ->assertSee('The record was successfully restored!');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_restore_a_block_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-delete');
+        $this->admin->revokePermission('blocks-restore');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->assertSourceMissing('button-restore');
+        });
+
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
