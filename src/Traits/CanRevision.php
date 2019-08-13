@@ -117,10 +117,9 @@ trait CanRevision
     protected function establishRevisionPageTitle()
     {
         $title = $this->revisionPageTitle();
-        $namespace = config('varbox.crud.namespace', 'Admin');
 
         view()->share('title', $title ?: 'Revision');
-        meta()->set('title', $title ? $namespace . ' - ' . $title : $namespace);
+        meta()->set('title', $title ? 'Admin - ' . $title : 'Admin');
     }
 
     /**

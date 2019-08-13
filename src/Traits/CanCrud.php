@@ -415,9 +415,7 @@ trait CanCrud
     protected function establishPageTitle()
     {
         if ($this->title) {
-            $namespace = config('varbox.crud.namespace', 'Admin');
-
-            meta()->set('title', $namespace . ($this->title ? ' - ' . $this->title : ''));
+            meta()->set('title', 'Admin' . ($this->title ? ' - ' . $this->title : ''));
 
             $this->vars['title'] = $this->title;
         }

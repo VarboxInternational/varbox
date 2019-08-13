@@ -26,17 +26,6 @@ return [
 
     /*
     |
-    | Given that the CRUD functionality will most probably be present inside the admin section of your site.
-    | The default namespace is "Admin".
-    |
-    | If you need, feel free to modify this to any string you'd like.
-    | At the moment, this is only used as a prefix for the "meta title" generated automatically by the CRUD functionality.
-    |
-    */
-    'namespace' => 'Admin',
-
-    /*
-    |
     | The list of exceptions that are treated softly (not throwable).
     |
     | When an exception defined here is caught by the CRUD functionality.
