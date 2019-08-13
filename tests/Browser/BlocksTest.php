@@ -816,6 +816,78 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_publish_a_drafted_block_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+
+        $this->blockModel = $this->blockModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->clickPublishRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_publish_a_drafted_block_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('blocks-publish');
+
+        $this->createBlock();
+
+        $this->blockModel = $this->blockModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->clickPublishRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_publish_a_drafted_block_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->revokePermission('blocks-publish');
+
+        $this->createBlock();
+
+        $this->blockModel = $this->blockModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->assertSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
