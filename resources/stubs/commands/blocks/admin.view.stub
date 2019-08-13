@@ -1,0 +1,20 @@
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-status bg-green"></div>
+        <div class="card-header">
+            <h3 class="card-title">Details Info</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    {!! form_admin()->text('data[title]', 'Title') !!}
+                    {!! uploader()->field('data[file]')->label('File')->model($item)->manager() !!}
+                    {!! form_admin()->select('data[active]', 'Active', ['0' => 'No', '1' => 'Yes']) !!}
+                    {!! form_admin()->date('data[date]', 'Date') !!}
+                    {!! form_admin()->textarea('data[description]', 'Description') !!}
+                    {!! form_admin()->editor('data[content]', 'Content') !!}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

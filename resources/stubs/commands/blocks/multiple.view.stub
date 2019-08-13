@@ -1,0 +1,218 @@
+<a class="js-MultipleItemAdd btn btn-blue btn-block btn-square text-white mx-3 mb-5">
+    <i class="fe fe-plus mr-2"></i>Add Item
+</a>
+<div class="js-MultipleItemContainer w-100">
+    @if($item->exists && isset($item->data['items']))
+        @foreach($item->data['items'] as $index => $_item)
+            <div class="js-MultipleItem col-md-12" data-index="{{ $index }}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="js-MultipleItemButtons row mx-auto mb-5">
+                                    <a href="" class="js-MultipleItemMoveUp btn btn-secondary btn-square col">
+                                        <i class="fe fe-arrow-up mr-2"></i>Move Up
+                                    </a>
+                                    <a href="" class="js-MultipleItemMoveDown btn btn-secondary btn-square col">
+                                        <i class="fe fe-arrow-down mr-2"></i>Move Down
+                                    </a>
+                                    <a href="" class="js-MultipleItemDelete btn btn-secondary btn-square col">
+                                        <i class="fe fe-x mr-2"></i>Delete Item
+                                    </a>
+                                </div>
+
+                                {!! form_admin()->text('data[items][' . $index . '][title]', 'Title') !!}
+                                {!! uploader()->field('data[items][' . $index . '][image]')->label('Image')->model($item)->types('image')->manager() !!}
+                                {!! form_admin()->date('data[items][' . $index . '][date]', 'Date') !!}
+                                {!! form_admin()->time('data[items][' . $index . '][time]', 'Time') !!}
+                                {!! form_admin()->select('data[items][' . $index . '][active]', 'Active', ['0' => 'No', '1' => 'Yes']) !!}
+                                {!! form_admin()->editor('data[items][' . $index . '][content]', 'Content') !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
+</div>
+<script type="x-template" class="js-MultipleItemTemplate">
+    <div class="js-MultipleItem col-md-12" data-index="#index">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="js-MultipleItemButtons row mx-auto mb-5">
+                            <a href="" class="js-MultipleItemMoveUp btn btn-secondary btn-square col">
+                                <i class="fe fe-arrow-up mr-2"></i>Move Up
+                            </a>
+                            <a href="" class="js-MultipleItemMoveDown btn btn-secondary btn-square col">
+                                <i class="fe fe-arrow-down mr-2"></i>Move Down
+                            </a>
+                            <a href="" class="js-MultipleItemDelete btn btn-secondary btn-square col">
+                                <i class="fe fe-x mr-2"></i>Delete Item
+                            </a>
+                        </div>
+
+                        {!! form_admin()->text('data[items][#index][title]', 'Title', '#title#') !!}
+                        {!! uploader()->field('data[items][#index][image]')->label('Image')->model($item)->types('image', 'video')->manager() !!}
+                        {!! form_admin()->date('data[items][#index][date]', 'Date', '#date#') !!}
+                        {!! form_admin()->time('data[items][#index][time]', 'Time', '#time#') !!}
+                        {!! form_admin()->select('data[items][#index][active]', 'Active', ['0' => 'No', '1' => 'Yes'], '#active#') !!}
+                        {!! form_admin()->editor('data[items][#index][content]', 'Content', '#content#') !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+@push('scripts')
+    <script>
+        let itemTemplate = $('.js-MultipleItemTemplate'),
+            itemContainer = $('.js-MultipleItemContainer');
+
+        let singleItemSelector = '.js-MultipleItem',
+            addItemSelector = '.js-MultipleItemAdd',
+            deleteItemSelector = '.js-MultipleItemDelete',
+            moveItemUpSelector = '.js-MultipleItemMoveUp',
+            moveItemDownSelector = '.js-MultipleItemMoveDown';
+
+        let addMultipleItem = function (index, data) {
+            let item, text, current;
+
+            if (!index) {
+                item = itemContainer.find(singleItemSelector + ':last');
+                index = item.length ? parseInt(item.attr('data-index')) + 1 : 0;
+            }
+
+            text = itemTemplate.html().replace(/#index/g, index);
+
+            for (var i in data) {
+                text = text.replace(new RegExp('#' + i + '#', 'g'), data[i] ? data[i] : '');
+            }
+
+            if (!data || !data.length) {
+                text = text.replace(/#[a-z0-9_]+#/g, '');
+            }
+
+            itemContainer.append(text);
+
+            current = itemContainer.find(singleItemSelector + '[data-index="' + index + '"]');
+
+            current.find('select').each(function (index, select) {
+                if ($(select).data('selected')) {
+                    $(select).find('option[value="' + $(select).data('selected') + '"]').attr('selected', true);
+                }
+            });
+
+            setTimeout(function () {
+                init.Editor();
+                init.Select2();
+                init.InputMask();
+                init.Uploader(false, current, null, index);
+            }, 500);
+        }, deleteMultipleItem = function (item) {
+            let oldIndex, newIndex;
+
+            item.nextAll(singleItemSelector).each(function (index, selector) {
+                oldIndex = parseInt($(selector).attr('data-index'));
+                newIndex = parseInt($(selector).attr('data-index')) - 1;
+
+                $(selector).attr('data-index', newIndex);
+                $(selector).find('input, select, textarea').each(function (index, field) {
+                    if ($(field).attr('name') != undefined) {
+                        $(field).attr('name', $(field).attr('name').replace(oldIndex, newIndex));
+                    }
+                });
+
+                init.Uploader(true, $(selector), oldIndex, newIndex);
+            });
+
+            item.remove();
+        }, moveMultipleItem = function (item, direction) {
+            let currentItem, previousItem, nextItem,
+                currentIndex, previousIndex, nextIndex;
+
+            currentItem = item;
+            currentIndex = currentItem.attr('data-index');
+
+            if (item.prev().length) {
+                previousItem = item.prev();
+                previousIndex = previousItem.attr('data-index');
+            }
+
+            if (item.next().length) {
+                nextItem = item.next();
+                nextIndex = nextItem.attr('data-index');
+            }
+
+            if (direction == 'up' && previousItem && previousIndex) {
+                previousItem.before(currentItem);
+
+                currentItem.attr('data-index', previousIndex);
+                previousItem.attr('data-index', currentIndex);
+
+                currentItem.find('input, select, textarea').each(function (index, field) {
+                    if ($(field).attr('name') != undefined) {
+                        $(field).attr('name', $(field).attr('name').replace(currentIndex, previousIndex));
+                    }
+                });
+
+                previousItem.find('input, select, textarea').each(function (index, field) {
+                    if ($(field).attr('name') != undefined) {
+                        $(field).attr('name', $(field).attr('name').replace(previousIndex, currentIndex));
+                    }
+                });
+
+                init.Uploader(true, currentItem, currentIndex, previousIndex);
+                init.Uploader(true, previousItem, previousIndex, currentIndex);
+            }
+
+            if (direction == 'down' && nextItem && nextIndex) {
+                nextItem.after(currentItem);
+
+                currentItem.attr('data-index', nextIndex);
+                nextItem.attr('data-index', currentIndex);
+
+                currentItem.find('input, select, textarea').each(function (index, field) {
+                    if ($(field).attr('name') != undefined) {
+                        $(field).attr('name', $(field).attr('name').replace(currentIndex, nextIndex));
+                    }
+                });
+
+                nextItem.find('input, select, textarea').each(function (index, field) {
+                    if ($(field).attr('name') != undefined) {
+                        $(field).attr('name', $(field).attr('name').replace(nextIndex, currentIndex));
+                    }
+                });
+
+                init.Uploader(true, currentItem, currentIndex, nextIndex);
+                init.Uploader(true, nextItem, nextIndex, currentIndex);
+            }
+        };
+
+        $(document).on('click', addItemSelector, function (e) {
+            e.preventDefault();
+
+            addMultipleItem();
+        });
+
+        $(document).on('click', deleteItemSelector, function (e) {
+            e.preventDefault();
+
+            deleteMultipleItem($(this).closest(singleItemSelector));
+        });
+
+        $(document).on('click', moveItemUpSelector, function (e) {
+            e.preventDefault();
+
+            moveMultipleItem($(this).closest(singleItemSelector), 'up');
+        });
+
+        $(document).on('click', moveItemDownSelector, function (e) {
+            e.preventDefault();
+
+            moveMultipleItem($(this).closest(singleItemSelector), 'down');
+        });
+    </script>
+@endpush
