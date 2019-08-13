@@ -62,6 +62,15 @@ class Block extends Model implements BlockModelContract
     ];
 
     /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'data' => 'array',
+    ];
+
+    /**
      * Boot the model.
      *
      * @return void
