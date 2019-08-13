@@ -246,9 +246,11 @@ if (!function_exists('get_object_vars_recursive')) {
         $result = [];
         $vars = is_object($object) ? get_object_vars($object) : $object;
 
-        foreach ($vars as $key => $value) {
-            $value = (is_array($value) || is_object($value)) ? get_object_vars_recursive($value) : $value;
-            $result[$key] = $value;
+        if (is_array($vars) && !empty($vars)) {
+            foreach ($vars as $key => $value) {
+                $value = (is_array($value) || is_object($value)) ? get_object_vars_recursive($value) : $value;
+                $result[$key] = $value;
+            }
         }
 
         return $result;
