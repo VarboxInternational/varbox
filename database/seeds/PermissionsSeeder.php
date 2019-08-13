@@ -488,19 +488,19 @@ class PermissionsSeeder extends Seeder
                 'group' => 'Emails',
                 'label' => 'Draft',
                 'guard' => 'admin',
-                'name' => 'emails-draft',
+                'name' => 'blocks-draft',
             ],
             'Publish' => [
                 'group' => 'Emails',
                 'label' => 'Publish',
                 'guard' => 'admin',
-                'name' => 'emails-publish',
+                'name' => 'blocks-publish',
             ],
             'Duplicate' => [
                 'group' => 'Emails',
                 'label' => 'Duplicate',
                 'guard' => 'admin',
-                'name' => 'emails-duplicate',
+                'name' => 'blocks-duplicate',
             ],
             'Assign' => [
                 'group' => 'Blocks',
