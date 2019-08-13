@@ -955,6 +955,331 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_see_block_revisions_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertSourceHas('button-view-revision')
+                ->assertSourceHas('button-rollback-revision')
+                ->assertSourceHas('button-delete-revision');
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_see_block_revisions_if_it_is_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertDontSee('There are no revisions for this record');
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_see_block_revisions_if_it_is_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->revokePermission('revisions-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->assertDontSee('Revisions Info');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_block_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/blocks/revision')
+                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('Block Revision')
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_view_a_block_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/blocks/revision')
+                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('Block Revision')
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_rollback_a_block_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlock();
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_rollback_a_block_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-rollback');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlock();
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertInputValue('#name-input', $this->blockName);
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_rollback_a_block_revision_if_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-rollback');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deleteBlockModified();
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->assertDontSee('Rollback Revision')
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_block_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_block_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-delete');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_block_revision_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-delete');
+
+        $this->createBlock();
+        $this->updateBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockNameModified)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-delete-revision');
+        });
+
+        $this->deleteBlockModified();
+    }
+
     /**
      * @return void
      */
