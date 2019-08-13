@@ -14,7 +14,9 @@
                 </div>
             </a>
         @empty
-            <span class="dropdown-item d-flex">No new notifications</span>
+            <span class="dropdown-item-text d-flex" style="color: #6e7687;">
+                No new notifications
+            </span>
         @endforelse
         <div class="dropdown-divider"></div>
         <a href="{{ route('admin.notifications.index') }}" class="dropdown-item text-center text-muted-dark">
