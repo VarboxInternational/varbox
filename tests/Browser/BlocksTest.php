@@ -280,6 +280,53 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_update_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->clickEditRecordButton($this->blockName)
+                ->type('#name-input', $this->blockNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/blocks')
+                ->assertSee('The record was successfully updated!')
+                ->visitLastPage('admin/blocks', $this->blockModel)
+                ->assertSee($this->blockNameModified);
+        });
+
+        $this->deleteBlockModified();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_block_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->clickEditRecordButton($this->blockName)
+                ->type('#name-input', $this->blockNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->blockNameModified);
+        });
+
+        $this->deleteBlockModified();
+    }
+
     /**
      * @return void
      */
