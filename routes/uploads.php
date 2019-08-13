@@ -8,7 +8,7 @@ $controllers = [
 ];
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => config('varbox.admin.prefix', 'admin'),
     'middleware' => [
         'web',
         'varbox.auth.session:admin',

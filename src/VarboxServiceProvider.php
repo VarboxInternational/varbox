@@ -161,6 +161,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     protected function publishConfigs()
     {
         $this->publishes([
+            __DIR__ . '/../config/admin.php' => config_path('varbox/admin.php'),
             __DIR__ . '/../config/activity.php' => config_path('varbox/activity.php'),
             __DIR__ . '/../config/backup.php' => config_path('varbox/backup.php'),
             __DIR__ . '/../config/bindings.php' => config_path('varbox/bindings.php'),
@@ -332,7 +333,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), 'admin/')) {
+            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
                 $query->withTrashed()->withDrafts();
             }
 
@@ -342,7 +343,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('block', function ($id) {
             $query = app(BlockModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), 'admin/')) {
+            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
                 $query->withTrashed()->withDrafts();
             }
 
@@ -427,6 +428,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function mergeConfigs()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/admin.php', 'varbox.admin');
         $this->mergeConfigFrom(__DIR__ . '/../config/activity.php', 'varbox.activity');
         $this->mergeConfigFrom(__DIR__ . '/../config/backup.php', 'varbox.backup');
         $this->mergeConfigFrom(__DIR__ . '/../config/errors.php', 'varbox.errors');

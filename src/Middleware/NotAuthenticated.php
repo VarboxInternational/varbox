@@ -8,16 +8,6 @@ use Illuminate\Http\Request;
 class NotAuthenticated
 {
     /**
-     * The request paths ignoring this middleware.
-     *
-     * @var array
-     */
-    protected $except = [
-        'logout',
-        'admin/logout',
-    ];
-
-    /**
      * Handle an incoming request.
      *
      * @param Request $request
@@ -39,6 +29,18 @@ class NotAuthenticated
     }
 
     /**
+     * The request paths ignoring this middleware.
+     *
+     * @return array
+     */
+    protected function exceptions()
+    {
+        return [
+            config('varbox.admin.prefix', 'admin') . '/logout',
+        ];
+    }
+
+    /**
      * Establish if request path is an exception or not.
      *
      * @param Request $request
@@ -46,12 +48,12 @@ class NotAuthenticated
      */
     protected function isException($request)
     {
-        foreach ($this->except as $except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
+        foreach ($this->exceptions() as $exception) {
+            if ($exception !== '/') {
+                $exception = trim($exception, '/');
             }
 
-            if ($request->is($except)) {
+            if ($request->is($exception)) {
                 return true;
             }
         }

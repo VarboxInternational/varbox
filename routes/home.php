@@ -7,6 +7,7 @@ $controllers = [
 ];
 
 Route::group([
+    'prefix' => config('varbox.admin.prefix', 'admin'),
     'middleware' => [
         'web',
         'varbox.auth.session:admin',
@@ -15,5 +16,5 @@ Route::group([
         'varbox.check.permissions',
     ]
 ], function () use ($controllers) {
-    Route::get('admin', ['as' => 'admin', 'uses' => $controllers['dashboard'] . '@index']);
+    Route::get('/', ['as' => 'admin', 'uses' => $controllers['dashboard'] . '@index']);
 });
