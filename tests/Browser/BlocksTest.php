@@ -3,21 +3,23 @@
 namespace Varbox\Tests\Browser;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\File;
+use Mockery;
+use Varbox\Commands\BlockMakeCommand;
 use Varbox\Models\Block;
-use Varbox\Models\Email;
 
 class BlocksTest extends TestCase
 {
     /**
-     * @var Email
+     * @var Block
      */
     protected $blockModel;
 
     /**
      * @var string
      */
+    protected $blockType = 'Example';
     protected $blockName = 'Test Name';
-    protected $blockType = 'TestType';
 
     /**
      * @var string
@@ -125,11 +127,70 @@ class BlocksTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->clickEditRecordButton($this->blockName)
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('Edit Block');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_edit_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->clickEditRecordButton($this->blockName)
+                ->assertPathIs('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('Edit Block');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_edit_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->revokePermission('blocks-edit');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Edit Block');
+        });
+
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
     protected function createBlock()
     {
+        $this->createBlockFiles();
+
         $this->blockModel = Block::create([
             'name' => $this->blockName,
             'type' => $this->blockType,
@@ -151,6 +212,8 @@ class BlocksTest extends TestCase
      */
     protected function createBlockModified()
     {
+        $this->createBlockFiles();
+
         $this->blockModel = Block::create([
             'name' => $this->blockNameModified,
             'type' => $this->blockType,
@@ -165,6 +228,8 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockName)
             ->first()->forceDelete();
+
+        $this->deleteBlockFiles();
     }
 
     /**
@@ -175,6 +240,8 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockNameModified)
             ->first()->forceDelete();
+
+        $this->deleteBlockFiles();
     }
 
     /**
@@ -185,5 +252,63 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockName . ' (1)')
             ->first()->forceDelete();
+
+        $this->deleteBlockFiles();
+    }
+
+    /**
+     * @return void
+     */
+    protected function createBlockFiles()
+    {
+        $this->artisan('varbox:make-block', ['type' => $this->blockType])
+            ->expectsQuestion($this->blockLocationsQuestion(), 'header content footer')
+            ->expectsQuestion($this->blockDummyFieldsQuestion(), 'yes')
+            ->expectsQuestion($this->blockMultipleItemsQuestion(), 'yes');
+    }
+
+    /**
+     * @return void
+     */
+    protected function deleteBlockFiles()
+    {
+        File::deleteDirectory(app_path('Blocks'));
+    }
+
+    /**
+     * @return string
+     */
+    protected function blockLocationsQuestion()
+    {
+        $question = [];
+        $question[] = 'What are the locations this block should be available in?';
+        $question[] = ' <fg=white>Please delimit the locations by using a space <fg=yellow>" "</> between them.</>';
+        $question[] = ' <fg=white>If you don\'t want any locations, just hit <fg=yellow>ENTER</></>';
+
+        return implode(PHP_EOL, $question);
+    }
+
+    /**
+     * @return string
+     */
+    protected function blockDummyFieldsQuestion()
+    {
+        $question = [];
+        $question[] = 'Do you want to generate dummy fields for the admin view?';
+        $question[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate one example input field for each type available in the platform</>';
+
+        return implode(PHP_EOL, $question);
+    }
+
+    /**
+     * @return string
+     */
+    protected function blockMultipleItemsQuestion()
+    {
+        $question = [];
+        $question[] = 'Do you want support for multiple items inside the admin view?';
+        $question[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate the code needed for adding multiple items (like a list) to the block</>';
+
+        return implode(PHP_EOL, $question);
     }
 }
