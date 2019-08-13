@@ -27,6 +27,27 @@ class BlocksTest extends TestCase
     protected $blockNameModified = 'Test Name Modified';
 
     /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->afterApplicationCreated(function () {
+            $this->artisan('varbox:make-block', ['type' => $this->blockType])
+                ->expectsQuestion($this->blockLocationsQuestion(), 'header content footer')
+                ->expectsQuestion($this->blockDummyFieldsQuestion(), 'yes')
+                ->expectsQuestion($this->blockMultipleItemsQuestion(), 'yes');
+        });
+
+        $this->beforeApplicationDestroyed(function () {
+            File::deleteDirectory(app_path('Blocks'));
+        });
+    }
+
+    /**
      * @param Application $app
      */
     protected function getEnvironmentSetUp($app)
@@ -189,8 +210,6 @@ class BlocksTest extends TestCase
      */
     protected function createBlock()
     {
-        $this->createBlockFiles();
-
         $this->blockModel = Block::create([
             'name' => $this->blockName,
             'type' => $this->blockType,
@@ -212,8 +231,6 @@ class BlocksTest extends TestCase
      */
     protected function createBlockModified()
     {
-        $this->createBlockFiles();
-
         $this->blockModel = Block::create([
             'name' => $this->blockNameModified,
             'type' => $this->blockType,
@@ -228,8 +245,6 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockName)
             ->first()->forceDelete();
-
-        $this->deleteBlockFiles();
     }
 
     /**
@@ -240,8 +255,6 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockNameModified)
             ->first()->forceDelete();
-
-        $this->deleteBlockFiles();
     }
 
     /**
@@ -252,27 +265,6 @@ class BlocksTest extends TestCase
         Block::withTrashed()->withDrafts()
             ->whereName($this->blockName . ' (1)')
             ->first()->forceDelete();
-
-        $this->deleteBlockFiles();
-    }
-
-    /**
-     * @return void
-     */
-    protected function createBlockFiles()
-    {
-        $this->artisan('varbox:make-block', ['type' => $this->blockType])
-            ->expectsQuestion($this->blockLocationsQuestion(), 'header content footer')
-            ->expectsQuestion($this->blockDummyFieldsQuestion(), 'yes')
-            ->expectsQuestion($this->blockMultipleItemsQuestion(), 'yes');
-    }
-
-    /**
-     * @return void
-     */
-    protected function deleteBlockFiles()
-    {
-        File::deleteDirectory(app_path('Blocks'));
     }
 
     /**
