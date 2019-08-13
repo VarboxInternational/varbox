@@ -445,6 +445,173 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_filter_blocks_by_keyword()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#search-input', $this->blockName)
+                ->assertQueryStringHas('search', $this->blockName)
+                ->assertSee($this->blockName)
+                ->assertRecordsCount(1)
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#search-input', $this->blockNameModified)
+                ->assertQueryStringHas('search', $this->blockNameModified)
+                ->assertDontSee($this->blockName)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_blocks_by_type()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsBySelect('#type-input', $this->blockLabel)
+                ->assertQueryStringHas('type', $this->blockType)
+                ->assertRecordsCount(1)
+                ->assertSee($this->blockName);
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_blocks_by_published()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsBySelect('#drafted-input', 'Yes')
+                ->assertQueryStringHas('drafted', 1)
+                ->assertRecordsCount(1)
+                ->assertSee($this->blockName)
+                ->visit('/admin/blocks')
+                ->filterRecordsBySelect('#drafted-input', 'No')
+                ->assertQueryStringHas('drafted', 2)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_blocks_by_trashed()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsBySelect('#trashed-input', 'No')
+                ->assertQueryStringHas('trashed', 2)
+                ->assertRecordsCount(1)
+                ->assertSee($this->blockName)
+                ->visit('/admin/blocks')
+                ->filterRecordsBySelect('#trashed-input', 'Yes')
+                ->assertQueryStringHas('trashed', 1)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_blocks_by_start_date()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#start_date-input', $past)
+                ->assertQueryStringHas('start_date', $past)
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->assertSee($this->blockName)
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#start_date-input', $future)
+                ->assertQueryStringHas('start_date', $future)
+                ->assertSee('No records found');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_filter_blocks_by_end_date()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->createBlock();
+
+        $past = today()->subDays(7)->format('Y-m-d');
+        $future = today()->addDays(7)->format('Y-m-d');
+
+        $this->browse(function ($browser) use ($past, $future) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#end_date-input', $past)
+                ->assertQueryStringHas('end_date', $past)
+                ->assertSee('No records found')
+                ->visit('/admin/blocks')
+                ->filterRecordsByText('#end_date-input', $future)
+                ->assertQueryStringHas('end_date', $future)
+                ->assertDontSee('No records found')
+                ->visitLastPage('/admin/blocks', $this->blockModel)
+                ->assertSee($this->blockName);
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_clear_block_filters()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/?search=list&type=test&drafted=1&trashed=2&start_date=1970-01-01&end_date=2070-01-01')
+                ->assertQueryStringHas('search')
+                ->assertQueryStringHas('type')
+                ->assertQueryStringHas('drafted')
+                ->assertQueryStringHas('trashed')
+                ->assertQueryStringHas('start_date')
+                ->assertQueryStringHas('end_date')
+                ->clickLink('Clear')
+                ->assertPathIs('/admin/blocks/')
+                ->assertQueryStringMissing('search')
+                ->assertQueryStringMissing('type')
+                ->assertQueryStringMissing('drafted')
+                ->assertQueryStringMissing('trashed')
+                ->assertQueryStringMissing('start_date')
+                ->assertQueryStringMissing('end_date');
+        });
+    }
+
     /**
      * @return void
      */
