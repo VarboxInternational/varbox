@@ -2,7 +2,7 @@
 @php($jsonAccept = isset($accept) && is_array($accept) && !empty($accept) ? json_encode($accept) : null)
 @php($inputAccept = isset($accept) && is_array($accept) && !empty($accept) ? '.' . implode(',.', $accept) : '*')
 
-<a class="js-UploadNewOpenBtn js-UploadNewOpenBtn-{{ $index }} btn btn-square btn-white float-left font-weight-normal @if($current) w-50 border-right-0 @else w-100 @endif @if(!$allowed) disabled @endif" data-toggle="modal" data-target="#modal-openUploadNew-{{ $index }}" style="border: 1px solid rgba(0,40,100,.12)">
+<a id="js-UploadNewOpenBtn-{{ $index }}" class="js-UploadNewOpenBtn btn btn-square btn-white float-left font-weight-normal @if($current) w-50 border-right-0 @else w-100 @endif @if(!$allowed) disabled @endif" data-toggle="modal" data-target="#modal-openUploadNew-{{ $index }}" style="border: 1px solid rgba(0,40,100,.12)">
     Choose File
 </a>
 
