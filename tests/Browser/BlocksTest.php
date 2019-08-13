@@ -19,6 +19,7 @@ class BlocksTest extends TestCase
      * @var string
      */
     protected $blockType = 'Example';
+    protected $blockLabel = 'Example Block';
     protected $blockName = 'Test Name';
 
     /**
@@ -56,7 +57,7 @@ class BlocksTest extends TestCase
 
         $app['config']->set('varbox.blocks.types', [
             $this->blockType => [
-                'label' => 'Test Block',
+                'label' => $this->blockLabel,
                 'composer_class' => "App\Blocks\{$this->blockType}\Composer",
                 'views_path' => "app/Blocks/{$this->blockType}/Views",
                 'preview_image' => 'vendor/varbox/images/blocks/example.jpg',
@@ -200,6 +201,80 @@ class BlocksTest extends TestCase
                 ->visit('/admin/blocks/edit/' . $this->blockModel->id)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Edit Block');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickLink('Add New')
+                ->typeSelect2('#type-input', $this->blockLabel)
+                ->clickLink('Continue')
+                ->assertPathIs('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/blocks')
+                ->assertSee('The record was successfully created!')
+                ->visitLastPage('/admin/blocks/', new Block)
+                ->assertSee($this->blockName)
+                ->assertSee($this->blockType);
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_block_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickLink('Add New')
+                ->typeSelect2('#type-input', $this->blockLabel)
+                ->clickLink('Continue')
+                ->assertPathIs('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/blocks/create/' . $this->blockType)
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_block_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+        $this->admin->grantPermission('blocks-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickLink('Add New')
+                ->typeSelect2('#type-input', $this->blockLabel)
+                ->clickLink('Continue')
+                ->assertPathIs('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/blocks/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->blockName);
         });
 
         $this->deleteBlock();
