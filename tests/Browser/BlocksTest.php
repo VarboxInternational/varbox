@@ -888,6 +888,73 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_duplicate_a_block_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->clickDuplicateRecordButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertPathBeginsWith('/admin/blocks/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->blockName . ' (1)');
+        });
+
+        $this->deleteBlock();
+        $this->deleteDuplicatedBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_duplicate_a_block_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('blocks-duplicate');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->clickDuplicateRecordButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/blocks/edit/' . $this->blockModel->id)
+                ->assertPathBeginsWith('/admin/blocks/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->blockName . ' (1)');
+        });
+
+        $this->deleteBlock();
+        $this->deleteDuplicatedBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_duplicate_a_block_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->revokePermission('blocks-duplicate');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->assertDontSee('Duplicate');
+        });
+
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
