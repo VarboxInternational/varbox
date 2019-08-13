@@ -98,7 +98,7 @@ class MailMakeTest extends TestCase
     }
 
     /** @test */
-    public function it_can__generate_the_mailable_class_without_queue_support()
+    public function it_can_generate_the_mailable_class_without_queue_support()
     {
         $this->artisan('varbox:make-mail', ['type' => $this->mailType])
             ->expectsQuestion('Do you want to make the mail queueable?', 'no')
