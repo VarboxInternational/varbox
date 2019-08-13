@@ -365,6 +365,44 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_force_delete_a_block_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-delete');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->assertSee($this->blockName)
+                ->clickDeleteRecordButton($this->blockName)
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->clickDeleteRecordButton($this->blockName)
+                ->assertSee('The record was successfully force deleted!')
+                ->visitLastPage('/admin/blocks/', $this->blockModel)
+                ->assertDontSee($this->blockName);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_force_delete_a_block_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->revokePermission('blocks-delete');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->assertSourceMissing('button-delete');
+        });
+
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
