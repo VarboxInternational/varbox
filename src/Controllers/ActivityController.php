@@ -52,6 +52,7 @@ class ActivityController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
+                ->orderBy('created_at', 'desc')
                 ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Activity';
