@@ -691,6 +691,64 @@ class BlocksTest extends TestCase
         $this->deleteBlock();
     }
 
+    /** @test */
+    public function an_admin_can_create_a_drafted_block_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/blocks/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->blockName)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_drafted_block_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->grantPermission('blocks-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/blocks/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->blockName)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function an_admin_cannot_create_a_drafted_block_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+        $this->admin->grantPermission('blocks-edit');
+        $this->admin->revokePermission('blocks-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/create/' . $this->blockType)
+                ->assertDontSee('Save As Draft');
+        });
+    }
+
     /**
      * @return void
      */
