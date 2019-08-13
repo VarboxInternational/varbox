@@ -62,6 +62,8 @@ class NotificationsController extends Controller
             $query->orderBy($request->get('sort'), $request->get('dir') ?: 'asc');
         }
 
+        $query->orderBy('created_at', 'desc');
+
         return view('varbox::admin.notifications.index')->with([
             'title' => 'Notifications',
             'items' => $query->paginate(config('varbox.crud.per_page', 10)),
