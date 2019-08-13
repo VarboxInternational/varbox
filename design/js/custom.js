@@ -18,10 +18,10 @@ function sort() {
         if (query.param('sort') == $(this).data('sort')) {
             if (query.param('direction') == 'asc') {
                 $(this).attr('data-direction', 'desc');
-                $(this).find('i').addClass('fa-sort-asc');
+                $(this).find('i').addClass('fa-sort-up');
             } else {
                 $(this).attr('data-direction', 'asc');
-                $(this).find('i').addClass('fa-sort-desc');
+                $(this).find('i').addClass('fa-sort-down');
             }
         }
 
