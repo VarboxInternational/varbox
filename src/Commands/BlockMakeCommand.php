@@ -14,7 +14,7 @@ class BlockMakeCommand extends Command
      * @var string
      */
     protected $signature = 'varbox:make-block 
-                            {name : The name of the block type} ';
+                            {type : The type of the block} ';
 
     /**
      * The console command description.
@@ -58,7 +58,7 @@ class BlockMakeCommand extends Command
         $frontViewFile = "{$path}/Views/front.blade.php";
 
         if ($this->alreadyExists($composerFile, $adminViewFile, $frontViewFile)) {
-            $this->error('There is already a block with the name of "' . $this->argument('name') . '".');
+            $this->error('There is already a block with the name of "' . $this->argument('type') . '".');
 
             return false;
         }
@@ -69,7 +69,7 @@ class BlockMakeCommand extends Command
         $this->files->put($adminViewFile, $this->buildAdminView());
         $this->files->put($frontViewFile, $this->buildFrontView());
 
-        $this->info('Block created successfully inside the "app/Blocks/' . $this->argument('name') . '/" directory!');
+        $this->info('Block created successfully inside the "app/Blocks/' . $this->argument('type') . '/" directory!');
         $this->comment('<bg=yellow> </> Don\'t forget to add your newly created block type to the "types" key inside the "config/varbox/blocks.php" file.');
 
         return true;
@@ -83,7 +83,7 @@ class BlockMakeCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name of the block.'],
+            ['type', InputArgument::REQUIRED, 'The type of the block.'],
         ];
     }
 
@@ -134,7 +134,7 @@ class BlockMakeCommand extends Command
      */
     protected function getPath()
     {
-        $name = str_replace('\\', '/', str_replace($this->laravel->getNamespace(), '', $this->argument('name')));
+        $name = str_replace('\\', '/', str_replace($this->laravel->getNamespace(), '', $this->argument('type')));
 
         return "{$this->laravel['path']}/Blocks/{$name}";
     }
@@ -147,23 +147,26 @@ class BlockMakeCommand extends Command
      */
     protected function buildComposer()
     {
-        $locationsQuestion = [];
-        $locationsQuestion[] = 'What are the locations this block should be available in?';
-        $locationsQuestion[] = ' <fg=white>Please delimit the locations by using a space <fg=yellow>" "</> between them.</>';
-        $locationsQuestion[] = ' <fg=white>If you don\'t want any locations, just hit <fg=yellow>ENTER</></>';
+        if ($this->option('no-interaction') == true) {
+            $locations = null;
+        } else {
+            $locationsQuestion = [];
+            $locationsQuestion[] = 'What are the locations this block should be available in?';
+            $locationsQuestion[] = ' <fg=white>Please delimit the locations by using a space <fg=yellow>" "</> between them.</>';
+            $locationsQuestion[] = ' <fg=white>If you don\'t want any locations, just hit <fg=yellow>ENTER</></>';
 
-        $locations = $this->ask(implode(PHP_EOL, $locationsQuestion));
+            $locations = $this->ask(implode(PHP_EOL, $locationsQuestion));
+        }
 
         if ($locations) {
             $locations = "'" . str_replace(" ", "', '", $locations) . "'";
         }
 
         $content = $this->files->get($this->getComposerStub());
-        $content = str_replace('DummyNamespace', 'App\Blocks\\' . $this->argument('name'), $content);
+        $content = str_replace('DummyNamespace', 'App\Blocks\\' . $this->argument('type'), $content);
         $content = str_replace('dummy_locations', $locations ?: '', $content);
 
         return $content;
-        ;
     }
 
     /**
@@ -174,13 +177,17 @@ class BlockMakeCommand extends Command
      */
     protected function buildAdminView()
     {
-        $dummyQuestion = [];
-        $dummyQuestion[] = 'Do you want to generate dummy fields for the admin view?';
-        $dummyQuestion[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate one example input field for each type available in the platform</>';
+        if ($this->option('no-interaction') == true) {
+            $dummy = 'no';
+        } else {
+            $dummyQuestion = [];
+            $dummyQuestion[] = 'Do you want to generate dummy fields for the admin view?';
+            $dummyQuestion[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate one example input field for each type available in the platform</>';
 
-        $dummy = $this->choice(implode(PHP_EOL, $dummyQuestion), [
-            true => 'yes', false => 'no'
-        ], true);
+            $dummy = $this->choice(implode(PHP_EOL, $dummyQuestion), [
+                true => 'yes', false => 'no'
+            ], true);
+        }
 
         $content = '';
 
@@ -188,13 +195,17 @@ class BlockMakeCommand extends Command
             $content .= $this->files->get($this->getAdminViewStub());
         }
 
-        $multipleQuestion = [];
-        $multipleQuestion[] = 'Do you want support for multiple items inside the admin view?';
-        $multipleQuestion[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate the code needed for adding multiple items (like a list) to the block</>';
+        if ($this->option('no-interaction') == true) {
+            $multiple = 'no';
+        } else {
+            $multipleQuestion = [];
+            $multipleQuestion[] = 'Do you want support for multiple items inside the admin view?';
+            $multipleQuestion[] = ' <fg=white>If you choose <fg=yellow>yes</>, the script will generate the code needed for adding multiple items (like a list) to the block</>';
 
-        $multiple = $this->choice(implode(PHP_EOL, $multipleQuestion), [
-            true => 'yes', false => 'no'
-        ], true);
+            $multiple = $this->choice(implode(PHP_EOL, $multipleQuestion), [
+                true => 'yes', false => 'no'
+            ], true);
+        }
 
         if ($multiple == 'yes') {
             $content .= "\n" . $this->files->get($this->getMultipleViewStub());
