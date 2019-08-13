@@ -24,7 +24,7 @@ Route::group([
         Route::post('store', ['as' => 'admin.blocks.store', 'uses' => $controllers['blocks'] . '@store', 'permissions' => 'blocks-add']);
         Route::get('edit/{block}', ['as' => 'admin.blocks.edit', 'uses' => $controllers['blocks'] . '@edit', 'permissions' => 'blocks-edit']);
         Route::put('update/{block}', ['as' => 'admin.blocks.update', 'uses' => $controllers['blocks'] . '@update', 'permissions' => 'blocks-edit']);
-        Route::delete('destroy/{block}', ['as' => 'admin.blocks.destroy', 'uses' => $controllers['blocks'] . '@destroy', 'permissions' => 'blocks-soft-delete']);
+        Route::delete('destroy/{block}', ['as' => 'admin.blocks.destroy', 'uses' => $controllers['blocks'] . '@destroy', 'permissions' => 'blocks-delete']);
 
         /**
          * Soft Delete Actions.
