@@ -41,6 +41,54 @@ class BlocksTest extends TestCase
         ]);
     }
 
+
+
+
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->assertPathIs('/admin/blocks')
+                ->assertSee('Blocks');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('blocks-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->assertPathIs('/admin/blocks')
+                ->assertSee('Blocks');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->revokePermission('blocks-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Blocks');
+        });
+    }
+
+
+
+
+
+
     /**
      * @return void
      */
