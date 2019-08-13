@@ -612,6 +612,85 @@ class BlocksTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/create/' . $this->blockType)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_creating_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks/create/' . $this->blockType)
+                ->type('#name-input', $this->blockName)
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_updating_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->createBlock();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->type('#name-input', '')
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deleteBlock();
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_updating_a_block()
+    {
+        $this->admin->grantPermission('blocks-list');
+        $this->admin->grantPermission('blocks-add');
+
+        $this->createBlock();
+        $this->createBlockModified();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/blocks')
+                ->clickEditRecordButton($this->blockName)
+                ->type('#name-input', $this->blockNameModified)
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deleteBlockModified();
+        $this->deleteBlock();
+    }
+
     /**
      * @return void
      */
