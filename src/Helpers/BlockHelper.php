@@ -136,15 +136,4 @@ class BlockHelper implements BlockHelperContract
             'disabled' => $disabled,
         ]);
     }
-
-    /**
-     * Render the buttons for "items" block types.
-     * Remove | Move Up | Move Down.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function buttons()
-    {
-        return view('varbox::helpers.block.buttons');
-    }
 }

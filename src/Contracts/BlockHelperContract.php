@@ -45,9 +45,4 @@ interface BlockHelperContract
      * @return \Illuminate\View\View
      */
     public function container(Model $model, RevisionModelContract $revision = null, $disabled = false);
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    public function buttons();
 }
