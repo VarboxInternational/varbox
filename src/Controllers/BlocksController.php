@@ -101,7 +101,7 @@ class BlocksController extends Controller
      */
     public function create($type = null)
     {
-        if (!$type || !array_key_exists($type, $this->model->getTypes())) {
+        if (!$type || !array_key_exists($type, (array)config('varbox.blocks.types', []))) {
             meta()->set('title', 'Admin - Add Block');
 
             return view('varbox::admin.blocks.init')->with([

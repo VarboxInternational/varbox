@@ -14,34 +14,4 @@ interface BlockModelContract
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeAlphabetically($query);
-
-    /**
-     * @return array
-     */
-    public static function getTypes();
-
-    /**
-     * @return array
-     */
-    public static function getLocations();
-
-    /**
-     * @return array
-     */
-    public static function getTypesForSelect();
-
-    /**
-     * @return array
-     */
-    public static function getClassesForSelect();
-
-    /**
-     * @return array
-     */
-    public static function getPathsForSelect();
-
-    /**
-     * @return array
-     */
-    public static function getImagesForSelect();
 }
