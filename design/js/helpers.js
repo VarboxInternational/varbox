@@ -1,29 +1,50 @@
 var init = {
-    UploadManager: function (exists, container, oldIndex, newIndex) {
+    Uploader: function (exists, container, oldIndex, newIndex) {
         window.__UploaderIndex = 1 + Math.floor(Math.random() * 999999);
 
-        container.find('.js-UploadNewBtn').each(function (i, _container) {
+        container.find('.js-UploadNewOpenBtn').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
-            $(_container).attr('data-popup-id', $(_container).attr('data-popup-id').replace(/[0-9]+/g, window.__UploaderIndex));
+            $(_container).attr('data-target', $(_container).attr('data-target').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
         container.find('.js-UploadNewModal').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
+            $(_container).attr('data-index', $(_container).attr('data-index').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
-        container.find('.js-UploadNewModal .js-UploadNewSaveBtn').each(function (i, _container) {
+        container.find('.js-UploadNewModal .js-UploadTab').each(function (i, _container) {
             $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
+        });
+
+        container.find('.js-UploadNewModal .js-UploadTabBtn').each(function (i, _container) {
+            $(_container).attr('href', $(_container).attr('href').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
         container.find('.js-UploadInput').each(function (i, _container) {
-            $(_container).attr('id', $(_container).attr('id').replace(/[0-9]+/g, window.__UploaderIndex));
+            $(_container).attr('class', $(_container).attr('class').replace(/[0-9]+/g, window.__UploaderIndex));
         });
 
         if (exists) {
+            container.find('.js-UploadNewBtn').each(function (i, _container) {
+                $(_container).removeClass('w-100').addClass('w-50 border-right-0');
+            });
+
             container.find('.js-UploadNewModal, .js-UploadCurrentModal').each(function (index, _container) {
                 if ($(_container).attr('data-field')) {
                     $(_container).attr('data-field', $(_container).attr('data-field').replace(oldIndex, newIndex));
                 }
+
+                if ($(_container).attr('data-index')) {
+                    $(_container).attr('data-index', $(_container).attr('data-index').replace(/[0-9]+/g, window.__UploaderIndex));
+                }
+            });
+
+            container.find('.js-UploadNewModal').each(function (i, _container) {
+                $(_container).attr('data-field', $(_container).attr('data-field').replace(oldIndex, newIndex));
+            });
+
+            container.find('.js-UploadOpenCropper').each(function (i, _container) {
+                $(_container).attr('class', $(_container).attr('class').replace(oldIndex, newIndex));
             });
 
             container.find('.js-UploadInput').each(function (index, _container) {
@@ -33,7 +54,7 @@ var init = {
             });
         } else {
             container.find('.js-UploadNewBtn').each(function (i, _container) {
-                $(_container).removeClass('half').addClass('full');
+                $(_container).removeClass('w-50 border-right-0').addClass('w-100');
             });
 
             container.find('.js-UploadCurrentOpenBtn, .js-UploadCurrentModal').each(function (i, _container) {
@@ -127,6 +148,14 @@ var init = {
             width: "100%",
             allowClear: true,
             placeholder: ''
+        });
+    },
+    InputMask: function () {
+        $('input[data-mask]').each(function (i, input) {
+            $(input).mask($(input).attr('data-mask'), {
+                placeholder: $(input).attr('placeholder'),
+                clearIfNotMatch: true
+            });
         });
     }
 };
@@ -228,17 +257,13 @@ var disable = {
             $('form.frm .js-UploadNewBtn').addClass('disabled');
             $('form.frm .js-UploadNewModal').remove();
 
+            //disable multiple items buttons
+            $('.js-MultipleItemButtons').remove();
+
             //disable select2
             $('form.frm select.select-input').prop('disabled', true);
 
-            //disable block specific buttons
-            $('form.frm #multiple-add-item').remove();
-            $('form.frm .multiple-move-item-up').remove();
-            $('form.frm .multiple-move-item-down').remove();
-            $('form.frm .multiple-delete-item').remove();
-            $('form.frm .multiple-item br').remove();
-
-            //disabloe froala editors
+            //disable froala editors
             var editor = new FroalaEditor('textarea.editor-input');
 
             editor.edit.off();
