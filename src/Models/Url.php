@@ -93,6 +93,6 @@ class Url extends Model implements UrlModelContract
      */
     public static function findUrlableOrFail()
     {
-        return static::getUrlable(false);
+        return static::findUrlable(false);
     }
 }
