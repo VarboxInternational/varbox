@@ -69,10 +69,7 @@
         "laravel": {
             "providers": [
                 "Varbox\\VarboxServiceProvider"
-            ],
-            "aliases": {
-                "Varbox": "Varbox\\Facades\\VarboxFacade"
-            }
+            ]
         }
     }
 }
