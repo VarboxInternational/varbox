@@ -6,6 +6,7 @@ use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Routing\ControllerDispatcher;
+use Illuminate\Routing\Route as RouteRouter;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -55,7 +56,6 @@ use Varbox\Contracts\UrlModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
-use Varbox\Facades\VarboxFacade;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\BlockHelper;
@@ -156,7 +156,6 @@ class VarboxServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->mergeConfigs();
-        $this->registerFacades();
         $this->registerServiceBindings();
         $this->registerModelBindings();
         $this->registerHelperBindings();
@@ -427,7 +426,7 @@ class VarboxServiceProvider extends BaseServiceProvider
                     $action = $model->getUrlOptions()->routeAction;
 
                     return (new ControllerDispatcher(app()))->dispatch(
-                        app(Router::class)->setAction([
+                        app(RouteRouter::class)->setAction([
                             'uses' => $controller.'@'.$action,
                             'model' => $model,
                         ]), app($controller), $action
@@ -497,15 +496,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pagesg');
-    }
-
-    /**
-     * @return void
-     */
-    protected function registerFacades()
-    {
-        $this->app->singleton('varbox', Varbox::class);
-        $this->app->alias('Varbox', VarboxFacade::class);
     }
 
     /**
