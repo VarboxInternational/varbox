@@ -4,6 +4,8 @@ namespace Varbox;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Routing\ControllerDispatcher;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -49,6 +51,7 @@ use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
+use Varbox\Contracts\UrlModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
@@ -139,6 +142,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerViewNamespaces();
         $this->registerBladeDirectives();
         $this->loadRoutes();
+        $this->registerRoutes();
         $this->loadBreadcrumbs();
         $this->listenToEvents();
     }
@@ -322,6 +326,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('user', UserModelContract::class);
         Route::model('role', RoleModelContract::class);
         Route::model('permission', PermissionModelContract::class);
+        Route::model('url', UrlModelContract::class);
         Route::model('upload', UploadModelContract::class);
         Route::model('revision', RevisionModelContract::class);
         Route::model('activity', ActivityModelContract::class);
@@ -400,6 +405,37 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/blocks.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/pages.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerRoutes()
+    {
+        Route::macro('url', function () {
+            Route::fallback(function ($url = '/') {
+                try {
+                    $url = app(UrlModelContract::class)->whereUrl($url)->firstOrFail();
+                    $model = $url->urlable;
+
+                    if (! $model) {
+                        throw new ModelNotFoundException;
+                    }
+
+                    $controller = $model->getUrlOptions()->routeController;
+                    $action = $model->getUrlOptions()->routeAction;
+
+                    return (new ControllerDispatcher(app()))->dispatch(
+                        app(Router::class)->setAction([
+                            'uses' => $controller.'@'.$action,
+                            'model' => $model,
+                        ]), app($controller), $action
+                    );
+                } catch (ModelNotFoundException $e) {
+                    abort(404);
+                }
+            });
+        });
     }
 
     /**
