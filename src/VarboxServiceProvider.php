@@ -38,6 +38,7 @@ use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\MetaHelperContract;
+use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RevisionHelperContract;
@@ -343,6 +344,16 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         Route::bind('block', function ($id) {
             $query = app(BlockModelContract::class)->whereId($id);
+
+            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
+                $query->withTrashed()->withDrafts();
+            }
+
+            return $query->first() ?? abort(404);
+        });
+
+        Route::bind('page', function ($id) {
+            $query = app(PageModelContract::class)->whereId($id);
 
             if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
                 $query->withTrashed()->withDrafts();
