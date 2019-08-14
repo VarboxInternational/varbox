@@ -81,8 +81,6 @@ class Block extends Model implements BlockModelContract
 
         static::deleted(function (BlockModelContract $block) {
             if ($block->forceDeleting === true) {
-                //$block->blockables()->delete();
-
                 DB::table('blockables')->whereBlockId($block->id)->delete();
             }
         });
@@ -91,12 +89,12 @@ class Block extends Model implements BlockModelContract
     /**
      * Get all of the records of a single entity type that are assigned to this block.
      *
-     * @param string $class
+     * @param string $related
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function blockables($class)
+    public function blockables($related)
     {
-        return $this->morphedByMany($class, 'blockable')->withPivot([
+        return $this->morphedByMany($related, 'blockable')->withPivot([
             'id', 'location', 'ord'
         ])->withTimestamps();
     }
