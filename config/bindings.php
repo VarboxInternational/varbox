@@ -574,6 +574,28 @@ return [
         */
         'blocks_controller' => \Varbox\Controllers\BlocksController::class,
 
+        /*
+        |
+        | Concrete implementation for the "pages controller".
+        | To extend or replace this functionality, change the value below with your full "pages controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\PagesController" class
+        |
+        */
+        'pages_controller' => \Varbox\Controllers\PagesController::class,
+
+        /*
+        |
+        | Concrete implementation for the "pages tree controller".
+        | To extend or replace this functionality, change the value below with your full "pages tree controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\Pages\TreeController" class
+        |
+        */
+        'pages_tree_controller' => \Varbox\Controllers\Pages\TreeController::class,
+
     ],
 
     'form_requests' => [
