@@ -296,6 +296,22 @@ return [
         */
         'block_model' => \Varbox\Models\Block::class,
 
+        /*
+        |
+        | Concrete implementation for the "page model".
+        | To extend or replace this functionality, change the value below with your full "page model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Page" class
+        | - or at least implement the "Varbox\Contracts\PageModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('page.model') OR app('\Varbox\Contracts\PageModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'page_model' => \Varbox\Models\Page::class,
+
     ],
 
     /*
