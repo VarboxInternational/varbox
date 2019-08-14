@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Tests;
+namespace Varbox\Tests\Integration\Traits;
 
 use Exception;
 use Illuminate\Support\Str;
