@@ -111,6 +111,22 @@ return [
 
         /*
         |
+        | Concrete implementation for the "url model".
+        | To extend or replace this functionality, change the value below with your full "url model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Url" class
+        | - or at least implement the "Varbox\Contracts\UrlModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('url.model') OR app('\Varbox\Contracts\UrlModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'url_model' => \Varbox\Models\Url::class,
+
+        /*
+        |
         | Concrete implementation for the "upload model".
         | To extend or replace this functionality, change the value below with your full "upload model" FQN.
         |
