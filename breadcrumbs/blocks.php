@@ -15,9 +15,9 @@ Breadcrumbs::register('admin.blocks.create', function($breadcrumbs) {
 });
 
 /* Home > Blocks > Edit */
-Breadcrumbs::register('admin.blocks.edit', function($breadcrumbs, $email) {
+Breadcrumbs::register('admin.blocks.edit', function($breadcrumbs, $block) {
     $breadcrumbs->parent('admin.blocks.index');
-    $breadcrumbs->push('Edit', route('admin.blocks.edit', $email));
+    $breadcrumbs->push('Edit', route('admin.blocks.edit', $block));
 });
 
 /* Home > Blocks > Edit > Revision */
