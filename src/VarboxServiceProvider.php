@@ -83,6 +83,7 @@ use Varbox\Models\Config;
 use Varbox\Models\Country;
 use Varbox\Models\Email;
 use Varbox\Models\Error;
+use Varbox\Models\Page;
 use Varbox\Models\Permission;
 use Varbox\Models\Revision;
 use Varbox\Models\Role;
@@ -535,6 +536,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(BlockModelContract::class, $binding['models']['block_model'] ?? Block::class);
         $this->app->alias(BlockModelContract::class, 'block.model');
+
+        $this->app->bind(PageModelContract::class, $binding['models']['page_model'] ?? Page::class);
+        $this->app->alias(PageModelContract::class, 'page.model');
     }
 
     /**
