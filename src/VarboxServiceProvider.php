@@ -92,6 +92,7 @@ use Varbox\Models\Revision;
 use Varbox\Models\Role;
 use Varbox\Models\State;
 use Varbox\Models\Upload;
+use Varbox\Models\Url;
 use Varbox\Models\User;
 use Varbox\Services\QueryCacheService;
 use Varbox\Services\UploadService;
@@ -536,6 +537,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(PermissionModelContract::class, $binding['models']['permission_model'] ?? Permission::class);
         $this->app->alias(PermissionModelContract::class, 'permission.model');
+
+        $this->app->bind(UrlModelContract::class, $binding['models']['url_model'] ?? Url::class);
+        $this->app->alias(UrlModelContract::class, 'url.model');
 
         $this->app->bind(UploadModelContract::class, $binding['models']['upload_model'] ?? Upload::class);
         $this->app->alias(UploadModelContract::class, 'upload.model');
