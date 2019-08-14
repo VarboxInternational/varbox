@@ -3,13 +3,16 @@
 namespace Varbox\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Tests\Controllers\UrlController;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\RevisionOptions;
+use Varbox\Options\UrlOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
+use Varbox\Traits\HasUrl;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
@@ -18,6 +21,7 @@ use Varbox\Traits\IsSortable;
 class Post extends Model
 {
     use HasUploads;
+    use HasUrl;
     use HasRevisions;
     use HasDuplicates;
     use HasActivity;
@@ -144,5 +148,18 @@ class Post extends Model
             ->withEntityType('post')
             ->withEntityName($this->name)
             ->withEntityUrl($this->slug);
+    }
+
+    /**
+     * Get the options for the UrlOptions trait.
+     *
+     * @return UrlOptions
+     */
+    public function getUrlOptions() : UrlOptions
+    {
+        return UrlOptions::instance()
+            ->routeUrlTo(UrlController::class, 'show')
+            ->generateUrlSlugFrom('name')
+            ->saveUrlSlugTo('slug');
     }
 }
