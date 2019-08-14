@@ -268,6 +268,29 @@ class CreateVarboxTables extends Migration
             });
         }
 
+        if (!Schema::hasTable('pages')) {
+            Schema::create('pages', function (Blueprint $table) {
+                $table->increments('id');
+                NestedSet::columns($table);
+                $table->integer('layout_id')->unsigned()->index();
+
+                $table->string('name');
+                $table->string('slug')->unique();
+                $table->string('type');
+                $table->string('identifier')->unique()->nullable();
+
+                $table->json('metadata')->nullable();
+
+                $table->boolean('active')->default(true);
+
+                $table->timestamps();
+                $table->softDeletes();
+                Draft::column($table);
+
+                $table->foreign('layout_id')->references('id')->on('layouts')->onDelete('cascade')->onUpdate('cascade');
+            });
+        }
+
         if (!Schema::hasTable('emails')) {
             Schema::create('emails', function (Blueprint $table) {
                 $table->increments('id');
