@@ -780,6 +780,18 @@ return [
         */
         'block_form_request' => \Varbox\Requests\BlockRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "page form request".
+        | To extend or replace this functionality, change the value below with your full "page form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\PageRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'page_form_request' => \Varbox\Requests\PageRequest::class,
+
     ],
 
     /*
