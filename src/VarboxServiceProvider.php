@@ -367,6 +367,16 @@ class VarboxServiceProvider extends BaseServiceProvider
 
             return $query->first() ?? abort(404);
         });
+
+        Route::bind('pageParent', function ($id) {
+            $query = app(PageModelContract::class)->whereId($id);
+
+            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
+                $query->withTrashed()->withDrafts();
+            }
+
+            return $query->first() ?? abort(404);
+        });
     }
 
     /**
