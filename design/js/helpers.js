@@ -157,6 +157,9 @@ var init = {
                 clearIfNotMatch: true
             });
         });
+    },
+    Tooltip: function () {
+        $('[data-toggle="tooltip"]').tooltip();
     }
 };
 
