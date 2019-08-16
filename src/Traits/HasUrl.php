@@ -64,12 +64,6 @@ trait HasUrl
             }
         });
 
-        static::saved(function (Model $model) {
-            if (self::$generateUrl === false) {
-                self::$generateUrl = true;
-            }
-        });
-
         static::deleted(function (Model $model) {
             if ($model->forceDeleting !== false) {
                 $model->deleteUrl();
@@ -95,7 +89,7 @@ trait HasUrl
      */
     public function getUrl($secure = null)
     {
-        if ($this->url && $this->url->exists) {
+        if ($this->url && $this->url->exists && $this->url->url) {
             return url($this->url->url, [], $secure);
         }
 
@@ -113,7 +107,19 @@ trait HasUrl
     }
 
     /**
-     * Disable the url generation manually only for the current request.
+     * Enable the url generation manually.
+     *
+     * @return static
+     */
+    public function doGenerateUrl()
+    {
+        self::$generateUrl = false;
+
+        return $this;
+    }
+
+    /**
+     * Disable the url generation manually.
      *
      * @return static
      */
