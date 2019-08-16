@@ -40,11 +40,11 @@ class AdminMenuComposer
                     ->permissions('pages-list', 'menus-list', 'blocks-list', 'emails-list', 'layouts-list')
                     ->active('admin/pages/*', 'admin/menus/*', 'admin/blocks/*', 'admin/emails/*', 'admin/layouts/*');
 
-                /*$menu->child($cms, function (MenuItem $item) {
+                $menu->child($cms, function (MenuItem $item) {
                     $item->name('Pages')->url(route('admin.pages.index'))->permissions('pages-list')->active('admin/pages/*');
                 });
 
-                $menu->child($cms, function (MenuItem $item) {
+                /*$menu->child($cms, function (MenuItem $item) {
                     $item->name('Menus')->url(route('admin.menus.locations'))->permissions('menus-list')->active('admin/menus/*');
                 });*/
 
