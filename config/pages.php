@@ -16,9 +16,8 @@ return [
     | --- [Action]:
     | The action from the controller to be used for pages on the front-end.
     |
-    | --- [View]:
-    | The view to be used for pages on the front-end.
-    | The view path is relative to the "resources/views/" directory.
+    | --- [Locations]:
+    | The locations in page available for inserting blocks in.
     |
     */
     'types' => [
@@ -26,13 +25,17 @@ return [
         'default' => [
             'controller' => 'PagesController',
             'action' => 'normal',
-            'view' => 'pages.normal',
+            'locations' => [
+                'header', 'content', 'footer'
+            ]
         ],
 
         'home' => [
             'controller' => 'PagesController',
             'action' => 'home',
-            'view' => 'pages.home',
+            'locations' => [
+                'content'
+            ]
         ],
 
     ],
