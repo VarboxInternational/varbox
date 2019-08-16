@@ -570,6 +570,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'blocks-unassign',
             ],
+            'Order' => [
+                'group' => 'Blocks',
+                'label' => 'Order',
+                'guard' => 'admin',
+                'name' => 'blocks-order',
+            ],
         ],
     ];
 
