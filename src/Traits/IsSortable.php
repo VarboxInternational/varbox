@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Varbox\Exceptions\SortException;
@@ -164,19 +165,31 @@ trait IsSortable
 
             $this->checkRelationToSortBy($previousModel, $relation);
 
-            $models[] = $previousModel->{$relation}()->getModel();
+            $rel = $previousModel->{$relation}();
+            $models[] = $rel->getModel();
 
             $modelTable = $previousModel->getTable();
-            $relationTable = $previousModel->{$relation}()->getModel()->getTable();
-            $foreignKey = $previousModel->{$relation}()->getForeignKeyName();
+            $modelKey = $previousModel->getKeyName();
+            $relationTable = $rel->getModel()->getTable();
+            $relationKey = $rel->getForeignKeyName();
 
             if (! $this->alreadyJoinedForSorting($relationTable)) {
-                switch (get_class($previousModel->{$relation}())) {
+                switch (get_class($rel)) {
                     case BelongsTo::class:
-                        $this->sort['query']->join($relationTable, $modelTable.'.'.$foreignKey, '=', $relationTable.'.id');
+                        $this->sort['query']->join($relationTable, $modelTable.'.'.$relationKey, '=', $relationTable.'.'.$modelKey);
                         break;
                     case HasOne::class:
-                        $this->sort['query']->join($relationTable, $modelTable.'.id', '=', $relationTable.'.'.$foreignKey);
+                        $this->sort['query']->join($relationTable, $modelTable.'.'.$modelKey, '=', $relationTable.'.'.$relationKey);
+                        break;
+                    case MorphOne::class:
+                        $morphClass = $previousModel->getMorphClass();
+                        $morphType = $rel->getMorphType();
+
+                        $this->sort['query']->join($relationTable, function ($join) use ($modelTable, $relationTable, $modelKey, $relationKey, $morphClass, $morphType) {
+                            $join->on($modelTable . '.'.$modelKey, '=', $relationTable . '.' . $relationKey)
+                                ->where($relationTable . '.' . $morphType, '=', $morphClass);
+                        });
+
                         break;
                 }
             }
@@ -238,7 +251,7 @@ trait IsSortable
      */
     protected function checkRelationToSortBy(Model $model, $relation)
     {
-        if (! ($model->{$relation}() instanceof HasOne) && ! ($model->{$relation}() instanceof BelongsTo)) {
+        if (! ($model->{$relation}() instanceof HasOne) && ! ($model->{$relation}() instanceof BelongsTo) && ! ($model->{$relation}() instanceof MorphOne)) {
             throw SortException::wrongRelationToSort($relation, get_class($model->{$relation}()));
         }
     }
