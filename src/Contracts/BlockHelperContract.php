@@ -41,8 +41,7 @@ interface BlockHelperContract
     /**
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param \Varbox\Contracts\RevisionModelContract $revision
-     * @param bool $disabled
      * @return \Illuminate\View\View
      */
-    public function container(Model $model, RevisionModelContract $revision = null, $disabled = false);
+    public function container(Model $model, RevisionModelContract $revision = null);
 }

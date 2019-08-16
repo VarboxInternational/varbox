@@ -125,15 +125,14 @@ class BlockHelper implements BlockHelperContract
      *
      * @param Model $model
      * @param RevisionModelContract $revision
-     * @param bool $disabled
      * @return \Illuminate\View\View
      */
-    public function container(Model $model, RevisionModelContract $revision = null, $disabled = false)
+    public function container(Model $model, RevisionModelContract $revision = null)
     {
         return view('varbox::helpers.block.container')->with([
             'model' => $model,
             'revision' => $revision,
-            'disabled' => $disabled,
+            'disabled' => $revision instanceof RevisionModelContract,
         ]);
     }
 }
