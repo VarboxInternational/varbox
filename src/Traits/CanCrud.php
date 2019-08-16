@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
+use function GuzzleHttp\Promise\inspect;
 
 trait CanCrud
 {
@@ -666,7 +667,7 @@ trait CanCrud
     {
         list($controller, $action) = explode('@', Route::getCurrentRoute()->getActionName());
 
-        if (!$this->items || (!($this->items instanceof Collection) && !($this->items instanceof LengthAwarePaginator) && !is_array($this->items))) {
+        if (!($this->items instanceof Collection || $this->items instanceof LengthAwarePaginator || is_array($this->items))) {
             throw new Exception(
                 'The $items property is not defined or is incorrect.' . PHP_EOL .
                 'Please instantiate the $items property on the ' . $controller . ' inside the callback of the ' . $action . '() method.' . PHP_EOL .
