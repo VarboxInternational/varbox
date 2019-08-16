@@ -391,6 +391,62 @@ class PermissionsSeeder extends Seeder
                 'name' => 'backups-delete',
             ],
         ],
+        'Pages' => [
+            'List' => [
+                'group' => 'Pages',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'pages-list',
+            ],
+            'Add' => [
+                'group' => 'Pages',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'pages-add',
+            ],
+            'Edit' => [
+                'group' => 'Pages',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'pages-edit',
+            ],
+            'Delete' => [
+                'group' => 'Pages',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'pages-delete',
+            ],
+            'Restore' => [
+                'group' => 'Pages',
+                'label' => 'Restore',
+                'guard' => 'admin',
+                'name' => 'pages-restore',
+            ],
+            'Draft' => [
+                'group' => 'Pages',
+                'label' => 'Draft',
+                'guard' => 'admin',
+                'name' => 'pages-draft',
+            ],
+            'Publish' => [
+                'group' => 'Pages',
+                'label' => 'Publish',
+                'guard' => 'admin',
+                'name' => 'pages-publish',
+            ],
+            'Duplicate' => [
+                'group' => 'Pages',
+                'label' => 'Duplicate',
+                'guard' => 'admin',
+                'name' => 'pages-duplicate',
+            ],
+            'Preview' => [
+                'group' => 'Pages',
+                'label' => 'Preview',
+                'guard' => 'admin',
+                'name' => 'pages-preview',
+            ],
+        ],
         'Emails' => [
             'List' => [
                 'group' => 'Emails',
