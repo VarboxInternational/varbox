@@ -10,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Varbox\Contracts\RevisionModelContract;
 use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
@@ -206,44 +207,27 @@ class BlocksController extends Controller
             'blockable_type' => 'required',
         ]);
 
-        try {
-            $class = $request->input('blockable_type');
-            $id = $request->input('blockable_id');
-            $model = $class::withoutGlobalScopes()->findOrFail($id);
+        $class = $request->input('blockable_type');
+        $id = $request->input('blockable_id');
+        $model = $class::withoutGlobalScopes()->findOrFail($id);
 
-            if ($request->filled('draft') && ($draft = $this->draft->find((int)$request->input('draft')))) {
-                DB::beginTransaction();
+        if ($request->filled('revision') && ($revision = app(RevisionModelContract::class)->find((int)$request->input('revision')))) {
+            DB::beginTransaction();
 
-                $model = $draft->draftable;
-                $model->publishDraft($draft);
-            }
-
-            if ($request->filled('revision') && ($revision = $this->revision->find((int)$request->input('revision')))) {
-                DB::beginTransaction();
-
-                $model = $revision->revisionable;
-                $model->rollbackToRevision($revision);
-            }
-
-            return response()->json([
-                'status' => true,
-                'html' => view('varbox::helpers.block.partials.blocks')->with([
-                    'model' => $model,
-                    'blocks' => $model->blocks,
-                    'locations' => $model->getBlockLocations(),
-                    'draft' => $draft ?? null,
-                    'revision' => $revision ?? null,
-                    'disabled' => $request->input('disabled') ? true : false,
-                ])->render(),
-            ]);
-        } catch (Exception $e) {
-            logger()->error($e);
-
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
+            $model = $revision->revisionable;
+            $model->rollbackToRevision($revision);
         }
+
+        return response()->json([
+            'status' => true,
+            'html' => view('varbox::helpers.block.partials.blocks')->with([
+                'model' => $model,
+                'blocks' => $model->blocks,
+                'locations' => $model->getBlockLocations(),
+                'revision' => $revision ?? null,
+                'disabled' => json_decode($request->input('disabled')) ? true : false,
+            ])->render(),
+        ]);
     }
 
     /**
@@ -262,26 +246,17 @@ class BlocksController extends Controller
             'block_id' => 'required|numeric',
         ]);
 
-        try {
-            $block = $this->model->findOrFail($request->input('block_id'));
+        $block = $this->model->findOrFail($request->input('block_id'));
 
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'id' => $block->id,
-                    'name' => $block->name ?: 'N/A',
-                    'type' => $block->type ?: 'N/A',
-                    'url' => route('admin.blocks.edit', $block->id),
-                ],
-            ]);
-        } catch (Exception $e) {
-            logger()->error($e);
-
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ]);
-        }
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'id' => $block->getKey(),
+                'name' => $block->name ?: 'N/A',
+                'type' => $block->type ?: 'N/A',
+                'url' => route('admin.blocks.edit', $block->getKey()),
+            ],
+        ]);
     }
 
     /**
