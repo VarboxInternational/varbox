@@ -1,102 +1,97 @@
-@section('bottom_scripts')
+@push('scripts')
     <script type="text/javascript">
-        var token = '{{ csrf_token() }}';
-        var blocksTab = $('div#tab-blocks');
-        var blocksContainer = $('div.blocks-container');
+        let blocksContainerSelector = '.js-BlocksContainer',
+            locationContainerSelector = '.js-BlocksLocationContainer',
+            tableSelector = '.js-BlocksTable',
+            tableTemplateSelector = '#js-BlocksTableTemplate',
+            requestSelector = '.js-BlocksRequest',
+            requestTemplateSelector = '#js-BlocksRequestTemplate',
+            emptyRowSelector = '.js-BlocksEmpty',
+            emptyRowTemplateSelector = '#js-BlocksEmptyTemplate';
 
-        var listBlocks = function () {
+        let listBlocks = function () {
             $.ajax({
                 type : 'GET',
                 url: '{{ route('admin.blocks.get') }}',
                 data: {
-                    _token: token,
-                    blockable_id: blocksContainer.data('blockable-id'),
-                    blockable_type: blocksContainer.data('blockable-type'),
-                    draft: blocksContainer.data('draft'),
-                    revision: blocksContainer.data('revision'),
-                    disabled: blocksContainer.data('disabled')
-                },
-                beforeSend: function () {
-                    blocksContainer.hide();
-                    blocksTab.find('.loading').fadeIn(300);
-                },
-                complete: function () {
-                    blocksTab.find('.loading').fadeOut(300);
-
-                    setTimeout(function () {
-                        blocksContainer.fadeIn(300);
-                    }, 300);
+                    _token: '{{ csrf_token() }}',
+                    blockable_id: @json($model->getKey()),
+                    blockable_type: @json($model->getMorphClass()),
+                    revision: @json($revision ? $revision->getKey() : null),
+                    disabled: @json($disabled)
                 },
                 success : function(data) {
                     if (data.status == true) {
-                        blocksContainer.html(data.html);
+                        $(blocksContainerSelector).html(data.html);
 
-                        initBlockSelect();
                         orderBlocks();
-                    } else {
-                        blocksTab.hide();
-                        init.FlashMessage('error', 'Could not load the blocks! Please try again.');
+
+                        init.Select2();
+                        init.Tooltip();
                     }
                 },
                 error: function (err) {
-                    blocksTab.hide();
-                    init.FlashMessage('error', 'Could not load the blocks! Please try again.');
+                    $(blocksContainerSelector).html(
+                        '<p class="p-5 text-red">Could not load the blocks!</p>'
+                    );
                 }
             });
         }, assignBlock = function (_this) {
-            var container = _this.closest('.blocks-location-container');
-            var table = container.find('.blocks-table');
-            var select = container.find('.block-assign-select');
+            let container = _this.closest(locationContainerSelector),
+                table = container.find(tableSelector),
+                select = container.find('select');
 
             if (select.val()) {
                 $.ajax({
                     type : 'POST',
                     url: '{{ route('admin.blocks.row') }}',
                     data: {
-                        _token: token,
+                        _token: '{{ csrf_token() }}',
                         block_id: select.val()
                     },
                     beforeSend: function () {
-                        container.css({opacity: 0.5});
-                    },
-                    complete: function () {
-                        container.css({opacity: 1});
+                        container.css({
+                            opacity: 0.5
+                        });
                     },
                     success : function(data) {
                         if (data.status == true) {
-                            table.find('tr.no-blocks-assigned').remove();
-                            table.find('tbody').append(
-                                $('#block-row-template').html()
-                                    .replace(/#index#/g, parseInt(getLastIndex()) + 1)
-                                    .replace(/#block_id#/g, data.data.id)
-                                    .replace(/#block_name#/g, data.data.name)
-                                    .replace(/#block_type#/g, data.data.type)
-                                    .replace(/#block_url#/g, data.data.url)
-                            );
+                            setTimeout(function () {
+                                table.find(emptyRowSelector).remove();
+                                table.find('tbody').append(
+                                    $(tableTemplateSelector).html()
+                                        .replace(/#index#/g, parseInt(getLastBlockIndex()) + 1)
+                                        .replace(/#block_id#/g, data.data.id)
+                                        .replace(/#block_name#/g, data.data.name)
+                                        .replace(/#block_type#/g, data.data.type)
+                                        .replace(/#block_url#/g, data.data.url)
+                                );
 
-                            $('.blocks-request').append(
-                                $('#block-request-template').html()
-                                    .replace(/#index#/g, parseInt(getLastIndex()) + 1)
-                                    .replace(/#block_id#/g, data.data.id)
-                                    .replace(/#block_location#/g, container.data('location'))
-                                    .replace(/#block_ord#/g, table.find('tbody > tr').length)
-                            );
+                                $(requestSelector).append(
+                                    $(requestTemplateSelector).html()
+                                        .replace(/#index#/g, parseInt(getLastBlockIndex()) + 1)
+                                        .replace(/#block_id#/g, data.data.id)
+                                        .replace(/#block_location#/g, container.data('location'))
+                                        .replace(/#block_ord#/g, table.find('tbody > tr').length)
+                                );
 
-                            orderBlocks();
-                        } else {
-                            init.FlashMessage('error', 'Could not assign the block! Please try again.');
+                                orderBlocks();
+
+                                init.Tooltip();
+
+                                container.css({
+                                    opacity: 1
+                                });
+                            }, 200);
                         }
-                    },
-                    error: function (err) {
-                        init.FlashMessage('error', 'Could not assign the block! Please try again.');
                     }
                 });
             }
         }, unassignBlock = function (_this) {
-            var container = _this.closest('.blocks-location-container');
-            var table = _this.closest('table');
-            var row = _this.closest('tr');
-            var input = $('input.block-input[data-index="' + row.data('index') + '"]');
+            let container = _this.closest(locationContainerSelector),
+                table = _this.closest('table'),
+                row = _this.closest('tr'),
+                input = $(requestSelector).find('input[data-index="' + row.data('index') + '"]');
 
             container.css({
                 opacity: 0.5
@@ -105,34 +100,41 @@
             setTimeout(function () {
                 var count = table.find('tbody > tr').length;
 
+                $('[data-toggle="tooltip"]').tooltip('hide');
+
                 input.remove();
                 row.remove();
 
                 if (count <= 1) {
                     table.find('tbody').append(
-                        $('#no-block-row-template').html()
+                        $(emptyRowTemplateSelector).html()
                     );
                 }
+
+                init.Tooltip();
+
+                orderBlocks();
 
                 container.css({
                     opacity: 1
                 });
-
-                orderBlocks();
-            }, 250);
+            }, 200);
         }, orderBlocks = function () {
-            $(".blocks-table").tableDnD({
+            $(tableSelector).tableDnD({
                 onDrop: function(table, row){
-                    var rows = table.tBodies[0].rows;
+                    let rows = table.tBodies[0].rows;
 
                     $(rows).each(function (index, selector) {
-                        $('input[name="blocks[' + $(selector).attr('data-index') + '][' + $(selector).attr('data-block-id') + '][ord]"]').val(index + 1);
+                        let rowIndex = $(selector).attr('data-index'),
+                            rowId = $(selector).attr('data-block-id');
+
+                        $('input[name="blocks[' + rowIndex + '][' + rowId + '][ord]"]').val(index + 1);
                     });
                 }
             });
-        }, getLastIndex = function () {
-            var inputs = $('.blocks-request').find('input.block-input');
-            var max = 0;
+        }, getLastBlockIndex = function () {
+            let inputs = $(requestSelector).find('input'),
+                max = 0;
 
             inputs.each(function (index, selector) {
                 if ($(selector).attr('data-index') > max) {
@@ -141,27 +143,22 @@
             });
 
             return max;
-        }, initBlockSelect = function () {
-            $('.block-assign-select').chosen({
-                width: '100%',
-                inherit_select_classes: true
-            });
         };
 
         $(function () {
             listBlocks();
 
-            $(document).on('click', 'a.block-assign', function (e) {
+            $(document).on('click', '.button-assign-block', function (e) {
                 e.preventDefault();
 
                 assignBlock($(this));
             });
 
-            $(document).on('click', 'a.block-unassign:not(.disabled)', function (e) {
+            $(document).on('click', '.button-unassign-block:not(.disabled)', function (e) {
                 e.preventDefault();
 
                 unassignBlock($(this));
             });
         });
     </script>
-@append
+@endpush
