@@ -5,7 +5,6 @@ namespace Varbox\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Kalnoy\Nestedset\NodeTrait;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
@@ -27,7 +26,7 @@ use Varbox\Traits\HasBlocks;
 class Page extends Model implements PageModelContract
 {
     use HasUploads;
-    //use HasBlocks;
+    use HasBlocks;
     use HasUrl;
     use HasRevisions;
     use HasDuplicates;
@@ -101,23 +100,23 @@ class Page extends Model implements PageModelContract
      *
      * @return string
      */
-    public function getRouteActionAttribute()
+    public function getRouteControllerAttribute()
     {
-        $types = (array)config('varbox.cms.page.types', []);
+        $types = (array)config('varbox.pages.types', []);
 
-        return $types[$this->attributes['type']]['action'] ?? '';
+        return $types[$this->attributes['type']]['controller'] ?? '';
     }
 
     /**
-     * Get the page's view for route definition.
+     * Get the page's action for route definition.
      *
      * @return string
      */
-    public function getRouteViewAttribute()
+    public function getRouteActionAttribute()
     {
-        $types = (array)config('varbox.cms.page.types', []);
+        $types = (array)config('varbox.pages.types', []);
 
-        return $types[$this->attributes['type']]['view'] ?? '';
+        return $types[$this->attributes['type']]['action'] ?? '';
     }
 
     /**
@@ -142,38 +141,6 @@ class Page extends Model implements PageModelContract
     }
 
     /**
-     * Get all page types defined inside the "config/varbox/cms/page.php" file.
-     *
-     * @return array
-     */
-    public static function getTypes()
-    {
-        return (array)config('varbox.cms.page.types', []);
-    }
-
-    /**
-     * Get all block locations for the given page (by layout type).
-     *
-     * @return array|null
-     */
-    public function getBlockLocations()
-    {
-        $layoutTypes = app('layout.model')->getTypes();
-
-        if (!$this->exists || !$this->layout || !isset($layoutTypes[$this->layout->type]['block_locations'])) {
-            return null;
-        }
-
-        $locations = [];
-
-        foreach ($layoutTypes[$this->layout->type]['block_locations'] as $index => $location) {
-            $locations[] = $location;
-        }
-
-        return $locations;
-    }
-
-    /**
      * Get the specific upload config parts for this model.
      *
      * @return array
@@ -191,11 +158,13 @@ class Page extends Model implements PageModelContract
     public function getUrlOptions()
     {
         return UrlOptions::instance()
-            ->routeUrlTo('App\Http\Controllers\PagesController', 'show')
+            ->routeUrlTo($this->route_controller, $this->route_action)
             ->generateUrlSlugFrom('slug')
             ->saveUrlSlugTo('slug')
             ->prefixUrlWith(function ($prefix, $model) {
-                $ancestors = $model->ancestors()->withTrashed()->withDrafts()->get();
+                $ancestors = $model->ancestors()
+                    ->withTrashed()->withDrafts()
+                    ->get();
 
                 foreach ($ancestors as $ancestor) {
                     $prefix[] = $ancestor->slug;
@@ -212,7 +181,10 @@ class Page extends Model implements PageModelContract
      */
     public function getBlockOptions()
     {
-        return BlockOptions::instance();
+        $types = (array)config('varbox.pages.types', []);
+
+        return BlockOptions::instance()
+            ->withLocations($types[$this->type]['locations'] ?? []);
     }
 
     /**

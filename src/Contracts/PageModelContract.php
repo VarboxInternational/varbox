@@ -7,12 +7,12 @@ interface PageModelContract
     /**
      * @return string
      */
-    public function getRouteActionAttribute();
+    public function getRouteControllerAttribute();
 
     /**
      * @return string
      */
-    public function getRouteViewAttribute();
+    public function getRouteActionAttribute();
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
