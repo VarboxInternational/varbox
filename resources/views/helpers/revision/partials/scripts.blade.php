@@ -1,14 +1,13 @@
 @push('scripts')
     <script type="text/javascript">
-        var _CSRFToken = '{{ csrf_token() }}';
-        var revisionsContainer = $('.revisions-container');
+        let revisionsContainer = $('.revisions-container');
 
-        var listRevisions = function () {
+        let listRevisions = function () {
             $.ajax({
                 type : 'GET',
                 url: '{{ route('admin.revisions.index') }}',
                 data: {
-                    _token: _CSRFToken,
+                    _token: '{{ csrf_token() }}',
                     revisionable_id: revisionsContainer.data('revisionable-id'),
                     revisionable_type: revisionsContainer.data('revisionable-type'),
                     route: '{{ $route }}',
@@ -17,8 +16,7 @@
                 success : function(data) {
                     if (data.status) {
                         revisionsContainer.html(data.html);
-
-                        $('[data-toggle="tooltip"]').tooltip();
+                        init.Tooltip();
                     }
                 },
                 error: function (err) {
@@ -32,11 +30,11 @@
                 type : 'POST',
                 url: _this.attr('href'),
                 data: {
-                    _token: _CSRFToken
+                    _token: '{{ csrf_token() }}'
                 },
                 success : function(data) {
                     if (data.status) {
-                        location.reload();
+                        window.location.reload();
                     }
                 },
                 error: function (err) {
@@ -50,23 +48,39 @@
                 type : 'DELETE',
                 url: _this.attr('href'),
                 data: {
-                    _token: _CSRFToken,
+                    _token: '{{ csrf_token() }}',
                     revisionable_id: revisionsContainer.data('revisionable-id'),
                     revisionable_type: revisionsContainer.data('revisionable-type'),
                     route: '{{ $route }}',
                     parameters: @json($parameters)
                 },
+                beforeSend: function () {
+                    revisionsContainer.css({
+                        opacity: 0.5
+                    });
+                },
                 success : function(data) {
                     if (data.status) {
-                        revisionsContainer.html(data.html);
+                        setTimeout(function () {
+                            revisionsContainer.html(data.html);
+                            init.Tooltip();
 
-                        $('[data-toggle="tooltip"]').tooltip();
+                            revisionsContainer.css({
+                                opacity: 1
+                            });
+                        }, 200);
                     }
                 },
                 error: function (err) {
-                    revisionsContainer.html(
-                        '<p class="p-5 text-red">Could not delete the revision!</p>'
-                    );
+                    setTimeout(function () {
+                        revisionsContainer.html(
+                            '<p class="p-5 text-red">Could not delete the revision!</p>'
+                        );
+
+                        revisionsContainer.css({
+                            opacity: 1
+                        });
+                    }, 200);
                 }
             });
         };
