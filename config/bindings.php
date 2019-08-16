@@ -607,10 +607,10 @@ return [
         | To extend or replace this functionality, change the value below with your full "pages tree controller" FQN.
         |
         | Your class will have to:
-        | - extend the "Varbox\Controllers\Pages\TreeController" class
+        | - extend the "Varbox\Controllers\PagesTreeController" class
         |
         */
-        'pages_tree_controller' => \Varbox\Controllers\Pages\TreeController::class,
+        'pages_tree_controller' => \Varbox\Controllers\PagesTreeController::class,
 
     ],
 
