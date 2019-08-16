@@ -505,7 +505,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/froala.php', 'varbox.froala');
         $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
-        $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pagesg');
+        $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');
     }
 
     /**
@@ -627,35 +627,35 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerBladeDirectives()
     {
-        Blade::{'if'}('permission', function ($permission) {
+        Blade::if('permission', function ($permission) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasPermission($permission));
         });
 
-        Blade::{'if'}('haspermission', function ($permission) {
+        Blade::if('haspermission', function ($permission) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasPermission($permission));
         });
 
-        Blade::{'if'}('hasanypermission', function ($permissions) {
+        Blade::if('hasanypermission', function ($permissions) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAnyPermission($permissions));
         });
 
-        Blade::{'if'}('hasallpermissions', function ($permissions) {
+        Blade::if('hasallpermissions', function ($permissions) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllPermissions($permissions));
         });
 
-        Blade::{'if'}('role', function ($role) {
+        Blade::if('role', function ($role) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasRole($role));
         });
 
-        Blade::{'if'}('hasrole', function ($role) {
+        Blade::if('hasrole', function ($role) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasRole($role));
         });
 
-        Blade::{'if'}('hasanyrole', function ($roles) {
+        Blade::if('hasanyrole', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAnyRole($roles));
         });
 
-        Blade::{'if'}('hasallroles', function ($roles) {
+        Blade::if('hasallroles', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllRoles($roles));
         });
     }
