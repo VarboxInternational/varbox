@@ -60,9 +60,9 @@ Route::group([
         Route::group([
             'prefix' => 'tree'
         ], function () use ($controllers) {
-            Route::get('fix', ['as' => 'admin.pages.tree.fix', 'uses' => $controllers['tree'] . '@fixTree']);
             Route::get('load/{parent?}', ['as' => 'admin.pages.tree.load', 'uses' => $controllers['tree'] . '@loadNodes']);
             Route::get('list/{parent?}', ['as' => 'admin.pages.tree.list', 'uses' => $controllers['tree'] . '@listItems']);
+            Route::put('fix', ['as' => 'admin.pages.tree.fix', 'uses' => $controllers['tree'] . '@fixTree']);
             Route::post('sort', ['as' => 'admin.pages.tree.sort', 'uses' => $controllers['tree'] . '@sortItems']);
             Route::post('url', ['as' => 'admin.pages.tree.url', 'uses' => $controllers['tree'] . '@refreshUrls']);
         });
