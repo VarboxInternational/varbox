@@ -2,6 +2,7 @@ $(document).ready(function () {
     setups();
     sort();
     buttons();
+    sluggify();
     generators();
     confirms();
 });
@@ -156,6 +157,25 @@ function buttons()
     });
 }
 
+function sluggify()
+{
+    var from = $('.js-SlugFrom');
+    var to = $('.js-SlugTo');
+
+    if (from.length && to.length) {
+        from.bind('keyup blur', function() {
+            to.val(
+                $(this).val().toString().toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '')
+                    .replace(/-+$/, '')
+            );
+        });
+    }
+}
+
 function generators() {
     $('.password-generate').pGenerator({
         'bind': 'click',
@@ -179,6 +199,8 @@ function generators() {
 }
 
 function confirms() {
+    //$(document).on('click', '.confirm-are-you-sure', function () {
+
     $('.confirm-are-you-sure').click(function (e) {
         e.preventDefault();
 
