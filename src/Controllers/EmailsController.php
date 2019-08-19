@@ -21,12 +21,11 @@ use Varbox\Filters\EmailFilter;
 use Varbox\Requests\EmailRequest;
 use Varbox\Sorts\EmailSort;
 use Varbox\Traits\CanDuplicate;
-use Varbox\Traits\CanSoftDelete;
 
 class EmailsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
+    use CanCrud, CanDraft, CanRevision, CanDuplicate;
 
     /**
      * @var EmailModelContract
@@ -54,19 +53,6 @@ class EmailsController extends Controller
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();
-
-            if ($request->filled('trashed')) {
-                switch ($request->query('trashed')) {
-                    case 1:
-                        $query->onlyTrashed();
-                        break;
-                    case 2:
-                        $query->withoutTrashed();
-                        break;
-                }
-            } else {
-                $query->withTrashed();
-            }
 
             if ($request->filled('drafted')) {
                 switch ($request->query('drafted')) {
@@ -292,26 +278,6 @@ class EmailsController extends Controller
     protected function duplicateRedirectTo(Model $duplicate): string
     {
         return route('admin.emails.edit', $duplicate->getKey());
-    }
-
-    /**
-     * Get the model to be soft deleted.
-     *
-     * @return Model
-     */
-    protected function softDeleteModel(): string
-    {
-        return config('varbox.bindings.models.email_model', Email::class);
-    }
-
-    /**
-     * Get the url to redirect to after the soft deletion.
-     *
-     * @return string
-     */
-    protected function softDeleteRedirectTo(): string
-    {
-        return route('admin.emails.index');
     }
 
     /**

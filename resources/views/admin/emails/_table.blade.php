@@ -7,9 +7,6 @@
             <th class="sortable d-none d-sm-table-cell" data-sort="drafted_at">
                 <i class="fa fa-sort mr-2"></i>Published
             </th>
-            <th class="sortable d-none d-sm-table-cell" data-sort="deleted_at">
-                <i class="fa fa-sort mr-2"></i>Trashed
-            </th>
             <th class="text-right d-table-cell"></th>
         </tr>
         @forelse($items as $index => $item)
@@ -25,27 +22,13 @@
                         {{ $item->isDrafted() ? 'No' : 'Yes' }}
                     </span>
                 </td>
-                <td class="d-none d-sm-table-cell">
-                    <span class="badge @if($item->trashed()) badge-danger @else badge-success @endif">
-                        {{ $item->trashed() ? 'Yes' : 'No' }}
-                    </span>
-                </td>
                 <td class="text-right d-table-cell">
-                    @if($item->trashed())
-                        @permission('emails-restore')
-                            {!! button()->restoreRecord(route('admin.emails.restore', $item->getKey())) !!}
-                        @endpermission
-                        @permission('emails-delete')
-                            {!! button()->deleteRecord(route('admin.emails.delete', $item->getKey())) !!}
-                        @endpermission
-                    @else
-                        @permission('emails-edit')
-                            {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
-                        @endpermission
-                        @permission('emails-delete')
-                            {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
-                        @endpermission
-                    @endif
+                    @permission('emails-edit')
+                        {!! button()->editRecord(route('admin.emails.edit', $item->getKey())) !!}
+                    @endpermission
+                    @permission('emails-delete')
+                        {!! button()->deleteRecord(route('admin.emails.destroy', $item->getKey())) !!}
+                    @endpermission
                 </td>
             </tr>
         @empty

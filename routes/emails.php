@@ -27,12 +27,6 @@ Route::group([
         Route::delete('destroy/{email}', ['as' => 'admin.emails.destroy', 'uses' => $controllers['emails'] . '@destroy', 'permissions' => 'emails-delete']);
 
         /**
-         * Soft Delete Actions.
-         */
-        Route::put('restore/{email}', ['as' => 'admin.emails.restore', 'uses' => $controllers['emails'] . '@restore', 'permissions' => 'emails-restore']);
-        Route::delete('delete/{email}', ['as' => 'admin.emails.delete', 'uses' => $controllers['emails'] . '@delete', 'permissions' => 'emails-delete']);
-
-        /**
          * Draft Actions.
          */
         Route::post('draft/{email?}', ['as' => 'admin.emails.draft', 'uses' => $controllers['emails'] . '@saveDraft', 'permissions' => 'emails-draft']);

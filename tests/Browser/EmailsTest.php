@@ -486,29 +486,6 @@ class EmailsTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_filter_emails_by_trashed()
-    {
-        $this->admin->grantPermission('emails-list');
-
-        $this->createEmail();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/emails')
-                ->filterRecordsBySelect('#trashed-input', 'No')
-                ->assertQueryStringHas('trashed', 2)
-                ->assertRecordsCount(1)
-                ->assertSee($this->emailName)
-                ->visit('/admin/emails')
-                ->filterRecordsBySelect('#trashed-input', 'Yes')
-                ->assertQueryStringHas('trashed', 1)
-                ->assertSee('No records found');
-        });
-
-        $this->deleteEmail();
-    }
-
-    /** @test */
     public function an_admin_can_filter_emails_by_start_date()
     {
         $this->admin->grantPermission('emails-list');
