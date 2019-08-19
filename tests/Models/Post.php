@@ -134,7 +134,8 @@ class Post extends Model
      */
     public function getDuplicateOptions(): DuplicateOptions
     {
-        return DuplicateOptions::instance();
+        return DuplicateOptions::instance()
+            ->excludeRelations('url', 'revisions');
     }
 
     /**

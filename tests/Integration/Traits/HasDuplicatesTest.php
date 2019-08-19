@@ -38,7 +38,7 @@ class HasDuplicatesTest extends TestCase
 
         $model = $this->post->saveAsDuplicate();
 
-        foreach ($this->post->getFillable() as $field) {
+        foreach (array_diff($this->post->getFillable(), ['slug']) as $field) {
             $this->assertEquals($this->post->{$field}, $model->{$field});
         }
 
@@ -84,6 +84,29 @@ class HasDuplicatesTest extends TestCase
             $this->assertEquals(0, $model->approved);
             $this->assertNull($model->published_at);
         }
+    }
+
+    /** @test */
+    public function it_can_exclude_relations_when_duplicating_a_model_instance()
+    {
+        $model = new class extends Post {
+            public function getDuplicateOptions() : DuplicateOptions
+            {
+                return parent::getDuplicateOptions()->excludeRelations('url', 'revisions', 'comments');
+            }
+        };
+
+        $this->createPost($model);
+        $this->createComments();
+
+        for ($i = 1; $i <= 5; $i++) {
+            $model = $this->post->saveAsDuplicate();
+            $model = $model->fresh();
+
+            $this->assertEquals(0, $model->comments()->count());
+        }
+
+        $this->assertEquals(3, $this->post->comments()->count());
     }
 
     /** @test */
