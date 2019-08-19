@@ -10,6 +10,7 @@ use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
 use Varbox\Options\UrlOptions;
+use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasNodes;
 use Varbox\Traits\HasRevisions;
@@ -25,11 +26,12 @@ use Varbox\Traits\HasBlocks;
 
 class Page extends Model implements PageModelContract
 {
-    use HasUploads;
-    use HasBlocks;
     use HasUrl;
+    use HasUploads;
     use HasRevisions;
     use HasDuplicates;
+    use HasActivity;
+    use HasBlocks;
     use HasNodes;
     use IsDraftable;
     use IsCacheable;
