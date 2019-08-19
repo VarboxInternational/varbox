@@ -15,7 +15,6 @@ use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
 use Varbox\Traits\CanRevision;
-use Varbox\Traits\CanSoftDelete;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Filters\BlockFilter;
 use Varbox\Models\Block;
@@ -25,7 +24,7 @@ use Varbox\Sorts\BlockSort;
 class BlocksController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
+    use CanCrud, CanDraft, CanRevision, CanDuplicate;
 
     /**
      * @var BlockModelContract
@@ -55,19 +54,6 @@ class BlocksController extends Controller
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();
-
-            if ($request->filled('trashed')) {
-                switch ($request->query('trashed')) {
-                    case 1:
-                        $query->onlyTrashed();
-                        break;
-                    case 2:
-                        $query->withoutTrashed();
-                        break;
-                }
-            } else {
-                $query->withTrashed();
-            }
 
             if ($request->filled('drafted')) {
                 switch ($request->query('drafted')) {
@@ -412,25 +398,5 @@ class BlocksController extends Controller
     protected function duplicateRedirectTo(Model $duplicate): string
     {
         return route('admin.blocks.edit', $duplicate->getKey());
-    }
-
-    /**
-     * Get the model to be soft deleted.
-     *
-     * @return Model
-     */
-    protected function softDeleteModel(): string
-    {
-        return config('varbox.bindings.models.block_model', Block::class);
-    }
-
-    /**
-     * Get the url to redirect to after the soft deletion.
-     *
-     * @return string
-     */
-    protected function softDeleteRedirectTo(): string
-    {
-        return route('admin.blocks.index');
     }
 }

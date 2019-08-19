@@ -352,7 +352,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             $query = app(BlockModelContract::class)->whereId($id);
 
             if ($this->isOnAdminRoute()) {
-                $query->withTrashed()->withDrafts();
+                $query->withDrafts();
             }
 
             return $query->first() ?? abort(404);

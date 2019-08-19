@@ -8,14 +8,7 @@
 <div class="card-body">
     {!! form_admin()->text('search', 'Keyword', request()->query('search') ?: null) !!}
     {!! form_admin()->select('type', 'Type', ['' => 'All Types'] + $types, request()->query('type') ?: null) !!}
-    <div class="row">
-        <div class="col">
-            {!! form_admin()->select('drafted', 'Published', ['' => '---', 1 => 'Yes', 2 => 'No'], request()->query('drafted') ?: null) !!}
-        </div>
-        <div class="col">
-            {!! form_admin()->select('trashed', 'Trashed', ['' => '---', 1 => 'Yes', 2 => 'No'], request()->query('trashed') ?: null) !!}
-        </div>
-    </div>
+    {!! form_admin()->select('drafted', 'Published', ['' => '---', 1 => 'Yes', 2 => 'No'], request()->query('drafted') ?: null) !!}
     <div class="row">
         <div class="col">
             {!! form_admin()->date('start_date', 'From', request()->query('start_date') ?: null) !!}

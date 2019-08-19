@@ -4,9 +4,7 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
@@ -30,7 +28,6 @@ class Block extends Model implements BlockModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
-    use SoftDeletes;
 
     /**
      * The database table.

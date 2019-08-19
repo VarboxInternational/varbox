@@ -509,30 +509,7 @@ class BlocksTest extends TestCase
         });
 
         $this->deleteBlock();
-    }
-
-    /** @test */
-    public function an_admin_can_filter_blocks_by_trashed()
-    {
-        $this->admin->grantPermission('blocks-list');
-
-        $this->createBlock();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/blocks')
-                ->filterRecordsBySelect('#trashed-input', 'No')
-                ->assertQueryStringHas('trashed', 2)
-                ->assertRecordsCount(1)
-                ->assertSee($this->blockName)
-                ->visit('/admin/blocks')
-                ->filterRecordsBySelect('#trashed-input', 'Yes')
-                ->assertQueryStringHas('trashed', 1)
-                ->assertSee('No records found');
-        });
-
-        $this->deleteBlock();
-    }
+    }c
 
     /** @test */
     public function an_admin_can_filter_blocks_by_start_date()

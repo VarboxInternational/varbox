@@ -27,12 +27,6 @@ Route::group([
         Route::delete('destroy/{block}', ['as' => 'admin.blocks.destroy', 'uses' => $controllers['blocks'] . '@destroy', 'permissions' => 'blocks-delete']);
 
         /**
-         * Soft Delete Actions.
-         */
-        Route::put('restore/{block}', ['as' => 'admin.blocks.restore', 'uses' => $controllers['blocks'] . '@restore', 'permissions' => 'blocks-restore']);
-        Route::delete('delete/{block}', ['as' => 'admin.blocks.delete', 'uses' => $controllers['blocks'] . '@delete', 'permissions' => 'blocks-delete']);
-
-        /**
          * Draft Actions.
          */
         Route::post('draft/{block?}', ['as' => 'admin.blocks.draft', 'uses' => $controllers['blocks'] . '@saveDraft', 'permissions' => 'blocks-draft']);
