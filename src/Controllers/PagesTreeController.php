@@ -32,7 +32,7 @@ class PagesTreeController extends PagesController
     public function loadNodes(Request $request, $parent = null)
     {
         $data = [];
-        $query = $this->model->withTrashed()->withDrafts();
+        $query = $this->model->withDrafts();
 
         if ($parent) {
             $items = $query->whereDescendantOf($parent)->defaultOrder()->get()->toTree();
@@ -57,7 +57,7 @@ class PagesTreeController extends PagesController
                 $data[] = [
                     'id' => $item->id,
                     'text' => $item->name,
-                    'children' => $item->children()->withTrashed()->withDrafts()->count() > 0 ? true : false,
+                    'children' => $item->children()->withDrafts()->count() > 0 ? true : false,
                     'type' => 'child',
                     'icon' => 'fa fa-file'
                 ];
@@ -76,8 +76,8 @@ class PagesTreeController extends PagesController
      */
     public function listItems(Request $request, PageFilter $filter, PageSort $sort, $parent = null)
     {
-        $q = $this->model->withTrashed()->withDrafts();
-        $query = $this->model->withTrashed()->withDrafts()
+        $q = $this->model->withDrafts();
+        $query = $this->model->withDrafts()
             ->filtered($request->all(), $filter)
             ->sorted($request->all(), $sort)
             ->orderBy($this->model->getLftName());
@@ -107,7 +107,7 @@ class PagesTreeController extends PagesController
 
         return $this->model
             ->doNotGenerateUrl()/*->doNotSaveBlocks()*/
-            ->withTrashed()->withDrafts()
+            ->withDrafts()
             ->rebuildTree($tree);
     }
 
@@ -116,8 +116,8 @@ class PagesTreeController extends PagesController
      */
     public function refreshUrls()
     {
-        foreach ($this->model->withTrashed()->withDrafts()->defaultOrder()->get() as $page) {
-            $ancestors = $page->ancestors()->withTrashed()->withDrafts()->defaultOrder()->get();
+        foreach ($this->model->withDrafts()->defaultOrder()->get() as $page) {
+            $ancestors = $page->ancestors()->withDrafts()->defaultOrder()->get();
             $segments = [];
 
             foreach ($ancestors as $ancestor) {

@@ -15,7 +15,6 @@ use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
 use Varbox\Traits\CanPreview;
 use Varbox\Traits\CanRevision;
-use Varbox\Traits\CanSoftDelete;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Filters\PageFilter;
 use Varbox\Models\Page;
@@ -25,7 +24,7 @@ use Varbox\Sorts\PageSort;
 class PagesController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use CanCrud, CanDraft, CanRevision, CanDuplicate, CanSoftDelete;
+    use CanCrud, CanDraft, CanRevision, CanDuplicate;
 
     /**
      * @var PageModelContract
@@ -234,26 +233,6 @@ class PagesController extends Controller
     protected function duplicateRedirectTo(Model $duplicate): string
     {
         return route('admin.pages.edit', $duplicate->getKey());
-    }
-
-    /**
-     * Get the model to be soft deleted.
-     *
-     * @return Model
-     */
-    protected function softDeleteModel(): string
-    {
-        return config('varbox.bindings.models.page_model', Page::class);
-    }
-
-    /**
-     * Get the url to redirect to after the soft deletion.
-     *
-     * @return string
-     */
-    protected function softDeleteRedirectTo(): string
-    {
-        return route('admin.pages.index');
     }
 
     /**

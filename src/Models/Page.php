@@ -37,7 +37,6 @@ class Page extends Model implements PageModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
-    use SoftDeletes;
 
     /**
      * The database table.
@@ -65,7 +64,6 @@ class Page extends Model implements PageModelContract
      * @var array
      */
     protected $dates = [
-        'deleted_at',
         'drafted_at',
     ];
 

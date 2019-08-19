@@ -341,7 +341,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
+            if ($this->isOnAdminRoute()) {
                 $query->withTrashed()->withDrafts();
             }
 
@@ -351,7 +351,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('block', function ($id) {
             $query = app(BlockModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
+            if ($this->isOnAdminRoute()) {
                 $query->withTrashed()->withDrafts();
             }
 
@@ -361,8 +361,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('page', function ($id) {
             $query = app(PageModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
-                $query->withTrashed()->withDrafts();
+            if ($this->isOnAdminRoute()) {
+                $query->withDrafts();
             }
 
             return $query->first() ?? abort(404);
@@ -371,8 +371,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::bind('pageParent', function ($id) {
             $query = app(PageModelContract::class)->whereId($id);
 
-            if (Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/')) {
-                $query->withTrashed()->withDrafts();
+            if ($this->isOnAdminRoute()) {
+                $query->withDrafts();
             }
 
             return $query->first() ?? abort(404);
@@ -658,5 +658,13 @@ class VarboxServiceProvider extends BaseServiceProvider
         Blade::if('hasallroles', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllRoles($roles));
         });
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isOnAdminRoute()
+    {
+        return Str::startsWith(Route::current()->uri(), config('varbox.admin.prefix', 'admin') . '/');
     }
 }

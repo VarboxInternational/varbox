@@ -28,12 +28,6 @@ Route::group([
         Route::delete('destroy/{page}', ['as' => 'admin.pages.destroy', 'uses' => $controllers['pages'] . '@destroy', 'permissions' => 'pages-soft-delete']);
 
         /**
-         * Soft Delete Actions.
-         */
-        Route::put('restore/{page}', ['as' => 'admin.pages.restore', 'uses' => $controllers['pages'] . '@restore', 'permissions' => 'pages-restore']);
-        Route::delete('delete/{page}', ['as' => 'admin.pages.delete', 'uses' => $controllers['pages'] . '@delete', 'permissions' => 'pages-delete']);
-
-        /**
          * Draft Actions.
          */
         Route::post('draft/{page?}', ['as' => 'admin.pages.draft', 'uses' => $controllers['pages'] . '@saveDraft', 'permissions' => 'pages-draft']);
