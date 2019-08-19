@@ -4,7 +4,6 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;

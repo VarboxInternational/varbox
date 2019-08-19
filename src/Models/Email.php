@@ -5,7 +5,6 @@ namespace Varbox\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
@@ -30,7 +29,6 @@ class Email extends Model implements EmailModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
-    use SoftDeletes;
 
     /**
      * The database table.
