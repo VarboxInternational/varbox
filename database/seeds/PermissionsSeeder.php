@@ -416,12 +416,6 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'pages-delete',
             ],
-            'Restore' => [
-                'group' => 'Pages',
-                'label' => 'Restore',
-                'guard' => 'admin',
-                'name' => 'pages-restore',
-            ],
             'Draft' => [
                 'group' => 'Pages',
                 'label' => 'Draft',
@@ -471,12 +465,6 @@ class PermissionsSeeder extends Seeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'emails-delete',
-            ],
-            'Restore' => [
-                'group' => 'Emails',
-                'label' => 'Restore',
-                'guard' => 'admin',
-                'name' => 'emails-restore',
             ],
             'Draft' => [
                 'group' => 'Emails',
@@ -533,12 +521,6 @@ class PermissionsSeeder extends Seeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'blocks-delete',
-            ],
-            'Restore' => [
-                'group' => 'Blocks',
-                'label' => 'Restore',
-                'guard' => 'admin',
-                'name' => 'blocks-restore',
             ],
             'Draft' => [
                 'group' => 'Emails',

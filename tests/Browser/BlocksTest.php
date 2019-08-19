@@ -509,7 +509,7 @@ class BlocksTest extends TestCase
         });
 
         $this->deleteBlock();
-    }c
+    }
 
     /** @test */
     public function an_admin_can_filter_blocks_by_start_date()
