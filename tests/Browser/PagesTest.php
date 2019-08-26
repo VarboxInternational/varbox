@@ -81,7 +81,50 @@ class PagesTest extends TestCase
         });
     }
 
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/pages/create')
+                ->assertSee('Add Page');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages')
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/pages/create')
+                ->assertSee('Add Page');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->revokePermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages')
+                ->assertDontSee('Add New')
+                ->visit('/admin/pages/create')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Add Page');
+        });
+    }
 
     /**
      * @return void
