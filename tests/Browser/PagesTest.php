@@ -284,6 +284,53 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function an_admin_can_update_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-edit');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/pages')
+                ->assertSee('The record was successfully updated!')
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->pageNameModified);
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_can_update_an_page_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-edit');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->pageNameModified);
+        });
+
+        $this->deletePageModified();
+    }
+
     /**
      * @return void
      */
