@@ -8,6 +8,10 @@ use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\Author;
 use Varbox\Tests\Models\Comment;
+use Varbox\Tests\Models\FilterAuthor;
+use Varbox\Tests\Models\FilterComment;
+use Varbox\Tests\Models\FilterPost;
+use Varbox\Tests\Models\FilterReview;
 use Varbox\Tests\Models\Post;
 use Varbox\Tests\Models\Review;
 
@@ -61,6 +65,11 @@ class IsFilterableTest extends TestCase
     protected $comment4;
 
     /**
+     * @var Post
+     */
+    protected $model;
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -98,7 +107,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
 
@@ -132,7 +141,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
 
@@ -167,7 +176,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => $this->post2->votes,
         ], $filter)->get();
 
@@ -201,7 +210,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => $this->post2->votes,
         ], $filter)->get();
 
@@ -235,7 +244,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => $this->post2->votes,
         ], $filter)->get();
 
@@ -270,7 +279,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => $this->post2->votes,
         ], $filter)->get();
 
@@ -305,7 +314,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'author' => '',
         ], $filter)->get();
 
@@ -338,7 +347,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'author' => '',
         ], $filter)->get();
 
@@ -371,7 +380,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => substr($this->post2->name, 0, 4),
         ], $filter)->get();
 
@@ -406,7 +415,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => substr($this->post2->name, 0, 4),
         ], $filter)->get();
 
@@ -440,7 +449,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'id' => [
                 $this->post1->id,
                 $this->post2->id
@@ -478,7 +487,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'id' => [
                 $this->post1->id,
                 $this->post2->id
@@ -515,7 +524,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => [
                 $this->post1->votes,
                 $this->post2->votes
@@ -553,7 +562,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'votes' => [
                 $this->post1->votes,
                 $this->post2->votes
@@ -590,7 +599,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -624,7 +633,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -659,7 +668,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -693,7 +702,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -727,7 +736,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -762,7 +771,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'date' => $this->post1->published_at->format('Y-m-d'),
         ], $filter)->get();
 
@@ -802,7 +811,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => substr($this->post2->name, 0, 4),
             'votes' => 10,
         ], $filter)->get();
@@ -837,7 +846,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => substr($this->post2->name, 0, 4),
             'votes' => 10,
         ], $filter)->get();
@@ -871,7 +880,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => 1,
         ], $filter)->get();
 
@@ -906,7 +915,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => 1,
         ], $filter)->get();
 
@@ -937,7 +946,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'name' => 1,
         ], $filter)->get();
 
@@ -970,7 +979,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'author' => $this->author1->id,
         ], $filter)->get();
 
@@ -1000,7 +1009,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'author' => substr($this->author1->name, 0, 4),
         ], $filter)->get();
 
@@ -1034,7 +1043,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'review' => $this->review1->id,
         ], $filter);
 
@@ -1064,7 +1073,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'review' => substr($this->review1->name, 0, 4),
         ], $filter)->get();
 
@@ -1098,7 +1107,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'comments' => $this->comment1->id,
         ], $filter);
 
@@ -1128,7 +1137,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        $posts = Post::filtered([
+        $posts = FilterPost::filtered([
             'comments' => $this->comment1->title,
         ], $filter)->get();
 
@@ -1162,7 +1171,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        Post::filtered([
+        FilterPost::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
     }
@@ -1194,7 +1203,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        Post::filtered([
+        FilterPost::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
     }
@@ -1224,7 +1233,7 @@ class IsFilterableTest extends TestCase
             }
         };
 
-        Post::filtered([
+        FilterPost::filtered([
             'name' => $this->post1->name,
         ], $filter)->get();
     }
@@ -1234,50 +1243,50 @@ class IsFilterableTest extends TestCase
      */
     protected function setUpTestingConditions()
     {
-        $this->author1 = Author::create([
+        $this->author1 = FilterAuthor::create([
             'name' => 'Test Author',
         ]);
 
-        $this->post1 = Post::create([
+        $this->post1 = FilterPost::create([
             'author_id' => $this->author1->id,
             'name' => 'The Test Post',
             'votes' => '10',
             'published_at' => today(),
         ]);
 
-        $this->post2 = Post::create([
+        $this->post2 = FilterPost::create([
             'name' => 'Some Test Post',
             'votes' => '50',
             'published_at' => today()->addDays(10),
         ]);
 
-        $this->post3 = Post::create([
+        $this->post3 = FilterPost::create([
             'name' => 'Some Another Test Post',
             'votes' => '100',
             'published_at' => today()->subDays(10),
         ]);
 
-        $this->review1 = Review::create([
+        $this->review1 = FilterReview::create([
             'post_id' => $this->post1->id,
             'name' => 'Test Review'
         ]);
 
-        $this->comment1 = Comment::create([
+        $this->comment1 = FilterComment::create([
             'post_id' => $this->post1->id,
             'title' => 'Test Comment 1'
         ]);
 
-        $this->comment2 = Comment::create([
+        $this->comment2 = FilterComment::create([
             'post_id' => $this->post1->id,
             'title' => 'Test Comment 2'
         ]);
 
-        $this->comment3 = Comment::create([
+        $this->comment3 = FilterComment::create([
             'post_id' => $this->post2->id,
             'title' => 'Test Comment 3'
         ]);
 
-        $this->comment4 = Comment::create([
+        $this->comment4 = FilterComment::create([
             'post_id' => $this->post2->id,
             'title' => 'Test Comment 4'
         ]);
