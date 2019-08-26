@@ -56,12 +56,16 @@ trait HasUrl
             if (self::$generateUrl === true) {
                 $model->createUrl();
             }
+
+            self::$generateUrl = true;
         });
 
         static::updated(function (Model $model) {
             if (self::$generateUrl === true) {
                 $model->updateUrl();
             }
+
+            self::$generateUrl = true;
         });
 
         static::deleted(function (Model $model) {
