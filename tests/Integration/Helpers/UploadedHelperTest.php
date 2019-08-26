@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\UploadPost;
 
 class UploadedHelperTest extends TestCase
 {
@@ -84,7 +84,7 @@ class UploadedHelperTest extends TestCase
     /** @test */
     public function it_can_return_the_url_for_a_style_of_an_uploaded_image()
     {
-        $model = new class extends Post {
+        $model = new class extends UploadPost {
             public function getUploadConfig()
             {
                 return [
@@ -163,7 +163,7 @@ class UploadedHelperTest extends TestCase
     /** @test */
     public function it_can_return_the_path_for_a_style_of_an_uploaded_image()
     {
-        $model = new class extends Post {
+        $model = new class extends UploadPost {
             public function getUploadConfig()
             {
                 return [

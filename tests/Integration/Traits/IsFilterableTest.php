@@ -6,66 +6,62 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Exceptions\FilterException;
 use Varbox\Filters\Filter;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Author;
-use Varbox\Tests\Models\Comment;
 use Varbox\Tests\Models\FilterAuthor;
 use Varbox\Tests\Models\FilterComment;
 use Varbox\Tests\Models\FilterPost;
 use Varbox\Tests\Models\FilterReview;
-use Varbox\Tests\Models\Post;
-use Varbox\Tests\Models\Review;
 
 class IsFilterableTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @var Post
+     * @var FIlterPost
      */
     protected $post1;
 
     /**
-     * @var Post
+     * @var FIlterPost
      */
     protected $post2;
 
     /**
-     * @var Post
+     * @var FIlterPost
      */
     protected $post3;
 
     /**
-     * @var Author
+     * @var FilterAuthor
      */
     protected $author1;
 
     /**
-     * @var Review
+     * @var FilterReview
      */
     protected $review1;
 
     /**
-     * @var Comment
+     * @var FilterComment
      */
     protected $comment1;
 
     /**
-     * @var Comment
+     * @var FilterComment
      */
     protected $comment2;
 
     /**
-     * @var Comment
+     * @var FilterComment
      */
     protected $comment3;
 
     /**
-     * @var Comment
+     * @var FilterComment
      */
     protected $comment4;
 
     /**
-     * @var Post
+     * @var FIlterPost
      */
     protected $model;
 
