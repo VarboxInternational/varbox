@@ -10,7 +10,7 @@ use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
 use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\UploadPost;
 
 class UploadServiceTest extends TestCase
 {
@@ -706,7 +706,7 @@ class UploadServiceTest extends TestCase
     /** @test */
     public function it_can_generate_additional_styles_for_an_uploaded_image_of_a_model_record()
     {
-        $model = new class extends Post {
+        $model = new class extends UploadPost {
             public function getUploadConfig()
             {
                 return [
@@ -749,7 +749,7 @@ class UploadServiceTest extends TestCase
     /** @test */
     public function it_keeps_old_uploads_and_records_by_default_when_updating_a_model_upload()
     {
-        $post = Post::create([
+        $post = UploadPost::create([
             'name' => 'Test Post Name',
         ]);
 
@@ -774,7 +774,7 @@ class UploadServiceTest extends TestCase
     /** @test */
     public function it_can_remove_old_uploads_and_records_when_updating_a_model_upload_if_specified_in_model_method()
     {
-        $model = new class extends Post {
+        $model = new class extends UploadPost {
             public function getUploadConfig()
             {
                 return [
@@ -809,7 +809,7 @@ class UploadServiceTest extends TestCase
     /** @test */
     public function it_removes_partially_uploaded_files_from_storage_if_an_error_occurred_along_the_way()
     {
-        $model = new class extends Post {
+        $model = new class extends UploadPost {
             public function getUploadConfig()
             {
                 return [

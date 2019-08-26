@@ -7,16 +7,15 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageServiceProvider;
-use Varbox\Services\UploadService;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\UploadPost;
 
 class HasUploadsTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @var Post
+     * @var UploadPost
      */
     protected $post;
 
@@ -90,12 +89,8 @@ class HasUploadsTest extends TestCase
      */
     protected function createPost()
     {
-        $this->post = Post::create([
+        $this->post = UploadPost::create([
             'name' => 'Post test name',
-            'content' => 'Post test content',
-            'views' => 100,
-            'approved' => true,
-            'published_at' => today(),
         ]);
     }
 
