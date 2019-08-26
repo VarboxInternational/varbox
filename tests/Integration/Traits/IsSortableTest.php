@@ -5,9 +5,9 @@ namespace Varbox\Tests\Integration\Traits;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Sorts\Sort;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Author;
-use Varbox\Tests\Models\Post;
-use Varbox\Tests\Models\Review;
+use Varbox\Tests\Models\SortAuthor;
+use Varbox\Tests\Models\SortPost;
+use Varbox\Tests\Models\SortReview;
 
 class IsSortableTest extends TestCase
 {
@@ -28,7 +28,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_ascending_order()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'name',
             'direction' => 'asc',
         ])->get();
@@ -36,7 +36,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name a', $posts->first()->name);
         $this->assertEquals('Post name z', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'views',
             'direction' => 'asc',
         ])->get();
@@ -48,7 +48,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_descending_order()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'name',
             'direction' => 'desc',
         ])->get();
@@ -56,7 +56,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name z', $posts->first()->name);
         $this->assertEquals('Post name a', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'views',
             'direction' => 'desc',
         ])->get();
@@ -68,7 +68,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_ascending_order_by_a_belongs_to_relation()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'author.name',
             'direction' => 'asc',
         ])->get();
@@ -76,7 +76,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name a', $posts->first()->name);
         $this->assertEquals('Post name y', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'author.age',
             'direction' => 'asc',
         ])->get();
@@ -88,7 +88,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_descending_order_by_a_belongs_to_relation()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'author.name',
             'direction' => 'desc',
         ])->get();
@@ -96,7 +96,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name b', $posts->first()->name);
         $this->assertEquals('Post name z', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'author.age',
             'direction' => 'desc',
         ])->get();
@@ -108,7 +108,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_ascending_order_by_a_has_one_relation()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'review.name',
             'direction' => 'asc',
         ])->get();
@@ -116,7 +116,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name a', $posts->first()->name);
         $this->assertEquals('Post name y', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'review.rating',
             'direction' => 'asc',
         ])->get();
@@ -128,7 +128,7 @@ class IsSortableTest extends TestCase
     /** @test */
     public function it_sorts_model_records_in_descending_order_by_a_has_one_relation()
     {
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'review.name',
             'direction' => 'desc',
         ])->get();
@@ -136,7 +136,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name y', $posts->first()->name);
         $this->assertEquals('Post name a', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'review.rating',
             'direction' => 'desc',
         ])->get();
@@ -160,7 +160,7 @@ class IsSortableTest extends TestCase
             }
         };
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'custom-sort' => 'name',
             'custom-direction' => 'asc',
         ], $sort)->get();
@@ -168,7 +168,7 @@ class IsSortableTest extends TestCase
         $this->assertEquals('Post name a', $posts->first()->name);
         $this->assertEquals('Post name z', $posts->last()->name);
 
-        $posts = Post::sorted([
+        $posts = SortPost::sorted([
             'sort' => 'views',
             'direction' => 'asc',
         ], $sort)->get();
@@ -182,60 +182,60 @@ class IsSortableTest extends TestCase
      */
     protected function setupTestingConditions()
     {
-        $author1 = Author::create([
+        $author1 = SortAuthor::create([
             'name' => 'Author name a',
             'age' => 10,
         ]);
 
-        $author2 = Author::create([
+        $author2 = SortAuthor::create([
             'name' => 'Author name z',
             'age' => 20,
         ]);
 
-        $post1 = Post::create([
+        $post1 = SortPost::create([
             'author_id' => $author1->id,
             'name' => 'Post name a',
             'views' => 10,
         ]);
 
-        $post2 = Post::create([
+        $post2 = SortPost::create([
             'author_id' => $author1->id,
             'name' => 'Post name z',
             'views' => 20,
         ]);
 
-        $post3 = Post::create([
+        $post3 = SortPost::create([
             'author_id' => $author2->id,
             'name' => 'Post name b',
             'slug' => 'post-name-b',
             'views' => 30,
         ]);
 
-        $post4 = Post::create([
+        $post4 = SortPost::create([
             'author_id' => $author2->id,
             'name' => 'Post name y',
             'views' => 40,
         ]);
 
-        $review1 = Review::create([
+        $review1 = SortReview::create([
             'post_id' => $post1->id,
             'name' => 'Review a',
             'rating' => 4,
         ]);
 
-        $review2 = Review::create([
+        $review2 = SortReview::create([
             'post_id' => $post2->id,
             'name' => 'Review b',
             'rating' => 3,
         ]);
 
-        $review3 = Review::create([
+        $review3 = SortReview::create([
             'post_id' => $post3->id,
             'name' => 'Review c',
             'rating' => 2,
         ]);
 
-        $review4 = Review::create([
+        $review4 = SortReview::create([
             'post_id' => $post4->id,
             'name' => 'Review d',
             'rating' => 1,
