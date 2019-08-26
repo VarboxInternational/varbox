@@ -214,6 +214,76 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function an_admin_can_create_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/pages')
+                ->assertSee('The record was successfully created!')
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->pageName);
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_page_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/pages/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_can_create_an_page_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+        $this->admin->grantPermission('pages-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/pages/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->pageName)
+                ->assertSee($this->pageTypeFormatted());
+        });
+
+        $this->deletePage();
+    }
+
     /**
      * @return void
      */
