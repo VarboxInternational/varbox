@@ -19,7 +19,7 @@ class HasAddressesTest extends TestCase
     /** @test */
     public function it_has_many_addresses()
     {
-        $this->createPost();
+        $this->createUser();
 
         for ($i = 1; $i <= 3; $i++) {
             $this->user->addresses()->create([
@@ -34,7 +34,7 @@ class HasAddressesTest extends TestCase
     /**
      * @return $this
      */
-    protected function createPost()
+    protected function createUser()
     {
         $this->user = User::create([
             'email' => 'test-user@mail.com',
