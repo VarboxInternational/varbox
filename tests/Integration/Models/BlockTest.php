@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Integration\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Block;
 use Varbox\Tests\Integration\TestCase;
@@ -70,12 +69,6 @@ class BlockTest extends TestCase
     public function it_uses_the_is_sortable_trait()
     {
         $this->assertArrayHasKey(IsSortable::class, class_uses(Block::class));
-    }
-
-    /** @test */
-    public function it_uses_the_soft_deletes_trait()
-    {
-        $this->assertArrayHasKey(SoftDeletes::class, class_uses(Block::class));
     }
 
     /** @test */

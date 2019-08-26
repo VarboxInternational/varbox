@@ -328,7 +328,7 @@ class BlocksTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_soft_delete_a_block_if_it_has_permission()
+    public function an_admin_can_delete_a_block_if_it_has_permission()
     {
         $this->admin->grantPermission('blocks-list');
         $this->admin->grantPermission('blocks-delete');
@@ -342,52 +342,12 @@ class BlocksTest extends TestCase
                 ->clickDeleteRecordButton($this->blockName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->assertSee($this->blockName);
-        });
-
-        $this->deleteBlock();
-    }
-
-    /** @test */
-    public function an_admin_cannot_soft_delete_a_block_if_it_doesnt_have_permission()
-    {
-        $this->admin->grantPermission('blocks-list');
-        $this->admin->revokePermission('blocks-delete');
-
-        $this->createBlock();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/blocks')
-                ->assertDontSee('button-delete');
-        });
-
-        $this->deleteBlock();
-    }
-
-    /** @test */
-    public function an_admin_can_force_delete_a_block_if_it_has_permission()
-    {
-        $this->admin->grantPermission('blocks-list');
-        $this->admin->grantPermission('blocks-delete');
-
-        $this->createBlock();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->assertSee($this->blockName)
-                ->clickDeleteRecordButton($this->blockName)
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->clickDeleteRecordButton($this->blockName)
-                ->assertSee('The record was successfully force deleted!')
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
                 ->assertDontSee($this->blockName);
         });
     }
 
     /** @test */
-    public function an_admin_cannot_force_delete_a_block_if_it_doesnt_have_permission()
+    public function an_admin_cannot_delete_a_block_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('blocks-list');
         $this->admin->revokePermission('blocks-delete');
@@ -398,48 +358,6 @@ class BlocksTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/blocks')
                 ->assertSourceMissing('button-delete');
-        });
-
-        $this->deleteBlock();
-    }
-
-    /** @test */
-    public function an_admin_can_restore_a_block_if_it_has_permission()
-    {
-        $this->admin->grantPermission('blocks-list');
-        $this->admin->grantPermission('blocks-delete');
-        $this->admin->grantPermission('blocks-restore');
-
-        $this->createBlock();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->assertSee($this->blockName)
-                ->clickDeleteRecordButton($this->blockName)
-                ->assertSee('The record was successfully deleted!')
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->assertSee($this->blockName)
-                ->clickRestoreRecordButton($this->blockName)
-                ->assertSee('The record was successfully restored!');
-        });
-
-        $this->deleteBlock();
-    }
-
-    /** @test */
-    public function an_admin_cannot_restore_a_block_if_it_doesnt_have_permission()
-    {
-        $this->admin->grantPermission('blocks-list');
-        $this->admin->grantPermission('blocks-delete');
-        $this->admin->revokePermission('blocks-restore');
-
-        $this->createBlock();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/blocks/', $this->blockModel)
-                ->assertSourceMissing('button-restore');
         });
 
         $this->deleteBlock();
@@ -1294,9 +1212,9 @@ class BlocksTest extends TestCase
      */
     protected function deleteBlock()
     {
-        Block::withTrashed()->withDrafts()
+        Block::withDrafts()
             ->whereName($this->blockName)
-            ->first()->forceDelete();
+            ->first()->delete();
     }
 
     /**
@@ -1304,9 +1222,9 @@ class BlocksTest extends TestCase
      */
     protected function deleteBlockModified()
     {
-        Block::withTrashed()->withDrafts()
+        Block::withDrafts()
             ->whereName($this->blockNameModified)
-            ->first()->forceDelete();
+            ->first()->delete();
     }
 
     /**
@@ -1314,9 +1232,9 @@ class BlocksTest extends TestCase
      */
     protected function deleteDuplicatedBlock()
     {
-        Block::withTrashed()->withDrafts()
+        Block::withDrafts()
             ->whereName($this->blockName . ' (1)')
-            ->first()->forceDelete();
+            ->first()->delete();
     }
 
     /**

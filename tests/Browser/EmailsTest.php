@@ -302,7 +302,7 @@ class EmailsTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_soft_delete_an_email_if_it_has_permission()
+    public function an_admin_can_delete_an_email_if_it_has_permission()
     {
         $this->admin->grantPermission('emails-list');
         $this->admin->grantPermission('emails-delete');
@@ -316,52 +316,12 @@ class EmailsTest extends TestCase
                 ->clickDeleteRecordButton($this->emailName)
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSee($this->emailName);
-        });
-
-        $this->deleteEmail();
-    }
-
-    /** @test */
-    public function an_admin_cannot_soft_delete_an_email_if_it_doesnt_have_permission()
-    {
-        $this->admin->grantPermission('emails-list');
-        $this->admin->revokePermission('emails-delete');
-
-        $this->createEmail();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/emails')
-                ->assertDontSee('button-delete');
-        });
-
-        $this->deleteEmail();
-    }
-
-    /** @test */
-    public function an_admin_can_force_delete_an_email_if_it_has_permission()
-    {
-        $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-delete');
-
-        $this->createEmail();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSee($this->emailName)
-                ->clickDeleteRecordButton($this->emailName)
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->clickDeleteRecordButton($this->emailName)
-                ->assertSee('The record was successfully force deleted!')
-                ->visitLastPage('/admin/emails/', $this->emailModel)
                 ->assertDontSee($this->emailName);
         });
     }
 
     /** @test */
-    public function an_admin_cannot_force_delete_an_email_if_it_doesnt_have_permission()
+    public function an_admin_cannot_delete_an_email_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('emails-list');
         $this->admin->revokePermission('emails-delete');
@@ -372,48 +332,6 @@ class EmailsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
                 ->assertSourceMissing('button-delete');
-        });
-
-        $this->deleteEmail();
-    }
-
-    /** @test */
-    public function an_admin_can_restore_an_email_if_it_has_permission()
-    {
-        $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-delete');
-        $this->admin->grantPermission('emails-restore');
-
-        $this->createEmail();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSee($this->emailName)
-                ->clickDeleteRecordButton($this->emailName)
-                ->assertSee('The record was successfully deleted!')
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSee($this->emailName)
-                ->clickRestoreRecordButton($this->emailName)
-                ->assertSee('The record was successfully restored!');
-        });
-
-        $this->deleteEmail();
-    }
-
-    /** @test */
-    public function an_admin_cannot_restore_an_email_if_it_doesnt_have_permission()
-    {
-        $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-delete');
-        $this->admin->revokePermission('emails-restore');
-
-        $this->createEmail();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visitLastPage('/admin/emails/', $this->emailModel)
-                ->assertSourceMissing('button-restore');
         });
 
         $this->deleteEmail();
@@ -1326,8 +1244,8 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmail()
     {
-        Email::withTrashed()->withDrafts()->whereName($this->emailName)
-            ->first()->forceDelete();
+        Email::withDrafts()->whereName($this->emailName)
+            ->first()->delete();
     }
 
     /**
@@ -1335,8 +1253,8 @@ class EmailsTest extends TestCase
      */
     protected function deleteEmailModified()
     {
-        Email::withTrashed()->withDrafts()->whereName($this->emailNameModified)
-            ->first()->forceDelete();
+        Email::withDrafts()->whereName($this->emailNameModified)
+            ->first()->delete();
     }
 
     /**
@@ -1344,8 +1262,8 @@ class EmailsTest extends TestCase
      */
     protected function deleteDuplicatedEmail()
     {
-        Email::withTrashed()->withDrafts()->whereName($this->emailName . ' (1)')
-            ->first()->forceDelete();
+        Email::withDrafts()->whereName($this->emailName . ' (1)')
+            ->first()->delete();
     }
 
     /**

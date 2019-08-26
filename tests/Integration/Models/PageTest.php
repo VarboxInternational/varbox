@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Integration\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Page;
 use Varbox\Tests\Integration\TestCase;
@@ -133,12 +132,6 @@ class PageTest extends TestCase
     public function it_uses_the_is_sortable_trait()
     {
         $this->assertArrayHasKey(IsSortable::class, class_uses(Page::class));
-    }
-
-    /** @test */
-    public function it_uses_the_soft_deletes_trait()
-    {
-        $this->assertArrayHasKey(SoftDeletes::class, class_uses(Page::class));
     }
 
     /** @test */
