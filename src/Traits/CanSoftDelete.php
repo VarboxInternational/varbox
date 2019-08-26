@@ -70,10 +70,6 @@ trait CanSoftDelete
                     ->onlyTrashed()->findOrFail($model);
             }
 
-            /*if (in_array(HasBlocks::class, class_uses($entity))) {
-                $model->doNotSaveBlocks();
-            }*/
-
             $model->restore();
 
             flash()->success($this->restoreSuccessMessage());

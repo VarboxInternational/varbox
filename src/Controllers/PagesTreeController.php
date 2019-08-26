@@ -15,7 +15,7 @@ class PagesTreeController extends PagesController
      */
     public function fixTree()
     {
-        $this->model->doNotGenerateUrl()/*->doNotSaveBlocks()*/->fixTree();
+        $this->model->doNotGenerateUrl()->fixTree();
 
         $this->refreshUrls();
 
@@ -105,10 +105,7 @@ class PagesTreeController extends PagesController
 
         $this->rebuildBranch($branch, $tree);
 
-        return $this->model
-            ->doNotGenerateUrl()/*->doNotSaveBlocks()*/
-            ->withDrafts()
-            ->rebuildTree($tree);
+        return $this->model->doNotGenerateUrl()->withDrafts()->rebuildTree($tree);
     }
 
     /**
