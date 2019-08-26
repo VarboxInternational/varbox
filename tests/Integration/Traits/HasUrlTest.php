@@ -6,12 +6,12 @@ use Exception;
 use Illuminate\Support\Str;
 use Varbox\Options\UrlOptions;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\UrlPost;
 
 class HasUrlTest extends TestCase
 {
     /**
-     * @var Post
+     * @var UrlPost
      */
     protected $post;
 
@@ -68,14 +68,14 @@ class HasUrlTest extends TestCase
         $this->createPost();
 
         $this->assertTrue(array_key_exists(
-            'url', Post::find($this->post->id)->first()->relationsToArray()
+            'url', UrlPost::find($this->post->id)->first()->relationsToArray()
         ));
     }
 
     /** @test */
     public function it_can_ignore_creating_an_url_if_specified()
     {
-        $model = (new Post)->doNotGenerateUrl()->create([
+        $model = (new UrlPost)->doNotGenerateUrl()->create([
             'name' => 'Test name',
         ]);
 
@@ -97,7 +97,7 @@ class HasUrlTest extends TestCase
     /** @test */
     public function it_has_a_method_that_allows_specifying_a_prefix_for_the_url()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->prefixUrlWith('prefix');
@@ -108,7 +108,7 @@ class HasUrlTest extends TestCase
 
         $this->assertEquals('prefix/string-prefix-test', $this->post->url->url);
 
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->prefixUrlWith(['array', 'prefix']);
@@ -119,7 +119,7 @@ class HasUrlTest extends TestCase
 
         $this->assertEquals('array/prefix/array-prefix-test', $this->post->url->url);
 
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->prefixUrlWith(function ($prefix, $model) {
@@ -136,7 +136,7 @@ class HasUrlTest extends TestCase
     /** @test */
     public function it_has_a_method_that_allows_specifying_a_suffix_for_the_url()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->suffixUrlWith('suffix');
@@ -147,7 +147,7 @@ class HasUrlTest extends TestCase
 
         $this->assertEquals('string-suffix-test/suffix', $this->post->url->url);
 
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->suffixUrlWith(['array', 'suffix']);
@@ -158,7 +158,7 @@ class HasUrlTest extends TestCase
 
         $this->assertEquals('array-suffix-test/array/suffix', $this->post->url->url);
 
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()->suffixUrlWith(function ($suffix, $model) {
@@ -175,7 +175,7 @@ class HasUrlTest extends TestCase
     /** @test */
     public function it_has_a_method_that_allows_specifying_the_url_glue()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return parent::getUrlOptions()
@@ -192,7 +192,7 @@ class HasUrlTest extends TestCase
     /** @expectedException Exception */
     public function it_expects_a_controller_and_action_to_be_specified_in_the_options()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return UrlOptions::instance()
@@ -207,7 +207,7 @@ class HasUrlTest extends TestCase
     /** @expectedException Exception */
     public function it_expects_a_from_field_to_be_specified_in_the_options()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return UrlOptions::instance()
@@ -222,7 +222,7 @@ class HasUrlTest extends TestCase
     /** @expectedException Exception */
     public function it_expects_a_to_field_to_be_specified_in_the_options()
     {
-        $model = new class extends Post {
+        $model = new class extends UrlPost {
             public function getUrlOptions() : UrlOptions
             {
                 return UrlOptions::instance()
@@ -235,12 +235,12 @@ class HasUrlTest extends TestCase
     }
 
     /**
-     * @param Post|null $model
+     * @param UrlPost|null $model
      * @param array $attributes
      */
-    protected function createPost(Post $model = null, $attributes = [])
+    protected function createPost(UrlPost $model = null, $attributes = [])
     {
-        $model = $model && $model instanceof Post ? $model : new Post;
+        $model = $model && $model instanceof UrlPost ? $model : new UrlPost;
         $attributes = $attributes && ! empty($attributes) ? $attributes : [
             'name' => 'Test name',
         ];
