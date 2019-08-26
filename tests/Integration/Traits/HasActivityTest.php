@@ -8,14 +8,14 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 use Varbox\Options\ActivityOptions;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\ActivityPost;
 
 class HasActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @var Post
+     * @var ActivityPost
      */
     protected $post;
 
@@ -58,7 +58,7 @@ class HasActivityTest extends TestCase
     /** @test */
     public function it_can_skip_creating_any_activity_log_if_manually_specified()
     {
-        $this->createPost((new Post)->doNotLogActivity())
+        $this->createPost((new ActivityPost())->doNotLogActivity())
             ->updatePost(false)->deletePost(false);
 
         $this->assertEquals(0, $this->post->activity()->count());
@@ -77,7 +77,7 @@ class HasActivityTest extends TestCase
     /** @test */
     public function it_creates_activity_logs_only_for_the_specified_events()
     {
-        $model = new class extends Post {
+        $model = new class extends ActivityPost {
             public static function activityEventsToBeLogged(): Collection
             {
                 return collect(['created']);
@@ -89,7 +89,7 @@ class HasActivityTest extends TestCase
         $this->assertEquals(1, $this->post->activity()->count());
         $this->assertEquals('created', $this->post->activity()->first()->event);
 
-        $model = new class extends Post {
+        $model = new class extends ActivityPost {
             public static function activityEventsToBeLogged(): Collection
             {
                 return collect(['updated', 'deleted']);
@@ -120,7 +120,7 @@ class HasActivityTest extends TestCase
     /** @test */
     public function it_stores_the_options_passed_from_the_options_method_when_creating_an_activity_log()
     {
-        $model = new class extends Post {
+        $model = new class extends ActivityPost {
             public function getActivityOptions() : ActivityOptions
             {
                 return ActivityOptions::instance()
@@ -142,7 +142,7 @@ class HasActivityTest extends TestCase
     /** @expectedException Exception */
     public function it_requires_an_entity_type_to_be_specified_in_the_options_method()
     {
-        $model = new class extends Post {
+        $model = new class extends ActivityPost {
             public function getActivityOptions() : ActivityOptions
             {
                 return ActivityOptions::instance()
@@ -156,7 +156,7 @@ class HasActivityTest extends TestCase
     /** @expectedException Exception */
     public function it_requires_an_entity_name_to_be_specified_in_the_options_method()
     {
-        $model = new class extends Post {
+        $model = new class extends ActivityPost {
             public function getActivityOptions() : ActivityOptions
             {
                 return ActivityOptions::instance()
@@ -168,18 +168,16 @@ class HasActivityTest extends TestCase
     }
 
     /**
-     * @param Post|null $model
+     * @param ActivityPost|null $model
      * @return $this
      */
-    protected function createPost(Post $model = null)
+    protected function createPost(ActivityPost $model = null)
     {
-        $model = $model && $model instanceof Post ?
-            $model : (new Post)->doLogActivity();
+        $model = $model && $model instanceof ActivityPost ?
+            $model : (new ActivityPost)->doLogActivity();
 
         $this->post = $model->create([
             'name' => 'Post Name',
-            'slug' => 'post-slug',
-            'content' => 'Post Content',
         ]);
 
         return $this;
@@ -197,8 +195,6 @@ class HasActivityTest extends TestCase
 
         $this->post->update([
             'name' => 'Post Name Modified',
-            'slug' => 'post-slug-modified',
-            'content' => 'Post Content Modified',
         ]);
 
         return $this;
