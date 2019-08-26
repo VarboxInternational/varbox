@@ -16,6 +16,16 @@ class NotAuthenticatedTest extends TestCase
      */
     protected $user;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('auth.guards.admin', [
+            'driver' => 'session',
+            'provider' => 'users',
+        ]);
+    }
+
     /** @test */
     public function it_allows_unauthenticated_users()
     {
@@ -67,7 +77,7 @@ class NotAuthenticatedTest extends TestCase
             return 'OK';
         });
 
-        $response = $this->actingAs($this->user, 'admin')->get('/_test/not-authenticated');
+        $response = $this->actingAs($this->user)->get('/_test/not-authenticated');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('Home', $response->getContent());
