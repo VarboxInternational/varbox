@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Comment;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\CacheComment;
+use Varbox\Tests\Models\CachePost;
 
 class IsCacheableTest extends TestCase
 {
@@ -21,9 +21,8 @@ class IsCacheableTest extends TestCase
 
         $this->createPostsAndComments();
 
-        Post::query()->insert([
+        CachePost::query()->insert([
             'name' => 'Test post name',
-            'slug' => 'test-post-name',
             'content' => 'Test post content',
         ]);
 
@@ -38,7 +37,7 @@ class IsCacheableTest extends TestCase
 
         $this->createPostsAndComments();
 
-        Post::query()->where([
+        CachePost::query()->where([
             'name' => 'Test post name',
         ])->update([
             'name' => 'Test post name modified',
@@ -54,7 +53,7 @@ class IsCacheableTest extends TestCase
         $this->app['config']->set('varbox.query-cache.query.all.store', 'array');
 
         $this->createPostsAndComments();
-        Post::query()->delete();
+        CachePost::query()->delete();
 
         $this->assertTrue(true);
     }
@@ -64,7 +63,9 @@ class IsCacheableTest extends TestCase
     {
         $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
         $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+
         $this->createPostsAndComments();
+
         app(QueryCacheServiceContract::class)->disableQueryCache();
 
         DB::enableQueryLog();
@@ -158,9 +159,8 @@ class IsCacheableTest extends TestCase
 
         $this->executePostQueries();
 
-        Post::create([
+        CachePost::create([
             'name' => 'New post name',
-            'slug' => 'new-post-name',
             'content' => 'New post content',
         ]);
 
@@ -184,7 +184,7 @@ class IsCacheableTest extends TestCase
 
         $this->executePostQueries();
 
-        Post::first()->update([
+        CachePost::first()->update([
             'name' => 'Updated post name',
         ]);
 
@@ -209,9 +209,8 @@ class IsCacheableTest extends TestCase
         $this->executePostQueries();
         $this->executeCommentQueries();
 
-        Post::create([
+        CachePost::create([
             'name' => 'New post name',
-            'slug' => 'new-post-name',
             'content' => 'New post content',
         ]);
 
@@ -238,7 +237,7 @@ class IsCacheableTest extends TestCase
         $this->executePostQueries();
         $this->executeCommentQueries();
 
-        Post::first()->update([
+        CachePost::first()->update([
             'name' => 'Updated post name',
         ]);
 
@@ -273,9 +272,8 @@ class IsCacheableTest extends TestCase
     protected function createPostsAndComments()
     {
         for ($i = 1; $i <= 3; $i++) {
-            $post = Post::create([
+            $post = CachePost::create([
                 'name' => 'Test post name '.$i,
-                'slug' => 'test-post-slug-'.$i,
                 'content' => 'Test post content'.$i,
             ]);
 
@@ -294,11 +292,11 @@ class IsCacheableTest extends TestCase
     protected function executePostQueries()
     {
         for ($i = 1; $i <= 10; $i++) {
-            Post::all();
+            CachePost::all();
         }
 
         for ($i = 1; $i <= 10; $i++) {
-            Post::where(1)->get();
+            CachePost::where(1)->get();
         }
     }
 
@@ -308,11 +306,11 @@ class IsCacheableTest extends TestCase
     protected function executeCommentQueries()
     {
         for ($i = 1; $i <= 10; $i++) {
-            Comment::all();
+            CacheComment::all();
         }
 
         for ($i = 1; $i <= 10; $i++) {
-            Comment::where(1)->get();
+            CacheComment::where(1)->get();
         }
     }
 }
