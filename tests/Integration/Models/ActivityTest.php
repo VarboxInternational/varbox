@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Activity;
 use Varbox\Models\User;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\ActivityPost;
 use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
@@ -28,7 +28,7 @@ class ActivityTest extends TestCase
     protected $user;
 
     /**
-     * @var Post
+     * @var ActivityPost
      */
     protected $post;
 
@@ -70,6 +70,7 @@ class ActivityTest extends TestCase
 
         $this->activity->user()->associate($this->user);
 
+
         $this->assertTrue($this->activity->user() instanceof BelongsTo);
         $this->assertEquals($this->user->email, $this->activity->user()->first()->email);
     }
@@ -78,7 +79,7 @@ class ActivityTest extends TestCase
     public function it_morphs_to_a_subject()
     {
         $this->assertTrue($this->activity->subject() instanceof MorphTo);
-        $this->assertTrue($this->activity->subject()->first() instanceof Post);
+        $this->assertTrue($this->activity->subject()->first() instanceof ActivityPost);
         $this->assertEquals($this->post->name, $this->activity->subject()->first()->name);
     }
 
@@ -246,7 +247,7 @@ class ActivityTest extends TestCase
             'password' => 'test_password',
         ]);
 
-        $this->post = Post::create([
+        $this->post = ActivityPost::create([
             'name' => 'Post Name',
             'slug' => 'post-slug',
             'content' => 'Post Content',
