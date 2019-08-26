@@ -4,20 +4,20 @@ namespace Varbox\Tests\Integration\Traits;
 
 use Varbox\Options\DuplicateOptions;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Tag;
-use Varbox\Tests\Models\Post;
-use Varbox\Tests\Models\Review;
-use Varbox\Tests\Models\Comment;
+use Varbox\Tests\Models\DuplicateComment;
+use Varbox\Tests\Models\DuplicatePost;
+use Varbox\Tests\Models\DuplicateReview;
+use Varbox\Tests\Models\DuplicateTag;
 
 class HasDuplicatesTest extends TestCase
 {
     /**
-     * @var Post
+     * @var DuplicatePost
      */
     protected $post;
 
     /**
-     * @var Review
+     * @var DuplicateReview
      */
     protected $review;
 
@@ -42,13 +42,13 @@ class HasDuplicatesTest extends TestCase
             $this->assertEquals($this->post->{$field}, $model->{$field});
         }
 
-        $this->assertEquals(2, Post::count());
+        $this->assertEquals(2, DuplicatePost::count());
     }
 
     /** @test */
     public function it_can_save_unique_columns_when_duplicating_a_model_instance()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->uniqueColumns('name');
@@ -67,7 +67,7 @@ class HasDuplicatesTest extends TestCase
     /** @test */
     public function it_can_exclude_columns_when_duplicating_a_model_instance()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->excludeColumns('views', 'approved', 'published_at');
@@ -89,7 +89,7 @@ class HasDuplicatesTest extends TestCase
     /** @test */
     public function it_can_exclude_relations_when_duplicating_a_model_instance()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->excludeRelations('url', 'revisions', 'comments');
@@ -124,7 +124,7 @@ class HasDuplicatesTest extends TestCase
             $this->assertEquals($this->review->{$field}, $model->review->{$field});
         }
 
-        $this->assertEquals(2, Review::count());
+        $this->assertEquals(2, DuplicateReview::count());
     }
 
     /** @test */
@@ -145,7 +145,7 @@ class HasDuplicatesTest extends TestCase
             }
         }
 
-        $this->assertEquals(6, Comment::count());
+        $this->assertEquals(6, DuplicateComment::count());
     }
 
     /** @test */
@@ -154,7 +154,7 @@ class HasDuplicatesTest extends TestCase
         $this->createPost();
         $this->createTags();
 
-        $this->assertEquals(3, Tag::count());
+        $this->assertEquals(3, DuplicateTag::count());
 
         $model = $this->post->saveAsDuplicate();
 
@@ -163,13 +163,13 @@ class HasDuplicatesTest extends TestCase
             $this->assertEquals($this->tags[$index]->id, $tag->pivot->tag_id);
         }
 
-        $this->assertEquals(3, Tag::count());
+        $this->assertEquals(3, DuplicateTag::count());
     }
 
     /** @test */
     public function it_can_save_unique_columns_when_duplicating_a_relation_of_the_model_instance()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->uniqueRelationColumns([
@@ -201,7 +201,7 @@ class HasDuplicatesTest extends TestCase
     /** @test */
     public function it_can_exclude_columns_when_duplicating_a_relation_of_the_model_instance()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->excludeRelationColumns([
@@ -231,7 +231,7 @@ class HasDuplicatesTest extends TestCase
     /** @test */
     public function it_can_duplicate_only_the_targeted_model_instance_without_any_relations()
     {
-        $model = new class extends Post {
+        $model = new class extends DuplicatePost {
             public function getDuplicateOptions() : DuplicateOptions
             {
                 return parent::getDuplicateOptions()->disableDeepDuplication();
@@ -248,12 +248,12 @@ class HasDuplicatesTest extends TestCase
     }
 
     /**
-     * @param Post|null $model
+     * @param DuplicatePost|null $model
      * @return void
      */
-    protected function createPost(Post $model = null)
+    protected function createPost(DuplicatePost $model = null)
     {
-        $model = $model && $model instanceof Post ? $model : new Post;
+        $model = $model && $model instanceof DuplicatePost ? $model : new DuplicatePost;
 
         $this->post = $model->create([
             'name' => 'Post test name',
@@ -298,7 +298,7 @@ class HasDuplicatesTest extends TestCase
     protected function createTags()
     {
         for ($i = 1; $i <= 3; $i++) {
-            $this->tags[] = Tag::create([
+            $this->tags[] = DuplicateTag::create([
                 'name' => 'Tag test name '.$i,
             ]);
         }
