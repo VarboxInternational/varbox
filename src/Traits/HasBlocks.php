@@ -27,24 +27,11 @@ trait HasBlocks
     abstract public function getBlockOptions(): BlockOptions;
 
     /**
-     * Flag to manually enable/disable the blocks savings only for the current request.
-     *
-     * @var bool
-     */
-    protected static $saveBlocks = true;
-
-    /**
      * Boot the trait.
      * Remove blocks on save and delete if one or many locations from model's instance have been changed/removed.
      */
     public static function bootHasBlocks()
     {
-        static::saved(function (Model $model) {
-            if (self::$saveBlocks === true) {
-                $model->saveBlocks();
-            }
-        });
-
         static::deleted(function (Model $model) {
             if ($model->forceDeleting !== false) {
                 $model->blocks()->detach();
@@ -64,30 +51,6 @@ trait HasBlocks
         return $this->morphToMany($block, 'blockable')->withPivot([
             'id', 'location', 'ord'
         ])->withTimestamps();
-    }
-
-    /**
-     * Enable the url generation manually.
-     *
-     * @return static
-     */
-    public function doSaveBlocks()
-    {
-        self::$saveBlocks = false;
-
-        return $this;
-    }
-
-    /**
-     * Disable the url generation manually.
-     *
-     * @return static
-     */
-    public function doNotSaveBlocks()
-    {
-        self::$saveBlocks = false;
-
-        return $this;
     }
 
     /**
@@ -113,8 +76,9 @@ trait HasBlocks
 
         foreach (app(BlockModelContract::class)->alphabetically()->get() as $block) {
             $types = (array)config('varbox.blocks.types', []);
+            $class = $types[$block->type]['composer_class'] ?? null;
 
-            if (($class = $types[$block->type]['composer_class'] ?? null) && in_array($location, $class::$locations)) {
+            if (class_exists($class) && in_array($location, $class::$locations)) {
                 $blocks->push($block);
             }
         }
@@ -190,33 +154,17 @@ trait HasBlocks
     }
 
     /**
-     * Get a list with all of the block locations currently assigned in database for this model instance.
-     *
-     * @return array
-     */
-    public function getExistingBlockLocations()
-    {
-        return $this->blocks()->newPivotStatement()->select('location')->where([
-            'blockable_id' => $this->getKey(),
-            'blockable_type' => static::class,
-        ])->distinct()->get()->pluck('location')->toArray();
-    }
-
-    /**
      * Save all of the blocks of a model instance.
      * Saving is done on a provided or existing request object.
      * The logic of this method will look for the "blocks" key in the request.
-     * Mandatory request format is an array of keys with their values composed of the block id and location.
-     * [0 => [id => 1, location => header], 1 => [id => 1, location => footer]...]
+     * Mandatory request format is an array of keys with their values composed of the block id followed by location and order.
+     * [0 => [id => [location, ord], 1 => [id => [location, ord]...]
      *
-     * @param Request|null $request
+     * @param array $blocks
      * @return bool
      */
-    public function saveBlocks(Request $request = null)
+    public function saveBlocks(array $blocks = [])
     {
-        $request = $request ?: request();
-        $blocks = $request->input('blocks');
-
         DB::transaction(function () use ($blocks) {
             $this->blocks()->detach();
 
@@ -284,28 +232,6 @@ trait HasBlocks
             ->delete($pivot);
 
         return true;
-    }
-
-    /**
-     * Sync a loaded model instance's assigned blocks from different locations with given locations.
-     * The $locations parameter should represent the actual model instance's available block locations.
-     *
-     * @param array $locations
-     * @return void
-     */
-    public function syncBlocks(array $locations = [])
-    {
-        foreach ($this->getExistingBlockLocations() as $location) {
-            if (in_array($location, $locations)) {
-                continue;
-            }
-
-            $this->blocks()->newPivotStatement()->where([
-                'blockable_id' => $this->getKey(),
-                'blockable_type' => static::class,
-                'location' => $location,
-            ])->delete();
-        }
     }
 
     /**
