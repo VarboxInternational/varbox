@@ -17,7 +17,6 @@ use Pbmedia\LaravelFFMpeg\FFMpegServiceProvider;
 use Proengsoft\JsValidation\Facades\JsValidatorFacade;
 use Proengsoft\JsValidation\JsValidationServiceProvider;
 use Spatie\Backup\BackupServiceProvider;
-use Varbox\Facades\VarboxFacade;
 use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Tests\Browser\Browsers\VarboxBrowser;
@@ -98,7 +97,6 @@ abstract class TestCase extends OrchestraDuskTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Varbox' => VarboxFacade::class,
             'Form' => FormFacade::class,
             'Html' => HtmlFacade::class,
             'Breadcrumbs' => Breadcrumbs::class,
