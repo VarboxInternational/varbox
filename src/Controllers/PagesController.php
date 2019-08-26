@@ -127,7 +127,7 @@ class PagesController extends Controller
             $this->redirect = redirect()->route('admin.pages.index');
 
             $this->item->update($request->all());
-            $this->item->saveBlocks($request->input('blocks'));
+            $this->item->saveBlocks($request->input('blocks') ?: []);
         }, $request);
     }
 
