@@ -17,14 +17,16 @@ class BackupsTest extends TestCase
     /**
      * Setup the test environment.
      *
+     * @param $app
      * @return void
      */
     public function getEnvironmentSetUp($app): void
     {
         parent::getEnvironmentSetUp($app);
 
-        $app['config']->set('backup.notifications.notifiable', Notifiable::class);
         $app['config']->set('varbox.backup.name', 'VarBox');
+        $app['config']->set('varbox.backup.source.databases', ['sqlite']);
+        $app['config']->set('backup.notifications.notifiable', Notifiable::class);
     }
 
     /** @test */
@@ -73,9 +75,11 @@ class BackupsTest extends TestCase
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/backups/')
+                ->visit('/admin/backups')
                 ->clickButtonWithConfirm('Create New Backup')
+                ->assertPathIs('/admin/backups')
                 ->assertSee('The backup was successfully created')
+                ->assertDontSee('No records found')
                 ->assertRecordsCount(1);
         });
 
