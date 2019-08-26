@@ -4,12 +4,12 @@ namespace Varbox\Tests;
 
 use Illuminate\Support\Facades\Route;
 use Varbox\Tests\Http\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\UrlPost;
 
 class UrlTest extends TestCase
 {
     /**
-     * @var Post
+     * @var UrlPost
      */
     protected $post;
 
@@ -24,7 +24,7 @@ class UrlTest extends TestCase
 
         Route::url();
 
-        $this->post = Post::create([
+        $this->post = UrlPost::create([
             'name' => 'Test name',
         ]);
     }
