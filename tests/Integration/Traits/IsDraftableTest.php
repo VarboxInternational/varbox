@@ -4,21 +4,21 @@ namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Tests\Integration\TestCase;
-use Varbox\Tests\Models\Post;
+use Varbox\Tests\Models\DraftPost;
 
 class IsDraftableTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @var Post
+     * @var DraftPost
      */
     protected $post;
 
     /** @test */
     public function it_can_store_a_new_record_as_draft()
     {
-        $draft = (new Post)->saveAsDraft([
+        $draft = (new DraftPost)->saveAsDraft([
             'name' => 'Post test name',
             'content' => 'Post test content',
             'views' => 100,
@@ -94,7 +94,7 @@ class IsDraftableTest extends TestCase
     /** @test */
     public function it_has_a_method_for_returning_the_drafted_at_column()
     {
-        $post = new Post;
+        $post = new DraftPost;
 
         $this->assertEquals('drafted_at',$post->getDraftedAtColumn());
     }
@@ -103,7 +103,7 @@ class IsDraftableTest extends TestCase
     /** @test */
     public function it_has_a_method_for_returning_the_qualified_drafted_at_column()
     {
-        $post = new Post;
+        $post = new DraftPost;
 
         $this->assertEquals($post->getTable() . '.drafted_at', $post->getQualifiedDraftedAtColumn());
     }
@@ -113,11 +113,11 @@ class IsDraftableTest extends TestCase
     {
         $this->createPosts();
 
-        $this->assertEquals(2, Post::count());
+        $this->assertEquals(2, DraftPost::count());
 
         $this->post->saveAsDraft();
 
-        $this->assertEquals(1, Post::count());
+        $this->assertEquals(1, DraftPost::count());
     }
 
     /** @test */
@@ -127,7 +127,7 @@ class IsDraftableTest extends TestCase
 
         $this->post->saveAsDraft();
 
-        $this->assertEquals(2, Post::withDrafts()->count());
+        $this->assertEquals(2, DraftPost::withDrafts()->count());
     }
 
     /** @test */
@@ -137,7 +137,7 @@ class IsDraftableTest extends TestCase
 
         $this->post->saveAsDraft();
 
-        $this->assertEquals(1, Post::withoutDrafts()->count());
+        $this->assertEquals(1, DraftPost::withoutDrafts()->count());
     }
 
     /** @test */
@@ -147,7 +147,7 @@ class IsDraftableTest extends TestCase
 
         $this->post->saveAsDraft();
 
-        $this->assertEquals(1, Post::onlyDrafts()->count());
+        $this->assertEquals(1, DraftPost::onlyDrafts()->count());
     }
 
     /**
@@ -155,7 +155,7 @@ class IsDraftableTest extends TestCase
      */
     protected function createPost()
     {
-        $this->post = Post::create([
+        $this->post = DraftPost::create([
             'name' => 'Post test name',
             'content' => 'Post test content',
             'views' => 100,
@@ -165,14 +165,14 @@ class IsDraftableTest extends TestCase
     }
 
     /**
-     * @param Post|null $model
+     * @param DraftPost|null $model
      * @return void
      */
     protected function createPosts()
     {
         $this->createPost();
 
-        Post::create([
+        DraftPost::create([
             'name' => 'Another test name',
             'content' => 'Another test content',
             'views' => 10,
