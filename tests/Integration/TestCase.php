@@ -5,7 +5,6 @@ namespace Varbox\Tests\Integration;
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Varbox\Facades\VarboxFacade;
 use Varbox\VarboxServiceProvider;
 
 abstract class TestCase extends Orchestra
@@ -44,7 +43,6 @@ abstract class TestCase extends Orchestra
     protected function getPackageAliases($app)
     {
         return [
-            'Varbox' => VarboxFacade::class,
             'Breadcrumbs' => Breadcrumbs::class,
         ];
     }
