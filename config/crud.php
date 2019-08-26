@@ -7,7 +7,7 @@ return [
     | How many records to display per page.
     |
     */
-    'per_page' => 10,
+    'per_page' => 30,
 
     /*
     |
