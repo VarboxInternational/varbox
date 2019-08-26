@@ -54,7 +54,7 @@ class BlockRequest extends FormRequest
         }
 
         if ($this->route('id')) {
-            return app(BlockModelContract::class)->withDrafts()->withTrashed()
+            return app(BlockModelContract::class)->withDrafts()
                 ->find($this->route('id'));
         }
 

@@ -161,11 +161,7 @@ class Page extends Model implements PageModelContract
             ->generateUrlSlugFrom('slug')
             ->saveUrlSlugTo('slug')
             ->prefixUrlWith(function ($prefix, $model) {
-                $ancestors = $model->ancestors()
-                    ->withTrashed()->withDrafts()
-                    ->get();
-
-                foreach ($ancestors as $ancestor) {
+                foreach ($model->ancestors()->withDrafts()->get() as $ancestor) {
                     $prefix[] = $ancestor->slug;
                 }
 

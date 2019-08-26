@@ -57,7 +57,7 @@ class EmailRequest extends FormRequest
         }
 
         if ($this->route('id')) {
-            return app(EmailModelContract::class)->withDrafts()->withTrashed()
+            return app(EmailModelContract::class)->withDrafts()
                 ->find($this->route('id'));
         }
 

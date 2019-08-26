@@ -60,7 +60,7 @@ class PageRequest extends FormRequest
         }
 
         if ($this->route('id')) {
-            return app(PageModelContract::class)->withDrafts()->withTrashed()
+            return app(PageModelContract::class)->withDrafts()
                 ->find($this->route('id'));
         }
 
