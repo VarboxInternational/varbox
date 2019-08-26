@@ -20,6 +20,20 @@ class CreateTestingTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('block_authors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('block_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('author_id')->unsigned()->index()->nullable();
+            $table->foreign('author_id')->references('id')->on('block_authors')->onDelete('cascade')->onUpdate('set null');
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('cache_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -108,7 +122,6 @@ class CreateTestingTables extends Migration
             $table->integer('votes')->default(0);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
-
         });
 
         Schema::create('filter_reviews', function (Blueprint $table) {
