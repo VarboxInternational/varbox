@@ -370,6 +370,143 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_creating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function it_requires_a_type_when_creating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+    }
+
+    /** @test */
+    public function it_requires_a_name_when_updating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-add');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', '')
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function it_requires_a_unique_name_when_updating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-edit');
+
+        $this->createPage();
+        $this->createPageModified();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->press('Save')
+                ->waitForText('The name has already been taken')
+                ->assertSee('The name has already been taken');
+        });
+
+        $this->deletePageModified();
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function it_requires_a_type_when_updating_an_page()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-edit');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->resize(1250, 2500)->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->click('.select2-selection__clear')
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+
+        $this->deletePage();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @return void
      */
