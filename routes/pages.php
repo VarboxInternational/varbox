@@ -25,7 +25,7 @@ Route::group([
         Route::post('store/{pageParent?}', ['as' => 'admin.pages.store', 'uses' => $controllers['pages'] . '@store', 'permissions' => 'pages-add']);
         Route::get('edit/{page}', ['as' => 'admin.pages.edit', 'uses' => $controllers['pages'] . '@edit', 'permissions' => 'pages-edit']);
         Route::put('update/{page}', ['as' => 'admin.pages.update', 'uses' => $controllers['pages'] . '@update', 'permissions' => 'pages-edit']);
-        Route::delete('destroy/{page}', ['as' => 'admin.pages.destroy', 'uses' => $controllers['pages'] . '@destroy', 'permissions' => 'pages-soft-delete']);
+        Route::delete('destroy/{page}', ['as' => 'admin.pages.destroy', 'uses' => $controllers['pages'] . '@destroy', 'permissions' => 'pages-delete']);
 
         /**
          * Draft Actions.
