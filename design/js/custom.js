@@ -199,8 +199,6 @@ function generators() {
 }
 
 function confirms() {
-    //$(document).on('click', '.confirm-are-you-sure', function () {
-
     $('.confirm-are-you-sure').click(function (e) {
         e.preventDefault();
 

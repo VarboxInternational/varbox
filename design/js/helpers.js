@@ -160,6 +160,32 @@ var init = {
     },
     Tooltip: function () {
         $('[data-toggle="tooltip"]').tooltip();
+    },
+    Bootbox: function (selector) {
+        $(selector).find('.confirm-are-you-sure').on('click', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+
+            bootbox.confirm({
+                message: "Are you sure?",
+                buttons: {
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-secondary btn-default btn-square px-5 mr-auto'
+                    },
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-primary btn-square px-5'
+                    }
+                },
+                callback: function (result) {
+                    if (result === true) {
+                        _this.closest('form').submit();
+                    }
+                }
+            });
+        });
     }
 };
 
