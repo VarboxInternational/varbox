@@ -64,12 +64,12 @@
                 var node = data.instance.get_node(data.selected);
                 var request = {};
 
+                $.each(query.params(), function (index, obj) {
+                    request[obj.name] = obj.value.split('+').join(' ');
+                });
+
                 $(treeTableSelector).css({opacity: 0.5});
                 $('.button-add').attr('href', treeCreateUrl);
-
-                $.each(query.params(), function (index, obj) {
-                    request[obj.name] = obj.value;
-                });
 
                 $.ajax({
                     url: treeListUrl + "/" + (parseInt(node.id) ? node.id : ''),
