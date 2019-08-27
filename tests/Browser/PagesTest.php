@@ -215,7 +215,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_create_an_page()
+    public function an_admin_can_create_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -240,7 +240,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_create_an_page_and_stay_to_create_another_one()
+    public function an_admin_can_create_a_page_and_stay_to_create_another_one()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -261,7 +261,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_create_an_page_and_continue_editing_it()
+    public function an_admin_can_create_a_page_and_continue_editing_it()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -285,7 +285,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_update_an_page()
+    public function an_admin_can_update_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-edit');
@@ -310,7 +310,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_update_an_page_and_stay_to_continue_editing_id()
+    public function an_admin_can_update_a_page_and_stay_to_continue_editing_id()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-edit');
@@ -332,7 +332,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_delete_an_page_if_it_has_permission()
+    public function an_admin_can_delete_a_page_if_it_has_permission()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-delete');
@@ -354,7 +354,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_delete_an_page_if_it_doesnt_have_permission()
+    public function an_admin_cannot_delete_a_page_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->revokePermission('pages-delete');
@@ -371,7 +371,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_name_when_creating_an_page()
+    public function it_requires_a_name_when_creating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -388,7 +388,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_unique_name_when_creating_an_page()
+    public function it_requires_a_unique_name_when_creating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -410,7 +410,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_type_when_creating_an_page()
+    public function it_requires_a_type_when_creating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -427,7 +427,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_name_when_updating_an_page()
+    public function it_requires_a_name_when_updating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-add');
@@ -449,7 +449,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_unique_name_when_updating_an_page()
+    public function it_requires_a_unique_name_when_updating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-edit');
@@ -473,7 +473,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_type_when_updating_an_page()
+    public function it_requires_a_type_when_updating_a_page()
     {
         $this->admin->grantPermission('pages-list');
         $this->admin->grantPermission('pages-edit');
@@ -555,7 +555,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_save_an_page_as_draft_if_it_is_a_super_admin()
+    public function an_admin_can_save_a_page_as_draft_if_it_is_a_super_admin()
     {
         $this->admin->assignRoles('Super');
 
@@ -577,7 +577,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_save_an_page_as_draft_if_it_has_permission()
+    public function an_admin_can_save_a_page_as_draft_if_it_has_permission()
     {
         $this->admin->grantPermission('pages-edit');
         $this->admin->grantPermission('pages-draft');
@@ -600,7 +600,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_save_an_page_as_draft_if_it_doesnt_have_permission()
+    public function an_admin_cannot_save_a_page_as_draft_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('pages-edit');
         $this->admin->revokePermission('pages-draft');
@@ -684,7 +684,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_duplicate_an_page_if_it_is_a_super_admin()
+    public function an_admin_can_duplicate_a_page_if_it_is_a_super_admin()
     {
         $this->admin->assignRoles('Super');
 
@@ -706,7 +706,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_duplicate_an_page_if_it_has_permission()
+    public function an_admin_can_duplicate_a_page_if_it_has_permission()
     {
         $this->admin->grantPermission('pages-edit');
         $this->admin->grantPermission('pages-duplicate');
@@ -729,7 +729,7 @@ class PagesTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_cannot_duplicate_an_page_if_it_doesnt_have_permission()
+    public function an_admin_cannot_duplicate_a_page_if_it_doesnt_have_permission()
     {
         $this->admin->grantPermission('pages-edit');
         $this->admin->revokePermission('pages-duplicate');
@@ -745,45 +745,307 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function an_admin_can_see_page_revisions_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
 
+        $this->createPage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
 
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertSourceHas('button-view-revision')
+                ->assertSourceHas('button-rollback-revision')
+                ->assertSourceHas('button-delete-revision');
+        });
 
+        $this->deletePageModified();
+    }
 
+    /** @test */
+    public function an_admin_can_see_page_revisions_if_it_is_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
 
+        $this->createPage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
 
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('Revisions Info')
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->assertSee('No User')
+                ->assertDontSee('There are no revisions for this record');
+        });
 
+        $this->deletePageModified();
+    }
 
+    /** @test */
+    public function an_admin_cannot_see_page_revisions_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->revokePermission('revisions-list');
 
+        $this->createPage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertDontSee('Revisions Info');
+        });
 
-    
+        $this->deletePage();
+    }
 
+    /** @test */
+    public function an_admin_can_view_a_page_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
 
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/pages/revision')
+                ->assertSee('You are currently viewing a revision of the record')
+                ->assertSee('Page Revision')
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePageModified();
+    }
 
+    /** @test */
+    public function an_admin_can_view_a_page_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
 
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->pause(500)
+                ->clickViewRevisionButton()
+                ->assertPathBeginsWith('/admin/pages/revision')
+                ->assertSee('You are currently viewing a revision of the record')
+                ->assertSee('Page Revision')
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePageModified();
+    }
 
+    /** @test */
+    public function an_admin_can_rollback_a_page_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
 
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePage();
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePage();
+    }
 
+    /** @test */
+    public function an_admin_can_rollback_a_page_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-rollback');
 
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePage();
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->pressRollbackRevisionButton()
+                ->pause(500)
+                ->assertSee('The revision was successfully rolled back')
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertInputValue('#name-input', $this->pageName);
+        });
 
+        $this->deletePage();
+    }
 
+    /** @test */
+    public function an_admin_cannot_rollback_a_page_revision_if_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-rollback');
 
+        $this->createPage();
+        $this->updatePage();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deletePageModified();
+        $this->createPage();
+        $this->updatePage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickViewRevisionButton()
+                ->assertDontSee('Rollback Revision')
+                ->assertSourceMissing('class="button-rollback-revision');
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_page_revision_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createPage();
+        $this->updatePage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_can_delete_a_page_revision_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->grantPermission('revisions-delete');
+
+        $this->createPage();
+        $this->updatePage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->clickDeleteRevisionButton()
+                ->pause(500)
+                ->assertSee('There are no revisions for this record');
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_page_revision_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('revisions-list');
+        $this->admin->revokePermission('revisions-delete');
+
+        $this->createPage();
+        $this->updatePage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->openRevisionsContainer()
+                ->assertSourceMissing('class="button-delete-revision');
+        });
+
+        $this->deletePageModified();
+    }
 
     /**
      * @return void
