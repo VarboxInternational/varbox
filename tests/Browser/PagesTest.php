@@ -683,6 +683,95 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function an_admin_can_duplicate_an_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->clickDuplicateRecordButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertPathBeginsWith('/admin/pages/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->pageName . ' (1)');
+        });
+
+        $this->deletePage();
+        $this->deleteDuplicatedPage();
+    }
+
+    /** @test */
+    public function an_admin_can_duplicate_an_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('pages-duplicate');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->clickDuplicateRecordButton()
+                ->pause(500)
+                ->assertPathIsNot('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertPathBeginsWith('/admin/pages/edit')
+                ->assertSee('The record was successfully duplicated')
+                ->assertInputValue('#name-input', $this->pageName . ' (1)');
+        });
+
+        $this->deletePage();
+        $this->deleteDuplicatedPage();
+    }
+
+    /** @test */
+    public function an_admin_cannot_duplicate_an_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->revokePermission('pages-duplicate');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertDontSee('Duplicate');
+        });
+
+        $this->deletePage();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
