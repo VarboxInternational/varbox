@@ -331,6 +331,45 @@ class PagesTest extends TestCase
         $this->deletePageModified();
     }
 
+    /** @test */
+    public function an_admin_can_delete_an_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->grantPermission('pages-delete');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->resize(1200, 1200)->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/pages/', $this->pageModel)
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->pageName)
+                ->clickDeleteRecordButton($this->pageName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/pages/', $this->pageModel)
+                ->assertDontSee($this->pageName);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_an_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-list');
+        $this->admin->revokePermission('pages-delete');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages')
+                ->assertSourceMissing('button-delete');
+        });
+
+        $this->deletePage();
+    }
+
     /**
      * @return void
      */
