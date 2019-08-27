@@ -5,7 +5,7 @@
                 <i class="fe fe-info mr-2" aria-hidden="true"></i>
             </div>
             <div class="d-inline-block">
-                <h4>You are currently viewing a revision of the model!</h4>
+                <h4>You are currently viewing a revision of the record!</h4>
                 <div class="btn-list mt-4">
                     @permission('revisions-rollback')
                         {!! form()->open(['url' => route('admin.revisions.rollback', $revision->getKey()), 'method' => 'POST', 'class' => 'float-left d-inline']) !!}

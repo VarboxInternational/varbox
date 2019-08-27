@@ -955,7 +955,7 @@ class BlocksTest extends TestCase
                 ->pause(500)
                 ->clickViewRevisionButton()
                 ->assertPathBeginsWith('/admin/blocks/revision')
-                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('You are currently viewing a revision of the record')
                 ->assertSee('Block Revision')
                 ->assertInputValue('#name-input', $this->blockName);
         });
@@ -981,7 +981,7 @@ class BlocksTest extends TestCase
                 ->pause(500)
                 ->clickViewRevisionButton()
                 ->assertPathBeginsWith('/admin/blocks/revision')
-                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('You are currently viewing a revision of the record')
                 ->assertSee('Block Revision')
                 ->assertInputValue('#name-input', $this->blockName);
         });

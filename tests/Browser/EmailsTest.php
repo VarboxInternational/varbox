@@ -979,7 +979,7 @@ class EmailsTest extends TestCase
                 ->pause(500)
                 ->clickViewRevisionButton()
                 ->assertPathBeginsWith('/admin/emails/revision')
-                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('You are currently viewing a revision of the record')
                 ->assertSee('Email Revision')
                 ->assertInputValue('#name-input', $this->emailName);
         });
@@ -1005,7 +1005,7 @@ class EmailsTest extends TestCase
                 ->pause(500)
                 ->clickViewRevisionButton()
                 ->assertPathBeginsWith('/admin/emails/revision')
-                ->assertSee('You are currently viewing a revision of the model')
+                ->assertSee('You are currently viewing a revision of the record')
                 ->assertSee('Email Revision')
                 ->assertInputValue('#name-input', $this->emailName);
         });
