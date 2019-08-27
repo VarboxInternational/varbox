@@ -80,9 +80,10 @@
                         $(treeContainerSelector).html(data);
                         $(treeTableSelector).css({opacity: 1});
 
-                        //init sorting
                         sort();
+
                         init.Tooltip();
+                        init.Bootbox(treeContainerSelector);
                     }
                 });
             });
