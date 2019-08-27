@@ -494,6 +494,195 @@ class PagesTest extends TestCase
         $this->deletePage();
     }
 
+    /** @test */
+    public function an_admin_can_create_a_drafted_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/pages/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->pageName)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_drafted_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-add');
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('pages-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->type('#name-input', $this->pageName)
+                ->type('#slug-input', $this->pageSlug)
+                ->typeSelect2('#type-input', $this->pageTypeFormatted())
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/pages/edit')
+                ->assertSee('The draft was successfully created!')
+                ->assertInputValue('#name-input', $this->pageName)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_cannot_create_a_drafted_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-add');
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->revokePermission('pages-draft');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/create')
+                ->assertDontSee('Save As Draft');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_save_an_page_as_draft_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageNameModified)
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('The draft was successfully updated!')
+                ->assertInputValue('#name-input', $this->pageNameModified)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_can_save_an_page_as_draft_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('pages-draft');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->type('#name-input', $this->pageNameModified)
+                ->clickSaveDraftRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('The draft was successfully updated!')
+                ->assertInputValue('#name-input', $this->pageNameModified)
+                ->assertSee('This record is currently drafted');
+        });
+
+        $this->deletePageModified();
+    }
+
+    /** @test */
+    public function an_admin_cannot_save_an_page_as_draft_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->revokePermission('pages-draft');
+
+        $this->createPage();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertDontSee('Save As Draft');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_can_publish_a_drafted_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createPage();
+
+        $this->pageModel = $this->pageModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->clickPublishRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_can_publish_a_drafted_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->grantPermission('pages-publish');
+
+        $this->createPage();
+
+        $this->pageModel = $this->pageModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->clickPublishRecordButton()
+                ->pause(500)
+                ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('The draft was successfully published!')
+                ->assertDontSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deletePage();
+    }
+
+    /** @test */
+    public function an_admin_cannot_publish_a_drafted_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('pages-edit');
+        $this->admin->revokePermission('pages-publish');
+
+        $this->createPage();
+
+        $this->pageModel = $this->pageModel->saveAsDraft();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->assertSee('This record is currently drafted')
+                ->assertDontSee('Publish Draft');
+        });
+
+        $this->deletePage();
+    }
+
 
 
 
