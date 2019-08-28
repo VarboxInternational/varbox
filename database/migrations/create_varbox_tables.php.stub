@@ -296,6 +296,24 @@ class CreateVarboxTables extends Migration
             });
         }
 
+        if (!Schema::hasTable('menus')) {
+            Schema::create('menus', function (Blueprint $table) {
+                $table->increments('id');
+                $table->nullableMorphs('menuable');
+
+                NestedSet::columns($table);
+
+                $table->string('name');
+                $table->string('url')->nullable();
+                $table->string('type')->nullable();
+                $table->string('location')->nullable();
+                $table->json('data')->nullable();
+                $table->boolean('active')->default(true);
+
+                $table->timestamps();
+            });
+        }
+
         if (!Schema::hasTable('emails')) {
             Schema::create('emails', function (Blueprint $table) {
                 $table->increments('id');
@@ -347,6 +365,8 @@ class CreateVarboxTables extends Migration
         Schema::dropIfExists('blockables');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('emails');
+        Schema::dropIfExists('menus');
+        Schema::dropIfExists('pages');
         Schema::dropIfExists('backups');
         Schema::dropIfExists('errors');
         Schema::dropIfExists('configs');
