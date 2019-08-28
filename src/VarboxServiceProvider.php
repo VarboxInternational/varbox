@@ -40,6 +40,7 @@ use Varbox\Contracts\DraftHelperContract;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
+use Varbox\Contracts\MenuModelContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PermissionModelContract;
@@ -86,6 +87,7 @@ use Varbox\Models\Config;
 use Varbox\Models\Country;
 use Varbox\Models\Email;
 use Varbox\Models\Error;
+use Varbox\Models\Menu;
 use Varbox\Models\Page;
 use Varbox\Models\Permission;
 use Varbox\Models\Revision;
@@ -338,6 +340,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('config', ConfigModelContract::class);
         Route::model('error', ErrorModelContract::class);
         Route::model('backup', BackupModelContract::class);
+        Route::model('menu', MenuModelContract::class);
+        Route::model('menuParent', MenuModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -583,6 +587,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(PageModelContract::class, $binding['models']['page_model'] ?? Page::class);
         $this->app->alias(PageModelContract::class, 'page.model');
+
+        $this->app->bind(MenuModelContract::class, $binding['models']['menu_model'] ?? Menu::class);
+        $this->app->alias(MenuModelContract::class, 'menu.model');
     }
 
     /**
