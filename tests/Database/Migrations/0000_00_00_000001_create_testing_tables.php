@@ -140,6 +140,28 @@ class CreateTestingTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('preview_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->text('content')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('preview_tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('preview_post_tag', function (Blueprint $table) {
+            $table->integer('post_id')->unsigned();
+            $table->foreign('post_id')->references('id')->on('preview_posts')->onDelete('cascade');
+            $table->integer('tag_id')->unsigned();
+            $table->foreign('tag_id')->references('id')->on('preview_tags')->onDelete('cascade');
+            $table->timestamps();
+            $table->primary(['post_id', 'tag_id']);
+        });
+
         Schema::create('revision_authors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable();
