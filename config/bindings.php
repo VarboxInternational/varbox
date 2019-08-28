@@ -846,6 +846,18 @@ return [
         */
         'page_form_request' => \Varbox\Requests\PageRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "menu form request".
+        | To extend or replace this functionality, change the value below with your full "menu form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\MenuRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'menu_form_request' => \Varbox\Requests\MenuRequest::class,
+
     ],
 
     /*
