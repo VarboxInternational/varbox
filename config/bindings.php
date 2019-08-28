@@ -328,6 +328,22 @@ return [
         */
         'page_model' => \Varbox\Models\Page::class,
 
+        /*
+        |
+        | Concrete implementation for the "menu model".
+        | To extend or replace this functionality, change the value below with your full "menu model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Menu" class
+        | - or at least implement the "Varbox\Contracts\MenuModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('menu.model') OR app('\Varbox\Contracts\MenuModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'menu_model' => \Varbox\Models\Menu::class,
+
     ],
 
     /*
