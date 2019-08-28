@@ -5,7 +5,7 @@ use Varbox\Contracts\RevisionModelContract;
 /* Home > Menu Locations */
 Breadcrumbs::register('admin.menus.locations', function($breadcrumbs) {
     $breadcrumbs->parent('admin');
-    $breadcrumbs->push('Locations', route('admin.menus.locations'));
+    $breadcrumbs->push('Menu Locations', route('admin.menus.locations'));
 });
 
 /* Home > Menus */
