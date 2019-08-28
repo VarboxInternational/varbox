@@ -184,6 +184,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/emails.php' => config_path('varbox/emails.php'),
             __DIR__ . '/../config/blocks.php' => config_path('varbox/blocks.php'),
             __DIR__ . '/../config/pages.php' => config_path('varbox/pages.php'),
+            __DIR__ . '/../config/menus.php' => config_path('varbox/menus.php'),
         ], 'config');
     }
 
@@ -508,6 +509,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');
+        $this->mergeConfigFrom(__DIR__ . '/../config/menus.php', 'varbox.menus');
     }
 
     /**
