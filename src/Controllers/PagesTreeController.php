@@ -2,10 +2,8 @@
 
 namespace Varbox\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Varbox\Filters\PageFilter;
-use Varbox\Models\Page;
 use Varbox\Sorts\PageSort;
 
 class PagesTreeController extends PagesController

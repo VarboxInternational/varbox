@@ -279,7 +279,7 @@ class PagesController extends Controller
     }
 
     /**
-     * Get the formatted email types for a select.
+     * Get the formatted types for a select.
      * Final format will be: [type => title-cased type].
      *
      * @return array
