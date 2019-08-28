@@ -24,7 +24,7 @@ use Varbox\Sorts\PageSort;
 class PagesController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use CanCrud, CanDraft, CanRevision, CanDuplicate;
+    use CanCrud, CanDraft, CanRevision, CanDuplicate, CanPreview;
 
     /**
      * @var PageModelContract
@@ -234,6 +234,48 @@ class PagesController extends Controller
     protected function duplicateRedirectTo(Model $duplicate): string
     {
         return route('admin.pages.edit', $duplicate->getKey());
+    }
+
+    /**
+     * Get the model to be previewed.
+     *
+     * @return string
+     */
+    protected function previewModel(): string
+    {
+        return config('varbox.bindings.models.page_model', Page::class);
+    }
+
+    /**
+     * Get the controller where to dispatch the preview.
+     *
+     * @param Model $model
+     * @return Model
+     */
+    protected function previewController(Model $model): string
+    {
+        return config('varbox.pages.types.' . $model->type . '.controller');
+    }
+
+    /**
+     * Get the action where to dispatch the preview.
+     *
+     * @param Model $model
+     * @return Model
+     */
+    protected function previewAction(Model $model): string
+    {
+        return config('varbox.pages.types.' . $model->type . '.action');
+    }
+
+    /**
+     * Get the form request to validate the preview upon.
+     *
+     * @return string|null
+     */
+    protected function previewRequest(): ?string
+    {
+        return config('varbox.bindings.form_requests.page_form_request', PageRequest::class);
     }
 
     /**
