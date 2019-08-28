@@ -12,7 +12,7 @@ return [
     */
     'locations' => [
 
-        'top', 'bottom',
+        'header', 'footer',
 
     ],
 
@@ -28,7 +28,7 @@ return [
     | The FQN of the model class representing the respective menu type.
     | This is used in the admin menu section, to specify a menu type upon creating / updating.
     |
-    | Please note that the specified model class, will have to use the "Varbox\Base\Traits\HasUrl" trait.
+    | Please note that the specified model class, will have to use the "Varbox\Traits\HasUrl" trait.
     | It's actually recommended that you specify a menu type for each model class of yours that uses the "HasUrl" trait.
     | That way, you will be able to reference entity records, directly in your menus from the admin, thus displaying them on front-end.
     |
