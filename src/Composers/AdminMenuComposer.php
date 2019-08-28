@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Menu\MenuItem;
-use Varbox\Varbox;
 
 class AdminMenuComposer
 {
@@ -44,9 +43,9 @@ class AdminMenuComposer
                     $item->name('Pages')->url(route('admin.pages.index'))->permissions('pages-list')->active('admin/pages/*');
                 });
 
-                /*$menu->child($cms, function (MenuItem $item) {
+                $menu->child($cms, function (MenuItem $item) {
                     $item->name('Menus')->url(route('admin.menus.locations'))->permissions('menus-list')->active('admin/menus/*');
-                });*/
+                });
 
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Blocks')->url(route('admin.blocks.index'))->permissions('blocks-list')->active('admin/blocks/*');
@@ -55,10 +54,6 @@ class AdminMenuComposer
                 $menu->child($cms, function (MenuItem $item) {
                     $item->name('Emails')->url(route('admin.emails.index'))->permissions('emails-list', 'aa')->active('admin/emails/*');
                 });
-
-                /*$menu->child($cms, function (MenuItem $item) {
-                    $item->name('Layouts')->url(route('admin.layouts.index'))->permissions('layouts-list')->active('admin/layouts/*');
-                });*/
             });
 
             /*
