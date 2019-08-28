@@ -612,6 +612,28 @@ return [
         */
         'pages_tree_controller' => \Varbox\Controllers\PagesTreeController::class,
 
+        /*
+        |
+        | Concrete implementation for the "menus controller".
+        | To extend or replace this functionality, change the value below with your full "menus controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\MenusController" class
+        |
+        */
+        'menus_controller' => \Varbox\Controllers\MenusController::class,
+
+        /*
+        |
+        | Concrete implementation for the "menus tree controller".
+        | To extend or replace this functionality, change the value below with your full "menus tree controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\MenusTreeController" class
+        |
+        */
+        'menus_tree_controller' => \Varbox\Controllers\MenusTreeController::class,
+
     ],
 
     'form_requests' => [
