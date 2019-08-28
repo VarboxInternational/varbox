@@ -56,7 +56,7 @@ trait CanPreview
      * @return RedirectResponse
      * @throws Exception
      */
-    public function preview(Request $request, QueryCacheServiceContract $cache, \Illuminate\Routing\Router $router, $id = null)
+    public function preview(Request $request, QueryCacheServiceContract $cache, $id = null)
     {
         $req = app($this->previewRequest());
 
