@@ -8,7 +8,7 @@
                 <i class="fa fa-sort mr-2"></i>Type
             </th>
             <th class="sortable d-none d-sm-table-cell" data-sort="active">
-                <i class="fa fa-sort mr-2"></i>Active
+                <i class="fa fa-sort mr-2"></i>Status
             </th>
             <th class="text-right d-table-cell"></th>
         </tr>
@@ -27,7 +27,7 @@
                 </td>
                 <td class="d-none d-sm-table-cell">
                     <span class="badge @if($item->active) badge-success @else badge-danger @endif">
-                        {{ $item->active ? 'Yes' : 'No' }}
+                        {{ $item->active ? 'active' : 'inactive' }}
                     </span>
                 </td>
                 <td class="text-right d-table-cell">
