@@ -184,14 +184,86 @@ class MenusTest extends TestCase
         });
     }
 
+
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_view_the_edit_menu_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->clickEditRecordButton($this->menuName)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->assertSee('Edit Menu');
+        });
+
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_edit_menu_if_it_has_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->clickEditRecordButton($this->menuName)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->assertSee('Edit Menu');
+        });
+
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_edit_menu_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->revokePermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Edit Menu');
+        });
+
+        $this->deleteMenu();
+    }
+
     /**
      * @return void
      */
     protected function createMenu()
     {
         $this->menuModel = Menu::create([
-            'name' => $this->menuName,
+            'location' => $this->menuLocation,
             'type' => $this->menuType,
+            'name' => $this->menuName,
             'url' => $this->menuUrl,
         ]);
     }
@@ -212,8 +284,9 @@ class MenusTest extends TestCase
     protected function createMenuModified()
     {
         $this->menuModel = Menu::create([
-            'name' => $this->menuNameModified,
+            'location' => $this->menuLocation,
             'type' => $this->menuType,
+            'name' => $this->menuNameModified,
             'url' => $this->menuUrl,
         ]);
     }
