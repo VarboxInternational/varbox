@@ -344,6 +344,22 @@ return [
         */
         'menu_model' => \Varbox\Models\Menu::class,
 
+        /*
+        |
+        | Concrete implementation for the "language model".
+        | To extend or replace this functionality, change the value below with your full "language model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Language" class
+        | - or at least implement the "Varbox\Contracts\LanguageModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('language.model') OR app('\Varbox\Contracts\LanguageModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'language_model' => \Varbox\Models\Language::class,
+
     ],
 
     /*
