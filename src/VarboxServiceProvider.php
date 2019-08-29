@@ -483,6 +483,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             require_once __DIR__ . '/../breadcrumbs/blocks.php';
             require_once __DIR__ . '/../breadcrumbs/pages.php';
             require_once __DIR__ . '/../breadcrumbs/menus.php';
+            require_once __DIR__ . '/../breadcrumbs/languages.php';
         }
     }
 
