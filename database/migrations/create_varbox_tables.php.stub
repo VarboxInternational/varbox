@@ -358,7 +358,7 @@ class CreateVarboxTables extends Migration
         }
 
         if (!Schema::hasTable('languages')) {
-            Schemac::create('languages', function (Blueprint $table) {
+            Schema::create('languages', function (Blueprint $table) {
                 $table->increments('id');
 
                 $table->string('name')->unique();
