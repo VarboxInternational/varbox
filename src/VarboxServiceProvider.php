@@ -40,6 +40,7 @@ use Varbox\Contracts\DraftHelperContract;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
+use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\MenuModelContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageModelContract;
@@ -87,6 +88,7 @@ use Varbox\Models\Config;
 use Varbox\Models\Country;
 use Varbox\Models\Email;
 use Varbox\Models\Error;
+use Varbox\Models\Language;
 use Varbox\Models\Menu;
 use Varbox\Models\Page;
 use Varbox\Models\Permission;
@@ -342,6 +344,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('backup', BackupModelContract::class);
         Route::model('menu', MenuModelContract::class);
         Route::model('menuParent', MenuModelContract::class);
+        Route::model('language', LanguageModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -590,6 +593,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(MenuModelContract::class, $binding['models']['menu_model'] ?? Menu::class);
         $this->app->alias(MenuModelContract::class, 'menu.model');
+
+        $this->app->bind(LanguageModelContract::class, $binding['models']['language_model'] ?? Language::class);
+        $this->app->alias(LanguageModelContract::class, 'language.model');
     }
 
     /**
