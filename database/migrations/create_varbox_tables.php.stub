@@ -303,10 +303,13 @@ class CreateVarboxTables extends Migration
 
                 NestedSet::columns($table);
 
-                $table->string('name');
-                $table->string('url')->nullable();
                 $table->string('type')->nullable();
                 $table->string('location')->nullable();
+
+                $table->string('name');
+                $table->string('url')->nullable();
+                $table->string('route')->nullable();
+
                 $table->json('data')->nullable();
                 $table->boolean('active')->default(true);
 
