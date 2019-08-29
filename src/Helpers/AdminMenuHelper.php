@@ -47,7 +47,7 @@ class AdminMenuHelper implements AdminMenuHelperContract
     /**
      * Add a new menu item via a callback.
      * The callback should generate individual menu items.
-     * Setting the properties using methods from App\Helpers\Menu\Item
+     * Setting the properties using methods from Varbox\Menu\MenuItem
      *
      * @param Closure $callback
      */
@@ -76,7 +76,7 @@ class AdminMenuHelper implements AdminMenuHelperContract
      * Container for generating children menu items inside a parent node.
      * Add a new child menu item via a callback for a parent node.
      * The callback should generate individual menu items.
-     * Setting the properties using methods from App\Helpers\Menu\Item
+     * Setting the properties using methods from Varbox\Menu\MenuItem
      *
      * @param MenuItem $parent
      * @param Closure $callback
