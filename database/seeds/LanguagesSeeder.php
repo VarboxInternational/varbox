@@ -160,7 +160,7 @@ class LanguagesSeeder extends Seeder
 
         foreach ($this->languages as $code => $name) {
             if ($language->where('code', $code)->orWhere('name', $name)->count() == 0) {
-                $language->create([
+                $language->doNotLogActivity()->create([
                     'name' => $name,
                     'code' => $code,
                     'default' => $code == 'en' ? true : false,
