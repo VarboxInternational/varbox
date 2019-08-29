@@ -356,6 +356,19 @@ class CreateVarboxTables extends Migration
                 $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade')->onUpdate('cascade');
             });
         }
+
+        if (!Schema::hasTable('languages')) {
+            Schemac::create('languages', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->string('name')->unique();
+                $table->string('code')->unique();
+                $table->boolean('default')->default(false);
+                $table->boolean('active')->default(false);
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -365,6 +378,7 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('languages');
         Schema::dropIfExists('blockables');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('emails');
