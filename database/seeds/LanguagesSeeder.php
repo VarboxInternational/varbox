@@ -11,7 +11,6 @@ class LanguagesSeeder extends Seeder
      * @var array
      */
     protected $languages = [
-        'en' => 'English',
         'aa' => 'Afar',
         'ab' => 'Abkhazian',
         'af' => 'Afrikaans',
@@ -36,6 +35,7 @@ class LanguagesSeeder extends Seeder
         'de' => 'German',
         'dz' => 'Bhutani',
         'el' => 'Greek',
+        'en' => 'English',
         'eo' => 'Esperanto',
         'es' => 'Spanish',
         'et' => 'Estonian',
@@ -156,6 +156,8 @@ class LanguagesSeeder extends Seeder
      */
     public function run(LanguageModelContract $language)
     {
+        asort($this->languages);
+
         foreach ($this->languages as $code => $name) {
             if ($language->where('code', $code)->orWhere('name', $name)->count() == 0) {
                 $language->create([
