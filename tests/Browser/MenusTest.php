@@ -368,15 +368,6 @@ class MenusTest extends TestCase
         $this->deleteMenuModified();
     }
 
-
-
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_delete_a_menu_if_it_has_permission()
     {
@@ -419,15 +410,125 @@ class MenusTest extends TestCase
         $this->deleteMenu();
     }
 
+    /** @test */
+    public function it_requires_a_name_when_creating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', $this->menuUrl)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
+    }
 
+    /** @test */
+    public function it_requires_a_type_when_creating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->type('#name-input', $this->menuName)
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+    }
 
+    /** @test */
+    public function it_requires_a_url_when_creating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->type('#name-input', $this->menuName)
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->press('Save')
+                ->waitForText('The url field is required')
+                ->assertSee('The url field is required');
+        });
+    }
 
+    /** @test */
+    public function it_requires_a_name_when_updating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
 
+        $this->createMenu();
 
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->type('#name-input', '')
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', $this->menuUrl)
+                ->press('Save')
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
+        });
 
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function it_requires_a_type_when_updating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->resize(1250, 2500)->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->type('#name-input', $this->menuName)
+                ->click('.select2-selection__clear')
+                ->press('Save')
+                ->waitForText('The type field is required')
+                ->assertSee('The type field is required');
+        });
+
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function it_requires_a_url_when_updating_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->type('#name-input', $this->menuName)
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', '')
+                ->press('Save')
+                ->waitForText('The url field is required')
+                ->assertSee('The url field is required');
+        });
+
+        $this->deleteMenu();
+    }
+    
     /**
      * @return void
      */
