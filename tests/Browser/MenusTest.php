@@ -247,18 +247,6 @@ class MenusTest extends TestCase
         $this->deleteMenu();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_create_a_menu()
     {
@@ -331,6 +319,63 @@ class MenusTest extends TestCase
         });
 
         $this->deleteMenu();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_update_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->type('#name-input', $this->menuNameModified)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->assertSee('The record was successfully updated!')
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->menuNameModified);
+        });
+
+        $this->deleteMenuModified();
+    }
+
+    /** @test */
+    public function an_admin_can_update_a_menu_and_stay_to_continue_editing_id()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->type('#name-input', $this->menuNameModified)
+                ->clickLink('Save & Stay')
+                ->pause(500)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
+                ->assertSee('The record was successfully updated!')
+                ->assertInputValue('#name-input', $this->menuNameModified);
+        });
+
+        $this->deleteMenuModified();
     }
 
 
