@@ -5,6 +5,7 @@ namespace Varbox\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
@@ -14,7 +15,6 @@ use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 use Varbox\Contracts\MenuModelContract;
-use Varbox\Exceptions\MenuException;
 
 class Menu extends Model implements MenuModelContract
 {
@@ -43,6 +43,7 @@ class Menu extends Model implements MenuModelContract
         'location',
         'name',
         'url',
+        'route',
         'data',
         'active',
     ];
@@ -53,7 +54,8 @@ class Menu extends Model implements MenuModelContract
      * @var array
      */
     protected $casts = [
-        'active' => 'boolean'
+        'data' => 'array',
+        'active' => 'boolean',
     ];
 
     /**
@@ -81,20 +83,21 @@ class Menu extends Model implements MenuModelContract
                 case 'url':
                     $model->attributes['menuable_id'] = null;
                     $model->attributes['menuable_type'] = null;
+                    $model->attributes['route'] = null;
+
+                    break;
+                case 'route':
+                    $model->attributes['menuable_id'] = null;
+                    $model->attributes['menuable_type'] = null;
+                    $model->attributes['url'] = null;
 
                     break;
                 default:
-                    $types = static::getTypes();
-
-                    if (!isset($types[$model->attributes['type']])) {
-                        throw new Exception(
-                            'Cannot create a menu entry of type "' . $types[$model->attributes['type']] . '"' . PHP_EOL .
-                            'Please make sure this type exists inside the "config/varbox/menus.php" file.'
-                        );
-                    }
+                    $types = (array)config('varbox.menus.types', []);
 
                     $model->attributes['url'] = null;
-                    $model->attributes['menuable_type'] = $types[$model->attributes['type']]['class'];
+                    $model->attributes['route'] = null;
+                    $model->attributes['menuable_type'] = $types[$model->attributes['type']];
 
                     break;
             }
@@ -119,9 +122,9 @@ class Menu extends Model implements MenuModelContract
 
     /**
      * Get the url of the menu.
-     * If the actual "url" column contains any value, return that.
-     * Otherwise, match the "entity_id" and "entity_type" on a record and return it's url.
-     * The matched record must implement the HasUrl trait to actually return an url.
+     * If the "url" column contains any value, return that;
+     * Else, if the "route" column contains any value, return the route's url;
+     * Else, match the "entity_id" and "entity_type" on a record and return it's url.
      *
      * @return string|null
      */
@@ -132,9 +135,38 @@ class Menu extends Model implements MenuModelContract
                 $this->attributes['url'] : url($this->attributes['url']);
         }
 
+        if ($this->attributes['route']) {
+            return route($this->attributes['route'], [], true);
+        }
+
         if ($this->menuable && $this->menuable->url) {
-            return Str::startsWith($this->menuable->url->url, ['http', 'www']) ?
-                $this->menuable->url->url : url($this->menuable->url->url);
+            return $this->menuable->getUrl();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the uri of the menu.
+     * If the "url" column contains any value, return that;
+     * Else, if the "route" column contains any value, return the route's url;
+     * Else, match the "entity_id" and "entity_type" on a record and return it's url.
+     *
+     * @return string|null
+     */
+    public function getUriAttribute()
+    {
+        if ($this->attributes['url']) {
+            return Str::startsWith($this->attributes['url'], ['http', 'www']) ?
+                $this->attributes['url'] : '/' . trim($this->attributes['url'], '/');
+        }
+
+        if ($this->attributes['route']) {
+            return route($this->attributes['route'], [], false);
+        }
+
+        if ($this->menuable && $this->menuable->url) {
+            return $this->menuable->getUri();
         }
 
         return null;
@@ -182,57 +214,38 @@ class Menu extends Model implements MenuModelContract
     }
 
     /**
-     * Get all menu locations defined inside the "config/varbox/menus.php" file.
+     * Get all the eligible routes that can be assigned as a menu url.
+     *
+     * - exclude routes without a name
+     * - exclude non GET routes
+     * - exclude routes that are not in the "web" scope
+     * - exclude routes from admin
+     * - exclude routes with parameters
+     * - exclude the last route (the fallback route)
      *
      * @return array
      */
-    public static function getLocations()
+    public static function getRoutes()
     {
-        return (array)config('varbox.menus.locations', []);
-    }
+        $routes = [];
 
-    /**
-     * Get all menu types defined inside the "config/varbox/menus.php" file.
-     *
-     * @return array
-     */
-    public static function getTypes()
-    {
-        return (array)config('varbox.menus.types', []);
-    }
+        foreach (Route::getRoutes() as $route) {
+            if (
+                !$route->getName() ||
+                !in_array('get', array_map('strtolower', $route->methods())) ||
+                !in_array('web', array_map('strtolower', $route->middleware())) ||
+                Str::startsWith($route->getPrefix(), config('varbox.admin.prefix', 'admin')) ||
+                Str::contains($route->uri(), ['{', '}'])
+            ) {
+                continue;
+            }
 
-    /**
-     * Get all menu locations defined inside the "config/varbox/menus.php" file in a select format.
-     * An array containing: "menu location" => "title-cased menu location".
-     *
-     * @return array
-     */
-    public static function getLocationsForSelect()
-    {
-        $locations = [];
-
-        foreach (static::getLocations() as $location) {
-            $locations[$location] = title_case(str_replace(['_', '-', '.'], ' ', $location));
+            $routes[] = $route;
         }
 
-        return $locations;
-    }
+        array_pop($routes);
 
-    /**
-     * Get all menu types defined inside the "config/varbox/menus.php" file in a select format.
-     * An array containing: "menu type" => "title-cased menu type".
-     *
-     * @return array
-     */
-    public static function getTypesForSelect()
-    {
-        $types = [];
-
-        foreach (array_keys(static::getTypes()) as $type) {
-            $types[$type] = title_case(str_replace(['_', '-', '.'], ' ', $type));
-        }
-
-        return $types;
+        return $routes;
     }
 
     /**
@@ -245,6 +258,9 @@ class Menu extends Model implements MenuModelContract
         return ActivityOptions::instance()
             ->withEntityType('menu')
             ->withEntityName($this->name)
-            ->withEntityUrl(route('admin.menus.edit', $this->getKey()));
+            ->withEntityUrl(route('admin.menus.edit', [
+                'location' => $this->location,
+                'id' => $this->getKey()
+            ]));
     }
 }

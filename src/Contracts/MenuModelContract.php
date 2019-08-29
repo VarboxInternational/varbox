@@ -15,6 +15,11 @@ interface MenuModelContract
     public function getUrlAttribute();
 
     /**
+     * @return string|null
+     */
+    public function getUriAttribute();
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param int $id
      */
@@ -34,4 +39,9 @@ interface MenuModelContract
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeAlphabetically($query);
+
+    /**
+     * @return array
+     */
+    public static function getRoutes();
 }
