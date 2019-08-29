@@ -18,13 +18,13 @@ return [
 
     /*
     |
-    | All menu types available for your application.
+    | All custom menu types available for your application.
     |
     | --- ARRAY KEY:
     | The actual menu type name.
     | This will be persisted to the menus database table.
     |
-    | --- [Class]:
+    | --- ARRAY VALUE:
     | The FQN of the model class representing the respective menu type.
     | This is used in the admin menu section, to specify a menu type upon creating / updating.
     |
@@ -35,13 +35,7 @@ return [
     */
     'types' => [
 
-        'url' => [
-            'class' => null,
-        ],
-
-        'page' => [
-            'class' => \Varbox\Models\Page::class,
-        ],
+        'page' => \Varbox\Models\Page::class,
 
     ],
 
