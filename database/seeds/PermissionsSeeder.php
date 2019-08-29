@@ -585,6 +585,38 @@ class PermissionsSeeder extends Seeder
                 'name' => 'blocks-order',
             ],
         ],
+        'Languages' => [
+            'List' => [
+                'group' => 'Languages',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'languages-list',
+            ],
+            'Add' => [
+                'group' => 'Languages',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'languages-add',
+            ],
+            'Edit' => [
+                'group' => 'Languages',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'languages-edit',
+            ],
+            'Delete' => [
+                'group' => 'Languages',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'languages-delete',
+            ],
+            'Change' => [
+                'group' => 'Languages',
+                'label' => 'Change',
+                'guard' => 'admin',
+                'name' => 'languages-change',
+            ],
+        ],
     ];
 
     /**
