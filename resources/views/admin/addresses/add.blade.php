@@ -10,7 +10,7 @@
         <div class="d-inline-block">
             <h4>You are currently adding an address for user: <strong>{{ $user->email }}</strong></h4>
             <div class="btn-list mt-4">
-                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-secondary ">
+                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary ">
                     <i class="fe fe-arrow-left mr-2"></i>Back To User
                 </a>
             </div>

@@ -7,16 +7,32 @@
             <th class="d-none d-sm-table-cell">Location</th>
             <th class="text-right d-table-cell"></th>
         </tr>
-        @forelse($items as $index => $item)
+        @forelse($user->addresses as $index => $item)
+            @php($address = [])
+            @if($item->city && $item->city->exists)
+                @php($address[] = $item->city->name)
+            @endif
+            @if($item->state && $item->state->exists)
+                @php($address[] = $item->state->name)
+            @endif
+            @if($item->country && $item->country->exists)
+                @php($address[] = $item->country->name)
+            @endif
             <tr>
                 <td>
-                    {{{ Str::limit(strip_tags($item->address ?? 'N/A'), 30) }}}
+                    {{{ Str::limit(strip_tags($item->address ?? 'N/A'), 40) }}}
                 </td>
                 <td class="d-none d-sm-table-cell">
-                    <div>{{ optional($item->city)->name ?: 'N/A' }}</div>
-                    <div class="small text-muted">
-                        {{ optional($item->country)->name ?: 'N/A' }}, {{ optional($item->state)->name ?: 'N/A' }}
-                    </div>
+                    @if(count($address) > 0)
+                        <div>{{ $address[0] }}</div>
+                        @if(count($address) > 1)
+                            <div class="small text-muted">
+                                {{ $address[1] }}{{ isset($address[2]) ? ', ' . $address[2] : '' }}
+                            </div>
+                        @endif
+                    @else
+                        N/A
+                    @endif
                 </td>
                 <td class="text-right d-table-cell">
                     {!! button()->editRecord(route('admin.addresses.edit', [$user->getKey(), $item->getKey()])) !!}
