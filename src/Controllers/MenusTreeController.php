@@ -14,7 +14,9 @@ class MenusTreeController extends MenusController
      */
     public function fixTree()
     {
-        $this->model->fixTree();
+        $this->model->doNotLogActivity()->fixTree();
+
+        flash()->success('Tree items fixed successfully!');
 
         return back();
     }

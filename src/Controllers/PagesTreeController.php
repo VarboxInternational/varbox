@@ -13,9 +13,11 @@ class PagesTreeController extends PagesController
      */
     public function fixTree()
     {
-        $this->model->doNotGenerateUrl()->fixTree();
+        $this->model->doNotGenerateUrl()->doNotLogActivity()->fixTree();
 
         $this->refreshUrls();
+
+        flash()->success('Tree items fixed successfully!');
 
         return back();
     }
