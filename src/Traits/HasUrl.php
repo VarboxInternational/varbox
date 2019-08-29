@@ -107,7 +107,11 @@ trait HasUrl
      */
     public function getUri()
     {
-        return optional($this->url)->url ?: null;
+        if ($this->url && $this->url->exists) {
+            return '/' . trim($this->url->url, '/');
+        }
+
+        return null;
     }
 
     /**
