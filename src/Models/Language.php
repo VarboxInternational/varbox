@@ -60,6 +60,8 @@ class Language extends Model implements LanguageModelContract
      */
     public static function boot()
     {
+        parent::boot();
+
         static::saving(function ($model) {
             if ($model->getOriginal('default') == true && $model->getAttribute('default') == false) {
                 throw new CrudException('A default language is required at all times!');
