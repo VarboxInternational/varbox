@@ -8,9 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\LanguageModelContract;
-use Varbox\Filters\RoleFilter;
+use Varbox\Filters\LanguageFilter;
 use Varbox\Requests\LanguageRequest;
-use Varbox\Sorts\RoleSort;
+use Varbox\Sorts\LanguageSort;
 use Varbox\Traits\CanCrud;
 
 class LanguagesController extends Controller
@@ -35,12 +35,12 @@ class LanguagesController extends Controller
 
     /**
      * @param Request $request
-     * @param RoleFilter $filter
-     * @param RoleSort $sort
+     * @param LanguageFilter $filter
+     * @param LanguageSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, RoleFilter $filter, RoleSort $sort)
+    public function index(Request $request, LanguageFilter $filter, LanguageSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model
@@ -72,7 +72,7 @@ class LanguagesController extends Controller
      */
     public function store(Request $request)
     {
-        app(config('varbox.bindings.form_requests.language_form_request', LanguageRequest::class));
+        $request = $this->initRequest();
 
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
@@ -102,7 +102,7 @@ class LanguagesController extends Controller
      */
     public function update(Request $request, LanguageModelContract $language)
     {
-        app(config('varbox.bindings.form_requests.language_form_request', LanguageRequest::class));
+        $request = $this->initRequest();
 
         return $this->_update(function () use ($request, $language) {
             $this->item = $language;
@@ -136,5 +136,15 @@ class LanguagesController extends Controller
         session()->put('locale', $language->code);
 
         return back();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function initRequest()
+    {
+        return app(config(
+            'varbox.bindings.form_requests.language_form_request', LanguageRequest::class
+        ))->merged();
     }
 }
