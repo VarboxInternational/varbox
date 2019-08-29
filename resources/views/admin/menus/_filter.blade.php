@@ -12,7 +12,7 @@
             {!! form_admin()->select('type', 'Type', ['' => 'All Types'] + $types, request()->query('type') ?: null) !!}
         </div>
         <div class="col">
-            {!! form_admin()->select('active', 'Active', ['' => 'Active', '1' => 'Yes', '0' => 'No'], request()->query('active') ?: null) !!}
+            {!! form_admin()->select('active', 'Active', ['' => 'Active', '1' => 'Yes', '0' => 'No'], request()->has('active') ? request()->query('active') : null) !!}
         </div>
     </div>
     <div class="row">

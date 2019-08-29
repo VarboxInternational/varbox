@@ -12,7 +12,7 @@
             {!! form_admin()->select('role', 'Role', ['' => 'All'] + $roles->pluck('name', 'id')->toArray(), request()->query('role') ?: null) !!}
         </div>
         <div class="col">
-            {!! form_admin()->select('active', 'Active', ['' => '---', true => 'Yes', false => 'No'], request()->query('active') ?: null) !!}
+            {!! form_admin()->select('active', 'Active', ['' => '---', true => 'Yes', false => 'No'], request()->has('active') ? request()->query('active') : null) !!}
         </div>
     </div>
     <div class="row">
