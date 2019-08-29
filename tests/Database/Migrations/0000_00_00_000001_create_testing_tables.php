@@ -147,6 +147,13 @@ class CreateTestingTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('menu_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('slug')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('preview_tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
