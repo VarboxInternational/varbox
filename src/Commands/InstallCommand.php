@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Varbox\Seed\CountriesSeeder;
+use Varbox\Seed\LanguagesSeeder;
 use Varbox\Seed\PermissionsSeeder;
 use Varbox\Seed\RolesSeeder;
 use Varbox\Seed\UsersSeeder;
@@ -513,6 +514,9 @@ class InstallCommand extends Command
 
         $this->callSilent('db:seed', ['--class' => CountriesSeeder::class]);
         $this->line('<fg=green>SUCCESS |</> Seeded countries!');
+
+        $this->callSilent('db:seed', ['--class' => LanguagesSeeder::class]);
+        $this->line('<fg=green>SUCCESS |</> Seeded languages!');
     }
 
     /**
