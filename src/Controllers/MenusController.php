@@ -166,21 +166,42 @@ class MenusController extends Controller
     }
 
     /**
+     * @return string
+     * @throws \Illuminate\Container\EntryNotFoundException
+     */
+    public function route()
+    {
+        $routes = $this->model->getRoutes();
+        $result = [];
+
+        foreach ($routes as $route) {
+            $result[] = [
+                'value' => $route->getName(),
+                'name' => $route->getName(),
+            ];
+        }
+
+        return response()->json([
+            'status' => true,
+            'attributes' => $result,
+        ]);
+    }
+
+    /**
      * @param string $type
      * @return string
      * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function entity($type)
     {
-        $types = (array)config('varbox.menus.types', []);
-        @$class = $types[$type]['class'];
+        $class = config('varbox.menus.types', [])[$type] ?? null;
         $model = $class && class_exists($class) ? app($class) : null;
         $result = [];
 
         if (!$model) {
-            return json_encode([
-                'status' => true,
-            ]);
+            return response()->json([
+                'status' => false,
+            ], 400);
         }
 
         foreach ($model->get() as $item) {
@@ -243,7 +264,10 @@ class MenusController extends Controller
      */
     protected function typesToArray()
     {
-        $types = [];
+        $types = [
+            'url' => 'URL',
+            'route' => 'Route',
+        ];
 
         foreach (array_keys((array)config('varbox.menus.types', [])) as $type) {
             $types[$type] = Str::title(str_replace(['_', '-', '.'], ' ', $type));
