@@ -48,7 +48,7 @@ class HasUrlTest extends TestCase
     {
         $this->createPost();
 
-        $this->assertEquals('test-name', $this->post->getUri());
+        $this->assertEquals('/test-name', $this->post->getUri());
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class HasUrlTest extends TestCase
 
         $this->assertTrue(
             Str::startsWith($this->post->getUrl(), 'http') &&
-            Str::endsWith($this->post->getUrl(), '/'.$this->post->getUri())
+            Str::endsWith($this->post->getUrl(), $this->post->getUri())
         );
     }
 
