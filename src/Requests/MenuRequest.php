@@ -30,8 +30,29 @@ class MenuRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                Rule::in(array_keys((array)config('varbox.menus.types', []))),
             ],
+            'url' => [
+                'required_without_all:menuable_id,route',
+            ],
+            'route' => [
+                'required_without_all:url,menuable_id',
+            ],
+            'menuable_id' => [
+                'required_without_all:url,route',
+            ],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'url.required_without_all' => 'The url field is required',
+            'menuable_id.required_without_all'  => 'The url field is required',
         ];
     }
 
