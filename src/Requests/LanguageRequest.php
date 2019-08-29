@@ -40,4 +40,46 @@ class LanguageRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Merge the request with the extra necessary info.
+     *
+     * @return $this
+     */
+    public function merged()
+    {
+        return $this->mergeDefault()->mergeActive();
+    }
+
+    /**
+     * Instantiate the "active" field to false if not supplied.
+     *
+     * @return $this
+     */
+    protected function mergeDefault()
+    {
+        if (!$this->filled('default')) {
+            $this->merge([
+                'default' => false
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Instantiate the "active" field to false if not supplied.
+     *
+     * @return $this
+     */
+    protected function mergeActive()
+    {
+        if (!$this->filled('active')) {
+            $this->merge([
+                'active' => false
+            ]);
+        }
+
+        return $this;
+    }
 }
