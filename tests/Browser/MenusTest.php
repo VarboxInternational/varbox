@@ -184,14 +184,6 @@ class MenusTest extends TestCase
         });
     }
 
-
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_view_the_edit_menu_if_it_is_a_super_admin()
     {
@@ -254,6 +246,102 @@ class MenusTest extends TestCase
 
         $this->deleteMenu();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_create_a_menu()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->type('#name-input', $this->menuName)
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', $this->menuUrl)
+                ->press('Save')
+                ->pause(500)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->assertSee('The record was successfully created!')
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->menuName);
+        });
+
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_menu_and_stay_to_create_another_one()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->type('#name-input', $this->menuName)
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', $this->menuUrl)
+                ->clickLink('Save & New')
+                ->pause(500)
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/create')
+                ->assertSee('The record was successfully created!');
+        });
+
+        $this->deleteMenu();
+    }
+
+    /** @test */
+    public function an_admin_can_create_a_menu_and_continue_editing_it()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
+        $this->admin->grantPermission('menus-edit');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->type('#name-input', $this->menuName)
+                ->typeSelect2('#type-input', $this->menuTypeFormatted())
+                ->waitFor('#url-input')
+                ->type('#url-input', $this->menuUrl)
+                ->clickLink('Save & Continue')
+                ->pause(500)
+                ->assertPathBeginsWith('/admin/menus/' . $this->menuLocation . '/edit')
+                ->assertSee('The record was successfully created!')
+                ->assertInputValue('#name-input', $this->menuName)
+                ->assertInputValue('#url-input', $this->menuUrl)
+                ->assertSee($this->menuTypeFormatted());
+        });
+
+        $this->deleteMenu();
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @return void
