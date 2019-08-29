@@ -617,6 +617,50 @@ class PermissionsSeeder extends Seeder
                 'name' => 'languages-change',
             ],
         ],
+        'Translations' => [
+            'List' => [
+                'group' => 'Translations',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'translations-list',
+            ],
+            'Edit' => [
+                'group' => 'Translations',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'translations-edit',
+            ],
+            'Delete' => [
+                'group' => 'Translations',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'translations-delete',
+            ],
+            'Import' => [
+                'group' => 'Translations',
+                'label' => 'Import',
+                'guard' => 'admin',
+                'name' => 'translations-import',
+            ],
+            'Export' => [
+                'group' => 'Translations',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'translations-export',
+            ],
+            'Sync' => [
+                'group' => 'Translations',
+                'label' => 'Sync',
+                'guard' => 'admin',
+                'name' => 'translations-sync',
+            ],
+            'Clear' => [
+                'group' => 'Translations',
+                'label' => 'Clear',
+                'guard' => 'admin',
+                'name' => 'translations-clear',
+            ],
+        ],
     ];
 
     /**
