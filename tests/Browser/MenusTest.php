@@ -321,16 +321,6 @@ class MenusTest extends TestCase
         $this->deleteMenu();
     }
 
-
-
-
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_update_a_menu()
     {
@@ -378,6 +368,56 @@ class MenusTest extends TestCase
         $this->deleteMenuModified();
     }
 
+
+
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_delete_a_menu_if_it_has_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-delete');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->resize(1200, 1200)->loginAs($this->admin, 'admin')
+                ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSee($this->menuName)
+                ->clickDeleteRecordButton($this->menuName)
+                ->assertSee('The record was successfully deleted!')
+                ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
+                ->assertDontSee($this->menuName);
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_delete_a_menu_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->revokePermission('menus-delete');
+
+        $this->createMenu();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation)
+                ->waitFor('#root_id_anchor')
+                ->click('#root_id_anchor')
+                ->waitFor('.js-TreeTable')
+                ->assertSourceMissing('button-delete');
+        });
+
+        $this->deleteMenu();
+    }
 
 
 
