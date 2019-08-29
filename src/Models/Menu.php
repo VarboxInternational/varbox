@@ -221,7 +221,6 @@ class Menu extends Model implements MenuModelContract
      * - exclude routes that are not in the "web" scope
      * - exclude routes from admin
      * - exclude routes with parameters
-     * - exclude the last route (the fallback route)
      *
      * @return array
      */
@@ -234,7 +233,7 @@ class Menu extends Model implements MenuModelContract
                 !$route->getName() ||
                 !in_array('get', array_map('strtolower', $route->methods())) ||
                 !in_array('web', array_map('strtolower', $route->middleware())) ||
-                Str::startsWith($route->getPrefix(), config('varbox.admin.prefix', 'admin')) ||
+                Str::startsWith($route->uri(), config('varbox.admin.prefix', 'admin')) ||
                 Str::contains($route->uri(), ['{', '}'])
             ) {
                 continue;
@@ -242,8 +241,6 @@ class Menu extends Model implements MenuModelContract
 
             $routes[] = $route;
         }
-
-        array_pop($routes);
 
         return $routes;
     }
