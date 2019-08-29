@@ -441,6 +441,32 @@ class PermissionsSeeder extends Seeder
                 'name' => 'pages-preview',
             ],
         ],
+        'Menus' => [
+            'List' => [
+                'group' => 'Menus',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'menus-list',
+            ],
+            'Add' => [
+                'group' => 'Menus',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'menus-add',
+            ],
+            'Edit' => [
+                'group' => 'Menus',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'menus-edit',
+            ],
+            'Delete' => [
+                'group' => 'Menus',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'menus-delete',
+            ],
+        ],
         'Emails' => [
             'List' => [
                 'group' => 'Emails',
