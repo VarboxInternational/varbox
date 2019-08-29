@@ -100,15 +100,6 @@ class MenusTest extends TestCase
         });
     }
 
-
-
-
-
-
-
-
-
-
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
     {
@@ -147,6 +138,49 @@ class MenusTest extends TestCase
                 ->visit('/admin/menus/' . $this->menuLocation)
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Menus');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation)
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/create')
+                ->assertSee('Add Menu');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_add_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->grantPermission('menus-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation)
+                ->clickLink('Add New')
+                ->assertPathIs('/admin/menus/' . $this->menuLocation . '/create')
+                ->assertSee('Add Menu');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_add_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+        $this->admin->revokePermission('menus-add');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation . '/create')
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Add Menu');
         });
     }
 
