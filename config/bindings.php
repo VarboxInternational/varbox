@@ -885,6 +885,18 @@ return [
         */
         'menu_form_request' => \Varbox\Requests\MenuRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "language form request".
+        | To extend or replace this functionality, change the value below with your full "language form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\LanguageRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'language_form_request' => \Varbox\Requests\LanguageRequest::class,
+
     ],
 
     /*
