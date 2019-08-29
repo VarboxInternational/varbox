@@ -100,6 +100,56 @@ class MenusTest extends TestCase
         });
     }
 
+
+
+
+
+
+
+
+
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/locations')
+                ->clickLink(Str::title($this->menuLocation) . ' Location')
+                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->assertSee('Menus');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_list_page_if_it_has_permission()
+    {
+        $this->admin->grantPermission('menus-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/locations')
+                ->clickLink(Str::title($this->menuLocation) . ' Location')
+                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->assertSee('Menus');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_list_page_if_it_doesnt_have_permission()
+    {
+        $this->admin->revokePermission('menus-list');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/menus/' . $this->menuLocation)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Menus');
+        });
+    }
+
     /**
      * @return void
      */
