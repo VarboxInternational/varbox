@@ -157,7 +157,7 @@ class LanguagesSeeder extends Seeder
     public function run(LanguageModelContract $language)
     {
         foreach ($this->languages as $code => $name) {
-            if ($language->whereCode($code)->orWhereName($name)->count() == 0) {
+            if ($language->where('code', $code)->orWhere('name', $name)->count() == 0) {
                 $language->create([
                     'name' => $name,
                     'code' => $code,
