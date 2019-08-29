@@ -666,6 +666,17 @@ return [
         */
         'menus_tree_controller' => \Varbox\Controllers\MenusTreeController::class,
 
+        /*
+        |
+        | Concrete implementation for the "languages controller".
+        | To extend or replace this functionality, change the value below with your full "languages controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\LanguagesController" class
+        |
+        */
+        'languages_controller' => \Varbox\Controllers\LanguagesController::class,
+
     ],
 
     'form_requests' => [
