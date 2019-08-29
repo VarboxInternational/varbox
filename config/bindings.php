@@ -360,6 +360,22 @@ return [
         */
         'language_model' => \Varbox\Models\Language::class,
 
+        /*
+        |
+        | Concrete implementation for the "translation model".
+        | To extend or replace this functionality, change the value below with your full "translation model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Translation" class
+        | - or at least implement the "Varbox\Contracts\TranslationModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('translation.model') OR app('\Varbox\Contracts\TranslationModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'translation_model' => \Varbox\Models\Translation::class,
+
     ],
 
     /*
