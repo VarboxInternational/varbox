@@ -50,6 +50,7 @@ use Varbox\Contracts\RevisionHelperContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploadModelContract;
@@ -95,6 +96,7 @@ use Varbox\Models\Permission;
 use Varbox\Models\Revision;
 use Varbox\Models\Role;
 use Varbox\Models\State;
+use Varbox\Models\Translation;
 use Varbox\Models\Upload;
 use Varbox\Models\Url;
 use Varbox\Models\User;
@@ -345,6 +347,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('menu', MenuModelContract::class);
         Route::model('menuParent', MenuModelContract::class);
         Route::model('language', LanguageModelContract::class);
+        Route::model('translation', TranslationModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -598,6 +601,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(LanguageModelContract::class, $binding['models']['language_model'] ?? Language::class);
         $this->app->alias(LanguageModelContract::class, 'language.model');
+
+        $this->app->bind(TranslationModelContract::class, $binding['models']['translation_model'] ?? Translation::class);
+        $this->app->alias(TranslationModelContract::class, 'translation.model');
     }
 
     /**
