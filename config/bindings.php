@@ -693,6 +693,17 @@ return [
         */
         'languages_controller' => \Varbox\Controllers\LanguagesController::class,
 
+        /*
+        |
+        | Concrete implementation for the "translations controller".
+        | To extend or replace this functionality, change the value below with your full "translations controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\TranslationsController" class
+        |
+        */
+        'translations_controller' => \Varbox\Controllers\TranslationsController::class,
+
     ],
 
     'form_requests' => [
