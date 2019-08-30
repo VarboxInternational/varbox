@@ -149,9 +149,9 @@ class AdminMenuComposer
                     ->permissions('translations-list', 'languages-list')
                     ->active('admin/translations/*', 'admin/languages/*');
 
-                /*$menu->child($trans, function (MenuItem $item) {
+                $menu->child($trans, function (MenuItem $item) {
                     $item->name('Translations')->url(route('admin.translations.index'))->permissions('translations-list')->active('admin/translations/*');
-                });*/
+                });
 
                 $menu->child($trans, function (MenuItem $item) {
                     $item->name('Languages')->url(route('admin.languages.index'))->permissions('languages-list')->active('admin/languages/*');
