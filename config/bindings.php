@@ -940,6 +940,18 @@ return [
         */
         'language_form_request' => \Varbox\Requests\LanguageRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "translation form request".
+        | To extend or replace this functionality, change the value below with your full "translation form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\TranslationRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'translation_form_request' => \Varbox\Requests\TranslationRequest::class,
+
     ],
 
     /*
