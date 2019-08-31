@@ -2,6 +2,7 @@
 
 namespace Varbox\Controllers;
 
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\TranslationModelContract;
+use Varbox\Contracts\TranslationServiceContract;
 use Varbox\Filters\TranslationFilter;
 use Varbox\Requests\TranslationRequest;
 use Varbox\Sorts\TranslationSort;
@@ -33,10 +35,12 @@ class TranslationsController extends Controller
      * RolesController constructor.
      *
      * @param TranslationModelContract $model
+     * @param LanguageModelContract $language
      */
     public function __construct(TranslationModelContract $model, LanguageModelContract $language)
     {
         $this->model = $model;
+        $this->language = $language;
     }
 
     /**
@@ -50,42 +54,17 @@ class TranslationsController extends Controller
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model
-                ->filtered($request, $filter)
-                ->sorted($request, $sort)
-                ->paginate(config('crud.per_page'));
+                ->filtered($request->all(), $filter)
+                ->sorted($request->all(), $sort)
+                ->paginate(config('varbox.crud.per_page', 10));
 
             $this->title = 'Translations';
-            $this->view = view('admin.translations.index');
+            $this->view = view('varbox::admin.translations.index');
             $this->vars = [
-                'locales' => $this->language->onlyActive()->get()->pluck('name', 'code')->toArray(),
-                'groups' => $this->model->distinctGroup()->get()->pluck('group_formatted', 'group')->toArray(),
+                'locales' => $this->language->onlyActive()->get()->pluck('code', 'code')->toArray(),
+                'groups' => $this->model->distinctGroup()->get()->pluck('group', 'group')->toArray(),
             ];
         });
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     * @throws \Exception
-     */
-    public function create()
-    {
-        return $this->_create(function () {
-            $this->title = 'Add Translation';
-            $this->view = view('admin.translations.add');
-        });
-    }
-
-    /**
-     * @param TranslationRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function store(TranslationRequest $request)
-    {
-        return $this->_store(function () use ($request) {
-            $this->item = $this->model->create($request->all());
-            $this->redirect = redirect()->route('admin.translations.index');
-        }, $request);
     }
 
     /**
@@ -98,7 +77,7 @@ class TranslationsController extends Controller
         return $this->_edit(function () use ($translation) {
             $this->item = $translation;
             $this->title = 'Edit Translation';
-            $this->view = view('admin.translations.edit');
+            $this->view = view('varbox::admin.translations.edit');
         });
     }
 
@@ -134,57 +113,34 @@ class TranslationsController extends Controller
     }
 
     /**
-     * @param TranslationService $service
+     * @param TranslationServiceContract $translation
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function import(TranslationService $service)
+    public function import(TranslationServiceContract $translation)
     {
         try {
-            $service->importAllTranslations();
+            $translation->importTranslations();
 
             flash()->success('The translations have been successfully imported!');
-        } catch (TranslationException $e) {
-            flash()->error($e->getMessage());
         } catch (Exception $e) {
-            flash()->error('Could not import the translations! Please try again.');
+            flash()->error('Could not import the translations! Please try again.', $e);
         }
 
         return redirect()->route('admin.translations.index');
     }
 
     /**
-     * @param TranslationService $service
+     * @param TranslationServiceContract $translation
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function export(TranslationService $service)
+    public function export(TranslationServiceContract $translation)
     {
         try {
-            $service->exportAllTranslations();
+            $translation->exportTranslations();
 
             flash()->success('The translations have been successfully exported!');
-        } catch (TranslationException $e) {
-            flash()->error($e->getMessage());
         } catch (Exception $e) {
-            flash()->error('Could not export the translations! Please try again.');
-        }
-
-        return redirect()->route('admin.translations.index');
-    }
-
-    /**
-     * @param TranslationService $service
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function sync(TranslationService $service)
-    {
-        try {
-            $service->findMissingTranslations();
-
-            flash()->success('The translations have been successfully synced!');
-        } catch (TranslationException $e) {
-            flash()->error($e->getMessage());
-        } catch (Exception $e) {
-            flash()->error('Could not sync the missing translations if any! Please try again.');
+            flash()->error('Could not export the translations! Please try again.', $e);
         }
 
         return redirect()->route('admin.translations.index');
@@ -196,11 +152,11 @@ class TranslationsController extends Controller
     public function clear()
     {
         try {
-            Translation::truncate();
+            $this->model->truncate();
 
-            flash()->success('The translations have been successfully removed!');
+            flash()->success('All translations have been successfully removed!');
         } catch (Exception $e) {
-            flash()->error('Could remove the translations! Please try again.');
+            flash()->error('Could not remove the translations! Please try again.', $e);
         }
 
         return redirect()->route('admin.translations.index');

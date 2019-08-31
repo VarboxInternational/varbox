@@ -648,12 +648,6 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'translations-export',
             ],
-            'Sync' => [
-                'group' => 'Translations',
-                'label' => 'Sync',
-                'guard' => 'admin',
-                'name' => 'translations-sync',
-            ],
         ],
     ];
 
