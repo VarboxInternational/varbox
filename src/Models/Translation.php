@@ -31,6 +31,9 @@ class Translation extends Model implements TranslationModelContract
      * @var array
      */
     protected $fillable = [
+        'locale',
+        'group',
+        'key',
         'value',
     ];
 
@@ -41,9 +44,21 @@ class Translation extends Model implements TranslationModelContract
      * @param string $group
      * @return mixed
      */
-    public function scopeOfTranslatedGroup($query, $group)
+    public function scopeOfGroup($query, $group)
     {
         return $query->where('group', $group)->whereNotNull('value');
+    }
+
+    /**
+     * Filter the query to show only results belonging to a translation group.
+     *
+     * @param Builder $query
+     * @param string $group
+     * @return mixed
+     */
+    public function scopeWithoutGroup($query, $group)
+    {
+        return $query->where('group', '!=', $group)->whereNotNull('value');
     }
 
     /**
@@ -52,7 +67,7 @@ class Translation extends Model implements TranslationModelContract
      * @param Builder $query
      * @return mixed
      */
-    public function scopeOrderByGroupKeys($query)
+    public function scopeOrderByGroupThenKeys($query)
     {
         return $query->orderBy('group')->orderBy('key');
     }
