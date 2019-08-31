@@ -39,6 +39,22 @@ return [
 
         /*
         |
+        | Concrete implementation for the "translation service".
+        | To extend or replace this functionality, change the value below with your full "translation service" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Services\TranslationService" class
+        | - or at least implement the "Varbox\Contracts\TranslationServiceContract" interface
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - translation() OR app('translation.service') OR app('\Varbox\Contracts\TranslationServiceContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'translation_service' => \Varbox\Services\TranslationService::class,
+
+        /*
+        |
         | Concrete implementation for the "query cache service".
         | To extend or replace this functionality, change the value below with your full "query cache service" FQN.
         |
