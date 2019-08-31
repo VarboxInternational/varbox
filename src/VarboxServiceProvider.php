@@ -51,6 +51,7 @@ use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\TranslationModelContract;
+use Varbox\Contracts\TranslationServiceContract;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploadModelContract;
@@ -101,6 +102,7 @@ use Varbox\Models\Upload;
 use Varbox\Models\Url;
 use Varbox\Models\User;
 use Varbox\Services\QueryCacheService;
+use Varbox\Services\TranslationService;
 use Varbox\Services\UploadService;
 
 class VarboxServiceProvider extends BaseServiceProvider
@@ -535,6 +537,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploadServiceContract::class, $binding['services']['upload_service'] ?? UploadService::class);
         $this->app->alias(UploadServiceContract::class, 'upload.service');
+
+        $this->app->singleton(TranslationServiceContract::class, $binding['services']['translation_service'] ?? TranslationService::class);
+        $this->app->alias(TranslationServiceContract::class, 'translation.service');
 
         $this->app->singleton(QueryCacheServiceContract::class, $binding['services']['query_cache_service'] ?? QueryCacheService::class);
         $this->app->alias(QueryCacheServiceContract::class, 'query_cache.service');
