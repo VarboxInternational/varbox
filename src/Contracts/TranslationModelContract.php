@@ -5,21 +5,6 @@ namespace Varbox\Contracts;
 interface TranslationModelContract
 {
     /**
-     * @return string
-     */
-    public function getLocaleFormattedAttribute();
-
-    /**
-     * @return string
-     */
-    public function getGroupFormattedAttribute();
-
-    /**
-     * @return string
-     */
-    public function getKeyFormattedAttribute();
-
-    /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string $group
      * @return mixed

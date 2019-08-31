@@ -4,7 +4,6 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
@@ -37,36 +36,6 @@ class Translation extends Model implements TranslationModelContract
         'key',
         'value',
     ];
-
-    /**
-     * Get the locale attribute pretty formatted.
-     *
-     * @return string
-     */
-    public function getLocaleFormattedAttribute()
-    {
-        return strtoupper($this->attributes['locale']);
-    }
-
-    /**
-     * Get the group attribute pretty formatted.
-     *
-     * @return string
-     */
-    public function getGroupFormattedAttribute()
-    {
-        return Str::title($this->attributes['group']);
-    }
-
-    /**
-     * Get the key attribute pretty formatted.
-     *
-     * @return string
-     */
-    public function getKeyFormattedAttribute()
-    {
-        return Str::title($this->attributes['key']);
-    }
 
     /**
      * Filter the query to show only results belonging to a translation group.
