@@ -31,9 +31,6 @@ class Translation extends Model implements TranslationModelContract
      * @var array
      */
     protected $fillable = [
-        'locale',
-        'group',
-        'key',
         'value',
     ];
 
