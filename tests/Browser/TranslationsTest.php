@@ -316,6 +316,152 @@ class TranslationsTest extends TestCase
                 ->waitForText('The value field is required')
                 ->assertSee('The value field is required');
         });
+
+        $this->deleteTranslation();
+    }
+
+    /** @test */
+    public function an_admin_user_can_import_translations_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertSee('No records found')
+                ->clickButtonWithConfirm('Import Translations')
+                ->assertSee('The translations have been successfully imported!')
+                ->assertDontSee('No records found');
+        });
+
+        Translation::truncate();
+    }
+
+    /** @test */
+    public function an_admin_user_can_import_translations_if_it_has_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->grantPermission('translations-import');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertSee('No records found')
+                ->clickButtonWithConfirm('Import Translations')
+                ->assertSee('The translations have been successfully imported!')
+                ->assertDontSee('No records found');
+        });
+
+        Translation::truncate();
+    }
+
+    /** @test */
+    public function an_admin_user_cannot_import_translations_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->revokePermission('translations-import');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertDontSee('Import Translations');
+        });
+    }
+
+    /** @test */
+    public function an_admin_user_can_remove_all_translations_if_it_is_a_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->createTranslation();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->clickButtonWithConfirm('Remove All Translations')
+                ->assertSee('All translations have been successfully removed!')
+                ->assertSee('No records found');
+        });
+    }
+
+    /** @test */
+    public function an_admin_user_can_remove_all_translations_if_it_has_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->grantPermission('translations-delete');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->clickButtonWithConfirm('Remove All Translations')
+                ->assertSee('All translations have been successfully removed!')
+                ->assertSee('No records found');
+        });
+    }
+
+    /** @test */
+    public function an_admin_user_cannot_remove_all_translations_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->revokePermission('translations-delete');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertDontSee('Remove All Translations');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_see_the_export_button_if_it_has_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->grantPermission('translations-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertSee('Export Translations');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_see_the_export_button_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->revokePermission('translations-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertDontSee('Export Translations');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_see_the_translate_button_if_it_has_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->grantPermission('translations-translate');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertSee('Auto Translate');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_see_the_translate_button_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('translations-list');
+        $this->admin->revokePermission('translations-translate');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/translations')
+                ->assertDontSee('Auto Translate');
+        });
     }
 
     /**
