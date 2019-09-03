@@ -40,13 +40,45 @@ class Translation extends Model implements TranslationModelContract
     /**
      * Filter the query to show only results belonging to a translation group.
      *
+     * @param string $value
+     */
+    public function setValueAttribute($value)
+    {
+        $this->attributes['value'] = $value ?: null;
+    }
+
+    /**
+     * Filter the query to show only results belonging to a translation group.
+     *
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeHavingValue($query)
+    {
+        return $query->where('value', '!=', '')->whereNotNull('value');
+    }
+
+    /**
+     * Filter the query to show only results belonging to a translation group.
+     *
+     * @param Builder $query
+     * @return mixed
+     */
+    public function scopeWithoutValue($query)
+    {
+        return $query->whereValue('')->orWhereNull('value');
+    }
+
+    /**
+     * Filter the query to show only results belonging to a translation group.
+     *
      * @param Builder $query
      * @param string $group
      * @return mixed
      */
-    public function scopeOfGroup($query, $group)
+    public function scopeWithGroup($query, $group)
     {
-        return $query->where('group', $group)->whereNotNull('value');
+        return $query->where('group', $group);
     }
 
     /**
@@ -58,7 +90,7 @@ class Translation extends Model implements TranslationModelContract
      */
     public function scopeWithoutGroup($query, $group)
     {
-        return $query->where('group', '!=', $group)->whereNotNull('value');
+        return $query->where('group', '!=', $group);
     }
 
     /**
