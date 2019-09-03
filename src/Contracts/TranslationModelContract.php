@@ -13,7 +13,7 @@ interface TranslationModelContract
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return mixed
      */
-    public function scopeHavingValue($query);
+    public function scopeWithValue($query);
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -34,12 +34,6 @@ interface TranslationModelContract
      * @return mixed
      */
     public function scopeWithoutGroup($query, $group);
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return mixed
-     */
-    public function scopeOrderByGroupThenKeys($query);
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query

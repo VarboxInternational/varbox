@@ -53,7 +53,7 @@ class Translation extends Model implements TranslationModelContract
      * @param Builder $query
      * @return mixed
      */
-    public function scopeHavingValue($query)
+    public function scopeWithValue($query)
     {
         return $query->where('value', '!=', '')->whereNotNull('value');
     }
@@ -91,17 +91,6 @@ class Translation extends Model implements TranslationModelContract
     public function scopeWithoutGroup($query, $group)
     {
         return $query->where('group', '!=', $group);
-    }
-
-    /**
-     * Sort the results alphabetically by group key and then by individual key.
-     *
-     * @param Builder $query
-     * @return mixed
-     */
-    public function scopeOrderByGroupThenKeys($query)
-    {
-        return $query->orderBy('group')->orderBy('key');
     }
 
     /**

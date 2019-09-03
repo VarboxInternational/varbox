@@ -179,8 +179,9 @@ class TranslationService implements TranslationServiceContract
         $tree = $this->toTree(
             $this->translationModel
                 ->withoutGroup(self::JSON_GROUP)
-                ->havingValue()
-                ->orderByGroupThenKeys()
+                ->withValue()
+                ->orderBy('group')
+                ->orderBy('key')
                 ->get()
         );
 
@@ -204,8 +205,9 @@ class TranslationService implements TranslationServiceContract
         $tree = $this->toTree(
             $this->translationModel
                 ->withGroup(self::JSON_GROUP)
-                ->havingValue()
-                ->orderByGroupThenKeys()
+                ->withValue()
+                ->orderBy('group')
+                ->orderBy('key')
                 ->get(),
             true
         );
@@ -241,7 +243,7 @@ class TranslationService implements TranslationServiceContract
                     ->where('locale', $defaultLanguage)
                     ->where('key', $emptyTranslation->key)
                     ->where('group', $emptyTranslation->group)
-                    ->havingValue()
+                    ->withValue()
                     ->first();
 
                 if (!($defaultTranslation && $defaultTranslation->exists)) {
