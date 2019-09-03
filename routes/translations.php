@@ -25,6 +25,7 @@ Route::group([
         Route::delete('destroy/{translation}', ['as' => 'admin.translations.destroy', 'uses' => $controllers['translations'] . '@destroy', 'permissions' => 'translations-delete']);
         Route::post('import', ['as' => 'admin.translations.import', 'uses' => $controllers['translations'] . '@import', 'permissions' => 'translations-import']);
         Route::post('export', ['as' => 'admin.translations.export', 'uses' => $controllers['translations'] . '@export', 'permissions' => 'translations-export']);
+        Route::post('translate', ['as' => 'admin.translations.translate', 'uses' => $controllers['translations'] . '@translate', 'permissions' => 'translations-translate']);
         Route::delete('clear', ['as' => 'admin.translations.clear', 'uses' => $controllers['translations'] . '@clear', 'permissions' => 'translations-delete']);
     });
 });
