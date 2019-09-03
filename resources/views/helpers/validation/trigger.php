@@ -18,7 +18,7 @@
                     }
                 },
                 highlight: function (element) {
-                    $(element).closest('.form-control').removeClass('is-valid').addClass('is-invalid'); // add the Bootstrap error class to the control group
+                    $(element).closest('.form-control').addClass('is-invalid'); // add the Bootstrap error class to the control group
                 },
 
                 <?php if (isset($validator['ignore']) && is_string($validator['ignore'])): ?>
@@ -28,11 +28,11 @@
 
 
                 unhighlight: function(element) {
-                    $(element).closest('.form-control').removeClass('is-invalid').addClass('is-valid');
+                    $(element).closest('.form-control').removeClass('is-invalid');
                 },
 
                 success: function (element) {
-                    $(element).closest('.form-control').removeClass('is-invalid').addClass('is-valid'); // remove the Boostrap error class from the control group
+                    $(element).closest('.form-control').removeClass('is-invalid'); // remove the Boostrap error class from the control group
                 },
 
                 focusInvalid: false, // do not focus the last invalid input
