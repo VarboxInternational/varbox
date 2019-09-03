@@ -147,6 +147,23 @@ class TranslationsController extends Controller
     }
 
     /**
+     * @param TranslationServiceContract $translation
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function translate(TranslationServiceContract $translation)
+    {
+        try {
+            $translation->translateEmptyTranslations();
+
+            flash()->success('The empty translations have been successfully auto-translated!');
+        } catch (Exception $e) {
+            flash()->error('Could not aut-translate the empty translations! Please try again.', $e);
+        }
+
+        return redirect()->route('admin.translations.index');
+    }
+
+    /**
      * @return \Illuminate\Http\RedirectResponse
      */
     public function clear()
