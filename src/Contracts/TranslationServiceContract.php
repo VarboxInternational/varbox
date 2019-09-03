@@ -39,4 +39,10 @@ interface TranslationServiceContract
      * @return void
      */
     public function exportJsonTranslations();
+
+    /**
+     * @throws /Exception
+     * @return void
+     */
+    public function translateEmptyTranslations();
 }

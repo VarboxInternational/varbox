@@ -2,12 +2,16 @@
 
 namespace Varbox\Services;
 
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
@@ -30,6 +34,11 @@ class TranslationService implements TranslationServiceContract
     protected $events;
 
     /**
+     * @var GoogleTranslate
+     */
+    protected $translator;
+
+    /**
      * @var TranslationModelContract
      */
     protected $translationModel;
@@ -50,17 +59,19 @@ class TranslationService implements TranslationServiceContract
      * @param Application $app
      * @param Filesystem $files
      * @param Dispatcher $events
+     * @param GoogleTranslate $translator
      * @param TranslationModelContract $translation
      * @param LanguageModelContract $language
      */
     public function __construct(
-        Application $app, Filesystem $files, Dispatcher $events,
+        Application $app, Filesystem $files, Dispatcher $events, GoogleTranslate $translator,
         TranslationModelContract $translation, LanguageModelContract $language
     )
     {
         $this->app = $app;
         $this->files = $files;
         $this->events = $events;
+        $this->translator = $translator;
 
         $this->translationModel = $translation;
         $this->languageModel = $language;
@@ -168,6 +179,7 @@ class TranslationService implements TranslationServiceContract
         $tree = $this->toTree(
             $this->translationModel
                 ->withoutGroup(self::JSON_GROUP)
+                ->havingValue()
                 ->orderByGroupThenKeys()
                 ->get()
         );
@@ -191,7 +203,8 @@ class TranslationService implements TranslationServiceContract
     {
         $tree = $this->toTree(
             $this->translationModel
-                ->ofGroup(self::JSON_GROUP)
+                ->withGroup(self::JSON_GROUP)
+                ->havingValue()
                 ->orderByGroupThenKeys()
                 ->get(),
             true
@@ -203,6 +216,57 @@ class TranslationService implements TranslationServiceContract
                 $output = json_encode($translations, true);
 
                 $this->files->put($path, $output);
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     * @return void
+     */
+    public function translateEmptyTranslations()
+    {
+        try {
+            $defaultLanguage = $this->languageModel->onlyDefault()->firstOrFail()->code;
+            $emptyTranslations = $this->translationModel->withoutValue()->get();
+        } catch (ModelNotFoundException $e) {
+            throw new Exception('No default language present!');
+        }
+
+        if ($emptyTranslations->count() > 0) {
+            $this->translator->setSource($defaultLanguage);
+
+            foreach ($emptyTranslations as $emptyTranslation) {
+                $defaultTranslation = $this->translationModel
+                    ->where('locale', $defaultLanguage)
+                    ->where('key', $emptyTranslation->key)
+                    ->where('group', $emptyTranslation->group)
+                    ->havingValue()
+                    ->first();
+
+                if (!($defaultTranslation && $defaultTranslation->exists)) {
+                    logger()->warning('Empty translation without default: ' . $emptyTranslation->group . '.' . $emptyTranslation->key);
+                }
+
+                $this->translator->setTarget($emptyTranslation->locale);
+
+                try {
+                    $originalValues = preg_split("/(:\w+)/", $defaultTranslation->value, -1, PREG_SPLIT_DELIM_CAPTURE);
+                    $translatedValues = [];
+
+                    foreach ($originalValues as $originalValue) {
+                        $translatedValues[] = !Str::startsWith($originalValue, ':') ?
+                            $this->translator->translate($originalValue) :
+                            $originalValue;
+                    }
+
+                    $emptyTranslation->update([
+                        'value' => implode(' ', $translatedValues)
+                    ]);
+                } catch (Exception $e) {
+                    logger()->error('Translation failed: ' . $emptyTranslation->group . '.' . $emptyTranslation->key);
+                    logger()->error($e);
+                }
             }
         }
     }
@@ -230,7 +294,7 @@ class TranslationService implements TranslationServiceContract
         ]);
 
         if (!$translation->value || $replace === true) {
-            $translation->value = (string) $value;
+            $translation->value = $value;
         }
 
         $translation->save();
