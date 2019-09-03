@@ -17,7 +17,7 @@
                 <td>
                     <div>{{ $item->name ?: 'N/A' }}</div>
                     @if($item->code)
-                        <div class="small text-muted">{{ $item->code }}</div>
+                        <div class="small text-muted">{{ strtoupper($item->code) }}</div>
                     @endif
                 </td>
                 <td class="d-none d-sm-table-cell">
