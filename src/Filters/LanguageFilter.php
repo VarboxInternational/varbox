@@ -40,12 +40,12 @@ class LanguageFilter extends Filter
             'start_date' => [
                 'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,
                 'condition' => Filter::CONDITION_OR,
-                'columns' => 'users.created_at',
+                'columns' => 'created_at',
             ],
             'end_date' => [
                 'operator' => Filter::OPERATOR_DATE_SMALLER_OR_EQUAL,
                 'condition' => Filter::CONDITION_OR,
-                'columns' => 'users.created_at',
+                'columns' => 'created_at',
             ],
         ];
     }
