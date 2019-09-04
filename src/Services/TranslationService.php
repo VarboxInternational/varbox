@@ -95,58 +95,6 @@ class TranslationService implements TranslationServiceContract
     }
 
     /**
-     * Import a single file's translations to the database.
-     * To ignore the file from being imported, specify the $group as string.
-     *
-     * @param string $file
-     * @param string $path
-     * @param string $locale
-     * @param bool $replace
-     * @return void
-     */
-    public function importFileTranslations($file, $path, $locale, $replace = false)
-    {
-        $info = pathinfo($file);
-        $dir = str_replace($path . DIRECTORY_SEPARATOR, "", $info['dirname']);
-        $group = $path == $dir ? $info['filename'] : $dir . '/' . $info['filename'];
-        $translations = Lang::getLoader()->load($locale, $group);
-
-        if ($translations && is_array($translations)) {
-            foreach (Arr::dot($translations) as $key => $value) {
-                $this->storeTranslation(
-                    $key, $value, $locale, $group, $replace
-                );
-            }
-        }
-    }
-
-    /**
-     * Import all json translations to the database.
-     *
-     * @param bool $replace
-     * @return void
-     */
-    public function importJsonTranslations($replace = false)
-    {
-        foreach ($this->files->files($this->app['path.lang']) as $file) {
-            if (strpos($file, '.json') === false) {
-                continue;
-            }
-
-            $locale = basename($file, '.json');
-            $translations = Lang::getLoader()->load($locale, '*', '*');
-
-            if ($translations && is_array($translations)) {
-                foreach ($translations as $key => $value) {
-                    $this->storeTranslation(
-                        $key, $value, $locale, self::JSON_GROUP, $replace
-                    );
-                }
-            }
-        }
-    }
-
-    /**
      * Export all translations from every group, from database, back to it's respective lang file.
      *
      * @return void
@@ -161,64 +109,10 @@ class TranslationService implements TranslationServiceContract
     }
 
     /**
-     * Export all translations belonging to a group, from database, back to it's respective lang file.
-     * Leave the parameter $group to null, to export all files from every group.
-     *
-     * @return void
-     */
-    public function exportFileTranslations()
-    {
-        $tree = $this->toTree(
-            $this->translationModel
-                ->withoutGroup(self::JSON_GROUP)
-                ->withValue()
-                ->orderBy('group')
-                ->orderBy('key')
-                ->get()
-        );
-
-        foreach ($tree as $locale => $groups) {
-            foreach ($groups as $group => $translations) {
-                $file = $this->app['path.lang'] . '/' . $locale . '/' . $group . '.php';
-                $output = "<?php\n\nreturn " . var_export($translations, true) . ";\n";
-
-                $this->files->put($file, $output);
-            }
-        }
-    }
-
-    /**
-     * Export all json translations, from database, back to their respective json lang files.
-     *
-     * @return void
-     */
-    public function exportJsonTranslations()
-    {
-        $tree = $this->toTree(
-            $this->translationModel
-                ->withGroup(self::JSON_GROUP)
-                ->withValue()
-                ->orderBy('group')
-                ->orderBy('key')
-                ->get(),
-            true
-        );
-
-        foreach ($tree as $locale => $groups) {
-            foreach ($groups as $group => $translations) {
-                $path = $this->app['path.lang'] . '/' . $locale . '.json';
-                $output = json_encode($translations, true);
-
-                $this->files->put($path, $output);
-            }
-        }
-    }
-
-    /**
      * @throws Exception
      * @return void
      */
-    public function translateEmptyTranslations()
+    public function autoTranslate()
     {
         try {
             $defaultLanguage = $this->languageModel->onlyDefault()->firstOrFail()->code;
@@ -261,6 +155,112 @@ class TranslationService implements TranslationServiceContract
                     logger()->error('Translation failed: ' . $emptyTranslation->group . '.' . $emptyTranslation->key);
                     logger()->error($e);
                 }
+            }
+        }
+    }
+
+    /**
+     * Import a single file's translations to the database.
+     * To ignore the file from being imported, specify the $group as string.
+     *
+     * @param string $file
+     * @param string $path
+     * @param string $locale
+     * @param bool $replace
+     * @return void
+     */
+    protected function importFileTranslations($file, $path, $locale, $replace = false)
+    {
+        $info = pathinfo($file);
+        $dir = str_replace($path . DIRECTORY_SEPARATOR, "", $info['dirname']);
+        $group = $path == $dir ? $info['filename'] : $dir . '/' . $info['filename'];
+        $translations = Lang::getLoader()->load($locale, $group);
+
+        if ($translations && is_array($translations)) {
+            foreach (Arr::dot($translations) as $key => $value) {
+                $this->storeTranslation(
+                    $key, $value, $locale, $group, $replace
+                );
+            }
+        }
+    }
+
+    /**
+     * Import all json translations to the database.
+     *
+     * @param bool $replace
+     * @return void
+     */
+    protected function importJsonTranslations($replace = false)
+    {
+        foreach ($this->files->files($this->app['path.lang']) as $file) {
+            if (strpos($file, '.json') === false) {
+                continue;
+            }
+
+            $locale = basename($file, '.json');
+            $translations = Lang::getLoader()->load($locale, '*', '*');
+
+            if ($translations && is_array($translations)) {
+                foreach ($translations as $key => $value) {
+                    $this->storeTranslation(
+                        $key, $value, $locale, self::JSON_GROUP, $replace
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Export all translations belonging to a group, from database, back to it's respective lang file.
+     * Leave the parameter $group to null, to export all files from every group.
+     *
+     * @return void
+     */
+    protected function exportFileTranslations()
+    {
+        $tree = $this->toTree(
+            $this->translationModel
+                ->withoutGroup(self::JSON_GROUP)
+                ->withValue()
+                ->orderBy('group')
+                ->orderBy('key')
+                ->get()
+        );
+
+        foreach ($tree as $locale => $groups) {
+            foreach ($groups as $group => $translations) {
+                $file = $this->app['path.lang'] . '/' . $locale . '/' . $group . '.php';
+                $output = "<?php\n\nreturn " . var_export($translations, true) . ";\n";
+
+                $this->files->put($file, $output);
+            }
+        }
+    }
+
+    /**
+     * Export all json translations, from database, back to their respective json lang files.
+     *
+     * @return void
+     */
+    protected function exportJsonTranslations()
+    {
+        $tree = $this->toTree(
+            $this->translationModel
+                ->withGroup(self::JSON_GROUP)
+                ->withValue()
+                ->orderBy('group')
+                ->orderBy('key')
+                ->get(),
+            true
+        );
+
+        foreach ($tree as $locale => $groups) {
+            foreach ($groups as $group => $translations) {
+                $path = $this->app['path.lang'] . '/' . $locale . '.json';
+                $output = json_encode($translations, true);
+
+                $this->files->put($path, $output);
             }
         }
     }
