@@ -5,7 +5,6 @@ namespace Varbox\Services;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
@@ -27,11 +26,6 @@ class TranslationService implements TranslationServiceContract
      * @var Filesystem
      */
     protected $files;
-
-    /**
-     * @var Dispatcher
-     */
-    protected $events;
 
     /**
      * @var GoogleTranslate
@@ -58,19 +52,17 @@ class TranslationService implements TranslationServiceContract
      *
      * @param Application $app
      * @param Filesystem $files
-     * @param Dispatcher $events
      * @param GoogleTranslate $translator
      * @param TranslationModelContract $translation
      * @param LanguageModelContract $language
      */
     public function __construct(
-        Application $app, Filesystem $files, Dispatcher $events, GoogleTranslate $translator,
+        Application $app, Filesystem $files, GoogleTranslate $translator,
         TranslationModelContract $translation, LanguageModelContract $language
     )
     {
         $this->app = $app;
         $this->files = $files;
-        $this->events = $events;
         $this->translator = $translator;
 
         $this->translationModel = $translation;
@@ -247,7 +239,7 @@ class TranslationService implements TranslationServiceContract
                     ->first();
 
                 if (!($defaultTranslation && $defaultTranslation->exists)) {
-                    logger()->warning('Empty translation without default: ' . $emptyTranslation->group . '.' . $emptyTranslation->key);
+                    continue;
                 }
 
                 $this->translator->setTarget($emptyTranslation->locale);
@@ -338,9 +330,19 @@ class TranslationService implements TranslationServiceContract
         $array = [];
 
         foreach ($translations as $translation) {
-            $json === true ?
-                $this->parseJsonSet($array[$translation->locale][$translation->group], $translation->key, $translation->value) :
-                Arr::set($array[$translation->locale][$translation->group], $translation->key, $translation->value);
+            if ($json === true) {
+                $this->parseJsonSet(
+                    $array[$translation->locale][$translation->group],
+                    $translation->key,
+                    $translation->value
+                );
+            } else {
+                Arr::set(
+                    $array[$translation->locale][$translation->group],
+                    $translation->key,
+                    $translation->value
+                );
+            }
         }
 
         return $array;
