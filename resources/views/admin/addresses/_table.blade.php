@@ -7,7 +7,7 @@
             <th class="d-none d-sm-table-cell">Location</th>
             <th class="text-right d-table-cell"></th>
         </tr>
-        @forelse($user->addresses as $index => $item)
+        @forelse($items as $index => $item)
             @php($address = [])
             @if($item->city && $item->city->exists)
                 @php($address[] = $item->city->name)
