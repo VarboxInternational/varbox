@@ -153,7 +153,7 @@ class TranslationsController extends Controller
     public function translate(TranslationServiceContract $translation)
     {
         try {
-            $translation->translateEmptyTranslations();
+            $translation->autoTranslate();
 
             flash()->success('The empty translations have been successfully auto-translated!');
         } catch (Exception $e) {
