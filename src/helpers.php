@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 if (!function_exists('query_cache')) {
     /**
      * @return \Varbox\Contracts\QueryCacheServiceContract
@@ -230,7 +232,7 @@ if (!function_exists('array_search_key_recursive')) {
         );
 
         foreach ($array as $key => $value) {
-            if ($regexp ? str_is($key, $needle) : $key === $needle) {
+            if ($regexp ? Str::is($key, $needle) : $key === $needle) {
                 return $value;
             }
         }

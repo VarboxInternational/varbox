@@ -13,6 +13,16 @@ class IsCacheableTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('database.redis.client', 'predis');
+    }
+
     /** @test */
     public function it_can_insert_records()
     {

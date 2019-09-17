@@ -2,6 +2,8 @@
 
 namespace Varbox\Menu;
 
+use Illuminate\Support\Str;
+
 class MenuItem
 {
     /**
@@ -108,7 +110,7 @@ class MenuItem
         if (!$active) {
             foreach ($this->active as $active) {
                 if (
-                    (str_contains($active, '*') && starts_with(request()->path(), trim($active, '*/'))) ||
+                    (Str::contains($active, '*') && Str::startsWith(request()->path(), trim($active, '*/'))) ||
                     request()->path() == $active
                 ) {
                     return true;

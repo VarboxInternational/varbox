@@ -32,10 +32,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('menus-edit')
-                        {!! button()->editRecord(route('admin.menus.edit', ['location' => $location, 'id' => $item->getKey()])) !!}
+                        {!! button()->editRecord(route('admin.menus.edit', [$location, $item->getKey()])) !!}
                     @endpermission
                     @permission('menus-delete')
-                        {!! button()->deleteRecord(route('admin.menus.destroy', ['location' => $location, 'id' => $item->getKey()])) !!}
+                        {!! button()->deleteRecord(route('admin.menus.destroy', [$location, $item->getKey()])) !!}
                     @endpermission
                 </td>
             </tr>
