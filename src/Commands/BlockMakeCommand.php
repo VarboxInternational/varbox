@@ -260,7 +260,7 @@ class BlockMakeCommand extends Command
         }
 
         $content = $this->files->get($this->getComposerStub());
-        $content = str_replace('DummyNamespace', 'App\Blocks\\' . $this->argument('type'), $content);
+        $content = str_replace('DummyNamespace', "{$this->getAppNamespace()}Blocks\\{$this->argument('type')}", $content);
         $content = str_replace('dummy_locations', $locations ?: '', $content);
 
         return $content;
@@ -331,11 +331,10 @@ class BlockMakeCommand extends Command
     {
         $content = [];
         $type = $this->argument('type');
-        $namespace = $this->getAppNamespace();
 
         $content[] = "        '{$type}' => [\n";
         $content[] = "            'label' => '" . Str::title($type) . " Block',\n";
-        $content[] = "            'composer_class' => '{$namespace}Blocks\\{$type}\Composer',\n";
+        $content[] = "            'composer_class' => '{$this->getAppNamespace()}Blocks\\{$type}\Composer',\n";
         $content[] = "            'views_path' => 'app/Blocks/{$type}/Views',\n";
         $content[] = "            'preview_image' => '',\n";
         $content[] = "        ],";
