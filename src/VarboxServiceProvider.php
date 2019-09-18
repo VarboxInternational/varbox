@@ -29,6 +29,7 @@ use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
+use Varbox\Contracts\AnalyticsModelContract;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Contracts\BlockHelperContract;
 use Varbox\Contracts\BlockModelContract;
@@ -83,6 +84,7 @@ use Varbox\Middleware\OptimizeImages;
 use Varbox\Middleware\OverrideConfigs;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
+use Varbox\Models\Analytics;
 use Varbox\Models\Backup;
 use Varbox\Models\Block;
 use Varbox\Models\City;
@@ -193,6 +195,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/blocks.php' => config_path('varbox/blocks.php'),
             __DIR__ . '/../config/pages.php' => config_path('varbox/pages.php'),
             __DIR__ . '/../config/menus.php' => config_path('varbox/menus.php'),
+            __DIR__ . '/../config/analytics.php' => config_path('varbox/analytics.php'),
         ], 'config');
     }
 
@@ -228,6 +231,13 @@ class VarboxServiceProvider extends BaseServiceProvider
             'backup.backup.database_dump_compressor' => $this->config['varbox']['backup']['database_dump_compressor'] ?? null,
             'backup.notifications.notifications' => $this->config['varbox']['backup']['notifications']['notifications'] ?? [],
             'backup.notifications.mail.to' => $this->config['varbox']['backup']['notifications']['email'] ?? '',
+        ]);
+
+        $this->config->set([
+            'analytics.view_id' => $this->config['varbox']['analytics']['view_id'] ?? null,
+            'analytics.service_account_credentials_json' => $this->config['varbox']['analytics']['credentials_json'] ?? storage_path('app/analytics/service-account-credentials.json'),
+            'analytics.cache_lifetime_in_minutes' => $this->config['varbox']['analytics']['cache']['lifetime'] ?? 60 * 24,
+            'analytics.cache.store' => $this->config['varbox']['analytics']['cache']['store'] ?? 'file',
         ]);
     }
 
@@ -350,6 +360,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('menuParent', MenuModelContract::class);
         Route::model('language', LanguageModelContract::class);
         Route::model('translation', TranslationModelContract::class);
+        Route::model('analytics', AnalyticsModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -430,6 +441,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/menus.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/languages.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/translations.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/analytics.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
     }
 
@@ -491,6 +503,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             require_once __DIR__ . '/../breadcrumbs/menus.php';
             require_once __DIR__ . '/../breadcrumbs/languages.php';
             require_once __DIR__ . '/../breadcrumbs/translations.php';
+            require_once __DIR__ . '/../breadcrumbs/analytics.php';
         }
     }
 
@@ -526,6 +539,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');
         $this->mergeConfigFrom(__DIR__ . '/../config/menus.php', 'varbox.menus');
+        $this->mergeConfigFrom(__DIR__ . '/../config/analytics.php', 'varbox.analytics');
     }
 
     /**
@@ -611,6 +625,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(TranslationModelContract::class, $binding['models']['translation_model'] ?? Translation::class);
         $this->app->alias(TranslationModelContract::class, 'translation.model');
+
+        $this->app->bind(AnalyticsModelContract::class, $binding['models']['analytics_model'] ?? Analytics::class);
+        $this->app->alias(AnalyticsModelContract::class, 'analytics.model');
     }
 
     /**
@@ -689,6 +706,10 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         Blade::if('hasallroles', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllRoles($roles));
+        });
+
+        Blade::directive('analytics', function () {
+            return "<?php echo optional(app('analytics.model')->first())->code ?: '' ?>";
         });
     }
 
