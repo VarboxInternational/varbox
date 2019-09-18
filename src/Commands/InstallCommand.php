@@ -5,6 +5,7 @@ namespace Varbox\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Varbox\Seed\AnalyticsSeeder;
 use Varbox\Seed\CountriesSeeder;
 use Varbox\Seed\LanguagesSeeder;
 use Varbox\Seed\PermissionsSeeder;
@@ -136,6 +137,13 @@ class InstallCommand extends Command
                 $this->line('<fg=green>SUCCESS |</> Appended "SAVE_ERRORS" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "SAVE_ERRORS" configuration.');
+            }
+
+            if (false === strpos($env, 'ANALYTICS_VIEW_ID')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nANALYTICS_VIEW_ID=\n");
+                $this->line('<fg=green>SUCCESS |</> Appended "ANALYTICS_VIEW_ID" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "ANALYTICS_VIEW_ID" configuration.');
             }
 
             if (false === strpos($env, 'FFMPEG_PATH')) {
@@ -517,6 +525,9 @@ class InstallCommand extends Command
 
         $this->callSilent('db:seed', ['--class' => LanguagesSeeder::class]);
         $this->line('<fg=green>SUCCESS |</> Seeded languages!');
+
+        $this->callSilent('db:seed', ['--class' => AnalyticsSeeder::class]);
+        $this->line('<fg=green>SUCCESS |</> Seeded Analytics code!');
     }
 
     /**
