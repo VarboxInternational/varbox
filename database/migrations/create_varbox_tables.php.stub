@@ -382,6 +382,16 @@ class CreateVarboxTables extends Migration
                 $table->timestamps();
             });
         }
+
+        if (!Schema::hasTable('analytics')) {
+            Schema::create('analytics', function (Blueprint $table) {
+                $table->increments('id');
+
+                $table->text('code')->nullable();
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -391,6 +401,7 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('analytics');
         Schema::dropIfExists('translations');
         Schema::dropIfExists('languages');
         Schema::dropIfExists('blockables');
