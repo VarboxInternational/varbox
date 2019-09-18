@@ -158,25 +158,23 @@ class AdminMenuComposer
                 });
             });
 
-            /*
             $menu->add(function ($item) use ($menu) {
-                $seo = $item->name('Seo Administration')->data('icon', 'fa-bar-chart')
-                    ->permissions('analytics-show', 'sitemap-list', 'redirects-list')
+                $seo = $item->name('Seo Administration')->data('icon', 'fa-chart-bar')
+                    ->permissions('analytics-view', 'sitemap-list', 'redirects-list')
                     ->active('admin/analytics/*', 'admin/sitemap/*', 'admin/redirects/*');
 
                 $menu->child($seo, function (MenuItem $item) {
-                    $item->name('Analytics')->url(route('admin.analytics.show'))->permissions('analytics-show')->active('admin/analytics/*');
+                    $item->name('Analytics')->url(route('admin.analytics.show'))->permissions('analytics-view')->active('admin/analytics/*');
                 });
 
-                $menu->child($seo, function (MenuItem $item) {
+                /*$menu->child($seo, function (MenuItem $item) {
                     $item->name('Sitemap')->url(route('admin.sitemap.index'))->permissions('sitemap-list')->active('admin/sitemap/*');
                 });
 
                 $menu->child($seo, function (MenuItem $item) {
                     $item->name('Redirects')->url(route('admin.redirects.index'))->permissions('redirects-list')->active('admin/redirects/*');
-                });
+                });*/
             });
-            */
 
             $menu->add(function ($item) use ($menu) {
                 $media = $item->name('Media Library')->data('icon', 'fa-copy')
