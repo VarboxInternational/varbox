@@ -655,6 +655,20 @@ class PermissionsSeeder extends Seeder
                 'name' => 'translations-translate',
             ],
         ],
+        'Analytics' => [
+            'View' => [
+                'group' => 'Analytics',
+                'label' => 'View',
+                'guard' => 'admin',
+                'name' => 'analytics-view',
+            ],
+            'Edit' => [
+                'group' => 'Analytics',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'analytics-edit',
+            ],
+        ],
     ];
 
     /**
