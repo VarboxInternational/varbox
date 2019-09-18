@@ -169,11 +169,11 @@ class AdminMenuComposer
 
                 /*$menu->child($seo, function (MenuItem $item) {
                     $item->name('Sitemap')->url(route('admin.sitemap.index'))->permissions('sitemap-list')->active('admin/sitemap/*');
-                });
+                });*/
 
                 $menu->child($seo, function (MenuItem $item) {
                     $item->name('Redirects')->url(route('admin.redirects.index'))->permissions('redirects-list')->active('admin/redirects/*');
-                });*/
+                });
             });
 
             $menu->add(function ($item) use ($menu) {
