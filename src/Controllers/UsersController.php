@@ -62,7 +62,7 @@ class UsersController extends Controller
             $this->items = $this->model->excludingAdmins()
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 30));
 
             $this->title = 'Users';
             $this->view = view('varbox::admin.users.index');

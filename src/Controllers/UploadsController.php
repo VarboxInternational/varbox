@@ -48,7 +48,7 @@ class UploadsController extends Controller
         $items = $this->model
             ->filtered($request->all(), $filter)
             ->sorted($request->all(), $sort)
-            ->paginate(config('varbox.crud.per_page', 10));
+            ->paginate(config('varbox.crud.per_page', 30));
 
         return view('varbox::admin.uploads.index')->with([
             'title' => 'Uploads',

@@ -66,7 +66,7 @@ class NotificationsController extends Controller
 
         return view('varbox::admin.notifications.index')->with([
             'title' => 'Notifications',
-            'items' => $query->paginate(config('varbox.crud.per_page', 10)),
+            'items' => $query->paginate(config('varbox.crud.per_page', 30)),
             'users' => User::all(),
             'days' => config('varbox.notifications.old_threshold', 30),
             'isAnotherUser' => isset($isAnotherUser),

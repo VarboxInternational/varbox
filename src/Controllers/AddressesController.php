@@ -71,7 +71,7 @@ class AddressesController extends Controller
             $this->items = $this->model->ofUser($user)
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 30));
 
             $this->title = 'Addresses';
             $this->view = view('varbox::admin.addresses.index');

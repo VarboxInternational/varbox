@@ -44,7 +44,7 @@ class CountriesController extends Controller
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 30));
 
             $this->title = 'Countries';
             $this->view = view('varbox::admin.countries.index');

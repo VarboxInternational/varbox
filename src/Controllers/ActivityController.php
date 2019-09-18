@@ -53,7 +53,7 @@ class ActivityController extends Controller
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('varbox.crud.per_page', 10));
+                ->paginate(config('varbox.crud.per_page', 30));
 
             $this->title = 'Activity';
             $this->view = view('varbox::admin.activity.index');
