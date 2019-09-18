@@ -392,6 +392,22 @@ return [
         */
         'translation_model' => \Varbox\Models\Translation::class,
 
+        /*
+        |
+        | Concrete implementation for the "analytics model".
+        | To extend or replace this functionality, change the value below with your full "analytics model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Analytics" class
+        | - or at least implement the "Varbox\Contracts\AnalyticsModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('analytics.model') OR app('\Varbox\Contracts\AnalyticsModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'analytics_model' => \Varbox\Models\Analytics::class,
+
     ],
 
     /*
@@ -719,6 +735,17 @@ return [
         |
         */
         'translations_controller' => \Varbox\Controllers\TranslationsController::class,
+
+        /*
+        |
+        | Concrete implementation for the "analytics controller".
+        | To extend or replace this functionality, change the value below with your full "analytics controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\AnalyticsController" class
+        |
+        */
+        'analytics_controller' => \Varbox\Controllers\AnalyticsController::class,
 
     ],
 
