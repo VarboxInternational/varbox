@@ -41,7 +41,7 @@ class Analytics extends Model implements AnalyticsModelContract
         }
 
         $credentials = config(
-            'varbox.seo.analytics.credentials_json',
+            'varbox.analytics.credentials_json',
             storage_path('app/analytics/service-account-credentials.json')
         );
 
