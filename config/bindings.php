@@ -408,6 +408,22 @@ return [
         */
         'analytics_model' => \Varbox\Models\Analytics::class,
 
+        /*
+        |
+        | Concrete implementation for the "redirect model".
+        | To extend or replace this functionality, change the value below with your full "redirect model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Redirect" class
+        | - or at least implement the "Varbox\Contracts\RedirectModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('redirect.model') OR app('\Varbox\Contracts\RedirectModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'redirect_model' => \Varbox\Models\Redirect::class,
+
     ],
 
     /*
@@ -747,6 +763,17 @@ return [
         */
         'analytics_controller' => \Varbox\Controllers\AnalyticsController::class,
 
+        /*
+        |
+        | Concrete implementation for the "redirects controller".
+        | To extend or replace this functionality, change the value below with your full "redirects controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\RedirectsController" class
+        |
+        */
+        'redirects_controller' => \Varbox\Controllers\RedirectsController::class,
+
     ],
 
     'form_requests' => [
@@ -979,6 +1006,18 @@ return [
         */
         'translation_form_request' => \Varbox\Requests\TranslationRequest::class,
 
+        /*
+        |
+        | Concrete implementation for the "redirect form request".
+        | To extend or replace this functionality, change the value below with your full "redirect form request" FQN.
+        |
+        | Your class will have to (firs options is recommended):
+        | - extend the "\Varbox\Requests\RedirectRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'redirect_form_request' => \Varbox\Requests\RedirectRequest::class,
+
     ],
 
     /*
@@ -1071,6 +1110,18 @@ return [
         |
         */
         'optimize_images_middleware' => \Varbox\Middleware\OptimizeImages::class,
+
+        /*
+        |
+        | Concrete implementation for the "redirect requests middleware".
+        | To extend or replace this functionality, change the value below with your full "redirect requests middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.redirect.requests"
+        |
+        */
+        'redirect_requests_middleware' => \Varbox\Middleware\RedirectRequests::class,
 
     ],
 
