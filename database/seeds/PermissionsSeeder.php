@@ -669,6 +669,32 @@ class PermissionsSeeder extends Seeder
                 'name' => 'analytics-edit',
             ],
         ],
+        'Redirects' => [
+            'List' => [
+                'group' => 'Redirects',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'redirects-list',
+            ],
+            'Add' => [
+                'group' => 'Redirects',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'redirects-add',
+            ],
+            'Edit' => [
+                'group' => 'Redirects',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'redirects-edit',
+            ],
+            'Delete' => [
+                'group' => 'Redirects',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'redirects-delete',
+            ],
+        ],
     ];
 
     /**
