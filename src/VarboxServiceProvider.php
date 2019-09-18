@@ -47,6 +47,7 @@ use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\QueryCacheServiceContract;
+use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RevisionHelperContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
@@ -82,6 +83,7 @@ use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\NotAuthenticated;
 use Varbox\Middleware\OptimizeImages;
 use Varbox\Middleware\OverrideConfigs;
+use Varbox\Middleware\RedirectRequests;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
 use Varbox\Models\Analytics;
@@ -96,6 +98,7 @@ use Varbox\Models\Language;
 use Varbox\Models\Menu;
 use Varbox\Models\Page;
 use Varbox\Models\Permission;
+use Varbox\Models\Redirect;
 use Varbox\Models\Revision;
 use Varbox\Models\Role;
 use Varbox\Models\State;
@@ -196,6 +199,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/pages.php' => config_path('varbox/pages.php'),
             __DIR__ . '/../config/menus.php' => config_path('varbox/menus.php'),
             __DIR__ . '/../config/analytics.php' => config_path('varbox/analytics.php'),
+            __DIR__ . '/../config/redirect.php' => config_path('varbox/redirect.php'),
         ], 'config');
     }
 
@@ -314,9 +318,11 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.check.permissions', $middleware['check_permissions_middleware'] ?? CheckPermissions::class);
         $this->router->aliasMiddleware('varbox.override.configs', $middleware['override_configs_middleware'] ?? OverrideConfigs::class);
         $this->router->aliasMiddleware('varbox.optimize.images', $middleware['optimize_images_middleware'] ?? OptimizeImages::class);
+        $this->router->aliasMiddleware('varbox.redirect.requests', $middleware['redirect_requests_middleware'] ?? RedirectRequests::class);
 
         $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
         $this->router->prependMiddlewareToGroup('web', 'varbox.optimize.images');
+        $this->router->prependMiddlewareToGroup('web', 'varbox.redirect.requests');
     }
 
     /**
@@ -361,6 +367,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('language', LanguageModelContract::class);
         Route::model('translation', TranslationModelContract::class);
         Route::model('analytics', AnalyticsModelContract::class);
+        Route::model('redirect', RedirectModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -442,6 +449,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/languages.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/translations.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/analytics.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/redirects.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
     }
 
@@ -504,6 +512,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             require_once __DIR__ . '/../breadcrumbs/languages.php';
             require_once __DIR__ . '/../breadcrumbs/translations.php';
             require_once __DIR__ . '/../breadcrumbs/analytics.php';
+            require_once __DIR__ . '/../breadcrumbs/redirects.php';
         }
     }
 
@@ -540,6 +549,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');
         $this->mergeConfigFrom(__DIR__ . '/../config/menus.php', 'varbox.menus');
         $this->mergeConfigFrom(__DIR__ . '/../config/analytics.php', 'varbox.analytics');
+        $this->mergeConfigFrom(__DIR__ . '/../config/redirect.php', 'varbox.redirect');
     }
 
     /**
@@ -628,6 +638,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(AnalyticsModelContract::class, $binding['models']['analytics_model'] ?? Analytics::class);
         $this->app->alias(AnalyticsModelContract::class, 'analytics.model');
+
+        $this->app->bind(RedirectModelContract::class, $binding['models']['redirect_model'] ?? Redirect::class);
+        $this->app->alias(RedirectModelContract::class, 'redirect.model');
     }
 
     /**
