@@ -146,7 +146,7 @@ class RedirectsController extends Controller
         try {
             $this->model->truncate();
 
-            flash()->success('All redirects have been successfully removed!');
+            flash()->success('All redirects have been successfully deleted!');
         } catch (\Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
         }
