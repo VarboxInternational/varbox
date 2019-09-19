@@ -14,7 +14,7 @@ trait HasDuplicates
 {
     /**
      * The container for all the options necessary for this trait.
-     * Options can be viewed in the Neurony\Duplicate\Options\DuplicateOptions file.
+     * Options can be viewed in the Varbox\Options\DuplicateOptions file.
      *
      * @var DuplicateOptions
      */
