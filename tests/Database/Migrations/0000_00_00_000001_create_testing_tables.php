@@ -256,6 +256,15 @@ class CreateTestingTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('translation_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->json('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->json('content')->nullable();
+            $table->json('data')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('upload_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -283,6 +292,7 @@ class CreateTestingTables extends Migration
     {
         Schema::dropIfExists('url_posts');
         Schema::dropIfExists('upload_posts');
+        Schema::dropIfExists('translation_posts');
         Schema::dropIfExists('sort_reviews');
         Schema::dropIfExists('sort_posts');
         Schema::dropIfExists('sort_authors');
