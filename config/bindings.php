@@ -1150,6 +1150,22 @@ return [
 
         /*
         |
+        | Concrete implementation for the "admin form lang helper".
+        | To extend or replace this functionality, change the value below with your full "admin form lang helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\AdminFormLangHelper" class
+        | - or at least implement the "Varbox\Contracts\AdminFormLangHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - form_admin_lang() OR app('admin_form_lang.helper') OR app('\Varbox\Contracts\AdminFormLangHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'admin_form_lang_helper' => \Varbox\Helpers\AdminFormLangHelper::class,
+
+        /*
+        |
         | Concrete implementation for the "admin menu helper".
         | To extend or replace this functionality, change the value below with your full "admin menu helper" FQN.
         |
@@ -1243,6 +1259,22 @@ return [
         |
         */
         'uploader_helper' => \Varbox\Helpers\UploaderHelper::class,
+
+        /*
+        |
+        | Concrete implementation for the "uploader lang helper".
+        | To extend or replace this functionality, change the value below with your full "uploader lang helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\UploaderLangHelper" class
+        | - or at least implement the "Varbox\Contracts\UploaderLangHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - uploader_lang() OR app('uploader_lang.helper') OR app('\Varbox\Contracts\UploaderLangHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'uploader_lang_helper' => \Varbox\Helpers\UploaderLangHelper::class,
 
         /*
         |
