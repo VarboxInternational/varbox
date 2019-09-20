@@ -32,6 +32,16 @@ if (!function_exists('form_admin')) {
     }
 }
 
+if (!function_exists('form_admin_lang')) {
+    /**
+     * @return \Varbox\Contracts\AdminFormLangHelperContract
+     */
+    function form_admin_lang()
+    {
+        return app('admin_form_lang.helper');
+    }
+}
+
 if (!function_exists('draft')) {
     /**
      * @return \Varbox\Contracts\DraftHelperContract
@@ -108,16 +118,6 @@ if (!function_exists('validation')) {
     }
 }
 
-if (!function_exists('button')) {
-    /**
-     * @return \Varbox\Contracts\ButtonHelperContract
-     */
-    function button()
-    {
-        return app('button.helper');
-    }
-}
-
 if (!function_exists('breadcrumbs')) {
     /**
      * @return \DaveJamesMiller\Breadcrumbs\BreadcrumbsManager
@@ -178,20 +178,13 @@ if (!function_exists('uploader')) {
     }
 }
 
-if (!function_exists('is_json_format')) {
+if (!function_exists('uploader_lang')) {
     /**
-     * @param $string
-     * @return bool
+     * @return \Varbox\Contracts\UploaderLangHelperContract
      */
-    function is_json_format($string)
+    function uploader_lang()
     {
-        if (!is_string($string)) {
-            return false;
-        }
-
-        json_decode($string);
-
-        return (json_last_error() == JSON_ERROR_NONE);
+        return app('uploader_lang.helper');
     }
 }
 
