@@ -28,6 +28,7 @@ use Varbox\Composers\NotificationsComposer;
 use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
+use Varbox\Contracts\AdminFormLangHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\AnalyticsModelContract;
 use Varbox\Contracts\BackupModelContract;
@@ -55,6 +56,7 @@ use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
+use Varbox\Contracts\UploaderLangHelperContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Contracts\UrlModelContract;
@@ -62,6 +64,7 @@ use Varbox\Contracts\UserModelContract;
 use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Helpers\AdminFormHelper;
+use Varbox\Helpers\AdminFormLangHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\BlockHelper;
 use Varbox\Helpers\DraftHelper;
@@ -70,6 +73,7 @@ use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\RevisionHelper;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Helpers\UploaderHelper;
+use Varbox\Helpers\UploaderLangHelper;
 use Varbox\Helpers\ValidationHelper;
 use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Listeners\StoreBackupToDatabase;
@@ -651,6 +655,9 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->app->singleton(AdminFormHelperContract::class, $binding['helpers']['admin_form_helper'] ?? AdminFormHelper::class);
         $this->app->alias(AdminFormHelperContract::class, 'admin_form.helper');
 
+        $this->app->singleton(AdminFormLangHelperContract::class, $binding['helpers']['admin_form_lang_helper'] ?? AdminFormLangHelper::class);
+        $this->app->alias(AdminFormLangHelperContract::class, 'admin_form_lang.helper');
+
         $this->app->singleton(AdminMenuHelperContract::class, $binding['helpers']['admin_menu_helper'] ?? AdminMenuHelper::class);
         $this->app->alias(AdminMenuHelperContract::class, 'admin_menu.helper');
 
@@ -668,6 +675,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderHelperContract::class, $binding['helpers']['uploader_helper'] ?? UploaderHelper::class);
         $this->app->alias(UploaderHelperContract::class, 'uploader.helper');
+
+        $this->app->singleton(UploaderLangHelperContract::class, $binding['helpers']['uploader_lang_helper'] ?? UploaderLangHelper::class);
+        $this->app->alias(UploaderLangHelperContract::class, 'uploader_lang.helper');
 
         $this->app->singleton(DraftHelperContract::class, $binding['helpers']['draft_helper'] ?? DraftHelper::class);
         $this->app->alias(DraftHelperContract::class, 'draft.helper');
