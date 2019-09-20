@@ -46,14 +46,14 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex text-left">
-                {!! button()->cancelAction(route('admin.redirects.index')) !!}
+                @include('varbox::buttons.cancel', ['url' => route('admin.redirects.index')])
                 @if($item->exists)
-                    {!! button()->saveAndStay() !!}
+                    @include('varbox::buttons.save_stay')
                 @else
-                    {!! button()->saveAndNew() !!}
-                    {!! button()->saveAndContinue('admin.redirects.edit') !!}
+                    @include('varbox::buttons.save_new')
+                    @include('varbox::buttons.save_continue', ['route' => 'admin.redirects.edit'])
                 @endif
-                {!! button()->saveRecord() !!}
+                @include('varbox::buttons.save')
             </div>
         </div>
     </div>

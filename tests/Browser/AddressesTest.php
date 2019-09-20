@@ -231,7 +231,8 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
-                ->clickLink('Add New')
+                ->assertDontSee('Add New')
+                ->visit('/admin/users/' . $this->user->id . '/addresses/create')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Add Address');
         });
@@ -287,8 +288,10 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/users/' . $this->user->id . '/addresses', $this->addressModel)
-                ->clickEditRecordButton($this->addressAddress)
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-edit')
+                ->visit('/admin/users/' . $this->user->id . '/addresses/edit/' . $this->addressModel->id)
+                ->assertSee('Unauthorized')
+                ->assertDontSee('Edit Address');
         });
 
         $this->deleteAddress();
@@ -483,9 +486,7 @@ class AddressesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users/' . $this->user->id . '/addresses')
-                ->clickDeleteAnyRecordButton()
-                ->assertDontSee('The record was successfully deleted!')
-                ->assertSee('Unauthorized');
+                ->assertSourceMissing('button-delete');
         });
 
         $this->deleteAddress();

@@ -110,14 +110,14 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex text-left">
-                {!! button()->cancelAction(route('admin.roles.index')) !!}
+                @include('varbox::buttons.cancel', ['url' => route('admin.roles.index')])
                 @if($item->exists)
-                    {!! button()->saveAndStay() !!}
+                    @include('varbox::buttons.save_stay')
                 @else
-                    {!! button()->saveAndNew() !!}
-                    {!! button()->saveAndContinue('admin.roles.edit') !!}
+                    @include('varbox::buttons.save_new')
+                    @include('varbox::buttons.save_continue', ['route' => 'admin.roles.edit'])
                 @endif
-                {!! button()->saveRecord() !!}
+                @include('varbox::buttons.save')
             </div>
         </div>
     </div>

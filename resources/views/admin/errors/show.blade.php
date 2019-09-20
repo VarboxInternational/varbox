@@ -69,7 +69,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex text-left">
-                        {!! button()->goBack(route('admin.errors.index')) !!}
+                        @include('varbox::buttons.back', ['url' => route('admin.errors.index')])
                     </div>
                 </div>
             </div>

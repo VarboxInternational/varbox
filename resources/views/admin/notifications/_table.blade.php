@@ -44,7 +44,7 @@
                             {!! form()->close() !!}
                         @endpermission
                         @permission('notifications-delete')
-                            {!! button()->deleteRecord(route('admin.notifications.destroy', $item->getKey())) !!}
+                            @include('varbox::buttons.delete', ['url' => route('admin.notifications.destroy', $item->getKey())])
                         @endpermission
                     </td>
                 @endif

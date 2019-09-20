@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="card-footer text-right">
-    {!! button()->clearFilters() !!}
-    {!! button()->filterRecords() !!}
+    @include('varbox::buttons.clear')
+    @include('varbox::buttons.filter')
 </div>
 {!! form()->close() !!}

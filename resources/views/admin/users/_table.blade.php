@@ -29,10 +29,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('users-edit')
-                        {!! button()->editRecord(route('admin.users.edit', $item->getKey())) !!}
+                        @include('varbox::buttons.edit', ['url' => route('admin.users.edit', $item->getKey())])
                     @endpermission
                     @permission('users-delete')
-                        {!! button()->deleteRecord(route('admin.users.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.users.destroy', $item->getKey())])
                     @endpermission
                     @permission('users-impersonate')
                         <div class="item-action dropdown" data-toggle="tooltip" data-placement="top" title="More">

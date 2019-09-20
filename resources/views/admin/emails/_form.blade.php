@@ -125,28 +125,28 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex text-left">
-                    {!! button()->cancelAction(route('admin.emails.index')) !!}
+                    @include('varbox::buttons.cancel', ['url' => route('admin.emails.index')])
                     @permission('emails-preview')
-                        {!! button()->previewRecord(route('admin.emails.preview', $item->getKey())) !!}
+                        @include('varbox::buttons.preview', ['url' => route('admin.emails.preview', $item->getKey())])
                     @endpermission
                     @if($item->exists)
                         @permission('emails-duplicate')
-                        {!! button()->duplicateRecord(route('admin.emails.duplicate', $item->getKey())) !!}
+                            @include('varbox::buttons.duplicate', ['url' => route('admin.emails.duplicate', $item->getKey())])
                         @endpermission
                         @permission('emails-draft')
                             @if(!$item->isDrafted())
-                                {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
+                                @include('varbox::buttons.save_draft', ['url' => route('admin.emails.draft', $item->exists ? $item->getKey() : null)])
                             @endif
                         @endpermission
-                        {!! button()->saveAndStay() !!}
+                        @include('varbox::buttons.save_stay')
                     @else
                         @permission('emails-draft')
-                            {!! button()->saveAsDraft(route('admin.emails.draft', $item->exists ? $item->getKey() : null)) !!}
+                            @include('varbox::buttons.save_draft', ['url' => route('admin.emails.draft', $item->exists ? $item->getKey() : null)])
                         @endpermission
-                        {!! button()->saveAndNew() !!}
-                        {!! button()->saveAndContinue('admin.emails.edit') !!}
+                        @include('varbox::buttons.save_new')
+                        @include('varbox::buttons.save_continue', ['route' => 'admin.emails.edit'])
                     @endif
-                    {!! button()->saveRecord() !!}
+                    @include('varbox::buttons.save')
                 </div>
             </div>
         </div>

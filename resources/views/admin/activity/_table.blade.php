@@ -22,7 +22,7 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('activity-delete')
-                        {!! button()->deleteRecord(route('admin.activity.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.activity.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

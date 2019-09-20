@@ -6,7 +6,7 @@
     <div class="row row-cards">
         <div class="col-lg-3">
             @permission('menus-add')
-                {!! button()->addRecord(route('admin.menus.create', $location)) !!}
+                @include('varbox::buttons.add', ['url' => route('admin.menus.create', $location)])
             @endpermission
 
             @include('varbox::admin.menus._tree')

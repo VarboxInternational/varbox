@@ -45,10 +45,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('errors-view')
-                        {!! button()->viewRecord(route('admin.errors.show', $item->getKey())) !!}
+                        @include('varbox::buttons.view', ['url' => route('admin.errors.show', $item->getKey())])
                     @endpermission
                     @permission('errors-delete')
-                        {!! button()->deleteRecord(route('admin.errors.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.errors.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

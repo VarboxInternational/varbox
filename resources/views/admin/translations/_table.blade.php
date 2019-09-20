@@ -32,10 +32,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('translations-edit')
-                        {!! button()->editRecord(route('admin.translations.edit', $item->getKey())) !!}
+                        @include('varbox::buttons.edit', ['url' => route('admin.translations.edit', $item->getKey())])
                     @endpermission
                     @permission('translations-delete')
-                        {!! button()->deleteRecord(route('admin.translations.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.translations.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

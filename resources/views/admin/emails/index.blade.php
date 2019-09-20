@@ -6,7 +6,7 @@
     <div class="row row-cards">
         <div class="col-lg-3">
             @permission('emails-add')
-                {!! button()->addRecord(route('admin.emails.create')) !!}
+                @include('varbox::buttons.add', ['url' => route('admin.emails.create')])
             @endpermission
 
             @include('varbox::admin.emails._filter')

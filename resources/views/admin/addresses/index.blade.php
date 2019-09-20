@@ -21,7 +21,9 @@
 @section('content')
     <div class="row row-cards">
         <div class="col-lg-3">
-            {!! button()->addRecord(route('admin.addresses.create', $user->getKey())) !!}
+            @permission('addresses-add')
+                @include('varbox::buttons.add', ['url' => route('admin.addresses.create', $user->getKey())])
+            @endpermission
 
             @include('varbox::admin.addresses._filter')
         </div>

@@ -27,14 +27,14 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex text-left">
-                {!! button()->cancelAction(route('admin.countries.index')) !!}
+                @include('varbox::buttons.cancel', ['url' => route('admin.countries.index')])
                 @if($item->exists)
-                    {!! button()->saveAndStay() !!}
+                    @include('varbox::buttons.save_stay')
                 @else
-                    {!! button()->saveAndNew() !!}
-                    {!! button()->saveAndContinue('admin.countries.edit') !!}
+                    @include('varbox::buttons.save_new')
+                    @include('varbox::buttons.save_continue', ['route' => 'admin.countries.edit'])
                 @endif
-                {!! button()->saveRecord() !!}
+                @include('varbox::buttons.save')
             </div>
         </div>
     </div>

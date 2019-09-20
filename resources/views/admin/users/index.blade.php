@@ -6,7 +6,7 @@
     <div class="row row-cards">
         <div class="col-lg-3">
             @permission('users-add')
-                {!! button()->addRecord(route('admin.users.create')) !!}
+                @include('varbox::buttons.add', ['url' => route('admin.users.create')])
             @endpermission
 
             @include('varbox::admin.users._filter')

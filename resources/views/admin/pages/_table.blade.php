@@ -24,10 +24,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('pages-edit')
-                        {!! button()->editRecord(route('admin.pages.edit', $item->getKey())) !!}
+                        @include('varbox::buttons.edit', ['url' => route('admin.pages.edit', $item->getKey())])
                     @endpermission
                     @permission('pages-delete')
-                        {!! button()->deleteRecord(route('admin.pages.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.pages.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

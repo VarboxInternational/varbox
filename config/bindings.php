@@ -1214,22 +1214,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "button helper".
-        | To extend or replace this functionality, change the value below with your full "button helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\ButtonHelper" class
-        | - or at least implement the "Varbox\Contracts\ButtonHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - button() OR app('button.helper') OR app('\Varbox\Contracts\ButtonHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'button_helper' => \Varbox\Helpers\ButtonHelper::class,
-
-        /*
-        |
         | Concrete implementation for the "uploaded helper".
         | To extend or replace this functionality, change the value below with your full "uploaded helper" FQN.
         |

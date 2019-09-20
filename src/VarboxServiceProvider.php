@@ -33,7 +33,6 @@ use Varbox\Contracts\AnalyticsModelContract;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Contracts\BlockHelperContract;
 use Varbox\Contracts\BlockModelContract;
-use Varbox\Contracts\ButtonHelperContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
 use Varbox\Contracts\CountryModelContract;
@@ -65,7 +64,6 @@ use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\BlockHelper;
-use Varbox\Helpers\ButtonHelper;
 use Varbox\Helpers\DraftHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
@@ -664,9 +662,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(ValidationHelperContract::class, $binding['helpers']['validation_helper'] ?? ValidationHelper::class);
         $this->app->alias(ValidationHelperContract::class, 'validation.helper');
-
-        $this->app->singleton(ButtonHelperContract::class, $binding['helpers']['button_helper'] ?? ButtonHelper::class);
-        $this->app->alias(ButtonHelperContract::class, 'button.helper');
 
         $this->app->singleton(UploadedHelperContract::class, $binding['helpers']['uploaded_helper'] ?? UploadedHelper::class);
         $this->app->alias(UploadedHelperContract::class, 'uploaded.helper');

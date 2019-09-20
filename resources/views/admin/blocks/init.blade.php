@@ -38,7 +38,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex text-left">
-                    {!! button()->cancelAction(route('admin.blocks.index')) !!}
+                    @include('varbox::buttons.cancel', ['url' => route('admin.blocks.index')])
 
                     <a class="js-BlockContinueButton btn btn-primary btn-square ml-4">
                         <i class="fe fe-arrow-right mr-2"></i>Continue

@@ -35,8 +35,12 @@
                     @endif
                 </td>
                 <td class="text-right d-table-cell">
-                    {!! button()->editRecord(route('admin.addresses.edit', [$user->getKey(), $item->getKey()])) !!}
-                    {!! button()->deleteRecord(route('admin.addresses.destroy', [$user->getKey(), $item->getKey()])) !!}
+                    @permission('addresses-edit')
+                        @include('varbox::buttons.edit', ['url' => route('admin.addresses.edit', [$user->getKey(), $item->getKey()])])
+                    @endpermission
+                    @permission('addresses-delete')
+                        @include('varbox::buttons.delete', ['url' => route('admin.addresses.destroy', [$user->getKey(), $item->getKey()])])
+                    @endpermission
                 </td>
             </tr>
         @empty

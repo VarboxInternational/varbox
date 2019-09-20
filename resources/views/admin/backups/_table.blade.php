@@ -26,10 +26,10 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('backups-download')
-                        {!! button()->downloadFile(route('admin.backups.download', $item->getKey())) !!}
+                        @include('varbox::buttons.download', ['url' => route('admin.backups.download', $item->getKey())])
                     @endpermission
                     @permission('backups-delete')
-                        {!! button()->deleteRecord(route('admin.backups.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.backups.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

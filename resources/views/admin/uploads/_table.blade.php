@@ -34,13 +34,13 @@
                 </td>
                 <td class="text-right d-table-cell">
                     @permission('uploads-download')
-                        {!! button()->downloadFile(route('admin.uploads.download', $item->getKey())) !!}
+                        @include('varbox::buttons.download', ['url' => route('admin.uploads.download', $item->getKey())])
                     @endpermission
 
-                    {!! button()->viewRecord(uploaded($item->full_path)->url(), ['target' => '_blank']) !!}
+                    @include('varbox::buttons.view', ['url' => uploaded($item->full_path)->url(), 'attributes' => ['target="_blank"']])
 
                     @permission('uploads-delete')
-                        {!! button()->deleteRecord(route('admin.uploads.destroy', $item->getKey())) !!}
+                        @include('varbox::buttons.delete', ['url' => route('admin.uploads.destroy', $item->getKey())])
                     @endpermission
                 </td>
             </tr>

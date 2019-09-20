@@ -40,25 +40,25 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex text-left">
-                    {!! button()->cancelAction(route('admin.blocks.index')) !!}
+                    @include('varbox::buttons.cancel', ['url' => route('admin.blocks.index')])
                     @if($item->exists)
                         @permission('blocks-duplicate')
-                            {!! button()->duplicateRecord(route('admin.blocks.duplicate', $item->getKey())) !!}
+                            @include('varbox::buttons.duplicate', ['url' => route('admin.blocks.duplicate', $item->getKey())])
                         @endpermission
                         @permission('blocks-draft')
                             @if(!$item->isDrafted())
-                                {!! button()->saveAsDraft(route('admin.blocks.draft', $item->exists ? $item->getKey() : null)) !!}
+                                @include('varbox::buttons.save_draft', ['url' => route('admin.blocks.draft', $item->exists ? $item->getKey() : null)])
                             @endif
                         @endpermission
-                        {!! button()->saveAndStay() !!}
+                        @include('varbox::buttons.save_stay')
                     @else
                         @permission('blocks-draft')
-                            {!! button()->saveAsDraft(route('admin.blocks.draft', $item->exists ? $item->getKey() : null)) !!}
+                            @include('varbox::buttons.save_draft', ['url' => route('admin.blocks.draft', $item->exists ? $item->getKey() : null)])
                         @endpermission
-                        {!! button()->saveAndNew() !!}
-                        {!! button()->saveAndContinue('admin.blocks.edit') !!}
+                        @include('varbox::buttons.save_new')
+                        @include('varbox::buttons.save_continue', ['route' => 'admin.blocks.edit'])
                     @endif
-                    {!! button()->saveRecord() !!}
+                    @include('varbox::buttons.save')
                 </div>
             </div>
         </div>
