@@ -21,14 +21,20 @@ class AdminMenuComposer
     protected $permissions;
 
     /**
+     * @param Authenticatable $user
+     */
+    public function __construct(Authenticatable $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
      * Construct the admin menu.
      *
      * @param View $view
      */
     public function compose(View $view)
     {
-        $this->user = auth()->user();
-
         $menu = menu_admin()->make(function (AdminMenuHelper $menu) {
             $menu->add(function (MenuItem $item) {
                 $item->name('Home')->url(route('admin'))->data('icon', 'fa-home')->active('admin');
