@@ -128,12 +128,13 @@ class LanguagesController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param LanguageModelContract $language
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function change(LanguageModelContract $language)
+    public function change(Request $request, LanguageModelContract $language)
     {
-        session()->put('locale', $language->code);
+        $request->session()->put('locale', $language->code);
 
         return back();
     }
