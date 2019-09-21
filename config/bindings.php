@@ -1123,6 +1123,30 @@ return [
         */
         'redirect_requests_middleware' => \Varbox\Middleware\RedirectRequests::class,
 
+        /*
+        |
+        | Concrete implementation for the "persist locale middleware".
+        | To extend or replace this functionality, change the value below with your full "persist locale middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.persist.locale"
+        |
+        */
+        'persist_locale_middleware' => \Varbox\Middleware\PersistLocale::class,
+
+        /*
+        |
+        | Concrete implementation for the "is translatable middleware".
+        | To extend or replace this functionality, change the value below with your full "is translatable middleware" FQN.
+        |
+        | Once the value below is changed, your new middleware will be automatically registered with the application.
+        |
+        | You can then use the middleware by its alias: "varbox.is.translatable"
+        |
+        */
+        'is_translatable_middleware' => \Varbox\Middleware\IsTranslatable::class,
+
     ],
 
     /*
@@ -1356,6 +1380,18 @@ return [
         |
         */
         'notifications_view_composer' => \Varbox\Composers\NotificationsComposer::class,
+
+        /*
+        |
+        | Concrete implementation for the "languages view composer".
+        | To extend or replace this functionality, change the value below with your full "languages view composer" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Composers\LanguagesComposer" class
+        | - or at least implement the following methods: compose()
+        |
+        */
+        'languages_view_composer' => \Varbox\Composers\LanguagesComposer::class,
 
     ],
 
