@@ -4,6 +4,7 @@ namespace Varbox\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Varbox\Contracts\LanguageModelContract;
@@ -31,16 +32,17 @@ class IsTranslatable
     }
 
     /**
-     * @param $request
+     * @param Request $request
      * @param Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $default = $this->language->onlyDefault()->first();
 
         if ($this->app->getLocale() != $default->code && $this->isOnCreate()) {
             $this->app->setLocale($default->code);
+            $request->session()->put('locale', $default->code);
 
             flash()->warning($this->warningMessage($default));
         }
