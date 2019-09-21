@@ -24,6 +24,7 @@ use Varbox\Commands\InstallCommand;
 use Varbox\Commands\MailMakeCommand;
 use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Composers\AdminMenuComposer;
+use Varbox\Composers\LanguagesComposer;
 use Varbox\Composers\NotificationsComposer;
 use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\AddressModelContract;
@@ -82,9 +83,11 @@ use Varbox\Middleware\Authenticated;
 use Varbox\Middleware\AuthenticateSession;
 use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
+use Varbox\Middleware\IsTranslatable;
 use Varbox\Middleware\NotAuthenticated;
 use Varbox\Middleware\OptimizeImages;
 use Varbox\Middleware\OverrideConfigs;
+use Varbox\Middleware\PersistLocale;
 use Varbox\Middleware\RedirectRequests;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
@@ -321,10 +324,13 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.override.configs', $middleware['override_configs_middleware'] ?? OverrideConfigs::class);
         $this->router->aliasMiddleware('varbox.optimize.images', $middleware['optimize_images_middleware'] ?? OptimizeImages::class);
         $this->router->aliasMiddleware('varbox.redirect.requests', $middleware['redirect_requests_middleware'] ?? RedirectRequests::class);
+        $this->router->aliasMiddleware('varbox.persist.locale', $middleware['persist_locale_middleware'] ?? PersistLocale::class);
+        $this->router->aliasMiddleware('varbox.is.translatable', $middleware['is_translatable_middleware'] ?? IsTranslatable::class);
 
         $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
         $this->router->prependMiddlewareToGroup('web', 'varbox.optimize.images');
         $this->router->prependMiddlewareToGroup('web', 'varbox.redirect.requests');
+        $this->router->pushMiddlewareToGroup('web', 'varbox.persist.locale');
     }
 
     /**
@@ -342,6 +348,11 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->app['view']->composer(
             'varbox::layouts.admin.partials._notifications',
             $composers['notifications_view_composer'] ?? NotificationsComposer::class
+        );
+
+        $this->app['view']->composer(
+            'varbox::layouts.admin.partials._languages',
+            $composers['languages_view_composer'] ?? LanguagesComposer::class
         );
     }
 
