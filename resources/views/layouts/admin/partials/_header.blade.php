@@ -10,6 +10,7 @@
                 </form>
             </div>
             <div class="d-flex order-lg-2 ml-auto">
+                @include('varbox::layouts.admin.partials._languages')
                 @include('varbox::layouts.admin.partials._notifications')
                 @include('varbox::layouts.admin.partials._profile')
 
