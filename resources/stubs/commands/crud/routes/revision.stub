@@ -1,0 +1,1 @@
+        Route::get('revision/{revision}', ['as' => 'admin.DummySnakeName.revision', 'uses' => 'DummyControllerNamespace@showRevision', 'permissions' => 'DummySlugName-edit']);

@@ -1,0 +1,1 @@
+        Route::post('preview/{DummyModelName?}', ['as' => 'admin.DummySnakeName.preview', 'uses' => 'DummyControllerNamespace@preview', 'permissions' => 'DummySlugName-preview']);

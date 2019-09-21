@@ -1,0 +1,1 @@
+        Route::post('duplicate/{DummyModelName}', ['as' => 'admin.DummySnakeName.duplicate', 'uses' => 'DummyControllerNamespace@duplicate', 'permissions' => 'DummySlugName-duplicate']);

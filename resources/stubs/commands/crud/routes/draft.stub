@@ -1,0 +1,2 @@
+        Route::post('draft/{DummyModelName?}', ['as' => 'admin.DummySnakeName.draft', 'uses' => 'DummyControllerNamespace@saveDraft', 'permissions' => 'DummySlugName-draft']);
+        Route::put('publish/{DummyModelName}', ['as' => 'admin.DummySnakeName.publish', 'uses' => 'DummyControllerNamespace@publishDraft', 'permissions' => 'DummySlugName-publish']);

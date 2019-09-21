@@ -1,0 +1,9 @@
+<?php
+
+namespace App\Http\Controllers\Admin\DummyControllerNamespace;
+
+use App\Http\Controllers\Controller;
+
+class DummyControllerNamespace extends Controller
+{
+    use \Varbox\Traits\CanCrud;
