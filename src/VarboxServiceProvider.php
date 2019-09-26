@@ -52,6 +52,8 @@ use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RevisionHelperContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Contracts\SchemaHelperContract;
+use Varbox\Contracts\SchemaModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
@@ -72,6 +74,7 @@ use Varbox\Helpers\DraftHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\RevisionHelper;
+use Varbox\Helpers\SchemaHelper;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Helpers\UploaderHelper;
 use Varbox\Helpers\UploaderLangHelper;
@@ -106,6 +109,7 @@ use Varbox\Models\Permission;
 use Varbox\Models\Redirect;
 use Varbox\Models\Revision;
 use Varbox\Models\Role;
+use Varbox\Models\Schema;
 use Varbox\Models\State;
 use Varbox\Models\Translation;
 use Varbox\Models\Upload;
@@ -206,6 +210,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/analytics.php' => config_path('varbox/analytics.php'),
             __DIR__ . '/../config/redirect.php' => config_path('varbox/redirect.php'),
             __DIR__ . '/../config/translation.php' => config_path('varbox/translation.php'),
+            __DIR__ . '/../config/schema.php' => config_path('varbox/schema.php'),
         ], 'config');
     }
 
@@ -382,6 +387,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('translation', TranslationModelContract::class);
         Route::model('analytics', AnalyticsModelContract::class);
         Route::model('redirect', RedirectModelContract::class);
+        Route::model('schema', SchemaModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -464,6 +470,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/translations.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/analytics.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/redirects.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/schema.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
     }
 
@@ -501,7 +508,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     /**
      * @return void
      */
-    protected function loadBreadcrumbs()
+    protected function cloadBreadcrumbs()
     {
         if ($this->config['varbox']['breadcrumbs']['enabled'] ?? false === true) {
             require_once __DIR__ . '/../breadcrumbs/home.php';
@@ -527,6 +534,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             require_once __DIR__ . '/../breadcrumbs/translations.php';
             require_once __DIR__ . '/../breadcrumbs/analytics.php';
             require_once __DIR__ . '/../breadcrumbs/redirects.php';
+            require_once __DIR__ . '/../breadcrumbs/schema.php';
         }
     }
 
@@ -565,6 +573,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/analytics.php', 'varbox.analytics');
         $this->mergeConfigFrom(__DIR__ . '/../config/redirect.php', 'varbox.redirect');
         $this->mergeConfigFrom(__DIR__ . '/../config/translation.php', 'varbox.translation');
+        $this->mergeConfigFrom(__DIR__ . '/../config/schema.php', 'varbox.schema');
     }
 
     /**
@@ -656,6 +665,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->bind(RedirectModelContract::class, $binding['models']['redirect_model'] ?? Redirect::class);
         $this->app->alias(RedirectModelContract::class, 'redirect.model');
+
+        $this->app->bind(SchemaModelContract::class, $binding['models']['schema_model'] ?? Schema::class);
+        $this->app->alias(SchemaModelContract::class, 'schema.model');
     }
 
     /**
@@ -700,6 +712,9 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(BlockHelperContract::class, $binding['helpers']['block_helper'] ?? BlockHelper::class);
         $this->app->alias(BlockHelperContract::class, 'block.helper');
+
+        $this->app->singleton(SchemaHelperContract::class, $binding['helpers']['schema_helper'] ?? SchemaHelper::class);
+        $this->app->alias(SchemaHelperContract::class, 'schema.helper');
     }
 
     /**
