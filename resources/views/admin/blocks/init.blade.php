@@ -40,7 +40,7 @@
                 <div class="d-flex text-left">
                     @include('varbox::buttons.cancel', ['url' => route('admin.blocks.index')])
 
-                    <a class="js-BlockContinueButton btn btn-primary btn-square ml-4">
+                    <a class="js-BlockContinueButton btn btn-primary btn-square text-white ml-4">
                         <i class="fe fe-arrow-right mr-2"></i>Continue
                     </a>
                 </div>
