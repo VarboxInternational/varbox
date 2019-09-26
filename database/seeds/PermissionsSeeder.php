@@ -695,6 +695,32 @@ class PermissionsSeeder extends Seeder
                 'name' => 'redirects-delete',
             ],
         ],
+        'Schema' => [
+            'List' => [
+                'group' => 'Schema',
+                'label' => 'List',
+                'guard' => 'admin',
+                'name' => 'schema-list',
+            ],
+            'Add' => [
+                'group' => 'Schema',
+                'label' => 'Add',
+                'guard' => 'admin',
+                'name' => 'schema-add',
+            ],
+            'Edit' => [
+                'group' => 'Schema',
+                'label' => 'Edit',
+                'guard' => 'admin',
+                'name' => 'schema-edit',
+            ],
+            'Delete' => [
+                'group' => 'Schema',
+                'label' => 'Delete',
+                'guard' => 'admin',
+                'name' => 'schema-delete',
+            ],
+        ],
     ];
 
     /**
