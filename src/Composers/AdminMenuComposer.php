@@ -41,6 +41,36 @@ class AdminMenuComposer
             });
 
             $menu->add(function ($item) use ($menu) {
+                $auth = $item->name('Access Control')->data('icon', 'fa-sign-in-alt')
+                    ->permissions('users-list', 'admins-list', 'roles-list', 'permissions-list', 'activity-list', 'notifications-list')
+                    ->active('admin/users/*', 'admin/admins/*', 'admin/roles/*', 'admin/permissions/*', 'admin/activity/*', 'admin/notifications/*');
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Users')->url(route('admin.users.index'))->permissions('users-list')->active('admin/users/*');
+                });
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Admins')->url(route('admin.admins.index'))->permissions('admins-list')->active('admin/admins/*');
+                });
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Roles')->url(route('admin.roles.index'))->permissions('roles-list')->active('admin/roles/*');
+                });
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Permissions')->url(route('admin.permissions.index'))->permissions('permissions-list')->active('admin/permissions/*');
+                });
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Activity')->url(route('admin.activity.index'))->permissions('activity-list')->active('admin/activity/*');
+                });
+
+                $menu->child($auth, function (MenuItem $item) {
+                    $item->name('Notifications')->url(route('admin.notifications.index'))->permissions('notifications-list')->active('admin/notifications/*');
+                });
+            });
+
+            $menu->add(function ($item) use ($menu) {
                 $cms = $item->name('Manage Content')->data('icon', 'fa-edit')
                     ->permissions('pages-list', 'menus-list', 'blocks-list', 'emails-list', 'layouts-list')
                     ->active('admin/pages/*', 'admin/menus/*', 'admin/blocks/*', 'admin/emails/*', 'admin/layouts/*');
@@ -62,8 +92,7 @@ class AdminMenuComposer
                 });
             });
 
-            /*
-            $menu->add(function ($item) use ($menu) {
+            /*$menu->add(function ($item) use ($menu) {
                 $shop = $item->name('Shop Panel')->data('icon', 'fa-shopping-cart')
                     ->permissions('orders-list', 'carts-list', 'product-categories-list', 'products-list', 'attributes-list', 'discounts-list', 'taxes-list', 'currencies-list')
                     ->active('admin/orders/*', 'admin/carts/*', 'admin/product-categories/*', 'admin/products/*', 'admin/sets/*', 'admin/attributes/*', 'admin/discounts/*', 'admin/taxes/*', 'admin/currencies/*');
@@ -99,36 +128,29 @@ class AdminMenuComposer
                 $menu->child($shop, function (MenuItem $item) {
                     $item->name('Currencies')->url(route('admin.currencies.index'))->permissions('currencies-list')->active('admin/currencies/*');
                 });
-            });
-            */
+            });*/
 
             $menu->add(function ($item) use ($menu) {
-                $auth = $item->name('Access Control')->data('icon', 'fa-sign-in-alt')
-                    ->permissions('users-list', 'admins-list', 'roles-list', 'permissions-list', 'activity-list', 'notifications-list')
-                    ->active('admin/users/*', 'admin/admins/*', 'admin/roles/*', 'admin/permissions/*', 'admin/activity/*', 'admin/notifications/*');
+                $media = $item->name('Media Library')->data('icon', 'fa-copy')
+                    ->permissions('uploads-list')
+                    ->active('admin/uploads/*');
 
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Users')->url(route('admin.users.index'))->permissions('users-list')->active('admin/users/*');
+                $menu->child($media, function (MenuItem $item) {
+                    $item->name('Uploads')->url(route('admin.uploads.index'))->permissions('uploads-list')->active('admin/uploads/*');
+                });
+            });
+
+            $menu->add(function ($item) use ($menu) {
+                $trans = $item->name('Multi Language')->data('icon', 'fa-globe-americas')
+                    ->permissions('translations-list', 'languages-list')
+                    ->active('admin/translations/*', 'admin/languages/*');
+
+                $menu->child($trans, function (MenuItem $item) {
+                    $item->name('Translations')->url(route('admin.translations.index'))->permissions('translations-list')->active('admin/translations/*');
                 });
 
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Admins')->url(route('admin.admins.index'))->permissions('admins-list')->active('admin/admins/*');
-                });
-
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Roles')->url(route('admin.roles.index'))->permissions('roles-list')->active('admin/roles/*');
-                });
-
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Permissions')->url(route('admin.permissions.index'))->permissions('permissions-list')->active('admin/permissions/*');
-                });
-
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Activity')->url(route('admin.activity.index'))->permissions('activity-list')->active('admin/activity/*');
-                });
-
-                $menu->child($auth, function (MenuItem $item) {
-                    $item->name('Notifications')->url(route('admin.notifications.index'))->permissions('notifications-list')->active('admin/notifications/*');
+                $menu->child($trans, function (MenuItem $item) {
+                    $item->name('Languages')->url(route('admin.languages.index'))->permissions('languages-list')->active('admin/languages/*');
                 });
             });
 
@@ -151,44 +173,20 @@ class AdminMenuComposer
             });
 
             $menu->add(function ($item) use ($menu) {
-                $trans = $item->name('Multi Language')->data('icon', 'fa-globe-americas')
-                    ->permissions('translations-list', 'languages-list')
-                    ->active('admin/translations/*', 'admin/languages/*');
-
-                $menu->child($trans, function (MenuItem $item) {
-                    $item->name('Translations')->url(route('admin.translations.index'))->permissions('translations-list')->active('admin/translations/*');
-                });
-
-                $menu->child($trans, function (MenuItem $item) {
-                    $item->name('Languages')->url(route('admin.languages.index'))->permissions('languages-list')->active('admin/languages/*');
-                });
-            });
-
-            $menu->add(function ($item) use ($menu) {
                 $seo = $item->name('Seo Administration')->data('icon', 'fa-chart-bar')
-                    ->permissions('analytics-view', 'sitemap-list', 'redirects-list')
-                    ->active('admin/analytics/*', 'admin/sitemap/*', 'admin/redirects/*');
+                    ->permissions('analytics-view', 'schema-list', 'redirects-list')
+                    ->active('admin/analytics/*', 'admin/schema/*', 'admin/redirects/*');
 
                 $menu->child($seo, function (MenuItem $item) {
                     $item->name('Analytics')->url(route('admin.analytics.show'))->permissions('analytics-view')->active('admin/analytics/*');
                 });
 
-                /*$menu->child($seo, function (MenuItem $item) {
-                    $item->name('Sitemap')->url(route('admin.sitemap.index'))->permissions('sitemap-list')->active('admin/sitemap/*');
-                });*/
+                $menu->child($seo, function (MenuItem $item) {
+                    $item->name('Schema')->url(route('admin.schema.index'))->permissions('schema-list')->active('admin/schema/*');
+                });
 
                 $menu->child($seo, function (MenuItem $item) {
                     $item->name('Redirects')->url(route('admin.redirects.index'))->permissions('redirects-list')->active('admin/redirects/*');
-                });
-            });
-
-            $menu->add(function ($item) use ($menu) {
-                $media = $item->name('Media Library')->data('icon', 'fa-copy')
-                    ->permissions('uploads-list')
-                    ->active('admin/uploads/*');
-
-                $menu->child($media, function (MenuItem $item) {
-                    $item->name('Uploads')->url(route('admin.uploads.index'))->permissions('uploads-list')->active('admin/uploads/*');
                 });
             });
 
