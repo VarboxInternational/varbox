@@ -424,6 +424,22 @@ return [
         */
         'redirect_model' => \Varbox\Models\Redirect::class,
 
+        /*
+        |
+        | Concrete implementation for the "schema model".
+        | To extend or replace this functionality, change the value below with your full "schema model" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Models\Schema" class
+        | - or at least implement the "Varbox\Contracts\SchemaModelContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('schema.model') OR app('\Varbox\Contracts\SchemaModelContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'schema_model' => \Varbox\Models\Schema::class,
+
     ],
 
     /*
@@ -774,6 +790,17 @@ return [
         */
         'redirects_controller' => \Varbox\Controllers\RedirectsController::class,
 
+        /*
+        |
+        | Concrete implementation for the "schema controller".
+        | To extend or replace this functionality, change the value below with your full "schema controller" FQN.
+        |
+        | Your class will have to:
+        | - extend the "Varbox\Controllers\SchemaController" class
+        |
+        */
+        'schema_controller' => \Varbox\Controllers\SchemaController::class,
+
     ],
 
     'form_requests' => [
@@ -783,7 +810,7 @@ return [
         | Concrete implementation for the "user form request".
         | To extend or replace this functionality, change the value below with your full "user form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\UserRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -795,7 +822,7 @@ return [
         | Concrete implementation for the "admin form request".
         | To extend or replace this functionality, change the value below with your full "admin form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\AdminRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -807,7 +834,7 @@ return [
         | Concrete implementation for the "role form request".
         | To extend or replace this functionality, change the value below with your full "role form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\RoleRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -819,7 +846,7 @@ return [
         | Concrete implementation for the "permission form request".
         | To extend or replace this functionality, change the value below with your full "permission form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\PermissionRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -831,7 +858,7 @@ return [
         | Concrete implementation for the "login form request".
         | To extend or replace this functionality, change the value below with your full "login form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\LoginRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -843,7 +870,7 @@ return [
         | Concrete implementation for the "password forgot form request".
         | To extend or replace this functionality, change the value below with your full "password forgot form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\PasswordForgotRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -855,7 +882,7 @@ return [
         | Concrete implementation for the "password reset form request".
         | To extend or replace this functionality, change the value below with your full "password reset form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\PasswordResetRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -867,7 +894,7 @@ return [
         | Concrete implementation for the "upload form request".
         | To extend or replace this functionality, change the value below with your full "upload form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\UploadRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -879,7 +906,7 @@ return [
         | Concrete implementation for the "country form request".
         | To extend or replace this functionality, change the value below with your full "country form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\CountryRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -891,7 +918,7 @@ return [
         | Concrete implementation for the "state form request".
         | To extend or replace this functionality, change the value below with your full "state form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\StateRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -903,7 +930,7 @@ return [
         | Concrete implementation for the "city form request".
         | To extend or replace this functionality, change the value below with your full "city form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\CityRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -915,7 +942,7 @@ return [
         | Concrete implementation for the "address form request".
         | To extend or replace this functionality, change the value below with your full "address form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\AddressRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -927,7 +954,7 @@ return [
         | Concrete implementation for the "config form request".
         | To extend or replace this functionality, change the value below with your full "config form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\ConfigRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -939,7 +966,7 @@ return [
         | Concrete implementation for the "email form request".
         | To extend or replace this functionality, change the value below with your full "email form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\EmailRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -951,7 +978,7 @@ return [
         | Concrete implementation for the "block form request".
         | To extend or replace this functionality, change the value below with your full "block form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\BlockRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -963,7 +990,7 @@ return [
         | Concrete implementation for the "page form request".
         | To extend or replace this functionality, change the value below with your full "page form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\PageRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -975,7 +1002,7 @@ return [
         | Concrete implementation for the "menu form request".
         | To extend or replace this functionality, change the value below with your full "menu form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\MenuRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -987,7 +1014,7 @@ return [
         | Concrete implementation for the "language form request".
         | To extend or replace this functionality, change the value below with your full "language form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\LanguageRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -999,7 +1026,7 @@ return [
         | Concrete implementation for the "translation form request".
         | To extend or replace this functionality, change the value below with your full "translation form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\TranslationRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
@@ -1011,12 +1038,24 @@ return [
         | Concrete implementation for the "redirect form request".
         | To extend or replace this functionality, change the value below with your full "redirect form request" FQN.
         |
-        | Your class will have to (firs options is recommended):
+        | Your class will have to (first options is recommended):
         | - extend the "\Varbox\Requests\RedirectRequest" class
         | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
         |
         */
         'redirect_form_request' => \Varbox\Requests\RedirectRequest::class,
+
+        /*
+        |
+        | Concrete implementation for the "schema form request".
+        | To extend or replace this functionality, change the value below with your full "schema form request" FQN.
+        |
+        | Your class will have to (first options is recommended):
+        | - extend the "\Varbox\Requests\SchemaRequest" class
+        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
+        |
+        */
+        'schema_form_request' => \Varbox\Requests\SchemaRequest::class,
 
     ],
 
@@ -1347,6 +1386,22 @@ return [
         |
         */
         'block_helper' => \Varbox\Helpers\BlockHelper::class,
+
+        /*
+        |
+        | Concrete implementation for the "schema helper".
+        | To extend or replace this functionality, change the value below with your full "schema helper" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Helpers\SchemaHelper" class
+        | - or at least implement the "Varbox\Contracts\SchemaHelperContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - schema() OR app('schema.helper') OR app('\Varbox\Contracts\SchemaHelperContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'schema_helper' => \Varbox\Helpers\SchemaHelper::class,
 
     ],
 
