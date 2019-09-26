@@ -37,6 +37,7 @@
         "spatie/laravel-analytics": "^3.8",
         "spatie/laravel-backup": "^6.4",
         "spatie/laravel-image-optimizer": "^1.5",
+        "spatie/schema-org": "^2.4",
         "stichoza/google-translate-php": "^4.0"
     },
     "require-dev": {
