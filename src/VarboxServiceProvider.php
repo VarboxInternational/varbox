@@ -508,7 +508,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     /**
      * @return void
      */
-    protected function cloadBreadcrumbs()
+    protected function loadBreadcrumbs()
     {
         if ($this->config['varbox']['breadcrumbs']['enabled'] ?? false === true) {
             require_once __DIR__ . '/../breadcrumbs/home.php';
