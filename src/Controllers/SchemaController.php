@@ -7,12 +7,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Str;
 use Varbox\Contracts\SchemaModelContract;
 use Varbox\Filters\SchemaFilter;
-use Varbox\Models\Page;
 use Varbox\Requests\SchemaRequest;
-use Varbox\Helpers\SchemaHelper;
 use Varbox\Sorts\SchemaSort;
 use Varbox\Traits\CanCrud;
 
@@ -43,10 +40,6 @@ class SchemaController extends Controller
      */
     public function index(Request $request, SchemaFilter $filter, SchemaSort $sort)
     {
-        $schema = new SchemaHelper(Page::first());
-
-        //dd($schema->display());
-
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model
                 ->filtered($request->all(), $filter)
@@ -118,6 +111,9 @@ class SchemaController extends Controller
                 'types' => $this->model->getTypes(),
                 'targets' => (array)config('varbox.schema.targets', []),
                 'articleTypes' => $this->model->articleSchemaTypes(),
+                'eventTypes' => $this->model->eventSchemaTypes(),
+                'localBusinessTypes' => $this->model->localBusinessSchemaTypes(),
+                'softwareApplicationTypes' => $this->model->softwareApplicationSchemaTypes(),
             ];
         });
     }
