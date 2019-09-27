@@ -55,8 +55,6 @@ class Schema extends Model implements SchemaModelContract
     const TYPE_BOOK = 'book';
     const TYPE_REVIEW = 'review';
     const TYPE_COURSE = 'course';
-    const TYPE_RECIPE = 'recipe';
-    const TYPE_SERVICE = 'service';
     const TYPE_JOB_POSTING = 'job-posting';
     const TYPE_LOCAL_BUSINESS = 'local-business';
     const TYPE_SOFTWARE_APPLICATION = 'software-application';
@@ -77,8 +75,6 @@ class Schema extends Model implements SchemaModelContract
             static::TYPE_BOOK => 'Book',
             static::TYPE_REVIEW => 'Review',
             static::TYPE_COURSE => 'Course',
-            static::TYPE_RECIPE => 'Recipe',
-            static::TYPE_SERVICE => 'Service',
             static::TYPE_JOB_POSTING => 'Job Posting',
             static::TYPE_LOCAL_BUSINESS => 'Local Business',
             static::TYPE_SOFTWARE_APPLICATION => 'Software Application',
@@ -107,12 +103,100 @@ class Schema extends Model implements SchemaModelContract
     public function articleSchemaTypes()
     {
         return [
+            'article' => 'Article',
             'newsArticle' => 'News Article',
             'techArticle' => 'Tech Article',
             'scholarlyArticle' => 'Scholarly Article',
             'blogPosting' => 'Blog Posting',
             'socialMediaPosting' => 'Social Media Posting',
             'report' => 'Report',
+        ];
+    }
+
+    /**
+     * Get the more specific schema.org event types.
+     *
+     * @return array
+     */
+    public function eventSchemaTypes()
+    {
+        return [
+            'event' => 'Event',
+            'businessEvent' => 'Business Event',
+            'childrensEvent' => 'Children\'s Event',
+            'comedyEvent' => 'Comedy Event',
+            'courseInstance' => 'Course Instance',
+            'danceEvent' => 'Dance Event',
+            'deliveryEvent' => 'Delivery Event',
+            'educationEvent' => 'Education Event',
+            'exhibitionEvent' => 'Exhibition Event',
+            'festival' => 'Festival',
+            'foodEvent' => 'Food Event',
+            'literaryEvent' => 'Literary Event',
+            'musicEvent' => 'Music Event',
+            'publicationEvent' => 'Publication Event',
+            'saleEvent' => 'Sale Event',
+            'screeningEvent' => 'Screening Event',
+            'socialEvent' => 'Social Event',
+            'sportsEvent' => 'Sports Event',
+            'theaterEvent' => 'Theater Event',
+            'visualArtsEvent' => 'Visual Arts Event',
+        ];
+    }
+
+    /**
+     * Get the more specific schema.org event types.
+     *
+     * @return array
+     */
+    public function localBusinessSchemaTypes()
+    {
+        return [
+            'localBusiness' => 'Local Business',
+            'animalShelter' => 'Animal Shelter',
+            'automotiveBusiness' => 'Automotive Business',
+            'childCare' => 'Child Care',
+            'dentist' => 'Dentist',
+            'dryCleaningOrLaundry' => 'Dry Cleaning Or Laundry',
+            'emergencyService' => 'Emergency Service',
+            'employmentAgency' => 'Employment Agency',
+            'entertainmentBusiness' => 'Entertainment Business',
+            'financialService' => 'Financial Service',
+            'foodEstablishment' => 'Food Establishment',
+            'governmentOffice' => 'Government Office',
+            'healthAndBeautyBusiness' => 'Health & Beauty Business',
+            'homeAndConstructionBusiness' => 'Home & Construction Business',
+            'internetCafe' => 'Internet Cafe',
+            'legalService' => 'Legal Service',
+            'library' => 'Library',
+            'lodgingBusiness' => 'Lodging Business',
+            'medicalBusiness' => 'Medical Business',
+            'professionalService' => 'Professional Service',
+            'radioStation' => 'Radio Station',
+            'realEstateAgent' => 'Real Estate Agent',
+            'recyclingCenter' => 'Recycling Center',
+            'selfStorage' => 'Self Storage',
+            'shoppingCenter' => 'Shopping Center',
+            'sportsActivityLocation' => 'Sports Activity Location',
+            'store' => 'Store',
+            'televisionStation' => 'Television Station',
+            'touristInformationCenter' => 'Tourist Information Center',
+            'travelAgency' => 'Travel Agency',
+        ];
+    }
+
+    /**
+     * Get the more specific schema.org event types.
+     *
+     * @return array
+     */
+    public function softwareApplicationSchemaTypes()
+    {
+        return [
+            'softwareApplication' => 'Software Application',
+            'mobileApplication' => 'Mobile Application',
+            'webApplication' => 'Web Application',
+            'videoGame' => 'Video Game',
         ];
     }
 }
