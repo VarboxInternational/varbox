@@ -13,7 +13,7 @@
             <tr>
                 <td>
                     <div>{{ $item->name ?: 'N/A' }}</div>
-                    <div class="small text-muted">For {{ $targets[$item->target] }}</div>
+                    <div class="small text-muted">For {{ $targets[$item->target] ?? 'N/A' }}</div>
                 </td>
                 <td class="d-none d-sm-table-cell text-muted">
                     <span class="badge badge badge-default" style="font-size: 90%;">
