@@ -757,6 +757,10 @@ class VarboxServiceProvider extends BaseServiceProvider
         Blade::directive('analytics', function () {
             return "<?php echo optional(app('analytics.model')->first())->code ?: '' ?>";
         });
+
+        Blade::directive('schema', function ($expression) {
+            return "<?php echo app('schema.helper')->renderAll($expression); ?>";
+        });
     }
 
     /**
