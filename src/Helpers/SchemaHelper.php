@@ -25,52 +25,65 @@ class SchemaHelper implements SchemaHelperContract
     protected $output = [];
 
     /**
+     * Display the generated json+ld schema code for the specified schema and model.
+     *
+     * @param SchemaModelContract $schema
+     * @param Model $model
+     * @return string|void
+     */
+    public function renderSingle(SchemaModelContract $schema, Model $model)
+    {
+        switch ($schema->type) {
+            case $schema::TYPE_ARTICLE:
+                return (new Article($model, $schema))->generate();
+                break;
+            case $schema::TYPE_PRODUCT:
+                return (new Product($model, $schema))->generate();
+                break;
+            case $schema::TYPE_EVENT:
+                return (new Event($model, $schema))->generate();
+                break;
+            case $schema::TYPE_PERSON:
+                return (new Person($model, $schema))->generate();
+                break;
+            case $schema::TYPE_BOOK:
+                return (new Book($model, $schema))->generate();
+                break;
+            case $schema::TYPE_COURSE:
+                return (new Course($model, $schema))->generate();
+                break;
+            case $schema::TYPE_JOB_POSTING:
+                return (new JobPosting($model, $schema))->generate();
+                break;
+            case $schema::TYPE_LOCAL_BUSINESS:
+                return (new LocalBusiness($model, $schema))->generate();
+                break;
+            case $schema::TYPE_SOFTWARE_APPLICATION:
+                return (new SoftwareApplication($model, $schema))->generate();
+                break;
+            case $schema::TYPE_VIDEO_OBJECT:
+                return (new VideoObject($model, $schema))->generate();
+                break;
+            case $schema::TYPE_REVIEW:
+                return (new Review($model, $schema))->generate();
+                break;
+        }
+    }
+
+    /**
      * Display the generated json+ld schema code for a model.
      *
      * @param Model $model
      * @return string
      */
-    public function render(Model $model)
+    public function renderAll(Model $model)
     {
-        $class = app(SchemaModelContract::class);
-        $schemas = $class::whereTarget($model->getMorphClass())->get();
+        $schemas = app(SchemaModelContract::class)
+            ->whereTarget($model->getMorphClass())
+            ->get();
 
         foreach ($schemas as $schema) {
-            switch ($schema->type) {
-                case $class::TYPE_ARTICLE:
-                    $this->output[] = (new Article($model, $schema))->generate();
-                    break;
-                case $class::TYPE_PRODUCT:
-                    $this->output[] = (new Product($model, $schema))->generate();
-                    break;
-                case $class::TYPE_EVENT:
-                    $this->output[] = (new Event($model, $schema))->generate();
-                    break;
-                case $class::TYPE_PERSON:
-                    $this->output[] = (new Person($model, $schema))->generate();
-                    break;
-                case $class::TYPE_BOOK:
-                    $this->output[] = (new Book($model, $schema))->generate();
-                    break;
-                case $class::TYPE_COURSE:
-                    $this->output[] = (new Course($model, $schema))->generate();
-                    break;
-                case $class::TYPE_JOB_POSTING:
-                    $this->output[] = (new JobPosting($model, $schema))->generate();
-                    break;
-                case $class::TYPE_LOCAL_BUSINESS:
-                    $this->output[] = (new LocalBusiness($model, $schema))->generate();
-                    break;
-                case $class::TYPE_SOFTWARE_APPLICATION:
-                    $this->output[] = (new SoftwareApplication($model, $schema))->generate();
-                    break;
-                case $class::TYPE_VIDEO_OBJECT:
-                    $this->output[] = (new VideoObject($model, $schema))->generate();
-                    break;
-                case $class::TYPE_REVIEW:
-                    $this->output[] = (new Review($model, $schema))->generate();
-                    break;
-            }
+            $this->output[] = $this->renderSingle($schema, $model);
         }
 
         return implode('', $this->output);
