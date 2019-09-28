@@ -117,8 +117,6 @@ class SchemaController extends Controller
             try {
                 $model = app($schema->target)->firstOrFail();
                 $code = $this->helper->renderSingle($schema, $model);
-            } catch (ModelNotFoundException $e) {
-                $code = null;
             } catch (Exception $e) {
                 $code = null;
             }
