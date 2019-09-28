@@ -82,6 +82,9 @@
             <div class="card-body">
                 <div class="d-flex text-left">
                     @include('varbox::buttons.cancel', ['url' => route('admin.schema.index')])
+                    <a class="js-TestSchemaButton btn btn-red btn-square text-white ml-4" data-toggle="tooltip" data-placement="top" title="It will use the first record{{ !empty($targets[$item->target]) ? ' of "' . $targets[$item->target] . '"' : '' }}">
+                        <i class="fe fe-settings mr-2"></i>Test Schema
+                    </a>
                     @include('varbox::buttons.save_stay')
                     @include('varbox::buttons.save')
                 </div>
@@ -89,8 +92,24 @@
         </div>
     </div>
     {!! form_admin()->close() !!}
+
+    @if($schemaCode)
+        {!! form()->open(['url' => 'https://search.google.com/structured-data/testing-tool', 'method' => 'POST', 'target' => '_blank', 'class' => 'js-TestSchemaForm']) !!}
+        {!! form()->hidden('code', $schemaCode) !!}
+        {!! form()->close() !!}
+    @endif
 @endsection
 
 @push('scripts')
     {!! JsValidator::formRequest(config('varbox.bindings.form_requests.schema_form_request', \Varbox\Requests\SchemaRequest::class), '.frm') !!}
+
+    @if($schemaCode)
+        <script type="text/javascript">
+            $('.js-TestSchemaButton').click(function (e) {
+                e.preventDefault();
+
+                $('.js-TestSchemaForm').submit();
+            });
+        </script>
+    @endif
 @endpush

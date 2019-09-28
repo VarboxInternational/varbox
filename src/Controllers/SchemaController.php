@@ -2,13 +2,17 @@
 
 namespace Varbox\Controllers;
 
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\SchemaHelperContract;
 use Varbox\Contracts\SchemaModelContract;
 use Varbox\Filters\SchemaFilter;
+use Varbox\Helpers\SchemaHelper;
 use Varbox\Requests\SchemaRequest;
 use Varbox\Sorts\SchemaSort;
 use Varbox\Traits\CanCrud;
@@ -24,11 +28,17 @@ class SchemaController extends Controller
     protected $model;
 
     /**
+     * @var SchemaHelperContract
+     */
+    protected $helper;
+
+    /**
      * @param SchemaModelContract $model
      */
-    public function __construct(SchemaModelContract $model)
+    public function __construct(SchemaModelContract $model, SchemaHelperContract $helper)
     {
         $this->model = $model;
+        $this->helper = $helper;
     }
 
     /**
@@ -104,12 +114,22 @@ class SchemaController extends Controller
     public function edit(SchemaModelContract $schema)
     {
         return $this->_edit(function () use ($schema) {
+            try {
+                $model = app($schema->target)->firstOrFail();
+                $code = $this->helper->renderSingle($schema, $model);
+            } catch (ModelNotFoundException $e) {
+                $code = null;
+            } catch (Exception $e) {
+                $code = null;
+            }
+
             $this->item = $schema;
             $this->title = 'Edit Schema';
             $this->view = view('varbox::admin.schema.edit');
             $this->vars = [
                 'types' => $this->model->getTypes(),
                 'targets' => (array)config('varbox.schema.targets', []),
+                'schemaCode' => $code,
                 'articleTypes' => $this->model->articleSchemaTypes(),
                 'eventTypes' => $this->model->eventSchemaTypes(),
                 'localBusinessTypes' => $this->model->localBusinessSchemaTypes(),
