@@ -13,17 +13,15 @@ interface MetaHelperContract
 
     /**
      * @param string $key
-     * @param array|string|null $default
      * @return string
      */
-    public function get($key, $default = null);
+    public function get($key);
 
     /**
      * @param string $key
-     * @param array|string|null $default
      * @return string
      */
-    public function tag($key, $default = null);
+    public function tag($key);
 
     /**
      * @param $keys

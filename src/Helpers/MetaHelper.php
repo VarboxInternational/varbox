@@ -2,8 +2,9 @@
 
 namespace Varbox\Helpers;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Varbox\Contracts\MetaHelperContract;
-use Varbox\Meta\MetaName;
 use Varbox\Meta\MetaProperty;
 use Varbox\Meta\MetaTag;
 use Varbox\Meta\MetaTwitter;
@@ -24,31 +25,24 @@ class MetaHelper implements MetaHelperContract
      *
      * @param string $key
      * @param string $value
-     * @return string
+     * @return void
      */
     public function set($key, $value)
     {
-        $value = self::sanitize($value);
-
-        if (strtolower($key) == 'image') {
-            $this->meta['image'][] = $value;
-        } else {
-            $this->meta[$key] = $value;
-        }
+        $this->meta[$key] = self::sanitize($value);
     }
 
     /**
      * Get a meta property by it's key.
-     * If the meta property does not have any value, the default one will be returned.
+     * If the meta property does not have any value, the default one from the config will be returned.
      *
      * @param string $key
-     * @param array|string|null $default
      * @return string
      */
-    public function get($key, $default = null)
+    public function get($key)
     {
         if (empty($this->meta[$key])) {
-            return $default;
+            return config('varbox.meta.default_values.' . $key, '');
         }
 
         return $this->meta[$key];
@@ -60,47 +54,53 @@ class MetaHelper implements MetaHelperContract
      * If the meta property does not have any value, it will use the default value to build the HTML.
      *
      * @param string $key
-     * @param array|string|null $default
      * @return string
      */
-    public function tag($key, $default = null)
+    public function tag($key)
     {
-        if (!($values = $this->get($key, $default))) {
+        if (!($value = $this->get($key))) {
             return '';
         }
 
-        if (!is_array($values)) {
-            $values = [$values];
-        }
+        $html = [];
 
-        $html = '';
+        $html[] = MetaTag::tag($key, $value);
+        $html[] = MetaProperty::tag($key, $value);
+        $html[] = MetaTwitter::tag($key, $value);
 
-        foreach ($values as $value) {
-            $html .= MetaTag::tag($key, $value);
-            $html .= MetaName::tag($key, $value);
-            $html .= MetaProperty::tag($key, $value);
-            $html .= MetaTwitter::tag($key, $value);
-        }
-
-        return $html;
+        return implode('', $html);
     }
 
     /**
      * Get the HTML format for multiple meta properties by their keys.
      *
-     * @param $keys
+     * @param array|string|null $keys
      * @return string
      */
     public function tags(...$keys)
     {
-        $keys = array_flatten($keys);
-        $html = '';
+        $keys = empty($keys) ? array_keys($this->meta) : Arr::flatten($keys);
+        $html = [];
 
         foreach ($keys as $key) {
-            $html .= $this->tag($key);
+            $html[] = $this->tag($key);
         }
 
-        return $html;
+        return implode('', $html);
+    }
+
+    /**
+     * Render the view responsible for displaying all the meta fields.
+     * This is to be used in an admin form.
+     *
+     * @param Model|null $model
+     * @return \Illuminate\View\View
+     */
+    public function fields(Model $model = null)
+    {
+        return view('varbox::helpers.meta.fields')->with([
+            'model' => $model,
+        ]);
     }
 
     /**
