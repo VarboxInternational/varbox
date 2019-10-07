@@ -211,6 +211,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/redirect.php' => config_path('varbox/redirect.php'),
             __DIR__ . '/../config/translation.php' => config_path('varbox/translation.php'),
             __DIR__ . '/../config/schema.php' => config_path('varbox/schema.php'),
+            __DIR__ . '/../config/meta.php' => config_path('varbox/meta.php'),
         ], 'config');
     }
 
@@ -574,6 +575,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/redirect.php', 'varbox.redirect');
         $this->mergeConfigFrom(__DIR__ . '/../config/translation.php', 'varbox.translation');
         $this->mergeConfigFrom(__DIR__ . '/../config/schema.php', 'varbox.schema');
+        $this->mergeConfigFrom(__DIR__ . '/../config/meta.php', 'varbox.meta');
     }
 
     /**
