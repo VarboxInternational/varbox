@@ -7,7 +7,7 @@ interface SchemaModelContract
     /**
      * @return array
      */
-    public function getTypes();
+    public function schemaTypes();
 
     /**
      * @return mixed

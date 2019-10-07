@@ -65,7 +65,7 @@ class Schema extends Model implements SchemaModelContract
      *
      * @return array
      */
-    public function getTypes()
+    public function schemaTypes()
     {
         return [
             static::TYPE_ARTICLE => 'Article',
