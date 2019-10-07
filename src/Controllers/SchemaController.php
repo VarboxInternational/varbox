@@ -59,7 +59,7 @@ class SchemaController extends Controller
             $this->title = 'Schema';
             $this->view = view('varbox::admin.schema.index');
             $this->vars = [
-                'types' => $this->model->getTypes(),
+                'types' => $this->model->schemaTypes(),
                 'targets' => (array)config('varbox.schema.targets', []),
             ];
         });
@@ -72,12 +72,12 @@ class SchemaController extends Controller
      */
     public function create($type = null)
     {
-        if (is_null($type) || !array_key_exists($type, $this->model->getTypes())) {
+        if (is_null($type) || !array_key_exists($type, $this->model->schemaTypes())) {
             meta()->set('title', 'Admin - Add Schema - Choose Type');
 
             return view('varbox::admin.schema.init')->with([
                 'title' => 'Add Schema',
-                'types' => $this->model->getTypes(),
+                'types' => $this->model->schemaTypes(),
             ]);
         }
 
@@ -125,7 +125,7 @@ class SchemaController extends Controller
             $this->title = 'Edit Schema';
             $this->view = view('varbox::admin.schema.edit');
             $this->vars = [
-                'types' => $this->model->getTypes(),
+                'types' => $this->model->schemaTypes(),
                 'targets' => (array)config('varbox.schema.targets', []),
                 'schemaCode' => $code,
                 'articleTypes' => $this->model->articleSchemaTypes(),
