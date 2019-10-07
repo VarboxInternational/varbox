@@ -33,7 +33,7 @@ class SchemaRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                Rule::in(array_keys(app(SchemaModelContract::class)->getTypes()))
+                Rule::in(array_keys(app(SchemaModelContract::class)->schemaTypes()))
             ],
             'target' => [
                 'required',
