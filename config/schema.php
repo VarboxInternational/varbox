@@ -18,7 +18,7 @@ return [
     */
     'targets' => [
 
-        \Varbox\Models\Page::class => 'All Pages'
+        // \App\User::class => 'All Users'
 
     ],
 
