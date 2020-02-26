@@ -12,6 +12,6 @@ return [
     | For your information, this logic happens inside the \Varbox\Middleware\PersistLocale middleware.
     |
     */
-    'auto_detect_locale' => true,
+    'auto_detect_locale' => false,
 
 ];
