@@ -1,14 +1,6 @@
 <div class="header py-4 bg-blue-dark">
     <div class="container">
         <div class="d-flex">
-            <div class="col-lg-3 mr-auto ml-0 pl-0">
-                <form class="input-icon my-lg-0">
-                    <input type="search" class="form-control header-search no-background no-border text-muted" placeholder="Search…" tabindex="1">
-                    <div class="input-icon-addon">
-                        <i class="fe fe-search"></i>
-                    </div>
-                </form>
-            </div>
             <div class="d-flex order-lg-2 ml-auto">
                 @include('varbox::layouts.admin.partials._languages')
                 @include('varbox::layouts.admin.partials._notifications')
