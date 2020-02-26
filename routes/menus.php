@@ -26,7 +26,7 @@ Route::group([
         Route::get('{location}', ['as' => 'admin.menus.index', 'uses' => $controllers['menus'] . '@index', 'permissions' => 'menus-list']);
         Route::get('{location}/create/{menuParent?}', ['as' => 'admin.menus.create', 'uses' => $controllers['menus'] . '@create', 'permissions' => 'menus-add']);
         Route::post('{location}/store/{menuParent?}', ['as' => 'admin.menus.store', 'uses' => $controllers['menus'] . '@store', 'permissions' => 'menus-add']);
-        Route::get('{location}/edit/{menuParent}', ['as' => 'admin.menus.edit', 'uses' => $controllers['menus'] . '@edit', 'permissions' => 'menus-edit']);
+        Route::get('{location}/edit/{menu}', ['as' => 'admin.menus.edit', 'uses' => $controllers['menus'] . '@edit', 'permissions' => 'menus-edit']);
         Route::put('{location}/update/{menu}', ['as' => 'admin.menus.update', 'uses' => $controllers['menus'] . '@update', 'permissions' => 'menus-edit']);
         Route::delete('{location}/destroy/{menu}', ['as' => 'admin.menus.destroy', 'uses' => $controllers['menus'] . '@destroy', 'permissions' => 'menus-delete']);
 

@@ -257,7 +257,7 @@ class Menu extends Model implements MenuModelContract
             ->withEntityName($this->name)
             ->withEntityUrl(route('admin.menus.edit', [
                 'location' => $this->location,
-                'id' => $this->getKey()
+                'menu' => $this->getKey()
             ]));
     }
 }
