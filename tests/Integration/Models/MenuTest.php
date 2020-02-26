@@ -161,12 +161,12 @@ class MenuTest extends TestCase
     /** @test */
     public function it_can_get_only_records_of_a_parent()
     {
-        $parent1 = Menu::create(['name' => 'Menu parent 1']);
-        $parent2 = Menu::create(['name' => 'Menu parent 2']);
+        $parent1 = Menu::create(['location' => 'test-location', 'name' => 'Menu parent 1']);
+        $parent2 = Menu::create(['location' => 'test-location', 'name' => 'Menu parent 2']);
 
-        $child1 = Menu::create(['name' => 'Menu child 1'], $parent1);
-        $child2 = Menu::create(['name' => 'Menu child 2'], $parent1);
-        $child3 = Menu::create(['name' => 'Menu child 3'], $parent2);
+        $child1 = Menu::create(['location' => 'test-location', 'name' => 'Menu child 1'], $parent1);
+        $child2 = Menu::create(['location' => 'test-location', 'name' => 'Menu child 2'], $parent1);
+        $child3 = Menu::create(['location' => 'test-location', 'name' => 'Menu child 3'], $parent2);
 
         $childrenOfParent1 = Menu::ofParent($parent1)->get();
         $childrenOfParent2 = Menu::ofParent($parent2)->get();
@@ -182,8 +182,8 @@ class MenuTest extends TestCase
     /** @test */
     public function it_can_get_only_active_records()
     {
-        Menu::create(['name' => 'Menu 1', 'active' => true]);
-        Menu::create(['name' => 'Menu 2', 'active' => false]);
+        Menu::create(['location' => 'test-location', 'name' => 'Menu 1', 'active' => true]);
+        Menu::create(['location' => 'test-location', 'name' => 'Menu 2', 'active' => false]);
 
         $records = Menu::onlyActive()->get();
 
@@ -194,8 +194,8 @@ class MenuTest extends TestCase
     /** @test */
     public function it_can_get_only_inactive_records()
     {
-        Menu::create(['name' => 'Menu 1', 'active' => true]);
-        Menu::create(['name' => 'Menu 2', 'active' => false]);
+        Menu::create(['location' => 'test-location', 'name' => 'Menu 1', 'active' => true]);
+        Menu::create(['location' => 'test-location', 'name' => 'Menu 2', 'active' => false]);
 
         $records = Menu::onlyInactive()->get();
 
@@ -206,9 +206,9 @@ class MenuTest extends TestCase
     /** @test */
     public function it_can_sort_records_alphabetically()
     {
-        Menu::create(['name' => 'Some block']);
-        Menu::create(['name' => 'Another block']);
-        Menu::create(['name' => 'The block']);
+        Menu::create(['location' => 'test-location', 'name' => 'Some block']);
+        Menu::create(['location' => 'test-location', 'name' => 'Another block']);
+        Menu::create(['location' => 'test-location', 'name' => 'The block']);
 
         $this->assertEquals('Another block', Menu::alphabetically()->get()->first()->name);
         $this->assertEquals('The block', Menu::alphabetically()->get()->last()->name);
@@ -270,6 +270,7 @@ class MenuTest extends TestCase
     {
         $this->menu = Menu::create([
             'type' => $type,
+            'location' => 'test-location',
             'name' => 'Test name',
             'url' => 'test-url',
             'route' => 'test.route',
