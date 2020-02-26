@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
 
 {!! meta()->tag('title') !!}
-{!! app('html')->favicon('vendor/varbox/images/favicon.ico') !!}
 {!! app('html')->style('vendor/varbox/css/app.css') !!}
 
 @stack('styles')
