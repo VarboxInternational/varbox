@@ -3,10 +3,6 @@
 @section('content')
     <div class="row">
         <div class="col col-login mx-auto">
-            <div class="text-center mb-6">
-                <img src="{{ asset('/vendor/varbox/images/logo.svg') }}" class="h-6" alt="{{ config('app.name') }}">
-            </div>
-
             {!! form()->open(['url' => route('admin.password.update'), 'method' => 'post', 'class' => 'card']) !!}
             {!! form()->hidden('token', $token) !!}
             <div class="card-body p-6">
