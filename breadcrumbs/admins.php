@@ -13,7 +13,7 @@ Breadcrumbs::register('admin.admins.create', function($breadcrumbs) {
 });
 
 /* Home > Admins > Edit */
-Breadcrumbs::register('admin.admins.edit', function($breadcrumbs, $admin) {
+Breadcrumbs::register('admin.admins.edit', function($breadcrumbs, $user) {
     $breadcrumbs->parent('admin.admins.index');
-    $breadcrumbs->push('Edit', route('admin.admins.edit', $admin));
+    $breadcrumbs->push('Edit', route('admin.admins.edit', $user->getKey()));
 });
