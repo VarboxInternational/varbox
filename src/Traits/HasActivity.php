@@ -136,7 +136,7 @@ trait HasActivity
             'created', 'updated', 'deleted'
         ]);
 
-        /*if (collect(class_uses(__CLASS__))->contains(SoftDeletes::class)) {
+        if (collect(class_uses(__CLASS__))->contains(SoftDeletes::class)) {
             $events->push('restored');
         }
 
@@ -150,7 +150,7 @@ trait HasActivity
 
         if (collect(class_uses(__CLASS__))->contains(HasDuplicates::class)) {
             $events->push('duplicated');
-        }*/
+        }
 
         return $events;
     }
