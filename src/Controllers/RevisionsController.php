@@ -37,7 +37,7 @@ class RevisionsController extends Controller
      * Get the revisions.
      *
      * @param Request $request
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      * @throws Throwable
      */
     public function index(Request $request)

@@ -1,4 +1,0 @@
-{!! form()->open(['url' => $url, 'method' => 'POST', 'class' => 'left']) !!}
-{!! form()->hidden('approval_url', $approvalUrl) !!}
-{!! form()->button('<i class="fa fa-thumbs-up"></i>&nbsp; Submit For Approval', ['type' => 'submit', 'class' => 'btn-save-approval btn green no-margin-right', 'onclick' => 'return confirm("Are you sure you want to submit this draft for approval with the purpose of becoming live? \n\nPlease note that if you have unsaved changes on the record, you first have to SAVE them and only after submit the draft for approval. \n\nIf you have unsaved changes, \'CANCEL\' this operation, save your changes and only after that submit for approval.")'] + ($attributes ? (array)$attributes : [])) !!}
-{!! form()->close() !!}
