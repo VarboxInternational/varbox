@@ -68,6 +68,7 @@ class InstallCommand extends Command
         $this->modifyUserModel();
         $this->modifyExceptionHandler();
         $this->generateAdminMenu();
+        $this->generatePages();
         $this->manageUploads();
         $this->manageBackups();
         $this->manageFroala();
@@ -313,7 +314,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>GENERATING ADMIN MENU</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $stub = __DIR__ . '/../../resources/stubs/composers/menu/admin_menu.stub';
+        $stub = __DIR__ . '/../../resources/stubs/composers/admin_menu.stub';
         $path = "{$this->laravel['path']}/Http/Composers";
         $file = "{$path}/AdminMenuComposer.php";
         $contents = str_replace('DummyNamespace', $this->laravel->getNamespace() . 'Http\\Composers', $this->files->get($stub));
@@ -330,6 +331,36 @@ class InstallCommand extends Command
 
         $this->files->put($file, $contents);
         $this->line('<fg=green>SUCCESS |</> The "AdminMenuComposer.php" file has been copied over to "app/Http/Composers/" directory!');
+    }
+
+    /**
+     * @return bool
+     * @throws FileNotFoundException
+     */
+    protected function generatePages()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>GENERATING PAGES ROUTER</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $stub = __DIR__ . '/../../resources/stubs/controllers/pages.stub';
+        $path = "{$this->laravel['path']}/Http/Controllers";
+        $file = "{$path}/PagesController.php";
+        $contents = str_replace('DummyNamespace', $this->laravel->getNamespace() . 'Http\\Controllers', $this->files->get($stub));
+
+        if ($this->files->exists($file)) {
+            $this->line('<fg=green>SUCCESS |</> The file "PagesController.php" already exists inside the "app/Http/Controllers/" directory!');
+
+            return false;
+        }
+
+        if (!$this->files->isDirectory($path)) {
+            $this->files->makeDirectory($path, 0755, true, true);
+        }
+
+        $this->files->put($file, $contents);
+        $this->line('<fg=green>SUCCESS |</> The "PagesController.php" file has been copied over to "app/Http/Controllers/" directory!');
     }
 
     /**
@@ -538,7 +569,7 @@ class InstallCommand extends Command
     protected function brand()
     {
         $this->line(
-            "<fg=cyan>               _             
+            "<fg=cyan>               _
  __ ____ _ _ _| |__  _____ __
  \ V / _` | '_| '_ \/ _ \ \ /
   \_/\__,_|_| |_.__/\___/_\_\
