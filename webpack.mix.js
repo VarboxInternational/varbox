@@ -47,5 +47,4 @@ mix
 
         'design/js/helpers.js',
         'design/js/app.js',
-        'design/js/custom.js',
     ], 'public/js/app.js');
