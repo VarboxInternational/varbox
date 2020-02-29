@@ -23,16 +23,16 @@ return [
     'types' => [
 
         'default' => [
-            'controller' => 'PagesController',
-            'action' => 'normal',
+            'controller' => '\App\Http\Controllers\PagesController',
+            'action' => 'show',
             'locations' => [
                 'header', 'content', 'footer'
             ]
         ],
 
         'home' => [
-            'controller' => 'PagesController',
-            'action' => 'home',
+            'controller' => '\App\Http\Controllers\PagesController',
+            'action' => 'show',
             'locations' => [
                 'content'
             ]
