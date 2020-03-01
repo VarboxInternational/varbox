@@ -2,7 +2,6 @@
 
 namespace Varbox\Commands;
 
-use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
@@ -10,8 +9,6 @@ use Illuminate\Support\Str;
 
 class CrudMakeCommand extends GeneratorCommand
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
@@ -64,6 +61,11 @@ class CrudMakeCommand extends GeneratorCommand
     protected $usePreview;
 
     /**
+     * @var bool
+     */
+    protected $useOrder;
+
+    /**
      * Create a new command instance.
      *
      * return void
@@ -78,6 +80,7 @@ class CrudMakeCommand extends GeneratorCommand
      * Execute the console command.
      *
      * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle()
     {
@@ -87,14 +90,16 @@ class CrudMakeCommand extends GeneratorCommand
         $this->createRoutes();
         $this->createController();
 
-        dd($this->useDraft, $this->useRevisions, $this->useDuplicate, $this->usePreview);
-
-
         $name = $this->qualifyClass($this->modelClass);
         $path = $this->getPath($name);
 
         dd($name, $path);
     }
+
+
+
+
+
 
     /**
      * @return void
@@ -103,9 +108,9 @@ class CrudMakeCommand extends GeneratorCommand
     {
         $this->modelClass = $this->askForModelClass();
 
-        if (!$this->modelClass || !Str::startsWith($this->modelClass, $this->getAppNamespace())) {
+        if (!$this->modelClass || !Str::startsWith($this->modelClass, $this->laravel->getNamespace())) {
             $this->error('Invalid model FQN provided');
-            $this->line('It should start with: <fg=yellow>' . $this->getAppNamespace());
+            $this->line('It should start with: <fg=yellow>' . $this->laravel->getNamespace());
             die;
         }
 
@@ -120,6 +125,7 @@ class CrudMakeCommand extends GeneratorCommand
         $this->useRevisions = $this->askForUsingRevisions();
         $this->useDuplicate = $this->askForUsingDuplicate();
         $this->usePreview = $this->askForUsingPreview();
+        $this->useOrder = $this->askForUsingOrder();
     }
 
     /**
@@ -137,6 +143,12 @@ class CrudMakeCommand extends GeneratorCommand
             die;
         }
     }
+
+
+
+
+
+
 
     /**
      * @return void
@@ -170,6 +182,14 @@ class CrudMakeCommand extends GeneratorCommand
         $this->files->put($this->getControllerFile(), $this->buildController());
     }
 
+
+
+
+
+
+
+
+
     /**
      * Get the block's composer contents.
      *
@@ -178,6 +198,8 @@ class CrudMakeCommand extends GeneratorCommand
      */
     protected function buildRoutes()
     {
+        $draftContent = $revisionContent = $duplicateContent = $previewContent = $orderContent = '';
+
         $beginContent = $this->replaceDummyContent(
             $this->files->get($this->getRoutesBeginStub())
         );
@@ -186,32 +208,30 @@ class CrudMakeCommand extends GeneratorCommand
             $draftContent = $this->replaceDummyContent(
                 $this->files->get($this->getRoutesDraftStub())
             );
-        } else {
-            $draftContent = '';
         }
 
         if ($this->useRevisions) {
             $revisionContent = $this->replaceDummyContent(
                 $this->files->get($this->getRoutesRevisionStub())
             );
-        } else {
-            $revisionContent = '';
         }
 
         if ($this->useDuplicate) {
             $duplicateContent = $this->replaceDummyContent(
                 $this->files->get($this->getRoutesDuplicateStub())
             );
-        } else {
-            $duplicateContent = '';
         }
 
         if ($this->usePreview) {
             $previewContent = $this->replaceDummyContent(
                 $this->files->get($this->getRoutesPreviewStub())
             );
-        } else {
-            $previewContent = '';
+        }
+
+        if ($this->useOrder) {
+            $orderContent = $this->replaceDummyContent(
+                $this->files->get($this->getRoutesOrderStub())
+            );
         }
 
         $endContent = $this->replaceDummyContent(
@@ -219,7 +239,7 @@ class CrudMakeCommand extends GeneratorCommand
         );
 
         return implode('', [
-            $beginContent, $draftContent, $revisionContent, $duplicateContent, $previewContent, $endContent
+            $beginContent, $draftContent, $revisionContent, $duplicateContent, $previewContent, $orderContent, $endContent
         ]);
     }
 
@@ -231,32 +251,30 @@ class CrudMakeCommand extends GeneratorCommand
      */
     protected function buildController()
     {
+        $draftUseContent = $revisionUseContent = $duplicateUseContent = $previewUseContent = $orderUseContent = '';
+
         $beginContent = $this->replaceDummyContent(
             $this->files->get($this->getControllerBeginStub())
         );
 
         if ($this->useDraft) {
             $draftUseContent = $this->files->get($this->getControllerDraftUseStub());
-        } else {
-            $draftUseContent = '';
         }
 
         if ($this->useRevisions) {
             $revisionUseContent = $this->files->get($this->getControllerRevisionUseStub());
-        } else {
-            $revisionUseContent = '';
         }
 
         if ($this->useDuplicate) {
             $duplicateUseContent = $this->files->get($this->getControllerDuplicateUseStub());
-        } else {
-            $duplicateUseContent = '';
         }
 
         if ($this->usePreview) {
             $previewUseContent = $this->files->get($this->getControllerPreviewUseStub());
-        } else {
-            $previewUseContent = '';
+        }
+
+        if ($this->useOrder) {
+            $orderUseContent = $this->files->get($this->getControllerOrderUseStub());
         }
 
         $mainContent = $this->replaceDummyContent(
@@ -269,131 +287,305 @@ class CrudMakeCommand extends GeneratorCommand
 
         return implode('', [
             $beginContent,
-            $draftUseContent, $revisionUseContent, $duplicateUseContent, $previewUseContent,
+            $draftUseContent, $revisionUseContent, $duplicateUseContent, $previewUseContent, $orderUseContent,
+            $mainContent,
             $endContent
         ]);
     }
 
+
+
+
+
+
+
+
+    /**
+     * @param string $content
+     * @return string|string[]
+     */
     protected function replaceDummyContent($content)
     {
         $content = str_replace('DummySnakeName', "{$this->pluralSnakeModelName()}", $content);
         $content = str_replace('DummySlugName', "{$this->pluralSlugModelName()}", $content);
+        $content = str_replace('DummyPluralName', "{$this->pluralNormalModelName()}", $content);
+        $content = str_replace('DummySingularName', "{$this->normalModelName()}", $content);
         $content = str_replace('DummyControllerNamespace', "{$this->controllerNamespace()}", $content);
-        $content = str_replace('DummyModelNamespace', "{$this->controllerNamespace()}", $content);
+        $content = str_replace('DummyFullModelNamespace', "{$this->fullModelNamespace()}", $content);
         $content = str_replace('DummyModelName', "{$this->camelModelName()}", $content);
+        $content = str_replace('DummyLastModelSegment', "{$this->lastModelSegment()}", $content);
+        $content = str_replace('DummyViewsPath', "{$this->dotViewsPath()}", $content);
 
         return $content;
     }
 
+
+
+
+
+
+
+
+    /**
+     * @return string
+     */
     protected function getRoutesFile()
     {
         return base_path('routes/web.php');
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerFile()
     {
         return app_path('Http/Controllers/Admin/' . $this->controllerNamespace() . '.php');
     }
 
+
+
+
+
+
+
+
+
+
+    /**
+     * @return string
+     */
     protected function getRoutesBeginStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/begin.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getRoutesEndStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/end.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getRoutesDraftStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/draft.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getRoutesRevisionStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/revision.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getRoutesDuplicateStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/duplicate.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getRoutesPreviewStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/routes/preview.stub';
     }
 
+    /**
+     * @return string
+     */
+    protected function getRoutesOrderStub()
+    {
+        return __DIR__ . '/../../resources/stubs/commands/crud/routes/order.stub';
+    }
+
+
+
+
+
+
+
+
+    /**
+     * @return string
+     */
     protected function getControllerBeginStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/begin.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerContentStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/content.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerEndStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/end.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerDraftUseStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/draft_import.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerRevisionUseStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/revision_import.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerDuplicateUseStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/duplicate_import.stub';
     }
 
+    /**
+     * @return string
+     */
     protected function getControllerPreviewUseStub()
     {
         return __DIR__ . '/../../resources/stubs/commands/crud/controller/preview_import.stub';
     }
 
-    protected function getLastModelSegment()
+    /**
+     * @return string
+     */
+    protected function getControllerOrderUseStub()
     {
-        return Arr::last(explode('\\', $this->qualifyClass($this->modelClass)));
+        return __DIR__ . '/../../resources/stubs/commands/crud/controller/order_import.stub';
     }
 
+
+
+
+
+
+
+    /**
+     * @return string
+     */
+    protected function fullModelNamespace()
+    {
+        return $this->qualifyClass($this->modelClass);
+    }
+
+    /**
+     * @return string
+     */
+    protected function lastModelSegment()
+    {
+        return Arr::last(explode('\\', $this->fullModelNamespace()));
+    }
+
+    /**
+     * @return string
+     */
     protected function pluralSnakeModelName()
     {
-        return Str::plural(Str::snake($this->getLastModelSegment()));
+        return Str::plural(Str::snake($this->lastModelSegment()));
     }
 
+    /**
+     * @return string
+     */
     protected function pluralSlugModelName()
     {
-        return Str::plural(Str::slug(Str::snake($this->getLastModelSegment())));
+        return Str::plural(Str::slug(Str::snake($this->lastModelSegment())));
     }
 
+    /**
+     * @return string
+     */
+    protected function normalModelName()
+    {
+        return Str::title($this->lastModelSegment());
+    }
+
+    /**
+     * @return string
+     */
+    protected function pluralNormalModelName()
+    {
+        return Str::plural($this->normalModelName());
+    }
+
+    /**
+     * @return string
+     */
     protected function camelModelName()
     {
-        return Str::camel($this->getLastModelSegment());
+        return Str::camel($this->lastModelSegment());
     }
 
+    /**
+     * @return string
+     */
     protected function pluralModelName()
     {
-        return Str::plural($this->getLastModelSegment());
+        return Str::plural($this->lastModelSegment());
     }
 
+
+
+
+
+    /**
+     * @return string
+     */
     protected function controllerNamespace()
     {
         return "{$this->pluralModelName()}Controller";
     }
 
+    /**
+     * @return string
+     */
     protected function fullControllerNamespace()
     {
-        return "{$this->getAppNamespace()}Http\Controllers\Admin\\{$this->controllerNamespace()}";
+        return "{$this->laravel->getNamespace()}Http\Controllers\Admin\\{$this->controllerNamespace()}";
     }
+
+
+
+
+
+
+    /**
+     * @return string|string[]
+     */
+    protected function dotViewsPath()
+    {
+        return str_replace('/', '.', $this->viewsPath);
+    }
+
+
+
+
+
+
 
     /**
      * Ask for the fully qualified namespace of the model to be created.
@@ -505,6 +697,31 @@ class CrudMakeCommand extends GeneratorCommand
 
         return $answer == 'yes' ? true : false;
     }
+
+    /**
+     * Ask if the order functionality should be enabled.
+     *
+     * @return string|null
+     */
+    protected function askForUsingOrder()
+    {
+        if ($this->option('no-interaction') == true) {
+            return false;
+        }
+
+        $answer = $this->choice('Would you like to enable the <fg=red>order</> functionality?', [
+            true => 'yes', false => 'no'
+        ], 'no');
+
+        return $answer == 'yes' ? true : false;
+    }
+
+
+
+
+
+
+
 
     /**
      * Get the stub file for the generator.

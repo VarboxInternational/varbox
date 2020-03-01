@@ -1,25 +1,25 @@
 
     /**
-     * @var CountryModelContract
+     * @var DummyLastModelSegment
      */
     protected $model;
 
     /**
-     * @param CountryModelContract $countryModel
+     * @param DummyLastModelSegment $DummyModelName
      */
-    public function __construct(CountryModelContract $countryModel)
+    public function __construct(DummyLastModelSegment $DummyModelName)
     {
-        $this->model = $countryModel;
+        $this->model = $DummyModelName;
     }
 
     /**
      * @param Request $request
-     * @param CountryFilter $filter
-     * @param CountrySort $sort
+     * @param DummyLastModelSegmentFilter $filter
+     * @param DummyLastModelSegmentSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, CountryFilter $filter, CountrySort $sort)
+    public function index(Request $request, DummyLastModelSegmentFilter $filter, DummyLastModelSegmentSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model
@@ -27,8 +27,8 @@
                 ->sorted($request->all(), $sort)
                 ->paginate(config('varbox.crud.per_page', 30));
 
-            $this->title = 'Countries';
-            $this->view = view('varbox::admin.countries.index');
+            $this->title = 'DummyPluralName';
+            $this->view = view('DummyViewsPath.index');
         });
     }
 
@@ -39,8 +39,8 @@
     public function create()
     {
         return $this->_create(function () {
-            $this->title = 'Add Country';
-            $this->view = view('varbox::admin.countries.add');
+            $this->title = 'Add DummySingularName';
+            $this->view = view('DummyViewsPath.add');
         });
     }
 
@@ -49,58 +49,54 @@
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(Request $request)
+    public function store(DummyLastModelSegmentRequest $request)
     {
-        app(config('varbox.bindings.form_requests.country_form_request', CountryRequest::class));
-
         return $this->_store(function () use ($request) {
             $this->item = $this->model->create($request->all());
-            $this->redirect = redirect()->route('admin.countries.index');
+            $this->redirect = redirect()->route('admin.DummySnakeName.index');
         }, $request);
     }
 
     /**
-     * @param CountryModelContract $country
+     * @param DummyLastModelSegment $DummyModelName
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function edit(CountryModelContract $country)
+    public function edit(DummyLastModelSegment $DummyModelName)
     {
-        return $this->_edit(function () use ($country) {
-            $this->item = $country;
-            $this->title = 'Edit Country';
-            $this->view = view('varbox::admin.countries.edit');
+        return $this->_edit(function () use ($DummyModelName) {
+            $this->item = $DummyModelName;
+            $this->title = 'Edit DummySingularName';
+            $this->view = view('DummyViewsPath.edit');
         });
     }
 
     /**
      * @param Request $request
-     * @param CountryModelContract $country
+     * @param DummyLastModelSegment $DummyModelName
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function update(Request $request, CountryModelContract $country)
+    public function update(DummyLastModelRequest $request, DummyLastModelSegment $DummyModelName)
     {
-        app(config('varbox.bindings.form_requests.country_form_request', CountryRequest::class));
-
-        return $this->_update(function () use ($request, $country) {
-            $this->item = $country;
-            $this->redirect = redirect()->route('admin.countries.index');
+        return $this->_update(function () use ($request, $DummyModelName) {
+            $this->item = $DummyModelName;
+            $this->redirect = redirect()->route('admin.DummySnakeName.index');
 
             $this->item->update($request->all());
         }, $request);
     }
 
     /**
-     * @param CountryModelContract $country
+     * @param DummyLastModelSegment $DummyModelName
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy(CountryModelContract $country)
+    public function destroy(DummyLastModelSegment $DummyModelName)
     {
-        return $this->_destroy(function () use ($country) {
-            $this->item = $country;
-            $this->redirect = redirect()->route('admin.countries.index');
+        return $this->_destroy(function () use ($DummyModelName) {
+            $this->item = $DummyModelName;
+            $this->redirect = redirect()->route('admin.DummySnakeName.index');
 
             $this->item->delete();
         });

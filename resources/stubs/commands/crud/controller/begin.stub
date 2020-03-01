@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin\DummyControllerNamespace;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use DummyFullModelNamespace;
+use Illuminate\Http\Request;
 
 class DummyControllerNamespace extends Controller
 {

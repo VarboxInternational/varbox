@@ -3,21 +3,18 @@
 namespace Varbox\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 class BlockMakeCommand extends Command
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'varbox:make-block 
+    protected $signature = 'varbox:make-block
                             {type : The type of the block} ';
 
     /**
@@ -260,7 +257,7 @@ class BlockMakeCommand extends Command
         }
 
         $content = $this->files->get($this->getComposerStub());
-        $content = str_replace('DummyNamespace', "{$this->getAppNamespace()}Blocks\\{$this->argument('type')}", $content);
+        $content = str_replace('DummyNamespace', "{$this->laravel->getNamespace()}Blocks\\{$this->argument('type')}", $content);
         $content = str_replace('dummy_locations', $locations ?: '', $content);
 
         return $content;
@@ -334,7 +331,7 @@ class BlockMakeCommand extends Command
 
         $content[] = "        '{$type}' => [\n";
         $content[] = "            'label' => '" . Str::title($type) . " Block',\n";
-        $content[] = "            'composer_class' => '{$this->getAppNamespace()}Blocks\\{$type}\Composer',\n";
+        $content[] = "            'composer_class' => '{$this->laravel->getNamespace()}Blocks\\{$type}\Composer',\n";
         $content[] = "            'views_path' => 'app/Blocks/{$type}/Views',\n";
         $content[] = "            'preview_image' => '',\n";
         $content[] = "        ],";

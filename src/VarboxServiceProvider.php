@@ -18,6 +18,7 @@ use Spatie\Backup\Events\BackupWasSuccessful;
 use Varbox\Commands\ActivityCleanCommand;
 use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\BlockMakeCommand;
+use Varbox\Commands\CrudMakeCommand;
 use Varbox\Commands\ErrorsCleanCommand;
 use Varbox\Commands\FroalaLinkCommand;
 use Varbox\Commands\InstallCommand;
@@ -306,6 +307,7 @@ class VarboxServiceProvider extends BaseServiceProvider
                 InstallCommand::class,
                 UploadsLinkCommand::class,
                 FroalaLinkCommand::class,
+                CrudMakeCommand::class,
                 MailMakeCommand::class,
                 BlockMakeCommand::class,
                 ActivityCleanCommand::class,

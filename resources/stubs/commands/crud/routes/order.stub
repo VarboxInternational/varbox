@@ -1,0 +1,1 @@
+        Route::patch('order', ['as' => 'admin.DummySnakeName.order', 'uses' => 'DummyControllerNamespace@order', 'permissions' => 'DummySlugName-list']);
