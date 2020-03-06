@@ -213,7 +213,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/translation.php' => config_path('varbox/translation.php'),
             __DIR__ . '/../config/schema.php' => config_path('varbox/schema.php'),
             __DIR__ . '/../config/meta.php' => config_path('varbox/meta.php'),
-        ], 'config');
+        ], 'varbox-config');
     }
 
     /**
