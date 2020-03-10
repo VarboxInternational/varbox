@@ -125,7 +125,7 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.role_form_request', Varbox\Requests\RoleRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.role_form_request', Varbox\Requests\RoleRequest::class), '.frm') !!}--}}
 
     <script type="text/javascript">
         switchPermissions($('select[name="guard"]').val());

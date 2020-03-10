@@ -437,7 +437,7 @@ trait HasRevisions
      */
     protected function buildRevisionDataFromModel()
     {
-        $data = $this->wasRecentlyCreated === true ? $this->getAttributes() : $this->getOriginal();
+        $data = $this->wasRecentlyCreated === true ? $this->getAttributes() : $this->getRawOriginal();
 
         $fieldsToRevision = $this->revisionOptions->revisionFields;
         $fieldsToNotRevision = $this->revisionOptions->revisionNotFields;
@@ -492,7 +492,7 @@ trait HasRevisions
                 $data, $model->getKeyName(), $this->getForeignKey()
             );
 
-            foreach ($model->getOriginal() as $field => $value) {
+            foreach ($model->getRawOriginal() as $field => $value) {
                 $data = $this->dataWithAttributeValue(
                     $data, $model->getAttributes(), $index, $field, $value
                 );
@@ -533,7 +533,7 @@ trait HasRevisions
             $accessor = $this->{$relation}()->getPivotAccessor();
             $pivot = $model->{$accessor};
 
-            foreach ($model->getOriginal() as $field => $value) {
+            foreach ($model->getRawOriginal() as $field => $value) {
                 $data = $this->dataWithForeignKeys(
                     $data, $model->getKeyName(), $this->getForeignKey()
                 );
@@ -543,7 +543,7 @@ trait HasRevisions
                 );
             }
 
-            foreach ($pivot->getOriginal() as $field => $value) {
+            foreach ($pivot->getRawOriginal() as $field => $value) {
                 $data = $this->dataWithPivotForeignKeys(
                     $data, $pivot->getKeyName(), $pivot->getForeignKey(), $pivot->getRelatedKey()
                 );

@@ -14,8 +14,8 @@ use Orchestra\Testbench\Dusk\Options as OrchestraDuskOptions;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Pbmedia\LaravelFFMpeg\FFMpegFacade;
 use Pbmedia\LaravelFFMpeg\FFMpegServiceProvider;
-use Proengsoft\JsValidation\Facades\JsValidatorFacade;
-use Proengsoft\JsValidation\JsValidationServiceProvider;
+//use Proengsoft\JsValidation\Facades\JsValidatorFacade;
+//use Proengsoft\JsValidation\JsValidationServiceProvider;
 use Spatie\Backup\BackupServiceProvider;
 use Varbox\Models\Role;
 use Varbox\Models\User;
@@ -80,7 +80,7 @@ abstract class TestCase extends OrchestraDuskTestCase
         return [
             VarboxServiceProvider::class,
             HtmlServiceProvider::class,
-            JsValidationServiceProvider::class,
+            //JsValidationServiceProvider::class,
             BreadcrumbsServiceProvider::class,
             BackupServiceProvider::class,
             ImageServiceProvider::class,
@@ -100,7 +100,7 @@ abstract class TestCase extends OrchestraDuskTestCase
             'Form' => FormFacade::class,
             'Html' => HtmlFacade::class,
             'Breadcrumbs' => Breadcrumbs::class,
-            'JsValidator' => JsValidatorFacade::class,
+            //'JsValidator' => JsValidatorFacade::class,
             'Image' => Image::class,
             'FFMpeg' => FFMpegFacade::class,
         ];

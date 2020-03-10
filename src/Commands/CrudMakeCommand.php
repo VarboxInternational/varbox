@@ -159,11 +159,11 @@ class CrudMakeCommand extends GeneratorCommand
         $content = $this->files->get($this->getRoutesFile());
 
         $content = str_replace('// This should be the last line', '', $content);
-        $content = str_replace('Route::url();', '', $content);
+        $content = str_replace('Route::varbox();', '', $content);
 
         $content .= $this->buildRoutes();
         $content .= "\n// This should be the last line\n";
-        $content .= "Route::url();\n";
+        $content .= "Route::varbox();\n";
 
         $this->files->put($this->getRoutesFile(), $content);
     }

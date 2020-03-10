@@ -45,5 +45,5 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.state_form_request', \Varbox\Requests\StateRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.state_form_request', \Varbox\Requests\StateRequest::class), '.frm') !!}--}}
 @endpush

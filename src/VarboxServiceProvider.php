@@ -231,9 +231,9 @@ class VarboxServiceProvider extends BaseServiceProvider
             'ffprobe.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffprobe'] ?? 'ffprobe',
         ]);
 
-        $this->config->set([
+        /*$this->config->set([
             'jsvalidation.view' => $this->config['varbox']['validation']['jsvalidation_view'] ?? 'jsvalidation::bootstrap4',
-        ]);
+        ]);*/
 
         $this->config->set([
             'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,

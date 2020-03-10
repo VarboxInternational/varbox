@@ -14,7 +14,7 @@ class MailMakeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'varbox:make-mail 
+    protected $signature = 'varbox:make-mail
                             {type : The type of the class. Can be any key from the "config/varbox/emails.php" -> "types" config option}';
 
     /**
@@ -144,8 +144,6 @@ class MailMakeCommand extends Command
         $this->files->put($this->viewPath, $this->buildView());
 
         $this->info('Mailable created successfully!');
-
-        return true;
     }
 
     /**

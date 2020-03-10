@@ -63,8 +63,6 @@ class BlockMakeCommand extends Command
 
         $this->info('Block created successfully inside the "app/Blocks/' . $this->argument('type') . '/" directory!');
         $this->comment('<bg=yellow> </> The new block type was added inside the "config/varbox/blocks.php" file.');
-
-        return true;
     }
 
     /**

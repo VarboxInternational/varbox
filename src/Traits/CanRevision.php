@@ -75,6 +75,7 @@ trait CanRevision
 
             return $this->revisionViewWithVariables($model, $revision);
         } catch (Exception $e) {
+            dd($e);
             DB::rollBack();
 
             flash()->error('Could not display the revision! Please try again.', $e);

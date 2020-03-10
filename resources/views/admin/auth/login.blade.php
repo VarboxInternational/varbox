@@ -48,5 +48,5 @@
 @endsection
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.login_form_request', \Varbox\Requests\LoginRequest::class)) !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.login_form_request', \Varbox\Requests\LoginRequest::class)) !!}--}}
 @endpush

@@ -3,8 +3,11 @@
 @section('title', $title)
 
 @section('content')
+    {!! validation('admin')->errors() !!}
+
     {!! form_admin()->open(['url' => route('admin.schema.store'), 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
     {!! form()->hidden('type', $type) !!}
+
     <div class="col-12">
         <div class="card">
             <div class="card-status bg-blue"></div>
@@ -40,5 +43,5 @@
 @endsection
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.schema_form_request', \Varbox\Requests\SchemaRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.schema_form_request', \Varbox\Requests\SchemaRequest::class), '.frm') !!}--}}
 @endpush

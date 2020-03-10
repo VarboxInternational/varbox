@@ -75,10 +75,10 @@ class MenuTest extends TestCase
     {
         $this->createMenu('url');
 
-        $this->assertEquals('test-url', $this->menu->getOriginal('url'));
-        $this->assertNull($this->menu->getOriginal('route'));
-        $this->assertNull($this->menu->getOriginal('menuable_id'));
-        $this->assertNull($this->menu->getOriginal('menuable_type'));
+        $this->assertEquals('test-url', $this->menu->getRawOriginal('url'));
+        $this->assertNull($this->menu->getRawOriginal('route'));
+        $this->assertNull($this->menu->getRawOriginal('menuable_id'));
+        $this->assertNull($this->menu->getRawOriginal('menuable_type'));
     }
 
     /** @test */
@@ -86,10 +86,10 @@ class MenuTest extends TestCase
     {
         $this->createMenu('route');
 
-        $this->assertEquals('test.route', $this->menu->getOriginal('route'));
-        $this->assertNull($this->menu->getOriginal('url'));
-        $this->assertNull($this->menu->getOriginal('menuable_id'));
-        $this->assertNull($this->menu->getOriginal('menuable_type'));
+        $this->assertEquals('test.route', $this->menu->getRawOriginal('route'));
+        $this->assertNull($this->menu->getRawOriginal('url'));
+        $this->assertNull($this->menu->getRawOriginal('menuable_id'));
+        $this->assertNull($this->menu->getRawOriginal('menuable_type'));
     }
 
     /** @test */
@@ -98,10 +98,10 @@ class MenuTest extends TestCase
         $this->createPost();
         $this->createMenu('post');
 
-        $this->assertEquals($this->post->id, $this->menu->getOriginal('menuable_id'));
-        $this->assertEquals($this->post->getMorphClass(), $this->menu->getOriginal('menuable_type'));
-        $this->assertNull($this->menu->getOriginal('route'));
-        $this->assertNull($this->menu->getOriginal('url'));
+        $this->assertEquals($this->post->id, $this->menu->getRawOriginal('menuable_id'));
+        $this->assertEquals($this->post->getMorphClass(), $this->menu->getRawOriginal('menuable_type'));
+        $this->assertNull($this->menu->getRawOriginal('route'));
+        $this->assertNull($this->menu->getRawOriginal('url'));
     }
 
     /** @test */

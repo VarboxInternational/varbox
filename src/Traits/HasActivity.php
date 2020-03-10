@@ -4,6 +4,7 @@ namespace Varbox\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Varbox\Models\Activity;
 use Varbox\Options\ActivityOptions;
@@ -138,10 +139,6 @@ trait HasActivity
 
         if (collect(class_uses(__CLASS__))->contains(SoftDeletes::class)) {
             $events->push('restored');
-        }
-
-        if (collect(class_uses(__CLASS__))->contains(HasDrafts::class)) {
-            $events->push('drafted');
         }
 
         if (collect(class_uses(__CLASS__))->contains(HasRevisions::class)) {

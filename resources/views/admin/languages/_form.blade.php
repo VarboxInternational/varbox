@@ -61,5 +61,5 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.language_form_request', Varbox\Requests\LanguageRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.language_form_request', Varbox\Requests\LanguageRequest::class), '.frm') !!}--}}
 @endpush

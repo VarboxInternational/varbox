@@ -178,7 +178,7 @@ class InstallCommand extends Command
         try {
             $routes = $this->files->get(base_path('routes/web.php'));
 
-            if (false === strpos($routes, 'Route::url()')) {
+            if (false === strpos($routes, 'Route::varbox()')) {
                 $this->files->append(base_path('routes/web.php'), "\n// This should be the last line\nRoute::varbox();\n");
                 $this->line('<fg=green>SUCCESS |</> Registered the routes inside the "routes/web.php" file.');
             } else {

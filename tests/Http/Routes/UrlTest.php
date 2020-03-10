@@ -22,7 +22,7 @@ class UrlTest extends TestCase
     {
         parent::setUp();
 
-        Route::url();
+        Route::varbox();
 
         $this->post = UrlPost::create([
             'name' => 'Test name',

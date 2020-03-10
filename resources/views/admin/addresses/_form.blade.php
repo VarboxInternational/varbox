@@ -63,7 +63,7 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.address_form_request', \Varbox\Requests\AddressRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.address_form_request', \Varbox\Requests\AddressRequest::class), '.frm') !!}--}}
 
     <script type="text/javascript">
         var countrySelect = $('select[name="country_id"]');

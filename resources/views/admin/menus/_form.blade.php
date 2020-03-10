@@ -71,7 +71,7 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.menu_form_request', \Varbox\Requests\MenuRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.menu_form_request', \Varbox\Requests\MenuRequest::class), '.frm') !!}--}}
 
     <script type="text/javascript">
         $(function () {

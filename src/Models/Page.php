@@ -29,7 +29,7 @@ class Page extends Model implements PageModelContract
     use HasUploads;
     use HasRevisions;
     use HasDuplicates;
-    use HasActivity;
+    //use HasActivity;
     use HasBlocks;
     use HasNodes;
     use IsDraftable;

@@ -101,7 +101,7 @@
 @endsection
 
 @push('scripts')
-    {!! JsValidator::formRequest(config('varbox.bindings.form_requests.schema_form_request', \Varbox\Requests\SchemaRequest::class), '.frm') !!}
+    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.schema_form_request', \Varbox\Requests\SchemaRequest::class), '.frm') !!}--}}
 
     @if($schemaCode)
         <script type="text/javascript">
