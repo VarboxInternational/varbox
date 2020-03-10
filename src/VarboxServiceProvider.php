@@ -482,7 +482,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function registerRoutes()
     {
-        Route::macro('url', function () {
+        Route::macro('varbox', function () {
             Route::fallback(function ($url = '/') {
                 try {
                     $url = app(UrlModelContract::class)->whereUrl($url)->firstOrFail();
