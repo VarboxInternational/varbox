@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Traits\IsCacheable;
@@ -63,10 +64,10 @@ class Error extends Model implements ErrorModelContract
      * Verify if errors are enabled from the config file.
      * Verify if the exception to be saved is not registered as an ignored exception.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return bool
      */
-    public function shouldSaveError(Exception $exception)
+    public function shouldSaveError(Throwable $exception)
     {
         return
             config('varbox.errors.enabled', true) === true &&
@@ -76,15 +77,16 @@ class Error extends Model implements ErrorModelContract
     /**
      * Store the registered error in the database.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return Error
      * @throws Exception
      */
-    public function saveError(Exception $exception)
+    public function saveError(Throwable $exception)
     {
         if (!$this->shouldSaveError($exception)) {
             return;
         }
+
 
         $type = get_class($exception);
         $code = $this->getParsedErrorCode($exception);
@@ -134,10 +136,10 @@ class Error extends Model implements ErrorModelContract
     /**
      * Get the actual error code.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return int
      */
-    protected function getParsedErrorCode(Exception $exception)
+    protected function getParsedErrorCode(Throwable $exception)
     {
         $code = $exception->getCode();
 

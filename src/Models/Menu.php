@@ -2,7 +2,6 @@
 
 namespace Varbox\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
