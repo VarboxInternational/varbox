@@ -127,14 +127,14 @@ class InstallCommand extends Command
             }
 
             if (false === strpos($env, 'LOG_ACTIVITY')) {
-                $this->files->append($this->laravel->environmentFilePath(), "\nLOG_ACTIVITY=true\n");
+                $this->files->append($this->laravel->environmentFilePath(), "\nLOG_ACTIVITY=false\n");
                 $this->line('<fg=green>SUCCESS |</> Appended "LOG_ACTIVITY" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "LOG_ACTIVITY" configuration.');
             }
 
             if (false === strpos($env, 'SAVE_ERRORS')) {
-                $this->files->append($this->laravel->environmentFilePath(), "\nSAVE_ERRORS=true\n");
+                $this->files->append($this->laravel->environmentFilePath(), "\nSAVE_ERRORS=false\n");
                 $this->line('<fg=green>SUCCESS |</> Appended "SAVE_ERRORS" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "SAVE_ERRORS" configuration.');
@@ -179,7 +179,7 @@ class InstallCommand extends Command
             $routes = $this->files->get(base_path('routes/web.php'));
 
             if (false === strpos($routes, 'Route::url()')) {
-                $this->files->append(base_path('routes/web.php'), "\n// This should be the last line\nRoute::url();\n");
+                $this->files->append(base_path('routes/web.php'), "\n// This should be the last line\nRoute::varbox();\n");
                 $this->line('<fg=green>SUCCESS |</> Registered the routes inside the "routes/web.php" file.');
             } else {
                 $this->line('<fg=green>SUCCESS |</> Route already registered inside the "routes/web.php" file.');
