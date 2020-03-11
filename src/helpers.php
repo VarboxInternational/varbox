@@ -2,16 +2,6 @@
 
 use Illuminate\Support\Str;
 
-if (!function_exists('query_cache')) {
-    /**
-     * @return \Varbox\Contracts\QueryCacheServiceContract
-     */
-    function query_cache()
-    {
-        return app('query_cache.service');
-    }
-}
-
 if (!function_exists('form')) {
     /**
      * @return \Collective\Html\FormBuilder

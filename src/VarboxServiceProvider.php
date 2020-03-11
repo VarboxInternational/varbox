@@ -48,7 +48,6 @@ use Varbox\Contracts\MenuModelContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PermissionModelContract;
-use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RevisionHelperContract;
 use Varbox\Contracts\RevisionModelContract;
@@ -116,7 +115,6 @@ use Varbox\Models\Translation;
 use Varbox\Models\Upload;
 use Varbox\Models\Url;
 use Varbox\Models\User;
-use Varbox\Services\QueryCacheService;
 use Varbox\Services\TranslationService;
 use Varbox\Services\UploadService;
 
@@ -592,9 +590,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(TranslationServiceContract::class, $binding['services']['translation_service'] ?? TranslationService::class);
         $this->app->alias(TranslationServiceContract::class, 'translation.service');
-
-        $this->app->singleton(QueryCacheServiceContract::class, $binding['services']['query_cache_service'] ?? QueryCacheService::class);
-        $this->app->alias(QueryCacheServiceContract::class, 'query_cache.service');
     }
 
     /**

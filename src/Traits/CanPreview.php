@@ -12,7 +12,6 @@ use Illuminate\Routing\Route as Router;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
-use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Helpers\RelationHelper;
 
 trait CanPreview
@@ -51,12 +50,11 @@ trait CanPreview
      * Preview an entity that has a url.
      *
      * @param Request $request
-     * @param QueryCacheServiceContract $cache
      * @param int|null $id
      * @return RedirectResponse
      * @throws Exception
      */
-    public function preview(Request $request, QueryCacheServiceContract $cache, $id = null)
+    public function preview(Request $request, $id = null)
     {
         $req = app($this->previewRequest());
 
@@ -70,26 +68,29 @@ trait CanPreview
 
         DB::beginTransaction();
 
-        $cache->disableQueryCache();
-
         $model = $this->newOrExistingModelForPreview($id);
+
+        if (array_key_exists(IsCacheable::class, class_uses($model))) {
+            $model->disableQueryCache();
+        }
+
         $model = $this->saveModelForPreview($model, $request);
         $model = $this->savePivotedRelationForPreview($request, $model);
 
-        $this->markAsPreview($model);
-
-        return $this->executePreviewRequest($model);
+        return $this->markAsPreview($model)->executePreviewRequest($model);
     }
 
     /**
      * Mark the current request as a preview request, so the underlying logic would know that.
      *
      * @param Model $model
-     * @return void
+     * @return $this
      */
     protected function markAsPreview(Model $model)
     {
         session()->flash('is_previewing', true);
+
+        return $this;
     }
 
     /**

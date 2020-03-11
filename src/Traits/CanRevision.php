@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Contracts\RevisionModelContract;
 
 trait CanRevision
@@ -44,12 +43,11 @@ trait CanRevision
      * Set the revision page meta title.
      * Display the revision view.
      *
-     * @param QueryCacheServiceContract $cache
      * @param RevisionModelContract $revision
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      * @throws Exception
      */
-    public function showRevision(QueryCacheServiceContract $cache, RevisionModelContract $revision)
+    public function showRevision(RevisionModelContract $revision)
     {
         if (!($revision instanceof RevisionModelContract && $revision->exists)) {
             $revision = Route::current()->parameter('revision');
@@ -61,8 +59,6 @@ trait CanRevision
         try {
             DB::beginTransaction();
 
-            $cache->disableQueryCache();
-
             $model = $revision->revisionable;
 
             if (!$this->canBeRevisioned($model)) {
@@ -71,11 +67,14 @@ trait CanRevision
                 return back();
             }
 
+            if (array_key_exists(IsCacheable::class, class_uses($model))) {
+                $model->disableQueryCache();
+            }
+
             $model->rollbackToRevision($revision);
 
             return $this->revisionViewWithVariables($model, $revision);
         } catch (Exception $e) {
-            dd($e);
             DB::rollBack();
 
             flash()->error('Could not display the revision! Please try again.', $e);

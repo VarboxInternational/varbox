@@ -26,7 +26,7 @@ return [
             | It's recommended you change the value below with a persistent cache store, such as "redis" or "memcached".
             |
             */
-            'store' => 'array',
+            'store' => env('QUERY_CACHE_DRIVER', 'array'),
 
             /*
             |
@@ -61,7 +61,7 @@ return [
             | Please note that because cache tagging is used, "file" or "database" cache drivers are not available here.
             |
             */
-            'store' => 'array',
+            'store' => env('QUERY_CACHE_DRIVER', 'array'),
 
             /*
             |

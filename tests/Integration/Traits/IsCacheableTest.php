@@ -4,7 +4,6 @@ namespace Varbox\Tests\Integration\Traits;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
-use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\CacheComment;
 use Varbox\Tests\Models\CachePost;
@@ -76,7 +75,8 @@ class IsCacheableTest extends TestCase
 
         $this->createPostsAndComments();
 
-        app(QueryCacheServiceContract::class)->disableQueryCache();
+        app(CachePost::class)->disableQueryCache();
+        app(CacheComment::class)->disableQueryCache();
 
         DB::enableQueryLog();
 
@@ -97,7 +97,8 @@ class IsCacheableTest extends TestCase
 
         $this->createPostsAndComments();
 
-        app(QueryCacheServiceContract::class)->disableQueryCache();
+        app(CachePost::class)->disableQueryCache();
+        app(CacheComment::class)->disableQueryCache();
 
         DB::enableQueryLog();
 
@@ -106,7 +107,8 @@ class IsCacheableTest extends TestCase
 
         DB::flushQueryLog();
 
-        app(QueryCacheServiceContract::class)->enableQueryCache();
+        app(CachePost::class)->enableQueryCache();
+        app(CacheComment::class)->enableQueryCache();
 
         $this->executePostQueries();
         $this->assertEquals(2, count(DB::getQueryLog()));

@@ -53,22 +53,6 @@ return [
         */
         'translation_service' => \Varbox\Services\TranslationService::class,
 
-        /*
-        |
-        | Concrete implementation for the "query cache service".
-        | To extend or replace this functionality, change the value below with your full "query cache service" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Services\QueryCacheService" class
-        | - or at least implement the "Varbox\Contracts\QueryCacheServiceContract" interface
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - query_cache() OR app('query_cache.service') OR app('\Varbox\Contracts\QueryCacheServiceContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'query_cache_service' => \Varbox\Services\QueryCacheService::class,
-
     ],
 
     /*

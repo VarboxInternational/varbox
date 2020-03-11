@@ -2,12 +2,21 @@
 
 namespace Varbox\Traits;
 
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
-use Varbox\Contracts\QueryCacheServiceContract;
 use Varbox\Database\Builders\QueryCacheBuilder;
+use Varbox\Helpers\RelationHelper;
 
 trait IsCacheable
 {
+    /**
+     * Flag whether or not to cache queries.
+     *
+     * @var bool
+     */
+    protected static $canCacheQueries = true;
+
     /**
      * Boot the model.
      *
@@ -16,7 +25,9 @@ trait IsCacheable
     public static function bootIsCacheable()
     {
         static::saved(function ($model) {
-            $model->clearQueryCache();
+            if ($model->isDirty()) {
+                $model->clearQueryCache();
+            }
         });
 
         static::deleted(function ($model) {
@@ -29,7 +40,7 @@ trait IsCacheable
      */
     public function getQueryCacheTag(): string
     {
-        return app(QueryCacheServiceContract::class)->getAllQueryCachePrefix().'.'.(string) $this->getTable();
+        return config('varbox.query-cache.query.all.prefix') . '.' . (string) $this->getTable();
     }
 
     /**
@@ -37,17 +48,113 @@ trait IsCacheable
      */
     public function getDuplicateQueryCacheTag(): string
     {
-        return app(QueryCacheServiceContract::class)->getDuplicateQueryCachePrefix().'.'.(string) $this->getTable();
+        return config('varbox.query-cache.query.duplicate.prefix') . '.' . (string) $this->getTable();
     }
 
     /**
-     * Flush the query cache from Redis only for the tag corresponding to the model instance.
+     * @return string
+     */
+    public function getQueryCacheStore(): string
+    {
+        return config('varbox.query-cache.query.all.store');
+    }
+
+    /**
+     * @return string
+     */
+    public function getDuplicateQueryCacheStore(): string
+    {
+        return config('varbox.query-cache.query.duplicate.store');
+    }
+
+    /**
+     * Verify if forever query caching should run.
+     *
+     * @return bool
+     */
+    public function shouldCacheQueries(): bool
+    {
+        return config('varbox.query-cache.query.all.enabled', false) === true;
+    }
+
+    /**
+     * Verify if caching of duplicate queries should run.
+     *
+     * @return bool
+     */
+    public function shouldCacheDuplicateQueries(): bool
+    {
+        return config('varbox.query-cache.query.duplicate.enabled', false) === true;
+    }
+
+    /**
+     * Enable caching of database queries for the current request.
+     * This is generally useful when working with rolled back database migrations.
      *
      * @return void
      */
+    public function enableQueryCache(): void
+    {
+        static::$canCacheQueries = true;
+    }
+
+    /**
+     * Disable caching of database queries for the current request.
+     * This is generally useful when working with rolled back database migrations.
+     *
+     * @return void
+     */
+    public function disableQueryCache(): void
+    {
+        static::$canCacheQueries = false;
+    }
+
+    /**
+     * Flush the query cache from the store only for the tag corresponding to the model instance.
+     * If something fails, flush all existing cache for the specified store.
+     * This way, it's guaranteed that nothing will be left out of sync at the database level.
+     *
+     * @return void
+     * @throws Exception
+     */
     public function clearQueryCache(): void
     {
-        app(QueryCacheServiceContract::class)->clearQueryCache($this);
+        if (!(static::$canCacheQueries === true && ($this->shouldCacheQueries() || $this->shouldCacheDuplicateQueries()))) {
+            return;
+        }
+
+        try {
+            cache()->store($this->getQueryCacheStore())->tags($this->getQueryCacheTag())->flush();
+
+            foreach (RelationHelper::getModelRelations($this) as $relation => $attributes) {
+                $related = $attributes['model'] ?? null;
+
+                if (!($related instanceof Model && array_key_exists(IsCacheable::class, class_uses($related)))) {
+                    continue;
+                }
+
+                cache()->store($related->getQueryCacheStore())->tags($related->getQueryCacheTag())->flush();
+            }
+        } catch (Exception $e) {
+            $this->flushQueryCache();
+        }
+    }
+
+    /**
+     * Flush all the query cache for the specified store.
+     * Please note that this does not happen only for one caching type, but for all.
+     *
+     * @throws Exception
+     */
+    public function flushQueryCache(): void
+    {
+        if (static::$canCacheQueries !== true) {
+            return;
+        }
+
+        if (static::$canCacheQueries === true && $this->shouldCacheQueries()) {
+            cache()->store($this->getQueryCacheStore())->flush();
+        }
     }
 
     /**
@@ -63,12 +170,10 @@ trait IsCacheable
         $connection = $this->getConnection();
         $grammar = $connection->getQueryGrammar();
 
-        if (app(QueryCacheServiceContract::class)->canCacheQueries()) {
-            if (app(QueryCacheServiceContract::class)->shouldCacheAllQueries()) {
+        if (static::$canCacheQueries) {
+            if ($this->shouldCacheQueries()) {
                 $cacheAllQueriesForever = true;
-            }
-
-            if (app(QueryCacheServiceContract::class)->shouldCacheDuplicateQueries()) {
+            } elseif ($this->shouldCacheDuplicateQueries()) {
                 $cacheOnlyDuplicateQueriesOnce = true;
             }
         }
@@ -76,14 +181,14 @@ trait IsCacheable
         if ($cacheAllQueriesForever === true) {
             return new QueryCacheBuilder(
                 $connection, $grammar, $connection->getPostProcessor(),
-                $this->getQueryCacheTag(), app(QueryCacheServiceContract::class)->cacheAllQueriesForeverType()
+                $this->getQueryCacheTag(), 'all-queries'
             );
         }
 
         if ($cacheOnlyDuplicateQueriesOnce === true) {
             return new QueryCacheBuilder(
                 $connection, $grammar, $connection->getPostProcessor(),
-                $this->getDuplicateQueryCacheTag(), app(QueryCacheServiceContract::class)->cacheOnlyDuplicateQueriesOnceType()
+                $this->getDuplicateQueryCacheTag(), 'duplicate-queries'
             );
         }
 

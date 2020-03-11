@@ -459,11 +459,10 @@ class HasRevisionsTest extends TestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $comment = RevisionComment::limit(1)->offset($i - 1)->first();
-
             $this->assertEquals($this->post->id, $revision->data['relations']['comments']['records']['items'][$i - 1]['post_id']);
             $this->assertEquals($comment->title, $revision->data['relations']['comments']['records']['items'][$i - 1]['title']);
             $this->assertEquals($comment->content, $revision->data['relations']['comments']['records']['items'][$i - 1]['content']);
-            $this->assertEquals($comment->date->toJson(), $revision->data['relations']['comments']['records']['items'][$i - 1]['date']);
+            $this->assertEquals($comment->date, $revision->data['relations']['comments']['records']['items'][$i - 1]['date']);
             $this->assertEquals($comment->active, $revision->data['relations']['comments']['records']['items'][$i - 1]['active']);
         }
     }

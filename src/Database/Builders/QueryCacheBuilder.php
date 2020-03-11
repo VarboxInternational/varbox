@@ -7,13 +7,12 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
-use Varbox\Contracts\QueryCacheServiceContract;
 
 class QueryCacheBuilder extends QueryBuilder
 {
     /**
      * The cache tag value.
-     * The value comes from the Neurony\QueryCache\Traits\IsCacheable.
+     * The value comes from the Varbox\Traits\IsCacheable.
      *
      * @var string
      */
@@ -22,7 +21,7 @@ class QueryCacheBuilder extends QueryBuilder
     /**
      * The cache type value.
      * Can have one of the values present in the QueryCache class -> TYPE_CACHE constants.
-     * The value comes from the Neurony\QueryCache\IsCacheable.
+     * The value comes from the Varbox\IsCacheable.
      *
      * @var string
      */
@@ -69,9 +68,9 @@ class QueryCacheBuilder extends QueryBuilder
      */
     public function flushQueryCache(): void
     {
-        cache()->store(
-            app(QueryCacheServiceContract::class)->getAllQueryCacheStore()
-        )->tags($this->cacheTag)->flush();
+        cache()->store(config('varbox.query-cache.query.all.store'))
+            ->tags($this->cacheTag)
+            ->flush();
     }
 
     /**
@@ -138,10 +137,10 @@ class QueryCacheBuilder extends QueryBuilder
     protected function runSelect(): array
     {
         switch ($this->cacheType) {
-            case app(QueryCacheServiceContract::class)->cacheAllQueriesForeverType():
+            case 'all-queries':
                 return $this->runSelectWithAllQueriesCached();
                 break;
-            case app(QueryCacheServiceContract::class)->cacheOnlyDuplicateQueriesOnceType():
+            case 'duplicate-queries':
                 return $this->runSelectWithDuplicateQueriesCached();
                 break;
             default:
@@ -159,11 +158,11 @@ class QueryCacheBuilder extends QueryBuilder
      */
     protected function runSelectWithAllQueriesCached()
     {
-        return cache()->store(
-            app(QueryCacheServiceContract::class)->getAllQueryCacheStore()
-        )->tags($this->cacheTag)->rememberForever($this->getQueryCacheKey(), function () {
-            return parent::runSelect();
-        });
+        return cache()->store(config('varbox.query-cache.query.all.store'))
+            ->tags($this->cacheTag)
+            ->rememberForever($this->getQueryCacheKey(), function () {
+                return parent::runSelect();
+            });
     }
 
     /**
@@ -175,10 +174,10 @@ class QueryCacheBuilder extends QueryBuilder
      */
     protected function runSelectWithDuplicateQueriesCached()
     {
-        return cache()->store(
-            app(QueryCacheServiceContract::class)->getDuplicateQueryCacheStore()
-        )->tags($this->cacheTag)->remember($this->getQueryCacheKey(), 1, function () {
-            return parent::runSelect();
-        });
+        return cache()->store(config('varbox.query-cache.query.duplicate.store'))
+            ->tags($this->cacheTag)
+            ->remember($this->getQueryCacheKey(), 1, function () {
+                return parent::runSelect();
+            });
     }
 }
