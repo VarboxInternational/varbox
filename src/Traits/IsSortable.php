@@ -33,7 +33,7 @@ trait IsSortable
         'data' => null,
 
         /**
-         * The Neurony\Sort\Objects\Sort instance.
+         * The Varbox\Sorts\Sort instance.
          * This is used to get the sorting rules, just like a request.
          *
          * @var Sort
@@ -62,6 +62,7 @@ trait IsSortable
      * @param Builder $query
      * @param array $data
      * @param Sort $sort
+     * @throws SortException
      */
     public function scopeSorted($query, array $data, Sort $sort = null)
     {
@@ -102,7 +103,7 @@ trait IsSortable
     }
 
     /**
-     * Set the sort field if an Neurony\Sort\Objects\Sort instance has been provided as a parameter for the sorted scope.
+     * Set the sort field if an Varbox\Sorts\Sort instance has been provided as a parameter for the sorted scope.
      *
      * @return void
      */
@@ -114,7 +115,7 @@ trait IsSortable
     }
 
     /**
-     * Set the sort direction if an Neurony\Sort\Objects\Sort instance has been provided as a parameter for the sorted scope.
+     * Set the sort direction if an Varbox\Sorts\Sort instance has been provided as a parameter for the sorted scope.
      *
      * @return void
      */
@@ -142,6 +143,7 @@ trait IsSortable
      * Sort model records using columns from the model relation's table.
      *
      * @return void
+     * @throws SortException
      */
     protected function sortByRelation()
     {
@@ -231,9 +233,10 @@ trait IsSortable
 
     /**
      * Verify if the direction provided matches one of the directions from:
-     * Neurony\Sort\Objects\Sort::$directions.
+     * Varbox\Sorts\Sort::$directions.
      *
      * @return void
+     * @throws SortException
      */
     protected function checkSortingDirection()
     {
@@ -248,6 +251,7 @@ trait IsSortable
      *
      * @param Model $model
      * @param string $relation
+     * @throws SortException
      */
     protected function checkRelationToSortBy(Model $model, $relation)
     {

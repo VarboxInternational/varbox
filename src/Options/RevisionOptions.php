@@ -91,7 +91,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $revisionOnCreate to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $revisionOnCreate to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @return RevisionOptions
      */
@@ -103,7 +103,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $revisionLimit to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $revisionLimit to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @param int $limit
      * @return RevisionOptions
@@ -116,7 +116,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $revisionFields to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $revisionFields to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @param $fields
      * @return RevisionOptions
@@ -129,7 +129,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $revisionNotFields to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $revisionNotFields to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @param $fields
      * @return RevisionOptions
@@ -142,7 +142,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $revisionRelations to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $revisionRelations to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @param $relations
      * @return RevisionOptions
@@ -155,7 +155,7 @@ class RevisionOptions
     }
 
     /**
-     * Set the $createRevisionWhenRollingBack to work with in the Neurony\Revisions\Traits\HasRevisions trait.
+     * Set the $createRevisionWhenRollingBack to work with in the Varbox\Traits\HasRevisions trait.
      *
      * @return RevisionOptions
      */
