@@ -118,16 +118,6 @@ if (!function_exists('breadcrumbs')) {
     }
 }
 
-if (!function_exists('relation')) {
-    /**
-     * @return \Varbox\Helpers\RelationHelper
-     */
-    function relation()
-    {
-        return new \Varbox\Helpers\RelationHelper;
-    }
-}
-
 if (!function_exists('upload')) {
     /**
      * @param $file

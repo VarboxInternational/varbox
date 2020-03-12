@@ -40,7 +40,7 @@ trait IsCacheable
      */
     public function getQueryCacheTag(): string
     {
-        return config('varbox.query-cache.query.all.prefix') . '.' . (string) $this->getTable();
+        return config('varbox.query-cache.all.prefix') . '.' . (string) $this->getTable();
     }
 
     /**
@@ -48,23 +48,7 @@ trait IsCacheable
      */
     public function getDuplicateQueryCacheTag(): string
     {
-        return config('varbox.query-cache.query.duplicate.prefix') . '.' . (string) $this->getTable();
-    }
-
-    /**
-     * @return string
-     */
-    public function getQueryCacheStore(): string
-    {
-        return config('varbox.query-cache.query.all.store');
-    }
-
-    /**
-     * @return string
-     */
-    public function getDuplicateQueryCacheStore(): string
-    {
-        return config('varbox.query-cache.query.duplicate.store');
+        return config('varbox.query-cache.duplicate.prefix') . '.' . (string) $this->getTable();
     }
 
     /**
@@ -72,9 +56,9 @@ trait IsCacheable
      *
      * @return bool
      */
-    public function shouldCacheQueries(): bool
+    public function shouldCacheAllQueries(): bool
     {
-        return config('varbox.query-cache.query.all.enabled', false) === true;
+        return config('varbox.query-cache.all.enabled', false) === true;
     }
 
     /**
@@ -84,7 +68,7 @@ trait IsCacheable
      */
     public function shouldCacheDuplicateQueries(): bool
     {
-        return config('varbox.query-cache.query.duplicate.enabled', false) === true;
+        return config('varbox.query-cache.duplicate.enabled', false) === true;
     }
 
     /**
@@ -119,12 +103,12 @@ trait IsCacheable
      */
     public function clearQueryCache(): void
     {
-        if (!(static::$canCacheQueries === true && ($this->shouldCacheQueries() || $this->shouldCacheDuplicateQueries()))) {
+        if (!(static::$canCacheQueries === true && ($this->shouldCacheAllQueries() || $this->shouldCacheDuplicateQueries()))) {
             return;
         }
 
         try {
-            cache()->store($this->getQueryCacheStore())->tags($this->getQueryCacheTag())->flush();
+            cache()->tags($this->getQueryCacheTag())->flush();
 
             foreach (RelationHelper::getModelRelations($this) as $relation => $attributes) {
                 $related = $attributes['model'] ?? null;
@@ -133,7 +117,7 @@ trait IsCacheable
                     continue;
                 }
 
-                cache()->store($related->getQueryCacheStore())->tags($related->getQueryCacheTag())->flush();
+                cache()->tags($related->getQueryCacheTag())->flush();
             }
         } catch (Exception $e) {
             $this->flushQueryCache();
@@ -152,8 +136,8 @@ trait IsCacheable
             return;
         }
 
-        if (static::$canCacheQueries === true && $this->shouldCacheQueries()) {
-            cache()->store($this->getQueryCacheStore())->flush();
+        if (static::$canCacheQueries === true && $this->shouldCacheAllQueries()) {
+            cache()->flush();
         }
     }
 
@@ -171,7 +155,7 @@ trait IsCacheable
         $grammar = $connection->getQueryGrammar();
 
         if (static::$canCacheQueries) {
-            if ($this->shouldCacheQueries()) {
+            if ($this->shouldCacheAllQueries()) {
                 $cacheAllQueriesForever = true;
             } elseif ($this->shouldCacheDuplicateQueries()) {
                 $cacheOnlyDuplicateQueriesOnce = true;

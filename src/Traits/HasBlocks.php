@@ -3,7 +3,6 @@
 namespace Varbox\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Models\Block;

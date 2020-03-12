@@ -68,9 +68,7 @@ class QueryCacheBuilder extends QueryBuilder
      */
     public function flushQueryCache(): void
     {
-        cache()->store(config('varbox.query-cache.query.all.store'))
-            ->tags($this->cacheTag)
-            ->flush();
+        cache()->tags($this->cacheTag)->flush();
     }
 
     /**
@@ -158,8 +156,7 @@ class QueryCacheBuilder extends QueryBuilder
      */
     protected function runSelectWithAllQueriesCached()
     {
-        return cache()->store(config('varbox.query-cache.query.all.store'))
-            ->tags($this->cacheTag)
+        return cache()->tags($this->cacheTag)
             ->rememberForever($this->getQueryCacheKey(), function () {
                 return parent::runSelect();
             });
@@ -174,8 +171,7 @@ class QueryCacheBuilder extends QueryBuilder
      */
     protected function runSelectWithDuplicateQueriesCached()
     {
-        return cache()->store(config('varbox.query-cache.query.duplicate.store'))
-            ->tags($this->cacheTag)
+        return cache()->tags($this->cacheTag)
             ->remember($this->getQueryCacheKey(), 1, function () {
                 return parent::runSelect();
             });

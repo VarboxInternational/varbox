@@ -25,8 +25,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_can_insert_records()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'array');
+        $this->app['config']->set('cache.default', 'array');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -41,8 +41,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_can_update_records()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'array');
+        $this->app['config']->set('cache.default', 'array');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -58,8 +58,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_can_delete_records()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'array');
+        $this->app['config']->set('cache.default', 'array');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
         CachePost::query()->delete();
@@ -70,8 +70,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_can_disable_query_caching_with_redis()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -92,8 +92,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_can_enable_query_caching_with_redis()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -124,8 +124,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_caches_duplicate_queries_using_redis()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -145,8 +145,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_caches_only_duplicate_queries_using_redis()
     {
-        $this->app['config']->set('varbox.query-cache.query.duplicate.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.duplicate.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.duplicate.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -162,8 +162,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_removes_cached_queries_from_redis_when_creating_a_new_record()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -187,8 +187,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_removes_cached_queries_from_redis_when_updating_a_new_record()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -211,8 +211,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_removes_related_cached_queries_from_redis_when_creating_a_new_record()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -239,8 +239,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_removes_related_cached_queries_from_redis_when_updating_a_new_record()
     {
-        $this->app['config']->set('varbox.query-cache.query.all.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.all.store', 'redis');
+        $this->app['config']->set('cache.default', 'redis');
+        $this->app['config']->set('varbox.query-cache.all.enabled', true);
 
         $this->createPostsAndComments();
 
@@ -266,8 +266,8 @@ class IsCacheableTest extends TestCase
     /** @test */
     public function it_caches_only_duplicate_queries_using_array()
     {
-        $this->app['config']->set('varbox.query-cache.query.duplicate.enabled', true);
-        $this->app['config']->set('varbox.query-cache.query.duplicate.store', 'array');
+        $this->app['config']->set('cache.default', 'array');
+        $this->app['config']->set('varbox.query-cache.duplicate.enabled', true);
 
         DB::enableQueryLog();
 
