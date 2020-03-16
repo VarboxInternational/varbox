@@ -4,7 +4,7 @@ namespace Varbox\Traits;
 
 use Closure;
 use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -549,7 +549,7 @@ trait CanCrud
      */
     protected function initCrudItems()
     {
-        if (!($this->items instanceof Collection) && !($this->items instanceof LengthAwarePaginator)) {
+        if (!($this->items instanceof Collection) && !($this->items instanceof Paginator)) {
             $this->items = collect($this->items);
         }
 
@@ -666,11 +666,11 @@ trait CanCrud
     {
         list($controller, $action) = explode('@', Route::getCurrentRoute()->getActionName());
 
-        if (!($this->items instanceof Collection || $this->items instanceof LengthAwarePaginator || is_array($this->items))) {
+        if (!($this->items instanceof Collection || $this->items instanceof Paginator || is_array($this->items))) {
             throw new Exception(
                 'The $items property is not defined or is incorrect.' . PHP_EOL .
                 'Please instantiate the $items property on the ' . $controller . ' inside the callback of the ' . $action . '() method.' . PHP_EOL .
-                'The $items should be either an array or an instance of Illuminate\Database\Eloquent\Collection or Illuminate\Contracts\Pagination\LengthAwarePaginator.' . PHP_EOL .
+                'The $items should be either an array or an instance of Illuminate\Database\Eloquent\Collection or Illuminate\Contracts\Pagination\Paginator.' . PHP_EOL .
                 'Example: $this->items = Model::queryScope()->paginate();'
             );
         }

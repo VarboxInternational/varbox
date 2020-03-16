@@ -37,11 +37,4 @@ interface BlockHelperContract
      * @return null|void
      */
     public function render(Model $model, $location, $inherits = true);
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param \Varbox\Contracts\RevisionModelContract $revision
-     * @return \Illuminate\View\View
-     */
-    public function container(Model $model, RevisionModelContract $revision = null);
 }

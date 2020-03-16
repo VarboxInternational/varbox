@@ -1325,38 +1325,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "draft helper".
-        | To extend or replace this functionality, change the value below with your full "draft helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\RevisionHelper" class
-        | - or at least implement the "Varbox\Contracts\RevisionHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - draft() OR app('draft.helper') OR app('\Varbox\Contracts\DraftHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'draft_helper' => \Varbox\Helpers\DraftHelper::class,
-
-        /*
-        |
-        | Concrete implementation for the "revision helper".
-        | To extend or replace this functionality, change the value below with your full "revision helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\RevisionHelper" class
-        | - or at least implement the "Varbox\Contracts\RevisionHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - revision() OR app('revision.helper') OR app('\Varbox\Contracts\RevisionHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'revision_helper' => \Varbox\Helpers\RevisionHelper::class,
-
-        /*
-        |
         | Concrete implementation for the "block helper".
         | To extend or replace this functionality, change the value below with your full "block helper" FQN.
         |

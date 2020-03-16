@@ -183,6 +183,8 @@ class Page extends Model implements PageModelContract
     }
 
     /**
+     * Set the options for the HasRevisions trait.
+     *
      * @return RevisionOptions
      */
     public function getRevisionOptions()

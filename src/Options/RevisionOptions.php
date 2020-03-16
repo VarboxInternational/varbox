@@ -134,7 +134,7 @@ class RevisionOptions
      * @param $fields
      * @return RevisionOptions
      */
-    public function fieldsToNotRevision(...$fields)
+    public function fieldsNotToRevision(...$fields)
     {
         $this->revisionNotFields = Arr::flatten($fields);
 

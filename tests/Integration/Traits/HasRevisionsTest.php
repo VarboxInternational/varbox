@@ -204,7 +204,7 @@ class HasRevisionsTest extends TestCase
         $model = new class extends RevisionPost {
             public function getRevisionOptions() : RevisionOptions
             {
-                return parent::getRevisionOptions()->fieldsToNotRevision('name', 'votes');
+                return parent::getRevisionOptions()->fieldsNotToRevision('name', 'votes');
             }
         };
 

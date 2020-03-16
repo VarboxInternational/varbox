@@ -4,7 +4,6 @@ namespace Varbox\Helpers;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\BlockHelperContract;
 
 class BlockHelper implements BlockHelperContract
@@ -118,21 +117,5 @@ class BlockHelper implements BlockHelperContract
         }
 
         return null;
-    }
-
-    /**
-     * Build the block containers html.
-     *
-     * @param Model $model
-     * @param RevisionModelContract $revision
-     * @return \Illuminate\View\View
-     */
-    public function container(Model $model, RevisionModelContract $revision = null)
-    {
-        return view('varbox::helpers.block.container')->with([
-            'model' => $model,
-            'revision' => $revision,
-            'disabled' => $revision instanceof RevisionModelContract,
-        ]);
     }
 }

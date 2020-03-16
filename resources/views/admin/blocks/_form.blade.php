@@ -28,10 +28,10 @@
 
 @if($item->exists)
     @if(isset($revision))
-        {!! revision()->container($item, 'admin.blocks.revision', $revision) !!}
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.blocks.revision', 'revision' => $revision, 'parameters' => []])
     @else
-        {!! revision()->container($item, 'admin.blocks.revision') !!}
-        {!! draft()->container($item, 'admin.blocks.publish', 'blocks-publish') !!}
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.blocks.revision', 'revision' => null, 'parameters' => []])
+        @include('varbox::helpers.draft.container', ['model' => $item, 'route' => 'admin.blocks.publish', 'permission' => 'blocks-publish'])
     @endif
 @endif
 

@@ -113,10 +113,10 @@
 
 @if($item->exists)
     @if(isset($revision))
-        {!! revision()->container($item, 'admin.emails.revision', $revision) !!}
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.emails.revision', 'revision' => $revision, 'parameters' => []])
     @else
-        {!! revision()->container($item, 'admin.emails.revision') !!}
-        {!! draft()->container($item, 'admin.emails.publish', 'emails-publish') !!}
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.emails.revision', 'revision' => null, 'parameters' => []])
+        @include('varbox::helpers.draft.container', ['model' => $item, 'route' => 'admin.emails.publish', 'permission' => 'emails-publish'])
     @endif
 @endif
 

@@ -51,12 +51,12 @@
 
 @if($item->exists)
     @if(isset($revision))
-        {!! block()->container($item, $revision) !!}
-        {!! revision()->container($item, 'admin.pages.revision', $revision) !!}
+        @include('varbox::helpers.block.container', ['model' => $item, 'revision' => $revision])
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.pages.revision', 'revision' => $revision, 'parameters' => []])
     @else
-        {!! block()->container($item, null) !!}
-        {!! draft()->container($item, 'admin.pages.publish', 'pages-publish') !!}
-        {!! revision()->container($item, 'admin.pages.revision') !!}
+        @include('varbox::helpers.block.container', ['model' => $item, 'revision' => null])
+        @include('varbox::helpers.revision.container', ['model' => $item, 'route' => 'admin.pages.revision', 'revision' => null, 'parameters' => []])
+        @include('varbox::helpers.draft.container', ['model' => $item, 'route' => 'admin.pages.publish', 'permission' => 'pages-publish'])
     @endif
 @endif
 

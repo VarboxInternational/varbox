@@ -1,4 +1,6 @@
 @if($model->isDrafted())
+    @php($showPublishButton = !empty($permission) ? auth()->user()->isSuper() || auth()->user()->hasPermission($permission) : true)
+
     @section('top')
         <div class="alert alert-info col-lg-12 mb-5">
             <div class="d-inline-block float-left text-left mx-auto" style="margin-top: 2px;">

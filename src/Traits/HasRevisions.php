@@ -90,7 +90,6 @@ trait HasRevisions
      * Create a new revision record for the model instance.
      *
      * @return RevisionModelContract|bool|void
-     * @throws Exception
      */
     public function createNewRevision()
     {
@@ -100,23 +99,19 @@ trait HasRevisions
             return;
         }
 
-        try {
-            if (! $this->shouldCreateRevision()) {
-                return false;
-            }
-
-            if ($this->fireModelEvent('revisioning') === false) {
-                return false;
-            }
-
-            $revision = $this->saveAsRevision();
-
-            $this->fireModelEvent('revisioned', false);
-
-            return $revision;
-        } catch (Exception $e) {
-            throw $e;
+        if (! $this->shouldCreateRevision()) {
+            return false;
         }
+
+        if ($this->fireModelEvent('revisioning') === false) {
+            return false;
+        }
+
+        $revision = $this->saveAsRevision();
+
+        $this->fireModelEvent('revisioned', false);
+
+        return $revision;
     }
 
     /**
@@ -124,26 +119,21 @@ trait HasRevisions
      * This method should be called manually only where and if needed.
      *
      * @return RevisionModelContract
-     * @throws Exception
      */
     public function saveAsRevision()
     {
         $this->initRevisionOptions();
 
-        try {
-            return DB::transaction(function () {
-                $revision = $this->revisions()->create([
-                    'user_id' => auth()->id() ?: null,
-                    'data' => $this->buildRevisionData(),
-                ]);
+        return DB::transaction(function () {
+            $revision = $this->revisions()->create([
+                'user_id' => auth()->id() ?: null,
+                'data' => $this->buildRevisionData(),
+            ]);
 
-                $this->clearOldRevisions();
+            $this->clearOldRevisions();
 
-                return $revision;
-            });
-        } catch (Exception $e) {
-            throw $e;
-        }
+            return $revision;
+        });
     }
 
     /**
@@ -151,58 +141,48 @@ trait HasRevisions
      *
      * @param RevisionModelContract $revision
      * @return bool
-     * @throws Exception
      */
     public function rollbackToRevision(RevisionModelContract $revision)
     {
         $this->initRevisionOptions();
 
-        try {
-            static::revisioning(function () {
-                return false;
-            });
+        static::revisioning(function () {
+            return false;
+        });
 
-            DB::transaction(function () use ($revision) {
-                if ($this->revisionOptions->createRevisionWhenRollingBack === true) {
-                    $this->saveAsRevision();
-                }
+        DB::transaction(function () use ($revision) {
+            if ($this->revisionOptions->createRevisionWhenRollingBack === true) {
+                $this->saveAsRevision();
+            }
 
-                $this->rollbackModelToRevision($revision);
+            $this->rollbackModelToRevision($revision);
 
-                if ($revision instanceof RevisionModelContract && isset($revision->data['relations'])) {
-                    foreach ($revision->data['relations'] as $relation => $attributes) {
-                        if (RelationHelper::isDirect($attributes['type'])) {
-                            $this->rollbackDirectRelationToRevision($relation, $attributes);
-                        }
+            if ($revision instanceof RevisionModelContract && isset($revision->data['relations'])) {
+                foreach ($revision->data['relations'] as $relation => $attributes) {
+                    if (RelationHelper::isDirect($attributes['type'])) {
+                        $this->rollbackDirectRelationToRevision($relation, $attributes);
+                    }
 
-                        if (RelationHelper::isPivoted($attributes['type'])) {
-                            $this->rollbackPivotedRelationToRevision($relation, $attributes);
-                        }
+                    if (RelationHelper::isPivoted($attributes['type'])) {
+                        $this->rollbackPivotedRelationToRevision($relation, $attributes);
                     }
                 }
+            }
 
-                $revision->delete();
-            });
+            $revision->delete();
+        });
 
-            return true;
-        } catch (Exception $e) {
-            throw $e;
-        }
+        return true;
     }
 
     /**
      * Remove all existing revisions from the database, belonging to a model instance.
      *
      * @return void
-     * @throws Exception
      */
     public function deleteAllRevisions()
     {
-        try {
-            $this->revisions()->delete();
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $this->revisions()->delete();
     }
 
     /**
@@ -249,7 +229,7 @@ trait HasRevisions
         $this->initRevisionOptions();
 
         $fieldsToRevision = $this->revisionOptions->revisionFields;
-        $fieldsToNotRevision = $this->revisionOptions->revisionNotFields;
+        $fieldsNotToRevision = $this->revisionOptions->revisionNotFields;
 
         if (
             array_key_exists(SoftDeletes::class, class_uses($this)) &&
@@ -262,8 +242,8 @@ trait HasRevisions
             return $this->isDirty($fieldsToRevision);
         }
 
-        if ($fieldsToNotRevision && is_array($fieldsToNotRevision) && ! empty($fieldsToNotRevision)) {
-            return ! empty(Arr::except($this->getDirty(), $fieldsToNotRevision));
+        if ($fieldsNotToRevision && is_array($fieldsNotToRevision) && ! empty($fieldsNotToRevision)) {
+            return ! empty(Arr::except($this->getDirty(), $fieldsNotToRevision));
         }
 
         return true;
@@ -440,7 +420,7 @@ trait HasRevisions
         $data = $this->wasRecentlyCreated === true ? $this->getAttributes() : $this->getRawOriginal();
 
         $fieldsToRevision = $this->revisionOptions->revisionFields;
-        $fieldsToNotRevision = $this->revisionOptions->revisionNotFields;
+        $fieldsNotToRevision = $this->revisionOptions->revisionNotFields;
 
         unset($data[$this->getKeyName()]);
 
@@ -455,9 +435,9 @@ trait HasRevisions
                     unset($data[$field]);
                 }
             }
-        } elseif ($fieldsToNotRevision && is_array($fieldsToNotRevision) && ! empty($fieldsToNotRevision)) {
+        } elseif ($fieldsNotToRevision && is_array($fieldsNotToRevision) && ! empty($fieldsNotToRevision)) {
             foreach ($data as $field => $value) {
-                if (in_array($field, $fieldsToNotRevision)) {
+                if (in_array($field, $fieldsNotToRevision)) {
                     unset($data[$field]);
                 }
             }

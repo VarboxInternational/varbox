@@ -39,7 +39,6 @@ use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
 use Varbox\Contracts\CountryModelContract;
-use Varbox\Contracts\DraftHelperContract;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
@@ -49,7 +48,6 @@ use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\RedirectModelContract;
-use Varbox\Contracts\RevisionHelperContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\SchemaHelperContract;
@@ -70,10 +68,8 @@ use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminFormLangHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\BlockHelper;
-use Varbox\Helpers\DraftHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
-use Varbox\Helpers\RevisionHelper;
 use Varbox\Helpers\SchemaHelper;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Helpers\UploaderHelper;
@@ -702,12 +698,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderLangHelperContract::class, $binding['helpers']['uploader_lang_helper'] ?? UploaderLangHelper::class);
         $this->app->alias(UploaderLangHelperContract::class, 'uploader_lang.helper');
-
-        $this->app->singleton(DraftHelperContract::class, $binding['helpers']['draft_helper'] ?? DraftHelper::class);
-        $this->app->alias(DraftHelperContract::class, 'draft.helper');
-
-        $this->app->singleton(RevisionHelperContract::class, $binding['helpers']['revision_helper'] ?? RevisionHelper::class);
-        $this->app->alias(RevisionHelperContract::class, 'revision.helper');
 
         $this->app->singleton(BlockHelperContract::class, $binding['helpers']['block_helper'] ?? BlockHelper::class);
         $this->app->alias(BlockHelperContract::class, 'block.helper');

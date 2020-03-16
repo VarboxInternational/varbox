@@ -1,4 +1,6 @@
 @permission('blocks-show')
+    @php($disabled = isset($revision) && $revision instanceof \Varbox\Contracts\RevisionModelContract)
+
     <div class="col-md-12">
         <div class="card card-collapsed">
             <div class="card-header blocks-list-header" data-toggle="card-collapse" style="cursor: pointer;">
@@ -22,12 +24,12 @@
         </div>
     </div>
 
-    @include('varbox::helpers.block.templates.row')
+    @include('varbox::helpers.block.templates.row', ['disabled' => $disabled])
     @include('varbox::helpers.block.templates.empty')
     @include('varbox::helpers.block.templates.data')
-    @include('varbox::helpers.block.partials.scripts')
+    @include('varbox::helpers.block.partials.scripts', ['disabled' => $disabled])
 
-    @if($revision)
+    @if(isset($revision))
         @php(\Illuminate\Support\Facades\DB::rollBack())
     @endif
 @endpermission
