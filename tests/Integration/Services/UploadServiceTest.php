@@ -2,6 +2,7 @@
 
 namespace Varbox\Tests\Integration\Services;
 
+use Faker\Generator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
@@ -143,6 +144,16 @@ class UploadServiceTest extends TestCase
         Storage::fake($this->disk);
 
         $file = (new UploadService($this->imageFile()))->upload();
+
+        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
+    }
+
+    /** @test */
+    public function it_can_upload_an_image_from_a_url()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService(app(Generator::class)->imageUrl()))->upload();
 
         Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
     }

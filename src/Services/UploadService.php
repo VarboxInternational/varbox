@@ -14,8 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use Pbmedia\LaravelFFMpeg\FFMpegFacade as FFMpeg;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\Mime\MimeTypes;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
@@ -254,8 +253,16 @@ class UploadService implements UploadServiceContract
             $this->simple = true;
         }
 
-        $this->setDisk()->setFile($file)->setModel($model)->setField($field)->setConfig($model);
-        $this->setPath()->setName()->setExtension()->setSize()->setType();
+        $this->setDisk();
+        $this->setFile($file);
+        $this->setModel($model);
+        $this->setField($field);
+        $this->setConfig($model);
+        $this->setPath();
+        $this->setExtension();
+        $this->setName();
+        $this->setSize();
+        $this->setType();
     }
 
     /**
@@ -478,7 +485,7 @@ class UploadService implements UploadServiceContract
         if ($this->hasOriginal()) {
             $this->name = $this->original->name;
         } else {
-            $this->name = Str::random(40) . '.' . $this->file->getClientOriginalExtension();
+            $this->name = Str::random(40) . '.' . $this->getExtension();
 
             if (Storage::disk($this->getDisk())->exists($this->path . '/' . $this->name)) {
                 $this->setName();
@@ -536,7 +543,7 @@ class UploadService implements UploadServiceContract
         if ($this->hasOriginal()) {
             $this->extension = $this->original->extension;
         } else {
-            $this->extension = strtolower($this->file->getClientOriginalExtension());
+            $this->extension = strtolower($this->file->getClientOriginalExtension() ?: $this->file->guessExtension());
         }
 
         return $this;
@@ -676,7 +683,7 @@ class UploadService implements UploadServiceContract
     public function isImage()
     {
         return in_array(
-            strtolower($this->file->getClientOriginalExtension()),
+            strtolower($this->getExtension()),
             array_map('strtolower', static::getImageExtensions())
         );
     }
@@ -689,7 +696,7 @@ class UploadService implements UploadServiceContract
     public function isVideo()
     {
         return in_array(
-            strtolower($this->file->getClientOriginalExtension()),
+            strtolower($this->getExtension()),
             array_map('strtolower', static::getVideoExtensions())
         );
     }
@@ -702,7 +709,7 @@ class UploadService implements UploadServiceContract
     public function isAudio()
     {
         return in_array(
-            strtolower($this->file->getClientOriginalExtension()),
+            strtolower($this->getExtension()),
             array_map('strtolower', static::getAudioExtensions())
         );
     }
@@ -854,6 +861,7 @@ class UploadService implements UploadServiceContract
      * @param int $height
      * @param int $x
      * @param int $y
+     * @throws UploadException
      */
     public function crop($path, $style, $size, $width, $height, $x = 0, $y = 0)
     {
@@ -1015,6 +1023,7 @@ class UploadService implements UploadServiceContract
      * Please note that the saving will be made only if the database.save key is set to true.
      *
      * @return void
+     * @throws UploadException
      */
     protected function saveUploadToDatabase()
     {
@@ -1043,6 +1052,7 @@ class UploadService implements UploadServiceContract
 
             app(UploadModelContract::class)->create($data);
         } catch (ValidationException $e) {
+            dd($e);
             throw UploadException::fileValidationFailed();
         } catch (Exception $e) {
             throw UploadException::databaseSaveFailed();
@@ -1071,6 +1081,7 @@ class UploadService implements UploadServiceContract
      * Try removing old upload from disk when uploading a new one.
      *
      * @return void
+     * @throws UploadException
      */
     protected function forgetOldUpload()
     {
@@ -1169,6 +1180,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $path
      * @return void
+     * @throws UploadException
      */
     protected function generateThumbnailForImage($path)
     {
@@ -1202,6 +1214,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $path
      * @return void
+     * @throws UploadException
      */
     protected function generateThumbnailsForVideo($path)
     {
@@ -1236,6 +1249,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $type
      * @return void
+     * @throws UploadException
      */
     protected function guardAgainstMaxSize($type)
     {
@@ -1256,6 +1270,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $type
      * @return void
+     * @throws UploadException
      */
     protected function guardAgainstAllowedExtensions($type)
     {
@@ -1278,6 +1293,7 @@ class UploadService implements UploadServiceContract
      * These 2 values come by default from the config/varbox/upload.php, but they are overwritten inside the "getUploadConfig" method on the model class.
      *
      * @return void
+     * @throws UploadException
      */
     protected function guardAgainstMinImageRatio()
     {
@@ -1316,6 +1332,7 @@ class UploadService implements UploadServiceContract
      *
      * @param $file
      * @return UploadedFile
+     * @throws UploadException
      */
     private function createFromObject($file)
     {
@@ -1331,6 +1348,7 @@ class UploadService implements UploadServiceContract
      *
      * @param $file
      * @return UploadedFile
+     * @throws UploadException
      */
     private function createFromAmazonS3($file)
     {
@@ -1354,16 +1372,15 @@ class UploadService implements UploadServiceContract
      *
      * @param array $file
      * @return UploadedFile
+     * @throws UploadException
      */
     private function createFromArray(array $file = [])
     {
-        if (!isset($file['name']) || !isset($file['tmp_name']) || !isset($file['type']) || !isset($file['size']) || !isset($file['error'])) {
+        if (!isset($file['tmp_name']) || !isset($file['name']) || !isset($file['type']) || !isset($file['error'])) {
             throw UploadException::invalidFile();
         }
 
-        return new UploadedFile(
-            $file['tmp_name'], $file['name'], $file['type'], $file['size'], $file['error']
-        );
+        return new UploadedFile($file['tmp_name'], $file['name'], $file['type'], $file['error']);
     }
 
     /**
@@ -1391,6 +1408,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $file
      * @return UploadedFile
+     * @throws UploadException
      */
     private function createFromExisting($file = '')
     {
@@ -1402,8 +1420,7 @@ class UploadService implements UploadServiceContract
             return new UploadedFile(
                 $path . $this->getOriginal()->full_path,
                 $this->getOriginal()->original_name,
-                $this->getOriginal()->mime,
-                $this->getOriginal()->size
+                $this->getOriginal()->mime
             );
         } catch (Exception $e) {
             throw UploadException::invalidFile();
@@ -1415,6 +1432,7 @@ class UploadService implements UploadServiceContract
      *
      * @param string $file
      * @return UploadedFile
+     * @throws UploadException
      */
     private function createFromUrl($file = '')
     {
@@ -1427,7 +1445,6 @@ class UploadService implements UploadServiceContract
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 
             $raw = curl_exec($ch);
-            $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 
             curl_close($ch);
 
@@ -1441,19 +1458,16 @@ class UploadService implements UploadServiceContract
 
             file_put_contents($path, $raw);
 
-            $mime = MimeTypeGuesser::getInstance()->guess($path);
+            $mime = MimeTypes::getDefault()->guessMimeType($path);
+            $extension = Arr::first(MimeTypes::getDefault()->getExtensions($mime));
 
-            if (empty($info['extension'])) {
-                $extension = (new MimeTypeExtensionGuesser())->guess($mime);
+            unlink($path);
 
-                unlink($path);
+            $path .= '.' . $extension;
 
-                $path = sys_get_temp_dir(). '/' . $name. '.' . $extension;
+            file_put_contents($path, $raw);
 
-                file_put_contents($path, $raw);
-            }
-
-            return new UploadedFile($path, $name, $mime, $size);
+            return new UploadedFile($path, $name);
         } catch (Exception $e) {
             throw UploadException::invalidFile();
         }
