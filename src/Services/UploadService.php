@@ -4,8 +4,6 @@ namespace Varbox\Services;
 
 use Closure;
 use Exception;
-use FFMpeg\Coordinate\Dimension as FFMpegDimension;
-use FFMpeg\Format\Video\WebM as FFMpegWebM;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -890,17 +888,22 @@ class UploadService implements UploadServiceContract
         $this->guardAgainstMinImageRatio();
 
         return $this->attemptStoringToDisk(function () {
-            $image = $this->storeToDisk();
+            $path = $this->getPath() . '/' . $this->getName();
+            $image = Image::make($this->getFile())
+                ->orientate()->stream()->__toString();
+
+            Storage::disk($this->getDisk())
+                ->put($path, $image, 'public');
 
             if (!$this->hasOriginal()) {
-                $this->generateThumbnailForImage($image);
+                $this->generateThumbnailForImage($path);
             }
 
             if (!$this->isSimpleUpload()) {
-                $this->generateStylesForImage($image);
+                $this->generateStylesForImage($path);
             }
 
-            return $image;
+            return $path;
         });
     }
 
