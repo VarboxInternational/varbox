@@ -1,0 +1,116 @@
+*:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.no-background {
+    background: none !important;
+}
+
+.no-border {
+    border: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .upload-name {
+        max-width: 85px;
+    }
+}
+
+.js-UploadSelectBtn:hover {
+    opacity: 0.5;
+}
+
+.js-UploadSelectBtn.selected {
+    opacity: 0.5;
+}
+
+.js-UploadNewOpenBtn {
+    &.w-100 {
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+}
+
+.js-UploadNewOpenBtn {
+    &.w-50 {
+        -webkit-border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+}
+
+.js-UploadCurrentOpenBtn {
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+table {
+    th {
+        cursor: default;
+
+        &.sortable {
+            cursor: pointer;
+        }
+    }
+
+    &.table-hover {
+        tr.hovered {
+            background-color: #f5f5f5;
+        }
+    }
+}
+
+.breadcrumb-item + .breadcrumb-item {
+    padding-left: 0;
+
+    &:before {
+        content: none;
+    }
+}
+
+.bootbox-close-button {
+    &.close {
+        overflow: hidden;
+        text-indent: -9999px;
+
+        &::before {
+            float: left;
+            text-indent: 0;
+        }
+    }
+}
+
+.fr-toolbar {
+    border: 1px solid rgba(0,40,100,.12);
+    border-radius: 3px !important;
+}
+
+.fr-box {
+    &.fr-basic {
+        .fr-wrapper {
+            border-top: none;
+            border-bottom: none;
+            border-left: 1px solid rgba(0,40,100,.12);
+            border-right: 1px solid rgba(0,40,100,.12);
+        }
+    }
+
+    .second-toolbar {
+        border: 1px solid rgba(0,40,100,.12);
+        border-radius: 3px !important;
+    }
+}
+
+.is-invalid + .select2-container .select2-selection {
+    border: 1px solid #DD7467;
+    border-radius: 3px;
+}

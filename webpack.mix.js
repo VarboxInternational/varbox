@@ -15,6 +15,8 @@ mix
     .copyDirectory('design/fonts', 'public/fonts')
     .copyDirectory('design/images', 'public/images')
 
+    .sass('design/sass/app.scss', 'design/css/custom.css')
+
     .styles([
         'design/css/plugins/dropzone.css',
         'design/css/plugins/froala.css',

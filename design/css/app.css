@@ -17526,7 +17526,7 @@ svg {
   font-family: "feather";
   src: url("/vendor/varbox/fonts/feather-webfont.eot?t=1501841394106");
   /* IE9*/
-  src: url("/vendor/varbox/fonts/feather-webfont.eot?t=1501841394106#iefix") format("embedded-opentype"), url("/vendor/varbox/fonts/feather-webfont.woff?t=1501841394106") format("woff"), url("/vendor/varbox//fonts/feather-webfont.ttf?t=1501841394106") format("truetype"), url("/vendor/varbox//fonts/feather-webfont.svg?t=1501841394106#feather") format("svg");
+  src: url("/vendor/varbox/fonts/feather-webfont.eot?t=1501841394106#iefix") format("embedded-opentype"), url("/vendor/varbox/fonts/feather-webfont.woff?t=1501841394106") format("woff"), url("/vendor/varbox/fonts/feather-webfont.ttf?t=1501841394106") format("truetype"), url("/vendor/varbox/fonts/feather-webfont.svg?t=1501841394106#feather") format("svg");
   /* iOS 4.1- */
 }
 
