@@ -167,7 +167,7 @@ function buttons()
                 if (result === true) {
                     var form = _this.closest('form');
 
-                    form.validate().settings.ignore = "*";
+                    //form.validate().settings.ignore = "*";
                     form.find('input[name="_method"]').remove();
                     form.attr('action', _this.data('url')).attr('method', 'POST').submit();
                 }
@@ -194,7 +194,7 @@ function buttons()
                 if (result === true) {
                     let form = _this.closest('form');
 
-                    form.validate().settings.ignore = "*";
+                    //form.validate().settings.ignore = "*";
                     form.find('input[name="_method"]').remove();
                     form.attr('action', _this.data('url')).attr('method', 'POST').submit();
                 }
@@ -209,7 +209,7 @@ function buttons()
             method = input.val();
 
         input.remove();
-        form.validate().settings.ignore = "*";
+        //form.validate().settings.ignore = "*";
         form.attr('action', $(this).data('url')).attr('method', 'POST').attr('target', '_blank').submit();
 
         setTimeout(function () {
