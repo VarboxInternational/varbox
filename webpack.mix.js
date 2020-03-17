@@ -45,7 +45,7 @@ mix
         'design/js/plugins/tablednd.min.js',
         'design/js/plugins/upload.min.js',
 
-        './vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
+        //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
 
         'design/js/helpers.js',
         'design/js/app.js',

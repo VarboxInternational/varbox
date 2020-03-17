@@ -70,16 +70,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.133.32",
+            "version": "3.133.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c4bd227436446f02d2b9963f3ea4ae6dc380420b"
+                "reference": "94ced25e191a2a951edd5d9195820bbd2c1d8567"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c4bd227436446f02d2b9963f3ea4ae6dc380420b",
-                "reference": "c4bd227436446f02d2b9963f3ea4ae6dc380420b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/94ced25e191a2a951edd5d9195820bbd2c1d8567",
+                "reference": "94ced25e191a2a951edd5d9195820bbd2c1d8567",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-03-09T18:10:46+00:00"
+            "time": "2020-03-16T18:10:35+00:00"
         },
         {
             "name": "davejamesmiller/laravel-breadcrumbs",
@@ -1137,16 +1137,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v7.1.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "59b97d2868ff42d11626e63c6773b41146b3eb9c"
+                "reference": "77110b6434e65b10b655ab92e645e830b1a79caf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/59b97d2868ff42d11626e63c6773b41146b3eb9c",
-                "reference": "59b97d2868ff42d11626e63c6773b41146b3eb9c",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/77110b6434e65b10b655ab92e645e830b1a79caf",
+                "reference": "77110b6434e65b10b655ab92e645e830b1a79caf",
                 "shasum": ""
             },
             "require": {
@@ -1234,7 +1234,7 @@
                 "ext-memcached": "Required to use the memcache cache driver.",
                 "ext-pcntl": "Required to use all features of the queue worker.",
                 "ext-posix": "Required to use all features of the queue worker.",
-                "ext-redis": "Required to use the Redis cache and queue drivers.",
+                "ext-redis": "Required to use the Redis cache and queue drivers (^4.0|^5.0).",
                 "filp/whoops": "Required for friendly error pages in development (^2.4).",
                 "fzaninotto/faker": "Required to use the eloquent factory builder (^1.9.1).",
                 "guzzlehttp/guzzle": "Required to use the HTTP Client, Mailgun mail driver and the ping methods on schedules (^6.3.1|^7.0).",
@@ -1284,7 +1284,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-03-10T14:07:01+00:00"
+            "time": "2020-03-17T14:08:55+00:00"
         },
         {
             "name": "laravel/ui",
@@ -2896,16 +2896,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "6.8.0",
+            "version": "6.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "b2cf3f9f35613a20a39e1c35803b77858b455382"
+                "reference": "c3d96a596c9fa803aa51d28721d6b1e77934ba95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/b2cf3f9f35613a20a39e1c35803b77858b455382",
-                "reference": "b2cf3f9f35613a20a39e1c35803b77858b455382",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/c3d96a596c9fa803aa51d28721d6b1e77934ba95",
+                "reference": "c3d96a596c9fa803aa51d28721d6b1e77934ba95",
                 "shasum": ""
             },
             "require": {
@@ -2967,7 +2967,7 @@
                 "laravel-backup",
                 "spatie"
             ],
-            "time": "2020-03-02T21:43:50+00:00"
+            "time": "2020-03-13T17:45:46+00:00"
         },
         {
             "name": "spatie/laravel-image-optimizer",
@@ -3030,16 +3030,16 @@
         },
         {
             "name": "spatie/schema-org",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/schema-org.git",
-                "reference": "419f3703015e86f2daccc63649c070e7bb5c52b3"
+                "reference": "367c57cf16a93dc9e119dea507a353bca2b87580"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/schema-org/zipball/419f3703015e86f2daccc63649c070e7bb5c52b3",
-                "reference": "419f3703015e86f2daccc63649c070e7bb5c52b3",
+                "url": "https://api.github.com/repos/spatie/schema-org/zipball/367c57cf16a93dc9e119dea507a353bca2b87580",
+                "reference": "367c57cf16a93dc9e119dea507a353bca2b87580",
                 "shasum": ""
             },
             "require": {
@@ -3086,7 +3086,7 @@
                 "schema-org",
                 "spatie"
             ],
-            "time": "2020-01-23T14:09:05+00:00"
+            "time": "2020-03-17T11:08:16+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -4860,16 +4860,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v4.1.1",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "32bd5ca5a4170f88e27073353013d210a3354ae9"
+                "reference": "939dfda2d7267ac8fc53ac3d642b5de357554c39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/32bd5ca5a4170f88e27073353013d210a3354ae9",
-                "reference": "32bd5ca5a4170f88e27073353013d210a3354ae9",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/939dfda2d7267ac8fc53ac3d642b5de357554c39",
+                "reference": "939dfda2d7267ac8fc53ac3d642b5de357554c39",
                 "shasum": ""
             },
             "require": {
@@ -4918,20 +4918,20 @@
                 "env",
                 "environment"
             ],
-            "time": "2020-03-01T23:56:01+00:00"
+            "time": "2020-03-12T13:44:15+00:00"
         },
         {
             "name": "voku/portable-ascii",
-            "version": "1.4.9",
+            "version": "1.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voku/portable-ascii.git",
-                "reference": "9fd2b224c71448b5f84aef9d499a1428d79776a2"
+                "reference": "240e93829a5f985fab0984a6e55ae5e26b78a334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/9fd2b224c71448b5f84aef9d499a1428d79776a2",
-                "reference": "9fd2b224c71448b5f84aef9d499a1428d79776a2",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/240e93829a5f985fab0984a6e55ae5e26b78a334",
+                "reference": "240e93829a5f985fab0984a6e55ae5e26b78a334",
                 "shasum": ""
             },
             "require": {
@@ -4967,7 +4967,7 @@
                 "clean",
                 "php"
             ],
-            "time": "2020-03-06T02:47:42+00:00"
+            "time": "2020-03-13T01:23:26+00:00"
         }
     ],
     "packages-dev": [
@@ -5633,22 +5633,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v5.0.2",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "d2fb3f270f4413a8148336b3b902f45eb1ff4511"
+                "reference": "e36bdb5fc599495f46a8b2fd3a5e6ffed044e095"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/d2fb3f270f4413a8148336b3b902f45eb1ff4511",
-                "reference": "d2fb3f270f4413a8148336b3b902f45eb1ff4511",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/e36bdb5fc599495f46a8b2fd3a5e6ffed044e095",
+                "reference": "e36bdb5fc599495f46a8b2fd3a5e6ffed044e095",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^7.0.6",
+                "laravel/framework": "^7.1",
                 "mockery/mockery": "^1.3.1",
-                "orchestra/testbench-core": "^5.0.2",
+                "orchestra/testbench-core": "^5.1",
                 "php": ">=7.2.5",
                 "phpunit/phpunit": "^8.4 || ^9.0"
             },
@@ -5679,20 +5679,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2020-03-06T23:39:54+00:00"
+            "time": "2020-03-10T17:14:11+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "14961b8a10e513ebcab7f7548ffbeec663bac5c4"
+                "reference": "69ddd365c01bb90b89edd9c52e44d0dc5bbc0854"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/14961b8a10e513ebcab7f7548ffbeec663bac5c4",
-                "reference": "14961b8a10e513ebcab7f7548ffbeec663bac5c4",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/69ddd365c01bb90b89edd9c52e44d0dc5bbc0854",
+                "reference": "69ddd365c01bb90b89edd9c52e44d0dc5bbc0854",
                 "shasum": ""
             },
             "require": {
@@ -5745,20 +5745,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2020-03-10T16:58:29+00:00"
+            "time": "2020-03-16T04:35:18+00:00"
         },
         {
             "name": "orchestra/testbench-dusk",
-            "version": "v5.0.2",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-dusk.git",
-                "reference": "cd63b076425c1bca754c3b1bce9bb6df43cf9671"
+                "reference": "c4f42017cf15ee7bdfca63270d57b0b64215e73c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/cd63b076425c1bca754c3b1bce9bb6df43cf9671",
-                "reference": "cd63b076425c1bca754c3b1bce9bb6df43cf9671",
+                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/c4f42017cf15ee7bdfca63270d57b0b64215e73c",
+                "reference": "c4f42017cf15ee7bdfca63270d57b0b64215e73c",
                 "shasum": ""
             },
             "require": {
@@ -5766,7 +5766,7 @@
                 "laravel/dusk": "^5.8.2",
                 "opis/closure": "^3.4.2",
                 "orchestra/dusk-updater": "^1.2.1",
-                "orchestra/testbench": "^5.0.2",
+                "orchestra/testbench": "^5.1",
                 "php": ">=7.2",
                 "php-webdriver/webdriver": "^1.7"
             },
@@ -5776,7 +5776,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -5803,7 +5803,7 @@
                 }
             ],
             "description": "Laravel Dusk Testing Helper for Packages Development",
-            "time": "2020-03-07T00:38:13+00:00"
+            "time": "2020-03-11T02:32:09+00:00"
         },
         {
             "name": "phar-io/manifest",
