@@ -71,7 +71,7 @@ class InstallCommand extends Command
         $this->generatePages();
         $this->manageUploads();
         $this->manageBackups();
-        $this->manageFroala();
+        $this->manageWysiwyg();
         $this->migrateTables();
         $this->seedDatabase();
     }
@@ -470,52 +470,52 @@ class InstallCommand extends Command
      * @return void
      * @throws FileNotFoundException
      */
-    protected function manageFroala()
+    protected function manageWysiwyg()
     {
         $this->line(PHP_EOL . PHP_EOL);
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
-        $this->line('<fg=yellow>SETTING UP FROALA</>');
+        $this->line('<fg=yellow>SETTING UP WYSIWYG</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $froalaDiskStub = __DIR__ . '/../../resources/stubs/config/froala/disks.stub';
+        $wysiwygDiskStub = __DIR__ . '/../../resources/stubs/config/wysiwyg/disks.stub';
         $filesystemsConfig = $this->laravel['path.config'] . '/filesystems.php';
-        $froalaPath = $this->laravel['path.storage'] . '/froala';
-        $gitignoreFile = $froalaPath . '/.gitignore';
+        $wysiwygPath = $this->laravel['path.storage'] . '/wysiwyg';
+        $gitignoreFile = $wysiwygPath . '/.gitignore';
 
         if ($this->files->exists($filesystemsConfig)) {
             $content = $this->files->get($filesystemsConfig);
 
-            if (strpos($content, "'froala' => [") === false) {
+            if (strpos($content, "'wysiwyg' => [") === false) {
                 $content = str_replace(
                     "'disks' => [",
-                    "'disks' => [\n\n" . file_get_contents($froalaDiskStub)
+                    "'disks' => [\n\n" . file_get_contents($wysiwygDiskStub)
                     , $content
                 );
 
                 $this->files->put($filesystemsConfig, $content);
-                $this->line('<fg=green>SUCCESS |</> Setup the "froala" storage disk inside "config/filesystems.php" => "disks".');
+                $this->line('<fg=green>SUCCESS |</> Setup the "wysiwyg" storage disk inside "config/filesystems.php" => "disks".');
             } else {
-                $this->line('<fg=green>SUCCESS |</> The "froala" storage disk already exists inside "config/filesystems.php" => "disks".');
+                $this->line('<fg=green>SUCCESS |</> The "wysiwyg" storage disk already exists inside "config/filesystems.php" => "disks".');
             }
         } else {
             $this->line('<fg=red>ERROR   |</> The "config/filesystems.php" file does not exist!');
-            $this->line('<fg=red>ERROR   |</> You will have to manually add the "froala" storage disk.');
+            $this->line('<fg=red>ERROR   |</> You will have to manually add the "wysiwyg" storage disk.');
         }
 
         if ($this->files->exists($gitignoreFile)) {
-            $this->line('<fg=green>SUCCESS |</> The "storage/froala/" directory already exists.');
-            $this->line('<fg=green>SUCCESS |</> The ".gitignore" file inside the "storage/froala/" directory already exists.');
+            $this->line('<fg=green>SUCCESS |</> The "storage/wysiwyg/" directory already exists.');
+            $this->line('<fg=green>SUCCESS |</> The ".gitignore" file inside the "storage/wysiwyg/" directory already exists.');
 
             return;
         } else {
-            $this->files->makeDirectory($froalaPath);
-            $this->line('<fg=green>SUCCESS |</> Created the "storage/froala/" directory!');
+            $this->files->makeDirectory($wysiwygPath);
+            $this->line('<fg=green>SUCCESS |</> Created the "storage/wysiwyg/" directory!');
 
             $this->files->put($gitignoreFile, "*\n!.gitignore\n");
-            $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/froala/" directory!');
+            $this->line('<fg=green>SUCCESS |</> Created the ".gitignore" file inside "storage/wysiwyg/" directory!');
 
-            $this->callSilent('varbox:froala-link');
-            $this->line('<fg=green>SUCCESS |</> The "public/froala/" directory has been linked!');
+            $this->callSilent('varbox:wysiwyg-link');
+            $this->line('<fg=green>SUCCESS |</> The "public/wysiwyg/" directory has been linked!');
         }
     }
 

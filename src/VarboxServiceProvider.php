@@ -20,7 +20,7 @@ use Varbox\Commands\BackupsCleanCommand;
 use Varbox\Commands\BlockMakeCommand;
 use Varbox\Commands\CrudMakeCommand;
 use Varbox\Commands\ErrorsCleanCommand;
-use Varbox\Commands\FroalaLinkCommand;
+use Varbox\Commands\WysiwygLinkCommand;
 use Varbox\Commands\InstallCommand;
 use Varbox\Commands\MailMakeCommand;
 use Varbox\Commands\NotificationsCleanCommand;
@@ -197,7 +197,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
             __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
             __DIR__ . '/../config/upload.php' => config_path('varbox/upload.php'),
-            __DIR__ . '/../config/froala.php' => config_path('varbox/froala.php'),
+            __DIR__ . '/../config/wysiwyg.php' => config_path('varbox/wysiwyg.php'),
             __DIR__ . '/../config/emails.php' => config_path('varbox/emails.php'),
             __DIR__ . '/../config/blocks.php' => config_path('varbox/blocks.php'),
             __DIR__ . '/../config/pages.php' => config_path('varbox/pages.php'),
@@ -300,7 +300,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             $this->commands([
                 InstallCommand::class,
                 UploadsLinkCommand::class,
-                FroalaLinkCommand::class,
+                WysiwygLinkCommand::class,
                 CrudMakeCommand::class,
                 MailMakeCommand::class,
                 BlockMakeCommand::class,
@@ -468,7 +468,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/analytics.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/redirects.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/schema.php');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/froala.php');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/wysiwyg.php');
     }
 
     /**
@@ -562,7 +562,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
         $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');
         $this->mergeConfigFrom(__DIR__ . '/../config/upload.php', 'varbox.upload');
-        $this->mergeConfigFrom(__DIR__ . '/../config/froala.php', 'varbox.froala');
+        $this->mergeConfigFrom(__DIR__ . '/../config/wysiwyg.php', 'varbox.wysiwyg');
         $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');

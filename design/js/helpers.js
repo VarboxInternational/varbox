@@ -1,3 +1,51 @@
+function quilljs(elem = null, options = null) {
+    var editorElements, elementType, editorPlaceholder, defaultOptions;
+
+    if(elem) {
+        editorElements = Array.prototype.slice.call(document.querySelectorAll(elem));
+    } else {
+        editorElements = Array.prototype.slice.call(document.querySelectorAll('[data-quilljs]'));
+    }
+
+    editorElements.forEach(function(el) {
+        if(elem && el.hasAttribute("data-quilljs")) {
+            return;
+        }
+
+        elementType = el.type;
+
+        if(elementType == 'textarea') {
+            elemValue = el.value;
+            editorDiv = document.createElement('div');
+            editorDiv.innerHTML = elemValue;
+            el.parentNode.insertBefore(editorDiv, el.nextSibling);
+            el.style.display = "none";
+            editorPlaceholder = el.placeholder;
+        } else {
+            editorPlaceholder = null;
+            editorDiv = el;
+        }
+
+        if(!options) {
+            defaultOptions = {
+                theme: 'snow',
+                placeholder: editorPlaceholder,
+            };
+        } else {
+            if(!options.placeholder) {
+                options.placeholder = editorPlaceholder;
+            }
+
+            defaultOptions = options;
+        }
+
+        window.QuillEditor = new Quill(editorDiv, defaultOptions);
+        window.QuillEditor.on('text-change', function(delta, oldDelta, source) {
+            el.value = window.QuillEditor.root.innerHTML;
+        });
+    });
+}
+
 var init = {
     Uploader: function (exists, container, oldIndex, newIndex) {
         window.__UploaderIndex = 1 + Math.floor(Math.random() * 999999);
@@ -71,75 +119,31 @@ var init = {
         }
     },
     Editor: function () {
-        var editor = new FroalaEditor('textarea.editor-input', {
-            fileUploadMethod: 'POST',
-            fileUploadURL: '/froala/upload/file',
-            fileUploadParam: 'froala_file',
-            fileUploadParams: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            imageUploadMethod: 'POST',
-            imageUploadURL: '/froala/upload/image',
-            imageUploadParam: 'froala_image',
-            imageUploadParams: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            videoUploadMethod: 'POST',
-            videoUploadURL: '/froala/upload/video',
-            videoUploadParam: 'froala_video',
-            videoUploadParams: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            events: {
-                'file.error': function (error, response) {
-                    var errorMessage;
-
-                    if (response) {
-                        errorMessage = response;
-                    } else if (error.message) {
-                        errorMessage = error.message;
-                    }
-
-                    if (errorMessage) {
-                        editor.popups.get('file.insert')
-                            .find('.fr-file-progress-bar-layer')
-                            .find('h3')
-                            .text(errorMessage);
-                    }
-                },
-                'image.error': function (error, response) {
-                    var errorMessage;
-
-                    if (response) {
-                        errorMessage = response;
-                    } else if (error.message) {
-                        errorMessage = error.message;
-                    }
-
-                    if (errorMessage) {
-                        editor.popups.get('image.insert')
-                            .find('.fr-image-progress-bar-layer')
-                            .find('h3')
-                            .text(errorMessage);
-                    }
-                },
-                'video.error': function (error, response) {
-                    var errorMessage;
-
-                    if (response) {
-                        errorMessage = response;
-                    } else if (error.message) {
-                        errorMessage = error.message;
-                    }
-
-                    if (errorMessage) {
-                        editor.popups.get('video.insert')
-                            .find('.fr-video-progress-bar-layer')
-                            .find('h3')
-                            .text(errorMessage);
+        quilljs('.editor-input', {
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'size': [false, '14px', '16px', '18px', '22px', '24px', '32px'] }],
+                    [{'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{'color': [] }, { 'background': [] }],
+                    [{'align': [] }],
+                    ['link', 'image', 'video']
+                ],
+                imageUpload: {
+                    url: '/wysiwyg/upload-image',
+                    method: 'POST',
+                    name: 'wysiwyg_image',
+                    csrf: {
+                        token: '_token',
+                        hash: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    callbackKO: serverError => {
+                        bootbox.alert(serverError.body.replace (/(^")|("$)/g, ''));
                     }
                 }
             },
+            theme: 'snow',
         });
     },
     Select2: function () {
@@ -292,11 +296,8 @@ var disable = {
             //disable select2
             $('form.frm select.select-input').prop('disabled', true);
 
-            //disable froala editors
-            var editor = new FroalaEditor('textarea.editor-input');
-
-            editor.edit.off();
-            editor.edit.disableDesign();
+            //disable quill editors
+            window.QuillEditor.disable();
         }, 500);
     }
 };

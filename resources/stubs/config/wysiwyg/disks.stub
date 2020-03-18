@@ -1,0 +1,6 @@
+        'wysiwyg' => [
+            'driver' => 'local',
+            'root' => storage_path('wysiwyg'),
+            'url' => env('APP_URL').'/wysiwyg',
+            'visibility' => 'public',
+        ],

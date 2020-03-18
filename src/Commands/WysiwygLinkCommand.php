@@ -4,21 +4,21 @@ namespace Varbox\Commands;
 
 use Illuminate\Console\Command;
 
-class FroalaLinkCommand extends Command
+class WysiwygLinkCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'varbox:froala-link';
+    protected $signature = 'varbox:wysiwyg-link';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link for the froala storage disk from "public/froala/" to "storage/froala/"';
+    protected $description = 'Create a symbolic link for the wysiwyg storage disk from "public/wysiwyg/" to "storage/wysiwyg/"';
 
     /**
      * Execute the console command.
@@ -28,17 +28,17 @@ class FroalaLinkCommand extends Command
      */
     public function handle()
     {
-        if (file_exists(public_path('froala'))) {
-            $this->error('The "public/froala/" directory already exists.');
+        if (file_exists(public_path('wysiwyg'))) {
+            $this->error('The "public/wysiwyg/" directory already exists.');
 
             return false;
         }
 
         $this->laravel->make('files')->link(
-            storage_path('froala'), public_path('froala')
+            storage_path('wysiwyg'), public_path('wysiwyg')
         );
 
-        $this->info('The "public/froala/" directory has been linked.');
+        $this->info('The "public/wysiwyg/" directory has been linked.');
 
         return true;
     }

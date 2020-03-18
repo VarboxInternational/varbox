@@ -655,14 +655,14 @@ return [
 
         /*
         |
-        | Concrete implementation for the "froala controller".
-        | To extend or replace this functionality, change the value below with your full "froala controller" FQN.
+        | Concrete implementation for the "wysiwyg controller".
+        | To extend or replace this functionality, change the value below with your full "wysiwyg controller" FQN.
         |
         | Your class will have to:
-        | - extend the "Varbox\Controllers\FroalaController" class
+        | - extend the "Varbox\Controllers\WysiwygController" class
         |
         */
-        'froala_controller' => \Varbox\Controllers\FroalaController::class,
+        'wysiwyg_controller' => \Varbox\Controllers\WysiwygController::class,
 
         /*
         |

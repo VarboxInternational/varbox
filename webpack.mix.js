@@ -16,12 +16,13 @@ mix
     .copyDirectory('design/images', 'public/images')
 
     .sass('design/sass/app.scss', 'design/css/custom.css')
+    .js('design/js/bootstrap.js', 'design/js/bootstrap.min.js')
 
     .styles([
         'design/css/plugins/dropzone.css',
-        'design/css/plugins/froala.css',
         'design/css/plugins/jcrop.css',
         'design/css/plugins/jstree.css',
+        'design/css/plugins/quilljs.css',
         'design/css/plugins/select2.css',
         'design/css/plugins/select2-bootstrap.css',
 
@@ -36,7 +37,6 @@ mix
 
         'design/js/plugins/bootbox.min.js',
         'design/js/plugins/dropzone.min.js',
-        'design/js/plugins/froala.min.js',
         'design/js/plugins/generator.min.js',
         'design/js/plugins/inputmask.min.js',
         'design/js/plugins/jcrop.min.js',
@@ -47,6 +47,7 @@ mix
 
         //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
 
+        'design/js/bootstrap.min.js',
         'design/js/helpers.js',
         'design/js/app.js',
     ], 'public/js/app.js');
