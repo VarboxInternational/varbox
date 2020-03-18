@@ -350,6 +350,7 @@ class UploadService implements UploadServiceContract
             return $this;
         }
 
+
         switch ($file) {
             case is_string($file):
                 $this->file = $this->createFromString($file);
@@ -1415,13 +1416,12 @@ class UploadService implements UploadServiceContract
         try {
             $this->setOriginal($file);
 
-            $path = config('filesystems.disks.' . $this->getDisk() . '.root') . DIRECTORY_SEPARATOR;
+            $name = $this->getOriginal()->original_name;
+            $mime = $this->getOriginal()->mime;
+            $path = Storage::disk($this->getDisk())
+                ->path($this->getOriginal()->full_path);
 
-            return new UploadedFile(
-                $path . $this->getOriginal()->full_path,
-                $this->getOriginal()->original_name,
-                $this->getOriginal()->mime
-            );
+            return new UploadedFile($path, $name, $mime);
         } catch (Exception $e) {
             throw UploadException::invalidFile();
         }
