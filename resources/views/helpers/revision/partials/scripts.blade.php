@@ -16,7 +16,7 @@
                 success : function(data) {
                     if (data.status) {
                         revisionsContainer.html(data.html);
-                        init.Tooltip();
+                        App.init.Tooltip();
                     }
                 },
                 error: function (err) {
@@ -63,7 +63,7 @@
                     if (data.status) {
                         setTimeout(function () {
                             revisionsContainer.html(data.html);
-                            init.Tooltip();
+                            App.init.Tooltip();
 
                             revisionsContainer.css({
                                 opacity: 1
@@ -93,7 +93,7 @@
 
                 let _this = $(this);
 
-                bootbox.confirm({
+                Bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {
@@ -118,7 +118,7 @@
 
                 let _this = $(this);
 
-                bootbox.confirm({
+                Bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {

@@ -10,7 +10,6 @@
         <span class="text-muted">Something wrong in tree?</span><br />
         {!! form()->open(['url' => route('admin.pages.tree.fix'), 'method' => 'PUT']) !!}
         {!! form()->submit('Fix it now!', ['class' => 'confirm-are-you-sure btn btn-link p-0 border-0']) !!}
-        {{--<a href="{{ route('admin.pages.tree.fix') }}">Fix it now!</a>--}}
         {!! form()->close() !!}
     </div>
 </div>
@@ -64,7 +63,7 @@
                 var node = data.instance.get_node(data.selected);
                 var request = {};
 
-                $.each(query.params(), function (index, obj) {
+                $.each(App.query.Params(), function (index, obj) {
                     request[obj.name] = obj.value.split('+').join(' ');
                 });
 
@@ -80,10 +79,8 @@
                         $(treeContainerSelector).html(data);
                         $(treeTableSelector).css({opacity: 1});
 
-                        sort();
-
-                        init.Tooltip();
-                        init.Bootbox(treeContainerSelector);
+                        App.init.Tooltip().Bootbox(treeContainerSelector);
+                        App.table.Sort();
                     }
                 });
             });

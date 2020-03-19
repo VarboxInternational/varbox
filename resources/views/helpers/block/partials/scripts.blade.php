@@ -26,8 +26,7 @@
 
                         orderBlocks();
 
-                        init.Select2();
-                        init.Tooltip();
+                        App.init.Select2().Tooltip();
                     }
                 },
                 error: function (err) {
@@ -77,7 +76,7 @@
 
                                 orderBlocks();
 
-                                init.Tooltip();
+                                App.init.Tooltip();
 
                                 container.css({
                                     opacity: 1
@@ -111,7 +110,7 @@
                     );
                 }
 
-                init.Tooltip();
+                App.init.Tooltip();
 
                 orderBlocks();
 

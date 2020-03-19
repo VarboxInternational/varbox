@@ -1,6 +1,4 @@
 {
-    "/design/js/bootstrap.min.js": "/design/js/bootstrap.min.js",
-    "/design/css/custom.css": "/design/css/custom.css",
-    "/public/css/app.css": "/public/css/app.css",
-    "/public/js/app.js": "/public/js/app.js"
+    "/public/js/app.js": "/public/js/app.js",
+    "/public/css/app.css": "/public/css/app.css"
 }

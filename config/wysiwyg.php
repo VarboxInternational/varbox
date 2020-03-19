@@ -10,7 +10,7 @@ return [
     | Default is 5 MB.
     |
     */
-    'image_max_size' => 5 * 1024 * 1024,
+    'image_max_size' => 2 * 1024 * 1024,
 
     /*
     |

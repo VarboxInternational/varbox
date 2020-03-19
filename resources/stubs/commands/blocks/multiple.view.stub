@@ -106,10 +106,7 @@
             });
 
             setTimeout(function () {
-                init.Editor();
-                init.Select2();
-                init.InputMask();
-                init.Uploader(false, current, null, index);
+                App.init.Editor().Uploader(false, current, null, index).Select2().InputMask();
             }, 500);
         }, deleteMultipleItem = function (item) {
             let oldIndex, newIndex;
@@ -125,7 +122,7 @@
                     }
                 });
 
-                init.Uploader(true, $(selector), oldIndex, newIndex);
+                App.init.Uploader(true, $(selector), oldIndex, newIndex);
             });
 
             item.remove();
@@ -164,8 +161,8 @@
                     }
                 });
 
-                init.Uploader(true, currentItem, currentIndex, previousIndex);
-                init.Uploader(true, previousItem, previousIndex, currentIndex);
+                App.init.Uploader(true, currentItem, currentIndex, previousIndex);
+                App.init.Uploader(true, previousItem, previousIndex, currentIndex);
             }
 
             if (direction == 'down' && nextItem && nextIndex) {
@@ -186,8 +183,8 @@
                     }
                 });
 
-                init.Uploader(true, currentItem, currentIndex, nextIndex);
-                init.Uploader(true, nextItem, nextIndex, currentIndex);
+                App.init.Uploader(true, currentItem, currentIndex, nextIndex);
+                App.init.Uploader(true, nextItem, nextIndex, currentIndex);
             }
         };
 
