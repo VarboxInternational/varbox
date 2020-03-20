@@ -113,6 +113,10 @@ table.table-hover tr.hovered {
     content: 'Font Size';
 }
 
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
+    content: '12px';
+}
+
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
     content: '14px';
 }
@@ -129,12 +133,17 @@ table.table-hover tr.hovered {
     content: '22px';
 }
 
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
+    content: '20px';
+}
+
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
     content: '24px';
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before {
-    content: '32px';
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+    content: '12px';
+    font-size: 12px !important;
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
@@ -152,6 +161,11 @@ table.table-hover tr.hovered {
     font-size: 18px !important;
 }
 
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+    content: '20px';
+    font-size: 20px !important;
+}
+
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before {
     content: '22px';
     font-size: 22px !important;
@@ -160,11 +174,6 @@ table.table-hover tr.hovered {
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before {
     content: '24px';
     font-size: 24px !important;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
-    content: '32px';
-    font-size: 32px !important;
 }
 
 .is-invalid + .select2-container .select2-selection {
