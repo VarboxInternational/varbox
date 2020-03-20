@@ -10,13 +10,11 @@ mix
     .copyDirectory('design/fonts', 'public/fonts')
     .copyDirectory('design/images', 'public/images')
 
-    .sass('design/sass/app.scss', 'public/css/app.css')
-
     .styles([
         'design/css/plugins/dropzone.css',
         'design/css/plugins/jcrop.css',
         'design/css/plugins/jstree.css',
-        'design/css/plugins/quilljs.css',
+        'design/css/plugins/quill.css',
         'design/css/plugins/select2.css',
         'design/css/plugins/select2-bootstrap.css',
 
@@ -25,8 +23,10 @@ mix
     ], 'public/css/app.css')
 
     .scripts([
-        'design/js/vendors/bootstrap.js',
         'design/js/vendors/jquery.js',
+        'design/js/vendors/jquery-ui.js',
+        'design/js/vendors/popper.js',
+        'design/js/vendors/bootstrap.js',
         'design/js/plugins/bootbox.js',
         'design/js/plugins/dropzone.js',
         'design/js/plugins/fileupload.js',
@@ -40,7 +40,6 @@ mix
         'design/js/plugins/tablednd.js',
 
         //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
-
 
         'design/js/app.js',
     ], 'public/js/app.js');
