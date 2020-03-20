@@ -146,7 +146,7 @@ window.App = {
                             hash: $('meta[name="csrf-token"]').attr('content')
                         },
                         callbackKO: serverError => {
-                            Bootbox.alert(serverError.body.replace (/(^")|("$)/g, ''));
+                            bootbox.alert(serverError.body.replace (/(^")|("$)/g, ''));
                         }
                     }
                 },
@@ -244,7 +244,7 @@ window.App = {
 
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {
@@ -472,7 +472,7 @@ window.App = {
 
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {
@@ -502,7 +502,7 @@ window.App = {
             $('.button-duplicate').click(function (e) {
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {
@@ -584,7 +584,7 @@ window.App = {
 
                     $('input[type="password"][name="password_confirmation"]').val(generatedPassword);
 
-                    Bootbox.alert({
+                    bootbox.alert({
                         message: 'Password copied to clipboard: <span class="text-blue font-weight-bold">' + generatedPassword + '</span>',
                         backdrop: true
                     });
@@ -601,7 +601,7 @@ window.App = {
 
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {

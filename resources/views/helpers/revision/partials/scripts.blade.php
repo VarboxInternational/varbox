@@ -93,7 +93,7 @@
 
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {
@@ -118,7 +118,7 @@
 
                 let _this = $(this);
 
-                Bootbox.confirm({
+                bootbox.confirm({
                     message: "Are you sure?",
                     buttons: {
                         cancel: {

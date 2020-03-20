@@ -7,39 +7,38 @@ mix.options({
 });
 
 mix
-    .copyDirectory('design/fonts', 'public/fonts')
-    .copyDirectory('design/images', 'public/images')
+    .copyDirectory('resources/fonts', 'public/fonts')
+    .copyDirectory('resources/images', 'public/images')
 
     .styles([
-        'design/css/plugins/dropzone.css',
-        'design/css/plugins/jcrop.css',
-        'design/css/plugins/jstree.css',
-        'design/css/plugins/quill.css',
-        'design/css/plugins/select2.css',
-        'design/css/plugins/select2-bootstrap.css',
+        'resources/css/plugins/dropzone.css',
+        'resources/css/plugins/jcrop.css',
+        'resources/css/plugins/jstree.css',
+        'resources/css/plugins/quill.css',
+        'resources/css/plugins/select2.css',
+        'resources/css/plugins/select2-bootstrap.css',
 
-        'design/css/app.css',
-        'design/css/custom.css',
+        'resources/css/app.css',
+        'resources/css/custom.css',
     ], 'public/css/app.css')
 
     .scripts([
-        'design/js/vendors/jquery.js',
-        'design/js/vendors/jquery-ui.js',
-        'design/js/vendors/popper.js',
-        'design/js/vendors/bootstrap.js',
-        'design/js/plugins/bootbox.js',
-        'design/js/plugins/dropzone.js',
-        'design/js/plugins/fileupload.js',
-        'design/js/plugins/inputmask.js',
-        'design/js/plugins/jcrop.js',
-        'design/js/plugins/jstree.js',
-        'design/js/plugins/pgenerator.js',
-        'design/js/plugins/quill.js',
-        'design/js/plugins/quill-image.js',
-        'design/js/plugins/select2.js',
-        'design/js/plugins/tablednd.js',
+        'resources/js/vendors/jquery.js',
+        'resources/js/vendors/jquery-ui.js',
+        'resources/js/vendors/bootstrap.js',
+        'resources/js/plugins/bootbox.js',
+        'resources/js/plugins/dropzone.js',
+        'resources/js/plugins/fileupload.js',
+        'resources/js/plugins/inputmask.js',
+        'resources/js/plugins/jcrop.js',
+        'resources/js/plugins/jstree.js',
+        'resources/js/plugins/pgenerator.js',
+        'resources/js/plugins/quill.js',
+        'resources/js/plugins/quill-image.js',
+        'resources/js/plugins/select2.js',
+        'resources/js/plugins/tablednd.js',
 
         //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
 
-        'design/js/app.js',
+        'resources/js/app.js',
     ], 'public/js/app.js');
