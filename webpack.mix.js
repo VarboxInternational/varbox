@@ -11,9 +11,8 @@ mix
     .copyDirectory('design/images', 'public/images')
 
     .sass('design/sass/app.scss', 'public/css/app.css')
-    .js('design/js/app.js', 'public/js/app.js');
 
-    /*.styles([
+    .styles([
         'design/css/plugins/dropzone.css',
         'design/css/plugins/jcrop.css',
         'design/css/plugins/jstree.css',
@@ -23,13 +22,25 @@ mix
 
         'design/css/app.css',
         'design/css/custom.css',
-    ], 'public/css/app.css')*/
+    ], 'public/css/app.css')
 
-    /*.scripts([
+    .scripts([
+        'design/js/vendors/bootstrap.js',
+        'design/js/vendors/jquery.js',
+        'design/js/plugins/bootbox.js',
+        'design/js/plugins/dropzone.js',
+        'design/js/plugins/fileupload.js',
+        'design/js/plugins/inputmask.js',
+        'design/js/plugins/jcrop.js',
+        'design/js/plugins/jstree.js',
+        'design/js/plugins/pgenerator.js',
+        'design/js/plugins/quill.js',
+        'design/js/plugins/quill-image.js',
+        'design/js/plugins/select2.js',
+        'design/js/plugins/tablednd.js',
+
         //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
 
-        /!*'design/dist/bootstrap.js',
-        'design/js/app.js',*!/
 
-        'design/js/app.min.js',
-    ], 'public/js/app.js');*/
+        'design/js/app.js',
+    ], 'public/js/app.js');

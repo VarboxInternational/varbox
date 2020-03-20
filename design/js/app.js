@@ -1,19 +1,3 @@
-window.$ = window.jQuery = require('jquery');
-window.Dropzone = require('dropzone');
-window.Quill = require('quill');
-window.Bootbox = require('bootbox');
-
-require('bootstrap');
-require('select2');
-require('jstree');
-require('pgenerator');
-require('tablednd/js/jquery.tablednd');
-require('jquery-mask-plugin');
-require('jcrop-0.9.12');
-require('blueimp-file-upload');
-
-import { ImageUpload } from 'quill-image-upload';
-
 $(document).ready(function () {
     App.bootstrap
         .Tooltip()
@@ -91,7 +75,6 @@ window.App = {
                 false, '12px', '14px', '16px', '18px', '20px', '22px', '24px'
             ];
 
-            Quill.register('modules/imageUpload', ImageUpload);
             Quill.register(Size, true);
 
             let editorElements, elementType, elementValue, editorDiv, editorPlaceholder, defaultOptions;
