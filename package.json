@@ -16,22 +16,5 @@
         "sass": "^1.26.3",
         "sass-loader": "^8.0.0",
         "vue-template-compiler": "^2.6.11"
-    },
-    "dependencies": {
-        "blueimp-file-upload": "^10.8.0",
-        "bootbox": "^5.4.0",
-        "bootstrap": "^4.4.1",
-        "dropzone": "^5.7.0",
-        "jcrop-0.9.12": "^0.9.12",
-        "jquery": "^3.4.1",
-        "jquery-mask-plugin": "^1.14.16",
-        "jquery-ui": "^1.12.1",
-        "jstree": "^3.3.9",
-        "pgenerator": "^1.0.4",
-        "quill": "^1.3.7",
-        "quill-image-upload": "^0.1.3",
-        "select2": "^4.0.13",
-        "select2-bootstrap-theme": "0.1.0-beta.10",
-        "tablednd": "^1.0.3"
     }
 }
