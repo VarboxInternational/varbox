@@ -1053,7 +1053,6 @@ class UploadService implements UploadServiceContract
 
             app(UploadModelContract::class)->create($data);
         } catch (ValidationException $e) {
-            dd($e);
             throw UploadException::fileValidationFailed();
         } catch (Exception $e) {
             throw UploadException::databaseSaveFailed();

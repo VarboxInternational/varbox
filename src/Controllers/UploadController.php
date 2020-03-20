@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 use Varbox\Contracts\UploadModelContract;
+use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
 
 class UploadController extends Controller
@@ -46,7 +47,12 @@ class UploadController extends Controller
                 throw new Exception;
             }
 
-            $file = upload($request->file('file'), app($request->input('model')), $request->input('field'))->upload();
+            $file = app(UploadServiceContract::class, [
+                'file' => $request->file('file'),
+                'model' => app($request->input('model')),
+                'field' => $request->input('field')
+            ])->upload();
+
             $type = Str::snake($model->getFileTypes()[$file->getType()]);
             $upload = $model->whereFullPath($file->getPath() . '/' . $file->getName())->firstOrFail();
 
@@ -111,9 +117,11 @@ class UploadController extends Controller
                 throw new Exception;
             }
 
-            $upload = upload(
-                $request->input('path'), app($request->input('model')), $request->input('field')
-            )->upload();
+            $upload = app(UploadServiceContract::class, [
+                'file' => $request->input('path'),
+                'model' => app($request->input('model')),
+                'field' => $request->input('field')
+            ])->upload();
 
             return response()->json([
                 'status' => true,
@@ -192,9 +200,11 @@ class UploadController extends Controller
     public function cut(Request $request)
     {
         try {
-            upload(
-                $request->input('path')
-            )->crop(
+            app(UploadServiceContract::class, [
+                'file' => $request->input('path'),
+                'model' => app($request->input('model')),
+                'field' => $request->input('field')
+            ])->crop(
                 $request->input('path'),
                 $request->input('style'),
                 $request->input('size'),

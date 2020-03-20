@@ -98,23 +98,6 @@ if (!function_exists('breadcrumbs')) {
     }
 }
 
-if (!function_exists('upload')) {
-    /**
-     * @param $file
-     * @param  \Illuminate\Database\Eloquent\Model|null $model
-     * @param null $field
-     * @return \Varbox\Contracts\UploadServiceContract
-     */
-    function upload($file, Illuminate\Database\Eloquent\Model $model = null, $field = null)
-    {
-        return app('upload.service', [
-            'file' => $file,
-            'model' => $model,
-            'field' => $field
-        ]);
-    }
-}
-
 if (!function_exists('uploaded')) {
     /**
      * @param string $file

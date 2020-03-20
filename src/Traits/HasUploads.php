@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Varbox\Contracts\UploadedHelperContract;
+use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
 
 trait HasUploads
@@ -39,7 +40,11 @@ trait HasUploads
     {
         $model = app(static::class);
 
-        return upload($file, $model, $field)->upload();
+        return app(UploadServiceContract::class, [
+            'file' => $file,
+            'model' => $model,
+            'field' => $field,
+        ])->upload();
     }
 
     /**
@@ -50,9 +55,9 @@ trait HasUploads
      */
     public function downloadFile($field)
     {
-        $file = $this->normalizeFileField($field);
-
-        return upload($file)->download();
+        return app(UploadServiceContract::class, [
+            'file' => $this->normalizeFileField($field),
+        ])->download();
     }
 
     /**
@@ -63,9 +68,9 @@ trait HasUploads
      */
     public function showFile($field)
     {
-        $file = $this->normalizeFileField($field);
-
-        return upload($file)->show();
+        return app(UploadServiceContract::class, [
+            'file' => $this->normalizeFileField($field),
+        ])->show();
     }
 
     /**
@@ -77,9 +82,7 @@ trait HasUploads
      */
     public function uploadedFile($field)
     {
-        $file = $this->normalizeFileField($field);
-
-        return uploaded($file);
+        return uploaded($this->normalizeFileField($field));
     }
 
     /**

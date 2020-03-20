@@ -11,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\UploadModelContract;
+use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
 use Varbox\Filters\UploadFilter;
@@ -59,7 +60,7 @@ class UploadsController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -73,7 +74,9 @@ class UploadsController extends Controller
         }
 
         try {
-            upload($request->file('file'))->upload();
+            app(UploadServiceContract::class, [
+                'file' => $request->file('file')
+            ])->upload();
 
             $status = true;
         } catch (UploadException $e) {
@@ -101,7 +104,9 @@ class UploadsController extends Controller
     public function destroy(UploadModelContract $upload)
     {
         try {
-            upload($upload->full_path)->unload();
+            app(UploadServiceContract::class, [
+                'file' => $upload->full_path
+            ])->unload();
 
             flash()->success('The record was successfully deleted!');
 
@@ -127,12 +132,14 @@ class UploadsController extends Controller
 
     /**
      * @param UploadModelContract $upload
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function download(UploadModelContract $upload)
     {
         try {
-            return upload($upload->full_path)->download();
+            return app(UploadServiceContract::class, [
+                'file' => $upload->full_path
+            ])->download();
         } catch (ModelNotFoundException $e) {
             flash()->error('You are trying to download a file that does not exist!', $e);
 

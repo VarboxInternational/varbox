@@ -31,7 +31,7 @@ return [
         | - or at least implement the "Varbox\Contracts\UploadServiceContract" interface
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - upload() OR app('upload.service') OR app('\Varbox\Contracts\UploadServiceContract')
+        | - app('upload.service') OR app('\Varbox\Contracts\UploadServiceContract')
         | - or you could even use your own class as a direct implementation
         |
         */
