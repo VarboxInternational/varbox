@@ -24,7 +24,7 @@
     @push('scripts')
         <script type="text/javascript">
             $(function () {
-                disable.form();
+                App.form.Disable();
             });
         </script>
 

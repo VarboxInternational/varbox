@@ -61,7 +61,7 @@
         @endif
 
         $('.js-UploadCropImage-' + '{{ $index }}').Jcrop(options);
-        
+
         $('.js-UploadCropSaveBtn-' + '{{ $index }}').click(function(){
             $.ajax({
                 type: 'POST',

@@ -62,7 +62,7 @@
                 var node = data.instance.get_node(data.selected);
                 var request = {};
 
-                $.each(query.params(), function (index, obj) {
+                $.each(App.query.Params(), function (index, obj) {
                     request[obj.name] = obj.value.split('+').join(' ');
                 });
 
@@ -78,10 +78,8 @@
                         $(treeContainerSelector).html(data);
                         $(treeTableSelector).css({opacity: 1});
 
-                        sort();
-
-                        init.Tooltip();
-                        init.Bootbox(treeContainerSelector);
+                        App.init.Tooltip().Bootbox(treeContainerSelector);
+                        App.table.Sort();
                     }
                 });
             });
