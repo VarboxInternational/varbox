@@ -560,6 +560,62 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
+    public function it_resizes_original_resolution_by_default_when_uploading_an_image()
+    {
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+        $size = getimagesize(Storage::disk($this->disk)->path($path));
+        $width = $size[0];
+        $height = $size[1];
+
+        $this->assertLessThanOrEqual(1600, $width);
+        $this->assertEquals(1600, $height);
+    }
+
+    /** @test */
+    public function it_does_resize_original_resolution_when_uploading_an_image_if_enabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.images.max_resolution.width', 600);
+        $this->app['config']->set('varbox.upload.images.max_resolution.height', 600);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+        $size = getimagesize(Storage::disk($this->disk)->path($path));
+        $width = $size[0];
+        $height = $size[1];
+
+        $this->assertLessThanOrEqual(600, $width);
+        $this->assertEquals(600, $height);
+    }
+
+    /** @test */
+    public function it_doesnt_resize_original_resolution_when_uploading_an_image_if_disabled_from_config()
+    {
+        $this->app['config']->set('varbox.upload.images.max_resolution.width', null);
+        $this->app['config']->set('varbox.upload.images.max_resolution.height', null);
+
+        Storage::fake($this->disk);
+
+        $file = (new UploadService($this->imageFile()))->upload();
+        $path = $file->getPath() . '/' . $file->getName();
+
+        $originalSize = getimagesize($this->imageFile());
+        $originalWidth = $originalSize[0];
+        $originalHeight = $originalSize[1];
+
+        $size = getimagesize(Storage::disk($this->disk)->path($path));
+        $width = $size[0];
+        $height = $size[1];
+
+        $this->assertEquals($originalWidth, $width);
+        $this->assertEquals($originalHeight, $height);
+    }
+
+    /** @test */
     public function it_generates_thumbnail_by_default_when_uploading_an_image()
     {
         Storage::fake($this->disk);

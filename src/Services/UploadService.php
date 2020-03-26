@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
+use Intervention\Image\Image as InterventionImage;
 use Pbmedia\LaravelFFMpeg\FFMpegFacade as FFMpeg;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Mime\MimeTypes;
@@ -898,11 +899,13 @@ class UploadService implements UploadServiceContract
 
         return $this->attemptStoringToDisk(function () {
             $path = $this->getPath() . '/' . $this->getName();
-            $image = Image::make($this->getFile())
-                ->orientate()->stream()->__toString();
+            $image = Image::make($this->getFile());
+            $image = $this->resizeImageToMaxResolution($image);
+            $source = $image->orientate()->stream(
+                null, (int)$this->getConfig('images.quality') ?: 90
+            )->__toString();
 
-            Storage::disk($this->getDisk())
-                ->put($path, $image, 'public');
+            Storage::disk($this->getDisk())->put($path, $source, 'public');
 
             if (!$this->hasOriginal()) {
                 $this->generateThumbnailForImage($path);
@@ -1126,6 +1129,28 @@ class UploadService implements UploadServiceContract
     protected function uploadAlreadyExistsInStorage($path)
     {
         return $this->getConfig('storage.override_dependencies') === false && Storage::disk($this->getDisk())->exists($path);
+    }
+
+    /**
+     * @param \Intervention\Image\Image $image
+     * @return \Intervention\Image\Image
+     */
+    protected function resizeImageToMaxResolution(InterventionImage $image)
+    {
+        $maxWidth = $this->getConfig('images.max_resolution.width');
+        $maxHeight = $this->getConfig('images.max_resolution.height');
+
+        if ($maxWidth === null && $maxHeight === null) {
+            return $image;
+        }
+
+        $resizeWidth = $image->width() > $maxWidth ? $maxWidth : $image->width();
+        $resizeHeight = $image->height() > $maxHeight ? $maxHeight : $image->height();
+
+        return $image->resize($resizeWidth, $resizeHeight, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
     }
 
     /**

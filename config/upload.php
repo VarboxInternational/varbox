@@ -146,6 +146,19 @@ return [
 
         /*
         |
+        | The maximum resolution in pixels the original image can have.
+        |
+        | If the uploaded image is bigger, it will be resized (keeping aspect ratio).
+        | To ignore this, pass "null" to both "width" and "height" options.
+        |
+        */
+        'max_resolution' => [
+            'width' => 1600,
+            'height' => 1600,
+        ],
+
+        /*
+        |
         | The styles to create from the original uploaded image.
         | You can specify multiple styles, as an array.
         |
