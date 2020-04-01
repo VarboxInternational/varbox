@@ -911,9 +911,7 @@ class UploadService implements UploadServiceContract
                 $this->generateThumbnailForImage($path);
             }
 
-            if (!$this->isSimpleUpload()) {
-                $this->generateStylesForImage($path);
-            }
+            $this->generateStylesForImage($path);
 
             return $path;
         });
@@ -1174,27 +1172,43 @@ class UploadService implements UploadServiceContract
         try {
             $original = Storage::disk($this->getDisk())->get($path);
 
-            foreach ($this->getConfig('images.styles') as $field => $styles) {
-                if (!Str::is($field, $this->getField())) {
-                    continue;
-                }
-
-                foreach ($styles as $name => $style) {
-                    $path = $this->getPath() . '/' . substr_replace($this->getName(), '_' . $name, strpos($this->getName(), '.' . $this->getExtension()), 0);
-
-                    if (!$this->uploadAlreadyExistsInStorage($path)) {
-                        Storage::disk($this->getDisk())->put(
-                            $path,
-                            Image::make($original)
-                                ->{!isset($style['ratio']) || $style['ratio'] === true ? 'fit' : 'resize'}($style['width'], $style['height'])
-                                ->stream(null, (int)$this->getConfig('images.quality') ?: 90)->__toString(),
-                            config('varbox.upload.storage.visibility', 'public')
-                        );
+            if ($this->isSimpleUpload()) {
+                $this->saveStylesForImage($original, (array)$this->getConfig('images.styles'));
+            } else {
+                foreach ($this->getConfig('images.styles') as $field => $styles) {
+                    if (!Str::is($field, $this->getField())) {
+                        continue;
                     }
+
+                    $this->saveStylesForImage($original, $styles);
                 }
             }
         } catch (Exception $e) {
             throw UploadException::generateImageStylesFailed();
+        }
+    }
+
+    /**
+     * Save the specified styles for the original image.
+     *
+     * @param string $original
+     * @param array $styles
+     * @return void
+     */
+    protected function saveStylesForImage($original, array $styles): void
+    {
+        foreach ($styles as $name => $style) {
+            $path = $this->getPath() . '/' . substr_replace($this->getName(), '_' . $name, strpos($this->getName(), '.' . $this->getExtension()), 0);
+
+            if (!$this->uploadAlreadyExistsInStorage($path)) {
+                Storage::disk($this->getDisk())->put(
+                    $path,
+                    Image::make($original)
+                        ->{!isset($style['ratio']) || $style['ratio'] === true ? 'fit' : 'resize'}($style['width'], $style['height'])
+                        ->stream(null, (int)$this->getConfig('images.quality') ?: 90)->__toString(),
+                    config('varbox.upload.storage.visibility', 'public')
+                );
+            }
         }
     }
 
