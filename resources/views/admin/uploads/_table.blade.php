@@ -24,7 +24,7 @@
                     </a>
                 </td>
                 <td>
-                    <div class="upload-name text-truncate">{{ $item->original_name ?: 'N/A' }}</div>
+                    <div class="upload-name text-truncate">{{ $item->original_name ? \Illuminate\Support\Str::limit($item->original_name, 45) : 'N/A' }}</div>
                     <div class="small text-muted">{{ $item->mime ?: 'N/A' }}</div>
                 </td>
                 <td class="d-none d-md-table-cell">
