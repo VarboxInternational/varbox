@@ -97,7 +97,7 @@ return [
         | To allow all image files of all sizes to be uploaded, specify the "null" value for this option.
         |
         */
-        'max_size' => 50,
+        'max_size' => 5,
 
         /*
         |
@@ -232,7 +232,7 @@ return [
         | To allow all video files of all sizes to be uploaded, specify the "null" value for this option.
         |
         */
-        'max_size' => 50,
+        'max_size' => 10,
 
         /*
         |
@@ -244,7 +244,7 @@ return [
         |
         */
         'allowed_extensions' => [
-            'mp4', 'flv', 'avi', 'mov', 'webm', 'mpeg', 'mpg', 'mkv', 'acc',
+            'mp4', 'flv', 'avi',
         ],
 
         /*
@@ -295,7 +295,7 @@ return [
         | To allow all audio files of all sizes to be uploaded, specify the "null" value for this option.
         |
         */
-        'max_size' => 30,
+        'max_size' => 5,
 
         /*
         |
@@ -307,7 +307,7 @@ return [
         |
         */
         'allowed_extensions' => [
-            'mp3', 'aac', 'wav', 'wma', 'oga', 'flac',
+            'mp3', 'wav', 'aac', 'ogg',
         ],
 
     ],
@@ -322,7 +322,7 @@ return [
         | To allow all files of all sizes to be uploaded, specify the "null" value for this option.
         |
         */
-        'max_size' => 10,
+        'max_size' => 2,
 
         /*
         |
