@@ -36,7 +36,7 @@ abstract class TestCase extends OrchestraDuskTestCase
      *
      * @var int
      */
-    protected static $baseServePort = 9000;
+    protected static $baseServePort = 10000;
 
     /**
      * The admin user.
@@ -55,7 +55,7 @@ abstract class TestCase extends OrchestraDuskTestCase
         // !IMPORTANT!
         // before running "phpunit", run the following commands:
         // - php vendor/orchestra/testbench-dusk/create-sqlite-db
-        // - ./vendor/bin/dusk-updater update
+        // - ./vendor/bin/dusk-updater update 80
 
         parent::setUp();
 

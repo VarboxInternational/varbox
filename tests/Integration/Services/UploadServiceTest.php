@@ -149,16 +149,6 @@ class UploadServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_upload_an_image_from_a_url()
-    {
-        Storage::fake($this->disk);
-
-        $file = (new UploadService(app(Generator::class)->imageUrl()))->upload();
-
-        Storage::disk($this->disk)->assertExists($file->getPath() . '/' . $file->getName());
-    }
-
-    /** @test */
     public function it_can_upload_a_video()
     {
         Storage::fake($this->disk);
