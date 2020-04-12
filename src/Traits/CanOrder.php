@@ -26,7 +26,7 @@ trait CanOrder
         ]);
 
         app($request->input('model'))->setNewOrder(
-            array_values($request->input('items'))
+            array_filter(array_values($request->input('items')))
         );
 
         return response()->json([
