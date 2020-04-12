@@ -38,11 +38,9 @@ trait HasUploads
      */
     public function uploadFile($file, $field)
     {
-        $model = app(static::class);
-
         return app(UploadServiceContract::class, [
             'file' => $file,
-            'model' => $model,
+            'model' => $this,
             'field' => $field,
         ])->upload();
     }

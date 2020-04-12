@@ -351,7 +351,6 @@ class UploadService implements UploadServiceContract
             return $this;
         }
 
-
         switch ($file) {
             case is_string($file):
                 $this->file = $this->createFromString($file);
@@ -955,7 +954,9 @@ class UploadService implements UploadServiceContract
         $this->guardAgainstAllowedExtensions('audios');
 
         return $this->attemptStoringToDisk(function () {
-            return $this->storeToDisk();
+            $audio = $this->storeToDisk();
+
+            return $audio;
         });
 
     }
@@ -993,9 +994,11 @@ class UploadService implements UploadServiceContract
             return $this->getOriginal()->full_path;
         }
 
-        return $this->getFile()->storePubliclyAs(
+        $file = $this->getFile()->storePubliclyAs(
             $this->getPath(), $this->getName(), $this->getDisk()
         );
+
+        return $file;
     }
 
     /**
@@ -1040,7 +1043,7 @@ class UploadService implements UploadServiceContract
                 'path' => $this->getPath(),
                 'full_path' => $this->getPath() . '/' . $this->getName(),
                 'extension' => $this->getExtension(),
-                'size' => $this->getSize(),
+                'size' => Storage::disk($this->getDisk())->size($this->getPath() . '/' . $this->getName()),
                 'mime' => $this->getFile()->getMimeType(),
                 'type' => $this->getType(),
             ];
