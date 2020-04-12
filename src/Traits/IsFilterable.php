@@ -101,6 +101,7 @@ trait IsFilterable
      * @param Builder $query
      * @param array $data
      * @param Filter $filter
+     * @throws FilterException
      */
     public function scopeFiltered($query, array $data, Filter $filter)
     {
@@ -221,8 +222,6 @@ trait IsFilterable
                 $query->{$method}($column);
                 break;
             case Str::contains($_method, Filter::OPERATOR_IN):
-                $query->{$method}($column, $this->filter['value']);
-                break;
             case Str::contains($_method, Filter::OPERATOR_BETWEEN):
                 $query->{$method}($column, $this->filter['value']);
                 break;
@@ -431,11 +430,12 @@ trait IsFilterable
      * If not, throw a descriptive error for the developer to amend.
      *
      * @return void
+     * @throws FilterException
      */
     protected function checkOperatorForFiltering()
     {
         if (
-            !isset($this->filter['operator']) || 
+            !isset($this->filter['operator']) ||
             !in_array(strtolower($this->filter['operator']), array_map('strtolower', Filter::$operators))
         ) {
             throw FilterException::noOperatorSupplied($this->filter['field'], get_class($this->filter['instance']));
@@ -447,11 +447,12 @@ trait IsFilterable
      * If not, throw a descriptive error for the developer to amend.
      *
      * @return void
+     * @throws FilterException
      */
     protected function checkConditionToFilterBy()
     {
         if (
-            !isset($this->filter['condition']) || 
+            !isset($this->filter['condition']) ||
             !in_array(strtolower($this->filter['condition']), array_map('strtolower', Filter::$conditions))
         ) {
             throw FilterException::noConditionSupplied($this->filter['field'], get_class($this->filter['instance']));
@@ -463,6 +464,7 @@ trait IsFilterable
      * If not, throw a descriptive error for the developer to amend.
      *
      * @return void
+     * @throws FilterException
      */
     protected function checkColumnsToFilterIn()
     {
