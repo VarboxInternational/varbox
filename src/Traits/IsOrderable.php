@@ -7,7 +7,6 @@ use Varbox\Options\OrderOptions;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
-use ReflectionMethod;
 
 trait IsOrderable
 {
@@ -17,7 +16,14 @@ trait IsOrderable
      *
      * @var OrderOptions
      */
-    protected static $orderOptions;
+    protected $orderOptions;
+
+    /**
+     * Set the options for the IsOrderable trait.
+     *
+     * @return OrderOptions
+     */
+    abstract public function getOrderOptions(): OrderOptions;
 
     /**
      * Boot the trait.
@@ -27,10 +33,6 @@ trait IsOrderable
      */
     public static function bootIsOrderable()
     {
-        self::checkOrderOptions();
-
-        self::$orderOptions = self::getOrderOptions();
-
         static::creating(function ($model) {
             if ($model->shouldOrderWhenCreating()) {
                 $model->setHighestOrderNumber();
@@ -57,7 +59,9 @@ trait IsOrderable
      */
     public function shouldOrderWhenCreating()
     {
-        return self::$orderOptions->orderWhenCreating === true;
+        $this->orderOptions = $this->getOrderOptions();
+
+        return $this->orderOptions->orderWhenCreating === true;
     }
 
     /**
@@ -87,13 +91,15 @@ trait IsOrderable
      */
     public function getOrderColumnName()
     {
-        return self::$orderOptions->orderColumn;
+        $this->orderOptions = $this->getOrderOptions();
+
+        return $this->orderOptions->orderColumn;
     }
 
     /**
      * This function reorders the records:
      * The record with the first id in the array will get order 1.
-     * The record with the second it will get order 2.
+     * The record with the second id it will get order 2.
      * And so on until the last record.
      *
      * A starting order number can be optionally supplied (defaults to 1).
@@ -242,27 +248,5 @@ trait IsOrderable
     public function buildOrderQuery()
     {
         return static::query();
-    }
-
-    /**
-     * Verify if the getOrderOptions() method for setting the trait options exists and is public and static.
-     *
-     * @throws Exception
-     */
-    private static function checkOrderOptions()
-    {
-        if (!method_exists(self::class, 'getOrderOptions')) {
-            throw new Exception(
-                'The "' . self::class . '" must define the public static "getOrderOptions()" method.'
-            );
-        }
-
-        $reflection = new ReflectionMethod(self::class, 'getOrderOptions');
-
-        if (!$reflection->isPublic() || !$reflection->isStatic()) {
-            throw new Exception(
-                'The method "getOrderOptions()" from the class "' . self::class . '" must be declared as both "public" and "static".'
-            );
-        }
     }
 }
