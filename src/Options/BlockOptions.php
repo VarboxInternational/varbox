@@ -52,10 +52,10 @@ class BlockOptions
     /**
      * Set the locations to work with in the Varbox\Traits\HasBlocks trait
      *
-     * @param callable|array|string
+     * @param callable|array|string|null
      * @return BlockOptions
      */
-    public function withLocations($locations): BlockOptions
+    public function withLocations($locations = null): BlockOptions
     {
         switch ($locations) {
             case is_callable($locations):
@@ -66,6 +66,9 @@ class BlockOptions
                 break;
             case is_array($locations):
                 $this->locations = $locations;
+                break;
+            default:
+                $this->locations = null;
                 break;
         }
 

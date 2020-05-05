@@ -21,7 +21,7 @@
                     {!! form_admin()->select('type', 'Type', [null => ''] + $types, null, ['required', 'class' => 'js-MenuType']) !!}
                 </div>
                 <div class="js-MenuUrl js-MenuUrlUrl col-md-4 d-none">
-                    {!! form_admin()->text('url', 'Url', null, ['required']) !!}
+                    {!! form_admin()->text('url', 'Url', $item && $item->exists ? $item->getRawOriginal('url') : null, ['required']) !!}
                 </div>
                 <div class="js-MenuUrl js-MenuUrlRoute col-md-4 d-none">
                     {!! form_admin()->select('route', 'Url', [], null, ['required']) !!}

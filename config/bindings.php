@@ -1325,22 +1325,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "block helper".
-        | To extend or replace this functionality, change the value below with your full "block helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\BlockHelper" class
-        | - or at least implement the "Varbox\Contracts\BlockHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - block() OR app('block.helper') OR app('\Varbox\Contracts\BlockHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'block_helper' => \Varbox\Helpers\BlockHelper::class,
-
-        /*
-        |
         | Concrete implementation for the "schema helper".
         | To extend or replace this functionality, change the value below with your full "schema helper" FQN.
         |

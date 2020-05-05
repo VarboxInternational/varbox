@@ -13,12 +13,12 @@ return [
     |
     | --- [Composer Class]:
     | The full namespace to the block's view composer.
-    | Each block you create will have a "view composer" that's automatically binded to the block's front view namespace.
+    | Each block you create will have a "view composer" that's automatically bound to the block's front view namespace.
     | So any logic your block might use, you can define it in the block's view composer class.
     |
     | --- [Views Path]:
     | The full path to the block's views directory.
-    | When creating a new block type, besides the "view composer" class, you will also have to views (front & admin).
+    | When creating a new block type, besides the "view composer" class, you will also have two views (front & admin).
     |
     | --- [Preview Image]:
     | The name of the image used as block type preview in admin.

@@ -121,7 +121,7 @@ trait HasUrl
      */
     public function doGenerateUrl()
     {
-        self::$generateUrl = false;
+        self::$generateUrl = true;
 
         return $this;
     }

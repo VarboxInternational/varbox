@@ -90,7 +90,7 @@ trait HasBlocks
      * Inherited blocks can come from other model instances (recursively).
      *
      * @param string $location
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getInheritedBlocks($location)
     {
@@ -153,10 +153,42 @@ trait HasBlocks
     }
 
     /**
+     * Render the blocks from a given location for a loaded model instance.
+     * Inheriting functionality is also available.
+     * If the model instance does not have any blocks assigned, but it inherits blocks, those will be rendered.
+     *
+     * @param string $location
+     * @param bool $inherits
+     * @return null|void
+     */
+    public function renderBlocks($location, $inherits = true)
+    {
+        if ($this->getBlocksInLocation($location)->isNotEmpty()) {
+            foreach ($this->getBlocksInLocation($location) as $block) {
+                echo view()->make("blocks_{$block->type}::front")->with([
+                    'model' => $block
+                ])->render();
+            }
+
+            return;
+        }
+
+        if ($inherits === true && $this->getInheritedBlocks($location)->isNotEmpty()) {
+            foreach ($this->getInheritedBlocks($location) as $block) {
+                echo view()->make("blocks_{$block->type}::front")->with([
+                    'model' => $block
+                ])->render();
+            }
+
+            return;
+        }
+
+        return null;
+    }
+
+    /**
      * Save all of the blocks of a model instance.
-     * Saving is done on a provided or existing request object.
-     * The logic of this method will look for the "blocks" key in the request.
-     * Mandatory request format is an array of keys with their values composed of the block id followed by location and order.
+     * Mandatory block format is an array of keys with their values composed of the block id followed by location and order.
      * [0 => [id => [location, ord], 1 => [id => [location, ord]...]
      *
      * @param array $blocks

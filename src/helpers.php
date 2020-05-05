@@ -32,16 +32,6 @@ if (!function_exists('form_admin_lang')) {
     }
 }
 
-if (!function_exists('block')) {
-    /**
-     * @return \Varbox\Contracts\BlockHelperContract
-     */
-    function block()
-    {
-        return app('block.helper');
-    }
-}
-
 if (!function_exists('menu_admin')) {
     /**
      * @return \Varbox\Contracts\AdminMenuHelperContract

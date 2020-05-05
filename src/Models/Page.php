@@ -179,7 +179,7 @@ class Page extends Model implements PageModelContract
         $types = (array)config('varbox.pages.types', []);
 
         return BlockOptions::instance()
-            ->withLocations($types[$this->type]['locations'] ?? []);
+            ->withLocations($types[$this->type]['locations'] ?? null);
     }
 
     /**

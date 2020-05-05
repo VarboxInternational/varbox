@@ -34,7 +34,6 @@ use Varbox\Contracts\AdminFormLangHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
 use Varbox\Contracts\AnalyticsModelContract;
 use Varbox\Contracts\BackupModelContract;
-use Varbox\Contracts\BlockHelperContract;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\ConfigModelContract;
@@ -67,7 +66,6 @@ use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminFormLangHelper;
 use Varbox\Helpers\AdminMenuHelper;
-use Varbox\Helpers\BlockHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\SchemaHelper;
@@ -434,6 +432,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     {
         foreach ((array)config('varbox.blocks.types', []) as $type => $options) {
             view()->addNamespace("blocks_{$type}", realpath(base_path($options['views_path'])));
+            view()->composer("blocks_{$type}::front", $options['composer_class']);
         }
     }
 
@@ -698,9 +697,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderLangHelperContract::class, $binding['helpers']['uploader_lang_helper'] ?? UploaderLangHelper::class);
         $this->app->alias(UploaderLangHelperContract::class, 'uploader_lang.helper');
-
-        $this->app->singleton(BlockHelperContract::class, $binding['helpers']['block_helper'] ?? BlockHelper::class);
-        $this->app->alias(BlockHelperContract::class, 'block.helper');
 
         $this->app->singleton(SchemaHelperContract::class, $binding['helpers']['schema_helper'] ?? SchemaHelper::class);
         $this->app->alias(SchemaHelperContract::class, 'schema.helper');

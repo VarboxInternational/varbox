@@ -30,14 +30,6 @@ return [
             ]
         ],
 
-        'home' => [
-            'controller' => '\App\Http\Controllers\PagesController',
-            'action' => 'show',
-            'locations' => [
-                'content'
-            ]
-        ],
-
     ],
 
     /*
