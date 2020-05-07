@@ -1124,18 +1124,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "optimize images middleware".
-        | To extend or replace this functionality, change the value below with your full "optimize images middleware" FQN.
-        |
-        | Once the value below is changed, your new middleware will be automatically registered with the application.
-        |
-        | You can then use the middleware by its alias: "varbox.optimize.images"
-        |
-        */
-        'optimize_images_middleware' => \Varbox\Middleware\OptimizeImages::class,
-
-        /*
-        |
         | Concrete implementation for the "redirect requests middleware".
         | To extend or replace this functionality, change the value below with your full "redirect requests middleware" FQN.
         |

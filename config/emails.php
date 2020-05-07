@@ -48,10 +48,6 @@ return [
     | --- [Label]:
     | Short description of what the variable represents.
     |
-    | --- [Description]:
-    | Longer description of what the variable represents and how it works.
-    | If you don't want a description for your variables, you can make the value of this option either an "empty string" or "null".
-    |
     */
     'variables' => [
 

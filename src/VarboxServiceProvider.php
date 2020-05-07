@@ -82,7 +82,6 @@ use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\IsTranslatable;
 use Varbox\Middleware\NotAuthenticated;
-use Varbox\Middleware\OptimizeImages;
 use Varbox\Middleware\OverrideConfigs;
 use Varbox\Middleware\PersistLocale;
 use Varbox\Middleware\RedirectRequests;
@@ -159,7 +158,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerBladeDirectives();
         $this->loadRoutes();
         $this->registerRoutes();
-        $this->loadBreadcrumbs();
         $this->listenToEvents();
     }
 
@@ -190,7 +188,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/query-cache.php' => config_path('varbox/query-cache.php'),
             __DIR__ . '/../config/config.php' => config_path('varbox/config.php'),
             __DIR__ . '/../config/notifications.php' => config_path('varbox/notifications.php'),
-            __DIR__ . '/../config/breadcrumbs.php' => config_path('varbox/breadcrumbs.php'),
             __DIR__ . '/../config/crud.php' => config_path('varbox/crud.php'),
             __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
             __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
@@ -213,10 +210,6 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function overrideConfigs()
     {
-        $this->config->set([
-            'image-optimizer.optimizers' => $this->config['varbox']['upload']['images']['optimizers'] ?? []
-        ]);
-
         $this->config->set('laravel-ffmpeg', [
             'default_disk' => $this->config['varbox']['upload']['storage']['disk'] ?? 'local',
             'ffmpeg.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffmpeg'] ?? 'ffmpeg',
@@ -226,12 +219,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         /*$this->config->set([
             'jsvalidation.view' => $this->config['varbox']['validation']['jsvalidation_view'] ?? 'jsvalidation::bootstrap4',
         ]);*/
-
-        $this->config->set([
-            'breadcrumbs.unnamed-route-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
-            'breadcrumbs.missing-route-bound-breadcrumb-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
-            'breadcrumbs.invalid-named-breadcrumb-exception' => $this->config['varbox']['breadcrumbs']['throw_exceptions'] ?? true,
-        ]);
 
         $this->config->set([
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
@@ -323,15 +310,13 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.check.roles', $middleware['check_roles_middleware'] ?? CheckRoles::class);
         $this->router->aliasMiddleware('varbox.check.permissions', $middleware['check_permissions_middleware'] ?? CheckPermissions::class);
         $this->router->aliasMiddleware('varbox.override.configs', $middleware['override_configs_middleware'] ?? OverrideConfigs::class);
-        $this->router->aliasMiddleware('varbox.optimize.images', $middleware['optimize_images_middleware'] ?? OptimizeImages::class);
         $this->router->aliasMiddleware('varbox.redirect.requests', $middleware['redirect_requests_middleware'] ?? RedirectRequests::class);
         $this->router->aliasMiddleware('varbox.persist.locale', $middleware['persist_locale_middleware'] ?? PersistLocale::class);
         $this->router->aliasMiddleware('varbox.is.translatable', $middleware['is_translatable_middleware'] ?? IsTranslatable::class);
 
-        $this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
-        $this->router->prependMiddlewareToGroup('web', 'varbox.optimize.images');
+        /*$this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
         $this->router->prependMiddlewareToGroup('web', 'varbox.redirect.requests');
-        $this->router->pushMiddlewareToGroup('web', 'varbox.persist.locale');
+        $this->router->pushMiddlewareToGroup('web', 'varbox.persist.locale');*/
     }
 
     /**
@@ -504,39 +489,6 @@ class VarboxServiceProvider extends BaseServiceProvider
     /**
      * @return void
      */
-    protected function loadBreadcrumbs()
-    {
-        if ($this->config['varbox']['breadcrumbs']['enabled'] ?? false === true) {
-            require_once __DIR__ . '/../breadcrumbs/home.php';
-            require_once __DIR__ . '/../breadcrumbs/users.php';
-            require_once __DIR__ . '/../breadcrumbs/admins.php';
-            require_once __DIR__ . '/../breadcrumbs/roles.php';
-            require_once __DIR__ . '/../breadcrumbs/permissions.php';
-            require_once __DIR__ . '/../breadcrumbs/countries.php';
-            require_once __DIR__ . '/../breadcrumbs/states.php';
-            require_once __DIR__ . '/../breadcrumbs/cities.php';
-            require_once __DIR__ . '/../breadcrumbs/addresses.php';
-            require_once __DIR__ . '/../breadcrumbs/activity.php';
-            require_once __DIR__ . '/../breadcrumbs/notifications.php';
-            require_once __DIR__ . '/../breadcrumbs/configs.php';
-            require_once __DIR__ . '/../breadcrumbs/errors.php';
-            require_once __DIR__ . '/../breadcrumbs/backups.php';
-            require_once __DIR__ . '/../breadcrumbs/uploads.php';
-            require_once __DIR__ . '/../breadcrumbs/emails.php';
-            require_once __DIR__ . '/../breadcrumbs/blocks.php';
-            require_once __DIR__ . '/../breadcrumbs/pages.php';
-            require_once __DIR__ . '/../breadcrumbs/menus.php';
-            require_once __DIR__ . '/../breadcrumbs/languages.php';
-            require_once __DIR__ . '/../breadcrumbs/translations.php';
-            require_once __DIR__ . '/../breadcrumbs/analytics.php';
-            require_once __DIR__ . '/../breadcrumbs/redirects.php';
-            require_once __DIR__ . '/../breadcrumbs/schema.php';
-        }
-    }
-
-    /**
-     * @return void
-     */
     protected function listenToEvents()
     {
         Event::listen(ErrorSavedSuccessfully::class, SendErrorSavedEmail::class);
@@ -556,7 +508,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'varbox.config');
         $this->mergeConfigFrom(__DIR__ . '/../config/notifications.php', 'varbox.notifications');
         $this->mergeConfigFrom(__DIR__ . '/../config/bindings.php', 'varbox.bindings');
-        $this->mergeConfigFrom(__DIR__ . '/../config/breadcrumbs.php', 'varbox.breadcrumbs');
         $this->mergeConfigFrom(__DIR__ . '/../config/crud.php', 'varbox.crud');
         $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
         $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');

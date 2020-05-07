@@ -183,43 +183,6 @@ return [
         |
         */
         'styles' => [],
-
-        /*
-        |
-        | When uploading images, they will automatically be optimized.
-        | When calling `optimize` the upload functionality will automatically determine which optimizers should run for the given image.
-        |
-        | This configuration option will be used to override the original "config/image-optimizer.php" config file.
-        | For more details, please see "Spatie - Image Optimizer" (https://github.com/spatie/image-optimizer).
-        |
-        */
-        'optimizers' => [
-
-            \Spatie\ImageOptimizer\Optimizers\Jpegoptim::class => [
-                '-m85',                 // set maximum quality to 85%
-                '--strip-all',          // this strips out all text information such as comments and EXIF data
-                '--all-progressive',    // this will make sure the resulting image is a progressive one
-            ],
-
-            \Spatie\ImageOptimizer\Optimizers\Pngquant::class => [
-                '--force',              // required parameter for this package
-            ],
-
-            \Spatie\ImageOptimizer\Optimizers\Optipng::class => [
-                '-i0',                  // this will result in a non-interlaced, progressive scanned image
-                '-o2',                  // this set the optimization level to two (multiple IDAT compression trials)
-                '-quiet',               // required parameter for this package
-            ],
-
-            \Spatie\ImageOptimizer\Optimizers\Svgo::class => [
-                '--disable=cleanupIDs', // disabling because it is known to cause troubles
-            ],
-
-            \Spatie\ImageOptimizer\Optimizers\Gifsicle::class => [
-                '-b',                   // required parameter for this package
-                '-O3',                  // this produces the slowest but best results
-            ],
-        ],
     ],
 
     'videos' => [

@@ -78,16 +78,6 @@ if (!function_exists('validation')) {
     }
 }
 
-if (!function_exists('breadcrumbs')) {
-    /**
-     * @return \DaveJamesMiller\Breadcrumbs\BreadcrumbsManager
-     */
-    function breadcrumbs()
-    {
-        return app(DaveJamesMiller\Breadcrumbs\BreadcrumbsManager::class);
-    }
-}
-
 if (!function_exists('uploaded')) {
     /**
      * @param string $file

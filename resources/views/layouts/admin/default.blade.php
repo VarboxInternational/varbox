@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     @include('varbox::layouts.admin.partials._head')
 </head>
@@ -14,7 +14,7 @@
 
                     @yield('top')
 
-                    @include('varbox::layouts.admin.partials._top')
+                    @include('varbox::layouts.admin.partials._title')
 
                     @yield('content')
                 </div>

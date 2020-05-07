@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Http;
 
-use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Contracts\Foundation\Application;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Varbox\VarboxServiceProvider;
@@ -31,19 +30,6 @@ abstract class TestCase extends Orchestra
     {
         return [
             VarboxServiceProvider::class,
-        ];
-    }
-
-    /**
-     * Register the package facades.
-     *
-     * @param \Illuminate\Foundation\Application $app
-     * @return array
-     */
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Breadcrumbs' => Breadcrumbs::class,
         ];
     }
 

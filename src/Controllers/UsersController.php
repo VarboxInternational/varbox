@@ -66,6 +66,7 @@ class UsersController extends Controller
 
             $this->title = 'Users';
             $this->view = view('varbox::admin.users.index');
+
             $this->vars = [
                 'roles' => $this->role->whereGuard('web')->get(),
             ];

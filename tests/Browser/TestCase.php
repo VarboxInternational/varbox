@@ -5,8 +5,6 @@ namespace Varbox\Tests\Browser;
 use Collective\Html\FormFacade;
 use Collective\Html\HtmlFacade;
 use Collective\Html\HtmlServiceProvider;
-use DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider;
-use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 use Illuminate\Contracts\Foundation\Application;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
@@ -81,7 +79,6 @@ abstract class TestCase extends OrchestraDuskTestCase
             VarboxServiceProvider::class,
             HtmlServiceProvider::class,
             //JsValidationServiceProvider::class,
-            BreadcrumbsServiceProvider::class,
             BackupServiceProvider::class,
             ImageServiceProvider::class,
             FFMpegServiceProvider::class
@@ -99,7 +96,6 @@ abstract class TestCase extends OrchestraDuskTestCase
         return [
             'Form' => FormFacade::class,
             'Html' => HtmlFacade::class,
-            'Breadcrumbs' => Breadcrumbs::class,
             //'JsValidator' => JsValidatorFacade::class,
             'Image' => Image::class,
             'FFMpeg' => FFMpegFacade::class,
