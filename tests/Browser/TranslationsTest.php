@@ -438,32 +438,6 @@ class TranslationsTest extends TestCase
         });
     }
 
-    /** @test */
-    public function an_admin_can_see_the_translate_button_if_it_has_permission()
-    {
-        $this->admin->grantPermission('translations-list');
-        $this->admin->grantPermission('translations-translate');
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/translations')
-                ->assertSee('Auto Translate');
-        });
-    }
-
-    /** @test */
-    public function an_admin_cannot_see_the_translate_button_if_it_doesnt_have_permission()
-    {
-        $this->admin->grantPermission('translations-list');
-        $this->admin->revokePermission('translations-translate');
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/translations')
-                ->assertDontSee('Auto Translate');
-        });
-    }
-
     /**
      * @return void
      */

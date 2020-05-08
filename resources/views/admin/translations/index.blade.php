@@ -32,11 +32,6 @@
                         {!! form()->button('<i class="fe fe-upload mr-2"></i>&nbsp; Export Translations', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-green btn-square btn-block mt-5 text-left']) !!}
                         {!! form()->close() !!}
                     @endpermission
-                    @permission('translations-translate')
-                        {!! form()->open(['url' => route('admin.translations.translate'), 'method' => 'POST']) !!}
-                        {!! form()->button('<i class="fe fe-refresh-cw mr-2"></i>&nbsp; Auto Translate', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-yellow btn-square btn-block mt-5 text-left']) !!}
-                        {!! form()->close() !!}
-                    @endpermission
                     @permission('translations-delete')
                         {!! form()->open(['url' => route('admin.translations.clear'), 'method' => 'DELETE']) !!}
                         {!! form()->button('<i class="fe fe-trash-2 mr-2"></i>&nbsp; Remove All Translations', ['type' => 'submit', 'class' => 'confirm-are-you-sure btn btn-red btn-square btn-block mt-5 text-left']) !!}

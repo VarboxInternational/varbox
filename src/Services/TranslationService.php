@@ -2,15 +2,11 @@
 
 namespace Varbox\Services;
 
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Str;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
@@ -26,11 +22,6 @@ class TranslationService implements TranslationServiceContract
      * @var Filesystem
      */
     protected $files;
-
-    /**
-     * @var GoogleTranslate
-     */
-    protected $translator;
 
     /**
      * @var TranslationModelContract
@@ -52,19 +43,13 @@ class TranslationService implements TranslationServiceContract
      *
      * @param Application $app
      * @param Filesystem $files
-     * @param GoogleTranslate $translator
      * @param TranslationModelContract $translation
      * @param LanguageModelContract $language
      */
-    public function __construct(
-        Application $app, Filesystem $files, GoogleTranslate $translator,
-        TranslationModelContract $translation, LanguageModelContract $language
-    )
+    public function __construct(Application $app, Filesystem $files, TranslationModelContract $translation, LanguageModelContract $language)
     {
         $this->app = $app;
         $this->files = $files;
-        $this->translator = $translator;
-
         $this->translationModel = $translation;
         $this->languageModel = $language;
     }
@@ -105,57 +90,6 @@ class TranslationService implements TranslationServiceContract
 
         if ($this->hasJsonTranslations()) {
             $this->exportJsonTranslations();
-        }
-    }
-
-    /**
-     * @throws Exception
-     * @return void
-     */
-    public function autoTranslate()
-    {
-        try {
-            $defaultLanguage = $this->languageModel->onlyDefault()->firstOrFail()->code;
-            $emptyTranslations = $this->translationModel->withoutValue()->get();
-        } catch (ModelNotFoundException $e) {
-            throw new Exception('No default language present!');
-        }
-
-        if ($emptyTranslations->count() > 0) {
-            $this->translator->setSource($defaultLanguage);
-
-            foreach ($emptyTranslations as $emptyTranslation) {
-                $defaultTranslation = $this->translationModel
-                    ->where('locale', $defaultLanguage)
-                    ->where('key', $emptyTranslation->key)
-                    ->where('group', $emptyTranslation->group)
-                    ->withValue()
-                    ->first();
-
-                if (!($defaultTranslation && $defaultTranslation->exists)) {
-                    continue;
-                }
-
-                $this->translator->setTarget($emptyTranslation->locale);
-
-                try {
-                    $originalValues = preg_split("/(:\w+)/", $defaultTranslation->value, -1, PREG_SPLIT_DELIM_CAPTURE);
-                    $translatedValues = [];
-
-                    foreach ($originalValues as $originalValue) {
-                        $translatedValues[] = !Str::startsWith($originalValue, ':') ?
-                            $this->translator->translate($originalValue) :
-                            $originalValue;
-                    }
-
-                    $emptyTranslation->update([
-                        'value' => implode(' ', $translatedValues)
-                    ]);
-                } catch (Exception $e) {
-                    logger()->error('Translation failed: ' . $emptyTranslation->group . '.' . $emptyTranslation->key);
-                    logger()->error($e);
-                }
-            }
         }
     }
 

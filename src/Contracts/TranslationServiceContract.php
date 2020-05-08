@@ -14,10 +14,4 @@ interface TranslationServiceContract
      * @return void
      */
     public function exportTranslations();
-
-    /**
-     * @throws /Exception
-     * @return void
-     */
-    public function autoTranslate();
 }
