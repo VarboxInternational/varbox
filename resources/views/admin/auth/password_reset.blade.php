@@ -46,7 +46,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.password_reset_form_request', Varbox\Requests\PasswordResetRequest::class)) !!}--}}
-@endpush

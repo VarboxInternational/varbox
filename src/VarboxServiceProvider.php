@@ -58,7 +58,6 @@ use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Contracts\UrlModelContract;
 use Varbox\Contracts\UserModelContract;
-use Varbox\Contracts\ValidationHelperContract;
 use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminFormLangHelper;
@@ -68,7 +67,6 @@ use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Helpers\UploaderHelper;
 use Varbox\Helpers\UploaderLangHelper;
-use Varbox\Helpers\ValidationHelper;
 use Varbox\Listeners\SendErrorSavedEmail;
 use Varbox\Listeners\StoreBackupToDatabase;
 use Varbox\Commands\UploadsLinkCommand;
@@ -184,7 +182,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/notifications.php' => config_path('varbox/notifications.php'),
             __DIR__ . '/../config/crud.php' => config_path('varbox/crud.php'),
             __DIR__ . '/../config/flash.php' => config_path('varbox/flash.php'),
-            __DIR__ . '/../config/validation.php' => config_path('varbox/validation.php'),
             __DIR__ . '/../config/upload.php' => config_path('varbox/upload.php'),
             __DIR__ . '/../config/wysiwyg.php' => config_path('varbox/wysiwyg.php'),
             __DIR__ . '/../config/emails.php' => config_path('varbox/emails.php'),
@@ -487,7 +484,6 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/bindings.php', 'varbox.bindings');
         $this->mergeConfigFrom(__DIR__ . '/../config/crud.php', 'varbox.crud');
         $this->mergeConfigFrom(__DIR__ . '/../config/flash.php', 'varbox.flash');
-        $this->mergeConfigFrom(__DIR__ . '/../config/validation.php', 'varbox.validation');
         $this->mergeConfigFrom(__DIR__ . '/../config/upload.php', 'varbox.upload');
         $this->mergeConfigFrom(__DIR__ . '/../config/wysiwyg.php', 'varbox.wysiwyg');
         $this->mergeConfigFrom(__DIR__ . '/../config/emails.php', 'varbox.emails');
@@ -605,9 +601,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(MetaHelperContract::class, $binding['helpers']['meta_helper'] ?? MetaHelper::class);
         $this->app->alias(MetaHelperContract::class, 'meta.helper');
-
-        $this->app->singleton(ValidationHelperContract::class, $binding['helpers']['validation_helper'] ?? ValidationHelper::class);
-        $this->app->alias(ValidationHelperContract::class, 'validation.helper');
 
         $this->app->singleton(UploadedHelperContract::class, $binding['helpers']['uploaded_helper'] ?? UploadedHelper::class);
         $this->app->alias(UploadedHelperContract::class, 'uploaded.helper');

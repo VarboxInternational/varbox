@@ -30,7 +30,7 @@
         <div class="col-lg-9">
             @include('varbox::admin.addresses._table')
 
-            {!! $items->links('varbox::pagination.default', request()->query()) !!}
+            {!! $items->links('varbox::pagination', request()->query()) !!}
         </div>
     </div>
 @endsection

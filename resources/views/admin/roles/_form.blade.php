@@ -1,4 +1,4 @@
-{!! validation('admin')->errors() !!}
+@include('varbox::validation')
 
 @if($item->exists)
     {!! form_admin()->model($item, ['url' => $url, 'method' => 'put', 'class' => 'frm row row-cards', 'files' => true]) !!}
@@ -125,8 +125,6 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.role_form_request', Varbox\Requests\RoleRequest::class), '.frm') !!}--}}
-
     <script type="text/javascript">
         switchPermissions($('select[name="guard"]').val());
 

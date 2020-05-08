@@ -1,4 +1,4 @@
-{!! validation('admin')->errors() !!}
+@include('varbox::validation')
 
 @if($item->exists)
     {!! form_admin()->model($item, ['url' => $url, 'method' => 'put', 'class' => 'frm row row-cards', 'files' => true]) !!}
@@ -63,8 +63,6 @@
 {!! form_admin()->close() !!}
 
 @push('scripts')
-    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.address_form_request', \Varbox\Requests\AddressRequest::class), '.frm') !!}--}}
-
     <script type="text/javascript">
         var countrySelect = $('select[name="country_id"]');
         var stateSelect = $('select[name="state_id"]');

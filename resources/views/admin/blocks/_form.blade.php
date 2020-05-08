@@ -1,4 +1,4 @@
-{!! validation('admin')->errors() !!}
+@include('varbox::validation')
 
 @if($item->exists)
     {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
@@ -66,7 +66,3 @@
 @endif
 
 {!! form_admin()->close() !!}
-
-@push('scripts')
-    {{--{!! JsValidator::formRequest(config('varbox.bindings.form_requests.block_form_request', \Varbox\Requests\BlockRequest::class), '.frm') !!}--}}
-@endpush

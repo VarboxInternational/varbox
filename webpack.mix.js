@@ -38,7 +38,5 @@ mix
         'resources/js/plugins/select2.js',
         'resources/js/plugins/tablednd.js',
 
-        //'./vendor/proengsoft/laravel-jsvalidation/public/js/jsvalidation.min.js',
-
         'resources/js/app.js',
     ], 'public/js/app.js');

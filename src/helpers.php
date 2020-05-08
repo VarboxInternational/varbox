@@ -65,19 +65,6 @@ if (!function_exists('meta')) {
     }
 }
 
-if (!function_exists('validation')) {
-    /**
-     * @param string|null $type
-     * @return \Varbox\Contracts\ValidationHelperContract
-     */
-    function validation($type = null)
-    {
-        return app('validation.helper', [
-            'type' => $type
-        ]);
-    }
-}
-
 if (!function_exists('uploaded')) {
     /**
      * @param string $file
