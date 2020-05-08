@@ -345,12 +345,6 @@ class UploadService implements UploadServiceContract
      */
     public function setFile($file)
     {
-        if (static::isUsingAmazonS3()) {
-            $this->file = $this->createFromAmazonS3($file);
-
-            return $this;
-        }
-
         switch ($file) {
             case is_string($file):
                 $this->file = $this->createFromString($file);
@@ -723,16 +717,6 @@ class UploadService implements UploadServiceContract
     public function isFile()
     {
         return !$this->isImage() && !$this->isVideo() && !$this->isAudio();
-    }
-
-    /**
-     * Determine if the uploading functionality is currently using the S3 storage disk.
-     *
-     * @return bool
-     */
-    public static function isUsingAmazonS3()
-    {
-        return strtolower(config('varbox.upload.storage.disk', 'uploads')) === 's3';
     }
 
     /**
@@ -1383,30 +1367,6 @@ class UploadService implements UploadServiceContract
         }
 
         return $file;
-    }
-
-    /**
-     * Get the UploadedFile instance.
-     *
-     * @param $file
-     * @return UploadedFile
-     * @throws UploadException
-     */
-    private function createFromAmazonS3($file)
-    {
-        if ($file instanceof UploadedFile) {
-            return $file;
-        }
-
-        try {
-            $this->setOriginal($file);
-
-            return $this->createFromUrl(
-                Storage::disk($this->getDisk())->url($file)
-            );
-        } catch (Exception $e) {
-            throw UploadException::invalidFile();
-        }
     }
 
     /**
