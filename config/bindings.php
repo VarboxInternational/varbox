@@ -1183,22 +1183,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "validation helper".
-        | To extend or replace this functionality, change the value below with your full "validation helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\ValidationHelper" class
-        | - or at least implement the "Varbox\Contracts\ValidationHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - validation() OR app('validation.helper') OR app('\Varbox\Contracts\ValidationHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'validation_helper' => \Varbox\Helpers\ValidationHelper::class,
-
-        /*
-        |
         | Concrete implementation for the "uploaded helper".
         | To extend or replace this functionality, change the value below with your full "uploaded helper" FQN.
         |
