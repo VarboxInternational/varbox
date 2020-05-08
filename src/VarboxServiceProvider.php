@@ -199,12 +199,6 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function overrideConfigs()
     {
-        $this->config->set('laravel-ffmpeg', [
-            'default_disk' => $this->config['varbox']['upload']['storage']['disk'] ?? 'local',
-            'ffmpeg.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffmpeg'] ?? 'ffmpeg',
-            'ffprobe.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffprobe'] ?? 'ffprobe',
-        ]);
-
         $this->config->set([
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
             'backup.backup.source' => $this->config['varbox']['backup']['source'] ?? [],

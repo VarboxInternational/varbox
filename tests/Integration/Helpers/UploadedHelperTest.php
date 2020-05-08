@@ -30,11 +30,9 @@ class UploadedHelperTest extends TestCase
         parent::setUp();
 
         $this->app->register(\Intervention\Image\ImageServiceProvider::class);
-        $this->app->register(\Pbmedia\LaravelFFMpeg\FFMpegServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
-        $loader->alias('FFMpeg', \Pbmedia\LaravelFFMpeg\FFMpegFacade::class);
     }
 
     /** @test */

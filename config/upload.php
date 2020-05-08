@@ -210,42 +210,6 @@ return [
             'mp4', 'flv', 'avi',
         ],
 
-        /*
-        |
-        | Flag that on video upload to generate thumbnails as well (true | false).
-        |
-        | Thumbnail will be generated from the first second of the uploaded video.
-        | All thumbnails will be stored as images having the name {video_file}_thumbnail_{number}.jpg.
-        |
-        */
-        'generate_thumbnails' => true,
-
-        /*
-        |
-        | How many thumbnails should be generated for a video.
-        |
-        | Keep in mind that if this option is invalid (ex: 0, null, ''), thumbnails won't be generated.
-        | This is happening regardless the "generate_thumbnails" options.
-        |
-        */
-        'thumbnails_number' => 3,
-
-        /*
-        |
-        | FFMpeg & FFProbe binaries path.
-        | Only used if you try to generate video thumbnails and/or styles.
-        |
-        | This configuration options will be used to override the original "config/laravel-ffmpeg.php" config file.
-        | For more details please see "Pbmedia - Laravel FFMpeg" (https://github.com/pascalbaljetmedia/laravel-ffmpeg)
-        |
-        */
-        'binaries' => [
-
-            'ffmpeg' => env('FFMPEG_PATH', 'ffmpeg'),
-            'ffprobe' => env('FFPROBE_PATH', 'ffprobe'),
-
-        ],
-
     ],
 
     'audios' => [

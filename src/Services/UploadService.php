@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as InterventionImage;
-use Pbmedia\LaravelFFMpeg\FFMpegFacade as FFMpeg;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Mime\MimeTypes;
 use Varbox\Contracts\UploadModelContract;
@@ -912,14 +911,10 @@ class UploadService implements UploadServiceContract
         $this->guardAgainstAllowedExtensions('videos');
 
         return $this->attemptStoringToDisk(function () {
-            set_time_limit(3600);
-            ini_set('max_execution_time', 3600);
+            set_time_limit(300);
+            ini_set('max_execution_time', 300);
 
             $video = $this->storeToDisk();
-
-            if (!$this->hasOriginal()) {
-                $this->generateThumbnailsForVideo($video);
-            }
 
             return $video;
         });
@@ -1230,42 +1225,6 @@ class UploadService implements UploadServiceContract
             );
         } catch (Exception $e) {
             throw UploadException::generateImageThumbnailFailed();
-        }
-    }
-
-    /**
-     * Try generating the video thumbnails.
-     * The generation is done according to the config properties from config/upload.php:
-     * videos.generate_thumbnails and videos.thumbnails_number
-     *
-     * @param string $path
-     * @return void
-     * @throws UploadException
-     */
-    protected function generateThumbnailsForVideo($path)
-    {
-        $generate = $this->getConfig('videos.generate_thumbnails');
-        $number = (int)$this->getConfig('videos.thumbnails_number');
-
-        if (!$generate || !$number) {
-            return;
-        }
-
-        try {
-            $video = FFMpeg::fromDisk($this->getDisk())->open($path);
-            $duration = $video->getDurationInSeconds() - 1;
-
-            for ($i = 1; $i <= $number; $i++) {
-                $thumbnail = str_replace('.' . $this->getExtension(), '', $path) . '_thumbnail_' . $i . '.jpg';
-
-                $video
-                    ->getFrameFromSeconds(floor(($duration * $i) / $number))
-                    ->export()->toDisk($this->getDisk())
-                    ->withVisibility(config('varbox.upload.storage.visibility', 'public'))
-                    ->save($thumbnail);
-            }
-        } catch (Exception $e) {
-            throw UploadException::generateVideoThumbnailFailed();
         }
     }
 

@@ -2,7 +2,6 @@
 
 namespace Varbox\Tests\Integration\Services;
 
-use Faker\Generator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
@@ -32,11 +31,9 @@ class UploadServiceTest extends TestCase
         parent::setUp();
 
         $this->app->register(\Intervention\Image\ImageServiceProvider::class);
-        $this->app->register(\Pbmedia\LaravelFFMpeg\FFMpegServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
-        $loader->alias('FFMpeg', \Pbmedia\LaravelFFMpeg\FFMpegFacade::class);
     }
 
     /** @test */
