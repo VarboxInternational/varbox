@@ -32,7 +32,6 @@ use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminFormLangHelperContract;
 use Varbox\Contracts\AdminMenuHelperContract;
-use Varbox\Contracts\AnalyticsModelContract;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\CityModelContract;
@@ -49,8 +48,6 @@ use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleModelContract;
-use Varbox\Contracts\SchemaHelperContract;
-use Varbox\Contracts\SchemaModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
@@ -68,7 +65,6 @@ use Varbox\Helpers\AdminFormLangHelper;
 use Varbox\Helpers\AdminMenuHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
-use Varbox\Helpers\SchemaHelper;
 use Varbox\Helpers\UploadedHelper;
 use Varbox\Helpers\UploaderHelper;
 use Varbox\Helpers\UploaderLangHelper;
@@ -87,7 +83,6 @@ use Varbox\Middleware\PersistLocale;
 use Varbox\Middleware\RedirectRequests;
 use Varbox\Models\Activity;
 use Varbox\Models\Address;
-use Varbox\Models\Analytics;
 use Varbox\Models\Backup;
 use Varbox\Models\Block;
 use Varbox\Models\City;
@@ -102,7 +97,6 @@ use Varbox\Models\Permission;
 use Varbox\Models\Redirect;
 use Varbox\Models\Revision;
 use Varbox\Models\Role;
-use Varbox\Models\Schema;
 use Varbox\Models\State;
 use Varbox\Models\Translation;
 use Varbox\Models\Upload;
@@ -197,10 +191,8 @@ class VarboxServiceProvider extends BaseServiceProvider
             __DIR__ . '/../config/blocks.php' => config_path('varbox/blocks.php'),
             __DIR__ . '/../config/pages.php' => config_path('varbox/pages.php'),
             __DIR__ . '/../config/menus.php' => config_path('varbox/menus.php'),
-            __DIR__ . '/../config/analytics.php' => config_path('varbox/analytics.php'),
             __DIR__ . '/../config/redirect.php' => config_path('varbox/redirect.php'),
             __DIR__ . '/../config/translation.php' => config_path('varbox/translation.php'),
-            __DIR__ . '/../config/schema.php' => config_path('varbox/schema.php'),
             __DIR__ . '/../config/meta.php' => config_path('varbox/meta.php'),
         ], 'varbox-config');
     }
@@ -216,10 +208,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             'ffprobe.binaries' => $this->config['varbox']['upload']['videos']['binaries']['ffprobe'] ?? 'ffprobe',
         ]);
 
-        /*$this->config->set([
-            'jsvalidation.view' => $this->config['varbox']['validation']['jsvalidation_view'] ?? 'jsvalidation::bootstrap4',
-        ]);*/
-
         $this->config->set([
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
             'backup.backup.source' => $this->config['varbox']['backup']['source'] ?? [],
@@ -227,13 +215,6 @@ class VarboxServiceProvider extends BaseServiceProvider
             'backup.backup.database_dump_compressor' => $this->config['varbox']['backup']['database_dump_compressor'] ?? null,
             'backup.notifications.notifications' => $this->config['varbox']['backup']['notifications']['notifications'] ?? [],
             'backup.notifications.mail.to' => $this->config['varbox']['backup']['notifications']['email'] ?? '',
-        ]);
-
-        $this->config->set([
-            'analytics.view_id' => $this->config['varbox']['analytics']['view_id'] ?? null,
-            'analytics.service_account_credentials_json' => $this->config['varbox']['analytics']['credentials_json'] ?? storage_path('app/analytics/service-account-credentials.json'),
-            'analytics.cache_lifetime_in_minutes' => $this->config['varbox']['analytics']['cache']['lifetime'] ?? 60 * 24,
-            'analytics.cache.store' => $this->config['varbox']['analytics']['cache']['store'] ?? 'file',
         ]);
     }
 
@@ -365,9 +346,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         Route::model('menuParent', MenuModelContract::class);
         Route::model('language', LanguageModelContract::class);
         Route::model('translation', TranslationModelContract::class);
-        Route::model('analytics', AnalyticsModelContract::class);
         Route::model('redirect', RedirectModelContract::class);
-        Route::model('schema', SchemaModelContract::class);
 
         Route::bind('email', function ($id) {
             $query = app(EmailModelContract::class)->whereId($id);
@@ -449,9 +428,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/menus.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/languages.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/translations.php');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/analytics.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/redirects.php');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/schema.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/wysiwyg.php');
     }
 
@@ -517,10 +494,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/blocks.php', 'varbox.blocks');
         $this->mergeConfigFrom(__DIR__ . '/../config/pages.php', 'varbox.pages');
         $this->mergeConfigFrom(__DIR__ . '/../config/menus.php', 'varbox.menus');
-        $this->mergeConfigFrom(__DIR__ . '/../config/analytics.php', 'varbox.analytics');
         $this->mergeConfigFrom(__DIR__ . '/../config/redirect.php', 'varbox.redirect');
         $this->mergeConfigFrom(__DIR__ . '/../config/translation.php', 'varbox.translation');
-        $this->mergeConfigFrom(__DIR__ . '/../config/schema.php', 'varbox.schema');
         $this->mergeConfigFrom(__DIR__ . '/../config/meta.php', 'varbox.meta');
     }
 
@@ -605,14 +580,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->app->bind(TranslationModelContract::class, $binding['models']['translation_model'] ?? Translation::class);
         $this->app->alias(TranslationModelContract::class, 'translation.model');
 
-        $this->app->bind(AnalyticsModelContract::class, $binding['models']['analytics_model'] ?? Analytics::class);
-        $this->app->alias(AnalyticsModelContract::class, 'analytics.model');
-
         $this->app->bind(RedirectModelContract::class, $binding['models']['redirect_model'] ?? Redirect::class);
         $this->app->alias(RedirectModelContract::class, 'redirect.model');
-
-        $this->app->bind(SchemaModelContract::class, $binding['models']['schema_model'] ?? Schema::class);
-        $this->app->alias(SchemaModelContract::class, 'schema.model');
     }
 
     /**
@@ -648,9 +617,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderLangHelperContract::class, $binding['helpers']['uploader_lang_helper'] ?? UploaderLangHelper::class);
         $this->app->alias(UploaderLangHelperContract::class, 'uploader_lang.helper');
-
-        $this->app->singleton(SchemaHelperContract::class, $binding['helpers']['schema_helper'] ?? SchemaHelper::class);
-        $this->app->alias(SchemaHelperContract::class, 'schema.helper');
     }
 
     /**
@@ -688,14 +654,6 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         Blade::if('hasallroles', function ($roles) {
             return auth()->check() && (auth()->user()->isSuper() || auth()->user()->hasAllRoles($roles));
-        });
-
-        Blade::directive('analytics', function () {
-            return "<?php echo optional(app('analytics.model')->first())->code ?: '' ?>";
-        });
-
-        Blade::directive('schema', function ($expression) {
-            return "<?php echo app('schema.helper')->renderAll($expression); ?>";
         });
     }
 

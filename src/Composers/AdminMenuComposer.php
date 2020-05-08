@@ -92,44 +92,6 @@ class AdminMenuComposer
                 });
             });
 
-            /*$menu->add(function ($item) use ($menu) {
-                $shop = $item->name('Shop Panel')->data('icon', 'fa-shopping-cart')
-                    ->permissions('orders-list', 'carts-list', 'product-categories-list', 'products-list', 'attributes-list', 'discounts-list', 'taxes-list', 'currencies-list')
-                    ->active('admin/orders/*', 'admin/carts/*', 'admin/product-categories/*', 'admin/products/*', 'admin/sets/*', 'admin/attributes/*', 'admin/discounts/*', 'admin/taxes/*', 'admin/currencies/*');
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Orders')->url(route('admin.orders.index'))->permissions('orders-list')->active('admin/orders/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Carts')->url(route('admin.carts.index'))->permissions('carts-list')->active('admin/carts/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Categories')->url(route('admin.product_categories.index'))->permissions('product-categories-list')->active('admin/product-categories/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Products')->url(route('admin.products.index'))->permissions('products-list')->active('admin/products/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Attributes')->url(route('admin.attribute_sets.index'))->permissions('attributes-list')->active('admin/sets/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Discounts')->url(route('admin.discounts.index'))->permissions('discounts-list')->active('admin/discounts/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Taxes')->url(route('admin.taxes.index'))->permissions('taxes-list')->active('admin/taxes/*');
-                });
-
-                $menu->child($shop, function (MenuItem $item) {
-                    $item->name('Currencies')->url(route('admin.currencies.index'))->permissions('currencies-list')->active('admin/currencies/*');
-                });
-            });*/
-
             $menu->add(function ($item) use ($menu) {
                 $media = $item->name('Media Library')->data('icon', 'fa-copy')
                     ->permissions('uploads-list')
@@ -173,30 +135,16 @@ class AdminMenuComposer
             });
 
             $menu->add(function ($item) use ($menu) {
-                $seo = $item->name('Seo Administration')->data('icon', 'fa-chart-bar')
-                    ->permissions('analytics-view', 'schema-list', 'redirects-list')
-                    ->active('admin/analytics/*', 'admin/schema/*', 'admin/redirects/*');
-
-                $menu->child($seo, function (MenuItem $item) {
-                    $item->name('Analytics')->url(route('admin.analytics.show'))->permissions('analytics-view')->active('admin/analytics/*');
-                });
-
-                $menu->child($seo, function (MenuItem $item) {
-                    $item->name('Schema')->url(route('admin.schema.index'))->permissions('schema-list')->active('admin/schema/*');
-                });
-
-                $menu->child($seo, function (MenuItem $item) {
-                    $item->name('Redirects')->url(route('admin.redirects.index'))->permissions('redirects-list')->active('admin/redirects/*');
-                });
-            });
-
-            $menu->add(function ($item) use ($menu) {
                 $sys = $item->name('System Settings')->data('icon', 'fa-cog')
-                    ->permissions('configs-list', 'errors-list', 'backups-list')
-                    ->active('admin/config/*', 'admin/errors/*', 'admin/backups/*');
+                    ->permissions('configs-list', 'redirects-list', 'errors-list', 'backups-list')
+                    ->active('admin/config/*', 'admin/redirects/*', 'admin/errors/*', 'admin/backups/*');
 
                 $menu->child($sys, function (MenuItem $item) {
                     $item->name('Configs')->url(route('admin.configs.index'))->permissions('configs-list')->active('admin/configs/*');
+                });
+
+                $menu->child($sys, function (MenuItem $item) {
+                    $item->name('Redirects')->url(route('admin.redirects.index'))->permissions('redirects-list')->active('admin/redirects/*');
                 });
 
                 $menu->child($sys, function (MenuItem $item) {

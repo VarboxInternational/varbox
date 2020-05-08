@@ -17,7 +17,6 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "laravel/ui": "^2.0",
         "illuminate/auth": "^7.0",
         "illuminate/console": "^7.0",
         "illuminate/contracts": "^7.0",
@@ -27,12 +26,11 @@
         "illuminate/support": "^7.0",
         "illuminate/validation": "^7.0",
         "illuminate/view": "^7.0",
+        "laravel/ui": "^2.0",
         "intervention/image": "^2.5",
         "predis/predis": "^1.1",
         "laravelcollective/html": "^6.1",
-        "spatie/laravel-analytics": "^3.9",
         "spatie/laravel-backup": "^6.8",
-        "spatie/schema-org": "^2.8",
         "league/flysystem-aws-s3-v3": "^1.0",
         "pbmedia/laravel-ffmpeg": "^6.0",
         "kalnoy/nestedset": "^5.0"

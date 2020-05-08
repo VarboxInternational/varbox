@@ -378,22 +378,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "analytics model".
-        | To extend or replace this functionality, change the value below with your full "analytics model" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Models\Analytics" class
-        | - or at least implement the "Varbox\Contracts\AnalyticsModelContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - app('analytics.model') OR app('\Varbox\Contracts\AnalyticsModelContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'analytics_model' => \Varbox\Models\Analytics::class,
-
-        /*
-        |
         | Concrete implementation for the "redirect model".
         | To extend or replace this functionality, change the value below with your full "redirect model" FQN.
         |
@@ -407,22 +391,6 @@ return [
         |
         */
         'redirect_model' => \Varbox\Models\Redirect::class,
-
-        /*
-        |
-        | Concrete implementation for the "schema model".
-        | To extend or replace this functionality, change the value below with your full "schema model" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Models\Schema" class
-        | - or at least implement the "Varbox\Contracts\SchemaModelContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - app('schema.model') OR app('\Varbox\Contracts\SchemaModelContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'schema_model' => \Varbox\Models\Schema::class,
 
     ],
 
@@ -754,17 +722,6 @@ return [
 
         /*
         |
-        | Concrete implementation for the "analytics controller".
-        | To extend or replace this functionality, change the value below with your full "analytics controller" FQN.
-        |
-        | Your class will have to:
-        | - extend the "Varbox\Controllers\AnalyticsController" class
-        |
-        */
-        'analytics_controller' => \Varbox\Controllers\AnalyticsController::class,
-
-        /*
-        |
         | Concrete implementation for the "redirects controller".
         | To extend or replace this functionality, change the value below with your full "redirects controller" FQN.
         |
@@ -773,17 +730,6 @@ return [
         |
         */
         'redirects_controller' => \Varbox\Controllers\RedirectsController::class,
-
-        /*
-        |
-        | Concrete implementation for the "schema controller".
-        | To extend or replace this functionality, change the value below with your full "schema controller" FQN.
-        |
-        | Your class will have to:
-        | - extend the "Varbox\Controllers\SchemaController" class
-        |
-        */
-        'schema_controller' => \Varbox\Controllers\SchemaController::class,
 
     ],
 
@@ -1028,18 +974,6 @@ return [
         |
         */
         'redirect_form_request' => \Varbox\Requests\RedirectRequest::class,
-
-        /*
-        |
-        | Concrete implementation for the "schema form request".
-        | To extend or replace this functionality, change the value below with your full "schema form request" FQN.
-        |
-        | Your class will have to (first options is recommended):
-        | - extend the "\Varbox\Requests\SchemaRequest" class
-        | - or extend the "\Illuminate\Foundation\Http\FormRequest" class.
-        |
-        */
-        'schema_form_request' => \Varbox\Requests\SchemaRequest::class,
 
     ],
 
@@ -1310,22 +1244,6 @@ return [
         |
         */
         'uploader_lang_helper' => \Varbox\Helpers\UploaderLangHelper::class,
-
-        /*
-        |
-        | Concrete implementation for the "schema helper".
-        | To extend or replace this functionality, change the value below with your full "schema helper" FQN.
-        |
-        | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\SchemaHelper" class
-        | - or at least implement the "Varbox\Contracts\SchemaHelperContract" interface.
-        |
-        | Regardless of the concrete implementation below, you can still use it like:
-        | - schema() OR app('schema.helper') OR app('\Varbox\Contracts\SchemaHelperContract')
-        | - or you could even use your own class as a direct implementation
-        |
-        */
-        'schema_helper' => \Varbox\Helpers\SchemaHelper::class,
 
     ],
 

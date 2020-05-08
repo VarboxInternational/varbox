@@ -369,16 +369,6 @@ class CreateVarboxTables extends Migration
             });
         }
 
-        if (!Schema::hasTable('analytics')) {
-            Schema::create('analytics', function (Blueprint $table) {
-                $table->increments('id');
-
-                $table->text('code')->nullable();
-
-                $table->timestamps();
-            });
-        }
-
         if (!Schema::hasTable('redirects')) {
             Schema::create('redirects', function (Blueprint $table) {
                 $table->increments('id');
@@ -386,20 +376,6 @@ class CreateVarboxTables extends Migration
                 $table->string('old_url')->unique();
                 $table->string('new_url');
                 $table->smallInteger('status')->default(301);
-
-                $table->timestamps();
-            });
-        }
-
-        if (!Schema::hasTable('schema')) {
-            Schema::create('schema', function (Blueprint $table) {
-                $table->increments('id');
-
-                $table->string('name')->unique();
-                $table->string('type');
-                $table->string('target');
-
-                $table->json('fields')->nullable();
 
                 $table->timestamps();
             });
@@ -413,9 +389,7 @@ class CreateVarboxTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schema');
         Schema::dropIfExists('redirects');
-        Schema::dropIfExists('analytics');
         Schema::dropIfExists('translations');
         Schema::dropIfExists('languages');
         Schema::dropIfExists('blockables');

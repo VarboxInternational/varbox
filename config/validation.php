@@ -19,13 +19,4 @@ return [
 
     ],
 
-    /*
-    |
-    | The default view used to render Javascript validation code.
-    | This setting actually overwrites the "proengsoft/laravel-jsvalidation" -> "view" config value.
-    | Because of that, publishing the actual "jsvalidation.php" config file isn't necessary anymore.
-    |
-    */
-    'jsvalidation_view' => 'varbox::helpers.validation.trigger',
-
 ];
