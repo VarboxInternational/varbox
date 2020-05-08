@@ -26,6 +26,9 @@ class AdminRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'required',
+            ],
             'email' => [
                 'required',
                 'email',
@@ -40,12 +43,6 @@ class AdminRequest extends FormRequest
                 'nullable',
                 'array',
                 Rule::exists('roles', 'id')->where('guard', 'admin')
-            ],
-            'first_name' => [
-                'required',
-            ],
-            'last_name' => [
-                'required',
             ],
         ];
     }

@@ -46,6 +46,7 @@ class NotificationsTest extends TestCase
     /**
      * @var string
      */
+    protected $userName = 'Test User';
     protected $userEmail = 'test-user@mail.com';
     protected $userPassword = 'test_user_password';
 
@@ -650,6 +651,7 @@ class NotificationsTest extends TestCase
     {
         $this->userModel = User::first();
         $this->anotherUserModel = User::create([
+            'name' => $this->userName,
             'email' => $this->userEmail,
             'password' => $this->userPassword,
         ]);

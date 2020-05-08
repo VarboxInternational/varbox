@@ -64,6 +64,7 @@ class PermissionTest extends TestCase
     {
         for ($i = 1; $i <= 3; $i++) {
             $user = User::create([
+                'name' => 'User Name ' . $i,
                 'email' => 'test-' . $i . '@mail.com',
                 'password' => bcrypt('pa55word'),
             ]);

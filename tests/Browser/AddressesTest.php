@@ -73,6 +73,7 @@ class AddressesTest extends TestCase
 
         $this->afterApplicationCreated(function () {
             $this->user = User::create([
+                'name' => 'Test User',
                 'email' => 'test-user@mail.com',
                 'password' => bcrypt('test_password'),
             ]);

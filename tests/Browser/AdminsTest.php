@@ -15,10 +15,9 @@ class AdminsTest extends TestCase
     /**
      * @var string
      */
+    protected $adminName = 'Test Admin Name';
     protected $adminEmail = 'test-admin-email@mail.com';
     protected $adminPassword = 'test_admin_password';
-    protected $adminFirstName = 'Test Admin First Name';
-    protected $adminLastName = 'Test Admin Last Name';
 
     /**
      * @var string
@@ -181,15 +180,14 @@ class AdminsTest extends TestCase
                 ->typeSelect2('#roles-input', 'Admin')
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', $this->adminName)
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/admins')
                 ->assertSee('The record was successfully created!')
                 ->visitLastPage('/admin/admins/', new User)
                 ->assertSee($this->adminEmail)
-                ->assertSee($this->adminFirstName . ' ' . $this->adminLastName);
+                ->assertSee($this->adminName);
         });
 
         $this->deleteAdmin();
@@ -208,8 +206,7 @@ class AdminsTest extends TestCase
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', $this->adminName)
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/admins/create')
@@ -233,15 +230,13 @@ class AdminsTest extends TestCase
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', $this->adminName)
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/admins/edit')
                 ->assertSee('The record was successfully created!')
                 ->assertInputValue('#email-input', $this->adminEmail)
-                ->assertInputValue('#first_name-input', $this->adminFirstName)
-                ->assertInputValue('#last_name-input', $this->adminLastName);
+                ->assertInputValue('#name-input', $this->adminName);
         });
 
         $this->deleteAdmin();
@@ -459,8 +454,7 @@ class AdminsTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', $this->adminName)
                 ->press('Save')
                 ->waitForText('The email field is required')
                 ->assertSee('The email field is required');
@@ -468,7 +462,7 @@ class AdminsTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_first_name_when_creating_an_admin()
+    public function it_requires_a_name_when_creating_an_admin()
     {
         $this->admin->grantPermission('admins-list');
         $this->admin->grantPermission('admins-add');
@@ -480,30 +474,10 @@ class AdminsTest extends TestCase
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', '')
                 ->press('Save')
-                ->waitForText('The first name field is required')
-                ->assertSee('The first name field is required');
-        });
-    }
-
-    /** @test */
-    public function it_requires_a_last_name_when_creating_an_admin()
-    {
-        $this->admin->grantPermission('admins-list');
-        $this->admin->grantPermission('admins-add');
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/admins')
-                ->clickLink('Add New')
-                ->type('#email-input', $this->adminEmail)
-                ->type('#password-input', $this->adminPassword)
-                ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->press('Save')
-                ->waitForText('The last name field is required')
-                ->assertSee('The last name field is required');
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
         });
     }
 
@@ -522,8 +496,7 @@ class AdminsTest extends TestCase
                 ->type('#email-input', '')
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', $this->adminName)
                 ->press('Save')
                 ->waitForText('The email field is required')
                 ->assertSee('The email field is required');
@@ -533,7 +506,7 @@ class AdminsTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_first_name_when_updating_an_admin()
+    public function it_requires_a_name_when_updating_an_admin()
     {
         $this->admin->grantPermission('admins-list');
         $this->admin->grantPermission('admins-add');
@@ -547,36 +520,10 @@ class AdminsTest extends TestCase
                 ->type('#email-input', $this->adminEmail)
                 ->type('#password-input', $this->adminPassword)
                 ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', '')
-                ->type('#last_name-input', $this->adminLastName)
+                ->type('#name-input', '')
                 ->press('Save')
-                ->waitForText('The first name field is required')
-                ->assertSee('The first name field is required');
-        });
-
-        $this->deleteAdmin();
-    }
-
-    /** @test */
-    public function it_requires_a_last_name_when_updating_an_admin()
-    {
-        $this->admin->grantPermission('admins-list');
-        $this->admin->grantPermission('admins-add');
-
-        $this->createAdmin();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/admins')
-                ->clickEditRecordButton($this->adminEmail)
-                ->type('#email-input', $this->adminEmail)
-                ->type('#password-input', $this->adminPassword)
-                ->type('#password_confirmation-input', $this->adminPassword)
-                ->type('#first_name-input', $this->adminFirstName)
-                ->type('#last_name-input', '')
-                ->press('Save')
-                ->waitForText('The last name field is required')
-                ->assertSee('The last name field is required');
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
         });
 
         $this->deleteAdmin();
@@ -588,10 +535,9 @@ class AdminsTest extends TestCase
     protected function createAdmin()
     {
         $this->adminModel = User::create([
+            'name' => $this->adminName,
             'email' => $this->adminEmail,
             'password' => bcrypt($this->adminPassword),
-            'first_name' => $this->adminFirstName,
-            'last_name' => $this->adminLastName,
         ]);
 
         $this->adminModel->assignRoles('Admin');

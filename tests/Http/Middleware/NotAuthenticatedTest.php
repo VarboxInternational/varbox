@@ -89,6 +89,7 @@ class NotAuthenticatedTest extends TestCase
     protected function createUser()
     {
         $this->user = User::create([
+            'name' => 'Test User',
             'email' => 'test-user@mail.com',
             'password' => bcrypt('test_password'),
         ]);

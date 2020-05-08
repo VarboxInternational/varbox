@@ -846,6 +846,7 @@ class HasRolesAndPermissionsTest extends TestCase
     protected function setUpTestingConditions()
     {
         $this->user = User::create([
+            'name' => 'test User',
             'email' => 'test@mail.com',
             'password' => bcrypt('pa55word'),
         ]);

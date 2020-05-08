@@ -14,8 +14,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
+                    {!! form_admin()->text('name', 'Name', null, ['required']) !!}
                     {!! form_admin()->text('email', 'Email', null, ['required', 'autocomplete' => 'off']) !!}
-                    {!! form_admin()->select('roles[]', 'Roles', $roles->pluck('name', 'id'), $item->exists ? $item->roles->pluck('id') : null, ['multiple']) !!}
                 </div>
                 <div class="col-md-6">
                     {!! form_admin()->password('password', 'Password', ['required', 'placeholder' => 'Leave blank to remain the same', 'autocomplete' => 'off'], true) !!}
@@ -29,15 +29,12 @@
     <div class="card">
         <div class="card-status bg-green"></div>
         <div class="card-header">
-            <h3 class="card-title">Personal Info</h3>
+            <h3 class="card-title">Access Info</h3>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
-                    {!! form_admin()->text('first_name', 'First Name', null, ['required']) !!}
-                </div>
-                <div class="col-md-6">
-                    {!! form_admin()->text('last_name', 'Last Name', null, ['required']) !!}
+                <div class="col-md-12">
+                    {!! form_admin()->select('roles[]', 'Roles', $roles->pluck('name', 'id'), $item->exists ? $item->roles->pluck('id') : null, ['multiple']) !!}
                 </div>
             </div>
         </div>

@@ -38,10 +38,9 @@ class User extends Authenticatable implements UserModelContract
      * @var array
      */
     protected $fillable = [
+        'name',
         'email',
         'password',
-        'first_name',
-        'last_name',
         'active'
     ];
 
@@ -54,16 +53,6 @@ class User extends Authenticatable implements UserModelContract
         'active' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Get the user's full name.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return implode(' ', [$this->first_name, $this->last_name]);
-    }
 
     /**
      * Sort query results in alphabetical order by email.

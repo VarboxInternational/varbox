@@ -71,12 +71,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_the_full_name()
-    {
-        $this->assertEquals('Test User', $this->user->full_name);
-    }
-
-    /** @test */
     public function it_can_filter_only_active_users()
     {
         $this->assertEquals(1, User::onlyActive()->count());
@@ -195,10 +189,9 @@ class UserTest extends TestCase
     protected function setUpTestingConditions()
     {
         $this->user = User::create([
+            'name' => 'Test User',
             'email' => 'test@mail.com',
             'password' => bcrypt('pa55word'),
-            'first_name' => 'Test',
-            'last_name' => 'User',
             'active' => true,
         ]);
     }

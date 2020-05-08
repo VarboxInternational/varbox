@@ -4,7 +4,7 @@
             <i class="fe fe-user" style="font-size: 18px;"></i>
         </span>
         <span class="ml-2 d-none d-lg-block">
-            <span class="text-white font-weight-bold">{{ auth()->user()->full_name }}</span>
+            <span class="text-white font-weight-bold">{{ auth()->user()->name }}</span>
             <small class="text-muted d-block mt-1">Administrator</small>
         </span>
     </a>

@@ -16,7 +16,7 @@
             <tr>
                 <td>
                     <div>{{ $item->email ?: 'N/A' }}</div>
-                    <div class="small text-muted">{{ $item->full_name ?: 'N/A' }}</div>
+                    <div class="small text-muted">{{ $item->name ?: 'N/A' }}</div>
                 </td>
                 <td class="d-none d-sm-table-cell">
                     <span class="badge @if($item->active) badge-success @else badge-danger @endif">

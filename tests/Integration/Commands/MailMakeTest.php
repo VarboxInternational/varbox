@@ -44,7 +44,7 @@ class MailMakeTest extends TestCase
                 'class' => 'App\Mail\TestMail',
                 'view' => 'emails.test_mail',
                 'variables' => [
-                    'first_name', 'last_name', 'full_name'
+                    'username', 'home_url'
                 ],
             ]
         ]);

@@ -15,10 +15,9 @@ class UsersTest extends TestCase
     /**
      * @var string
      */
+    protected $userName = 'Test User Name';
     protected $userEmail = 'test-user-email@mail.com';
     protected $userPassword = 'test_user_password';
-    protected $userFirstName = 'Test User First Name';
-    protected $userLastName = 'Test User Last Name';
 
     /**
      * @var string
@@ -180,15 +179,14 @@ class UsersTest extends TestCase
                 ->type('#email-input', $this->userEmail)
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', $this->userName)
                 ->press('Save')
                 ->pause(500)
                 ->assertPathIs('/admin/users')
                 ->assertSee('The record was successfully created!')
                 ->visitLastPage('/admin/users/', new User)
                 ->assertSee($this->userEmail)
-                ->assertSee($this->userFirstName . ' ' . $this->userLastName);
+                ->assertSee($this->userName);
         });
 
         $this->deleteUser();
@@ -207,8 +205,7 @@ class UsersTest extends TestCase
                 ->type('#email-input', $this->userEmail)
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', $this->userName)
                 ->clickLink('Save & New')
                 ->pause(500)
                 ->assertPathIs('/admin/users/create')
@@ -232,15 +229,13 @@ class UsersTest extends TestCase
                 ->type('#email-input', $this->userEmail)
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', $this->userName)
                 ->clickLink('Save & Continue')
                 ->pause(500)
                 ->assertPathBeginsWith('/admin/users/edit')
                 ->assertSee('The record was successfully created!')
                 ->assertInputValue('#email-input', $this->userEmail)
-                ->assertInputValue('#first_name-input', $this->userFirstName)
-                ->assertInputValue('#last_name-input', $this->userLastName);
+                ->assertInputValue('#name-input', $this->userName);
         });
 
         $this->deleteUser();
@@ -458,8 +453,7 @@ class UsersTest extends TestCase
                 ->clickLink('Add New')
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', $this->userName)
                 ->press('Save')
                 ->waitForText('The email field is required')
                 ->assertSee('The email field is required');
@@ -467,7 +461,7 @@ class UsersTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_first_name_when_creating_a_user()
+    public function it_requires_a_name_when_creating_a_user()
     {
         $this->admin->grantPermission('users-list');
         $this->admin->grantPermission('users-add');
@@ -479,30 +473,9 @@ class UsersTest extends TestCase
                 ->type('#email-input', $this->userEmail)
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#last_name-input', $this->userLastName)
                 ->press('Save')
-                ->waitForText('The first name field is required')
-                ->assertSee('The first name field is required');
-        });
-    }
-
-    /** @test */
-    public function it_requires_a_last_name_when_creating_a_user()
-    {
-        $this->admin->grantPermission('users-list');
-        $this->admin->grantPermission('users-add');
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/users')
-                ->clickLink('Add New')
-                ->type('#email-input', $this->userEmail)
-                ->type('#password-input', $this->userPassword)
-                ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->press('Save')
-                ->waitForText('The last name field is required')
-                ->assertSee('The last name field is required');
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
         });
     }
 
@@ -521,8 +494,7 @@ class UsersTest extends TestCase
                 ->type('#email-input', '')
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', $this->userName)
                 ->press('Save')
                 ->waitForText('The email field is required')
                 ->assertSee('The email field is required');
@@ -532,7 +504,7 @@ class UsersTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_first_name_when_updating_a_user()
+    public function it_requires_a_name_when_updating_a_user()
     {
         $this->admin->grantPermission('users-list');
         $this->admin->grantPermission('users-add');
@@ -546,36 +518,10 @@ class UsersTest extends TestCase
                 ->type('#email-input', $this->userEmail)
                 ->type('#password-input', $this->userPassword)
                 ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', '')
-                ->type('#last_name-input', $this->userLastName)
+                ->type('#name-input', '')
                 ->press('Save')
-                ->waitForText('The first name field is required')
-                ->assertSee('The first name field is required');
-        });
-
-        $this->deleteUser();
-    }
-
-    /** @test */
-    public function it_requires_a_last_name_when_updating_a_user()
-    {
-        $this->admin->grantPermission('users-list');
-        $this->admin->grantPermission('users-add');
-
-        $this->createUser();
-
-        $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/users')
-                ->clickEditRecordButton($this->userEmail)
-                ->type('#email-input', $this->userEmail)
-                ->type('#password-input', $this->userPassword)
-                ->type('#password_confirmation-input', $this->userPassword)
-                ->type('#first_name-input', $this->userFirstName)
-                ->type('#last_name-input', '')
-                ->press('Save')
-                ->waitForText('The last name field is required')
-                ->assertSee('The last name field is required');
+                ->waitForText('The name field is required')
+                ->assertSee('The name field is required');
         });
 
         $this->deleteUser();
@@ -587,10 +533,9 @@ class UsersTest extends TestCase
     protected function createUser()
     {
         $this->userModel = User::create([
+            'name' => $this->userName,
             'email' => $this->userEmail,
             'password' => bcrypt($this->userPassword),
-            'first_name' => $this->userFirstName,
-            'last_name' => $this->userLastName,
         ]);
     }
 

@@ -237,7 +237,7 @@ class InstallCommand extends Command
 
                 $content = str_replace(
                     "'name', 'email', 'password'",
-                    "'email', 'password', 'first_name', 'last_name', 'active'",
+                    "'name', 'email', 'password', 'active'",
                     $content
                 );
 
@@ -257,13 +257,13 @@ class InstallCommand extends Command
             } else {
                 $this->line('<fg=red>ERROR   |</> Could not get the contents of "app/User.php"! You will need to update this manually.');
                 $this->line('<fg=red>ERROR   |</> Change "extends Authenticatable" to "extends \Varbox\Models\User" in your user model.');
-                $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: first_name, last_name, active');
+                $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: active');
                 $this->line('<fg=red>ERROR   |</> Append to the "casts" property the following: "active" => "boolean"');
             }
         } else {
             $this->line('<fg=red>ERROR   |</> Unable to locate "app/User.php"! You will need to update this manually.');
             $this->line('<fg=red>ERROR   |</> Change "extends Authenticatable" to "extends \Varbox\Models\User" in your user model.');
-            $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: first_name, last_name, active');
+            $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: active');
             $this->line('<fg=red>ERROR   |</> Append to the "casts" property the following: "active" => "boolean"');
         }
     }

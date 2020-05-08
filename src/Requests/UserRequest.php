@@ -25,6 +25,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'required',
+                'min:3',
+            ],
             'email' => [
                 'required',
                 'email',
@@ -39,14 +43,6 @@ class UserRequest extends FormRequest
                 'nullable',
                 'array',
                 Rule::exists('roles', 'id')->where('guard', 'web')
-            ],
-            'first_name' => [
-                'required',
-                'min:3',
-            ],
-            'last_name' => [
-                'required',
-                'min:3',
             ],
         ];
     }

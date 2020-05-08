@@ -27,7 +27,7 @@ return [
             'class' => 'App\Mail\TestMail',
             'view' => 'emails.test_mail',
             'variables' => [
-                'first_name', 'last_name', 'full_name'
+                'username', 'home_url'
             ],
         ],*/
 
@@ -51,23 +51,13 @@ return [
     */
     'variables' => [
 
-        'first_name' => [
-            'name' => 'First Name',
-            'label' => 'The first name of the logged in user.',
-        ],
-
-        'last_name' => [
-            'name' => 'Last Name',
-            'label' => 'The last name of the logged in user.',
-        ],
-
-        'full_name' => [
-            'name' => 'Full Name',
-            'label' => 'The full name of the logged in user.',
+        'username' => [
+            'name' => 'User Name',
+            'label' => 'The name of the logged in user.',
         ],
 
         'home_url' => [
-            'name' => 'Home URL',
+            'name' => 'Home Url',
             'label' => 'The home URL of the site.',
         ],
 

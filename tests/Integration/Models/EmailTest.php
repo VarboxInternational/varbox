@@ -43,7 +43,7 @@ class EmailTest extends TestCase
                 'class' => 'App\Mail\TestMail',
                 'view' => 'emails.test_mail',
                 'variables' => [
-                    'first_name', 'last_name', 'full_name'
+                    'username', 'home_url'
                 ],
             ]
         ]);
@@ -202,13 +202,11 @@ class EmailTest extends TestCase
 
         $variables = $this->email->variables;
 
-        $this->assertArrayHasKey('first_name', $variables);
-        $this->assertArrayHasKey('last_name', $variables);
-        $this->assertArrayHasKey('full_name', $variables);
+        $this->assertArrayHasKey('username', $variables);
+        $this->assertArrayHasKey('home_url', $variables);
 
-        $this->assertEquals('First Name', $variables['first_name']['name']);
-        $this->assertEquals('Last Name', $variables['last_name']['name']);
-        $this->assertEquals('Full Name', $variables['full_name']['name']);
+        $this->assertEquals('User Name', $variables['username']['name']);
+        $this->assertEquals('Home Url', $variables['home_url']['name']);
 
         $this->assertEquals('emails.test_mail', $this->email->view);
     }

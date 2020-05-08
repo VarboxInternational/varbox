@@ -64,6 +64,7 @@ class AnalyticsController extends Controller
         }
 
         return view('varbox::admin.analytics.show')->with([
+            'title' => 'Analytics',
             'item' => $item,
             'metrics' => $metrics,
         ]);

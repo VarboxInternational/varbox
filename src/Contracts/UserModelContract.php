@@ -5,11 +5,6 @@ namespace Varbox\Contracts;
 interface UserModelContract
 {
     /**
-     * @return string
-     */
-    public function getFullNameAttribute();
-
-    /**
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeAlphabetically($query);

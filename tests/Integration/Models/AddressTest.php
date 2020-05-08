@@ -302,6 +302,7 @@ class AddressTest extends TestCase
     protected function createUser()
     {
         $this->user = User::create([
+            'name' => 'Test User',
             'email' => 'test-user@mail.com',
             'password' => 'test_password',
         ]);
@@ -313,6 +314,7 @@ class AddressTest extends TestCase
     protected function createAnotherUser()
     {
         $this->anotherUser = User::create([
+            'name' => 'Another User Name',
             'email' => 'test-another-user@mail.com',
             'password' => 'test_another_password',
         ]);

@@ -15,25 +15,11 @@ class CreateVarboxTables extends Migration
     public function up()
     {
         if (Schema::hasTable('users')) {
-            Schema::table('users', function (Blueprint $table) {
-                if (Schema::hasColumn('users', 'name')) {
-                    $table->dropColumn('name');
-                }
-            });
-
-            Schema::table('users', function (Blueprint $table) {
-                if (!Schema::hasColumn('users', 'first_name')) {
-                    $table->string('first_name')->nullable()->after('password');
-                }
-
-                if (!Schema::hasColumn('users', 'last_name')) {
-                    $table->string('last_name')->nullable()->after('first_name');
-                }
-
-                if (!Schema::hasColumn('users', 'active')) {
-                    $table->boolean('active')->default(false)->after('last_name');
-                }
-            });
+            if (!Schema::hasColumn('users', 'active')) {
+                Schema::table('users', function (Blueprint $table) {
+                    $table->boolean('active')->default(false)->after('remember_token');
+                });
+            }
         }
 
         if (!Schema::hasTable('roles')) {
@@ -456,29 +442,11 @@ class CreateVarboxTables extends Migration
         Schema::dropIfExists('roles');
 
         if (Schema::hasTable('users')) {
-            Schema::table('users', function (Blueprint $table) {
-                if (Schema::hasColumn('users', 'active')) {
+            if (Schema::hasColumn('users', 'active')) {
+                Schema::table('users', function (Blueprint $table) {
                     $table->dropColumn('active');
-                }
-            });
-
-            Schema::table('users', function (Blueprint $table) {
-                if (Schema::hasColumn('users', 'last_name')) {
-                    $table->dropColumn('last_name');
-                }
-            });
-
-            Schema::table('users', function (Blueprint $table) {
-                if (Schema::hasColumn('users', 'first_name')) {
-                    $table->dropColumn('first_name');
-                }
-            });
-
-            Schema::table('users', function (Blueprint $table) {
-                if (!Schema::hasColumn('users', 'name')) {
-                    $table->string('name')->nullable()->after('id');
-                }
-            });
+                });
+            }
         }
     }
 }

@@ -66,6 +66,7 @@ class NotificationsCleanTest extends TestCase
     protected function setUpTestingConditions()
     {
         $user = User::create([
+            'name' => 'Test User',
             'email' => 'test-user@mail.com',
             'password' => bcrypt('test_password'),
         ]);

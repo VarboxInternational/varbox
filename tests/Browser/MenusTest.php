@@ -68,8 +68,8 @@ class MenusTest extends TestCase
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/menus/' . $this->menuLocation)
-                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->visit('/admin/menus/locations')
+                ->assertPathIs('/admin/menus/locations')
                 ->assertSee('Menu Locations');
         });
     }
@@ -81,8 +81,8 @@ class MenusTest extends TestCase
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/menus/' . $this->menuLocation)
-                ->assertPathIs('/admin/menus/' . $this->menuLocation)
+                ->visit('/admin/menus/locations')
+                ->assertPathIs('/admin/menus/locations')
                 ->assertSee('Menu Locations');
         });
     }
@@ -94,7 +94,7 @@ class MenusTest extends TestCase
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
-                ->visit('/admin/menus/' . $this->menuLocation)
+                ->visit('/admin/menus/locations')
                 ->assertSee('Unauthorized')
                 ->assertDontSee('Menu Locations');
         });
@@ -528,7 +528,7 @@ class MenusTest extends TestCase
 
         $this->deleteMenu();
     }
-    
+
     /**
      * @return void
      */

@@ -17,10 +17,9 @@ class UsersSeeder extends Seeder
     {
         if ($user->where('email', 'admin@mail.com')->count() == 0) {
             $admin = $user->doNotLogActivity()->create([
+                'name' => 'Admin User',
                 'email' => 'admin@mail.com',
                 'password' => bcrypt('admin'),
-                'first_name' => 'Admin',
-                'last_name' => 'User',
                 'active' => true,
             ]);
 

@@ -30,12 +30,14 @@ class ActivityTest extends TestCase
     /**
      * @var string
      */
+    protected $user1Name = 'Test Name 1';
     protected $user1Email = 'test-user-1@mail.com';
     protected $user1Password = 'test_user_1_password';
 
     /**
      * @var string
      */
+    protected $user2Name = 'Test Name 2';
     protected $user2Email = 'test-user-2@mail.com';
     protected $user2Password = 'test_user_2_password';
 
@@ -452,11 +454,13 @@ class ActivityTest extends TestCase
     protected function createActivities()
     {
         $this->user1 = User::create([
+            'name' => $this->user1Name,
             'email' => $this->user1Email,
             'password' => $this->user1Password,
         ]);
 
         $this->user2 = User::create([
+            'name' => $this->user2Name,
             'email' => $this->user2Email,
             'password' => $this->user2Password,
         ]);

@@ -25,7 +25,7 @@ class UserFilter extends Filter
             'search' => [
                 'operator' => Filter::OPERATOR_LIKE,
                 'condition' => Filter::CONDITION_OR,
-                'columns' => 'email,first_name,last_name',
+                'columns' => 'name,email',
             ],
             'active' => [
                 'operator' => Filter::OPERATOR_EQUAL,

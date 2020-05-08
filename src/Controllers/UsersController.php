@@ -172,7 +172,7 @@ class UsersController extends Controller
         $this->guardAgainstAdmin($user);
 
         auth()->guard('web')->login($user);
-        flash()->success('You are now signed in as ' . $user->full_name);
+        flash()->success('You are now signed in as ' . $user->name);
 
         return redirect('/');
     }

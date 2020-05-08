@@ -243,6 +243,7 @@ class ActivityTest extends TestCase
     protected function setUpTestingConditions()
     {
         $this->user = (new User)->doNotLogActivity()->create([
+            'name' => 'Test User',
             'email' => 'test-user@mail.com',
             'password' => 'test_password',
         ]);
