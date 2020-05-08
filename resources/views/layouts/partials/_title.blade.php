@@ -6,7 +6,7 @@
                     <h1 class="page-title float-left">@yield('title', '')</h1>
                 </div>
                 <div class="col-md-6">
-                    @include('varbox::layouts.admin.partials._count')
+                    @include('varbox::layouts.partials._count')
                 </div>
             </div>
         </div>

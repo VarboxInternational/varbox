@@ -305,17 +305,17 @@ class VarboxServiceProvider extends BaseServiceProvider
         $composers = $this->config['varbox.bindings']['view_composers'];
 
         $this->app['view']->composer(
-            'varbox::layouts.admin.partials._menu',
+            'varbox::layouts.partials._menu',
             $composers['admin_menu_view_composer'] ?? AdminMenuComposer::class
         );
 
         $this->app['view']->composer(
-            'varbox::layouts.admin.partials._notifications',
+            'varbox::layouts.partials._notifications',
             $composers['notifications_view_composer'] ?? NotificationsComposer::class
         );
 
         $this->app['view']->composer(
-            'varbox::layouts.admin.partials._languages',
+            'varbox::layouts.partials._languages',
             $composers['languages_view_composer'] ?? LanguagesComposer::class
         );
     }

@@ -1,4 +1,4 @@
-@extends('varbox::layouts.admin.login')
+@extends('varbox::layouts.login')
 
 @section('content')
     <div class="row">

@@ -1,4 +1,4 @@
-@extends('varbox::layouts.admin.default')
+@extends('varbox::layouts.default')
 
 @section('content')
 
