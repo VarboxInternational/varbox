@@ -2,7 +2,6 @@
 
 namespace Varbox\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Meta\MetaProperty;
@@ -87,20 +86,6 @@ class MetaHelper implements MetaHelperContract
         }
 
         return implode('', $html);
-    }
-
-    /**
-     * Render the view responsible for displaying all the meta fields.
-     * This is to be used in an admin form.
-     *
-     * @param Model|null $model
-     * @return \Illuminate\View\View
-     */
-    public function fields(Model $model = null)
-    {
-        return view('varbox::helpers.meta.fields')->with([
-            'model' => $model,
-        ]);
     }
 
     /**
