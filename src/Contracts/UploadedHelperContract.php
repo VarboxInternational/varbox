@@ -10,10 +10,9 @@ interface UploadedHelperContract
     public function __construct($file);
 
     /**
-     * @param int|null $number
      * @return string
      */
-    public function thumbnail($number = null);
+    public function thumbnail();
 
     /**
      * @param string|null $style

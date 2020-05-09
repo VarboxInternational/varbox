@@ -14,12 +14,8 @@
             <tr>
                 <td>
                     <a href="{{ uploaded($item->full_path)->url() }}" target="_blank">
-                        <span class="avatar d-block rounded bg-white" style="background-image: url({{ uploaded($item->full_path)->thumbnail() }})">
-                            @if($item->isAudio())
-                                <i class="fa fa-file-audio text-blue" style="vertical-align: middle; font-size: 245%;"></i>
-                            @elseif($item->isFile())
-                                <i class="fa fa-file-alt text-blue" style="vertical-align: middle; font-size: 245%;"></i>
-                            @endif
+                        <span class="avatar d-block rounded bg-white" @if($item->isImage()) style="background-image: url({{ uploaded($item->full_path)->thumbnail() }})" @endif>
+                            <i class="fa @if($item->isVideo()) fa-file-video @elseif($item->isAudio()) fa-file-audio @elseif($item->isFile()) fa-file-alt @endif text-blue" style="vertical-align: middle; font-size: 245%;"></i>
                         </span>
                     </a>
                 </td>

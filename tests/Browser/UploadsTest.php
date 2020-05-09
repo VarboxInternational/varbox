@@ -151,7 +151,7 @@ class UploadsTest extends TestCase
         });
 
         $this->assertEquals(1, Upload::count());
-        $this->assertEquals(4, count(Storage::disk($this->disk)->files(null, true)) - 1);
+        $this->assertEquals(1, count(Storage::disk($this->disk)->files(null, true)) - 1);
 
         $this->deleteUploads();
     }

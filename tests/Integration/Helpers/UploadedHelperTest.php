@@ -205,21 +205,6 @@ class UploadedHelperTest extends TestCase
     }
 
     /** @test */
-    public function it_can_return_the_thumbnails_of_an_uploaded_video()
-    {
-        Storage::fake($this->disk);
-
-        $video = (new UploadService($this->videoFile()))->upload();
-        $thumbnail1 = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->thumbnail(1);
-        $thumbnail2 = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->thumbnail(2);
-        $thumbnail3 = (new UploadedHelper($video->getPath() . '/' . $video->getName()))->thumbnail(3);
-
-        Storage::disk($this->disk)->assertExists(str_replace('/storage', '', $thumbnail1));
-        Storage::disk($this->disk)->assertExists(str_replace('/storage', '', $thumbnail2));
-        Storage::disk($this->disk)->assertExists(str_replace('/storage', '', $thumbnail3));
-    }
-
-    /** @test */
     public function it_can_determine_if_a_file_exists_on_disk()
     {
         Storage::fake($this->disk);

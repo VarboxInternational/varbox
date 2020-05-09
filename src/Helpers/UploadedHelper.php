@@ -2,6 +2,7 @@
 
 namespace Varbox\Helpers;
 
+use BadMethodCallException;
 use Illuminate\Support\Facades\Storage;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Services\UploadService;
@@ -200,7 +201,7 @@ class UploadedHelper implements UploadedHelperContract
     {
         $this->file = $this->original;
 
-        if ($style && $style != 'original' && ($this->type == self::TYPE_IMAGE || $this->type == self::TYPE_VIDEO)) {
+        if ($style && $style != 'original' && $this->type == self::TYPE_IMAGE) {
             $this->file = substr_replace(
                 $this->file, '_' . $style, strpos($this->file, '.'), 0
             );
@@ -214,24 +215,17 @@ class UploadedHelper implements UploadedHelperContract
      * The $number parameter is used to specify which video thumbnail to identify: 1st, 2nd, 3rd, etc.
      * Keep in mind that this method will only have an effect on video type files.
      *
-     * @param int|null $number
      * @return string
      */
-    public function thumbnail($number = null)
+    public function thumbnail()
     {
-        $this->file = $this->original;
-
-        if ($this->type == self::TYPE_IMAGE) {
-            $this->file = substr_replace(
-                preg_replace('/\..+$/', '.' . $this->extension, $this->file), '_thumbnail', strpos($this->file, '.'), 0
-            );
+        if ($this->type != self::TYPE_IMAGE) {
+            throw new BadMethodCallException('The "thumbnail" method should only be called for images!');
         }
 
-        if ($this->type == self::TYPE_VIDEO) {
-            $this->file = substr_replace(
-                preg_replace('/\..+$/', '.jpg', $this->file), '_thumbnail_' . ($number ?: 1), strpos($this->file, '.'), 0
-            );
-        }
+        $this->file = substr_replace(
+            preg_replace('/\..+$/', '.' . $this->extension, $this->original), '_thumbnail', strpos($this->original, '.'), 0
+        );
 
         return Storage::disk($this->disk)->url($this->file);
     }
@@ -250,7 +244,7 @@ class UploadedHelper implements UploadedHelperContract
     {
         $this->file = $this->original;
 
-        if ($style && $style != 'original' && ($this->type == self::TYPE_IMAGE || $this->type == self::TYPE_VIDEO)) {
+        if ($style && $style != 'original' && $this->type == self::TYPE_IMAGE) {
             $this->file = substr_replace(
                 $this->file, '_' . $style, strpos($this->file, '.'), 0
             );

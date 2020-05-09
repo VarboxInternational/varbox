@@ -3,7 +3,7 @@
         @foreach($uploads as $upload)
             <tr>
                 <td class="w-1 pl-2">
-                    <span class="avatar d-block rounded" style="background-image: url({{ $upload->helper->thumbnail(1) }})"></span>
+                    <i class="fa fa-file-video text-blue" style="vertical-align: middle; font-size: 220%;"></i>
                 </td>
                 <td>
                     <div class="upload-name text-truncate">{{ $upload->original_name ?: 'N/A' }}</div>
