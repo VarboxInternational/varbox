@@ -14,7 +14,7 @@ use Varbox\Seed\UsersSeeder;
 class InstallCommand extends Command
 {
     /**
-     * The name and signature of the console command.
+     * The name and signature of the console command.n
      *
      * @var string
      */
@@ -73,6 +73,7 @@ class InstallCommand extends Command
         $this->manageWysiwyg();
         $this->migrateTables();
         $this->seedDatabase();
+        $this->overwriteBindings();
     }
 
     /**
@@ -534,6 +535,55 @@ class InstallCommand extends Command
 
         $this->callSilent('db:seed', ['--class' => LanguagesSeeder::class]);
         $this->line('<fg=green>SUCCESS |</> Seeded languages!');
+    }
+
+    /**
+     * @return void
+     * @throws FileNotFoundException
+     */
+    protected function overwriteBindings()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>OVERWRITING CLASS BINDINGS</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        $bindingsConfigFile = $this->laravel->configPath('varbox/bindings.php');
+
+        if ($this->files->exists($bindingsConfigFile)) {
+            $content = $this->files->get($bindingsConfigFile);
+
+            if ($content !== false) {
+                if (class_exists('\App\User')) {
+                    $content = str_replace(
+                        '\Varbox\Models\User::class',
+                        "\App\User::class",
+                        $content
+                    );
+                }
+
+                if (class_exists('\App\Http\Composers\AdminMenuComposer')) {
+                    $content = str_replace(
+                        '\Varbox\Composers\AdminMenuComposer::class',
+                        "\App\Http\Composers\AdminMenuComposer::class",
+                        $content
+                    );
+                }
+
+                $this->files->put($bindingsConfigFile, $content);
+
+                $this->line('<fg=green>SUCCESS |</> Overwritten the "admin_menu_view_composer" inside the "config/varbox/bindings.php" file.');
+                $this->line('<fg=green>SUCCESS |</> Overwritten the "user_model" inside the "config/varbox/bindings.php" file.');
+            } else {
+                $this->line('<fg=red>ERROR   |</> Could not get the contents of "config/varbox/bindings.php"! You will need to update this manually.');
+                $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\User::class" in your bindings config file.');
+                $this->line('<fg=red>ERROR   |</> Change "admin_menu_view_composer" value to "\App\Http\Composers\AdminMenuComposer::class" in your bindings config file.');
+            }
+        } else {
+            $this->line('<fg=red>ERROR   |</> Unable to locate "config/varbox/bindings.php"! You will need to update this manually.');
+            $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\User::class" in your bindings config file.');
+            $this->line('<fg=red>ERROR   |</> Change "admin_menu_view_composer" value to "\App\Http\Composers\AdminMenuComposer::class" in your bindings config file.');
+        }
     }
 
     /**
