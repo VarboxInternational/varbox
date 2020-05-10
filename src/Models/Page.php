@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
+use Varbox\Options\MetaTagOptions;
 use Varbox\Options\RevisionOptions;
 use Varbox\Options\UrlOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
+use Varbox\Traits\HasMetaTags;
 use Varbox\Traits\HasNodes;
 use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
@@ -32,6 +34,7 @@ class Page extends Model implements PageModelContract
     use HasActivity;
     use HasBlocks;
     use HasNodes;
+    use HasMetaTags;
     use IsDraftable;
     use IsCacheable;
     use IsFilterable;
@@ -218,5 +221,15 @@ class Page extends Model implements PageModelContract
             ->withEntityType('page')
             ->withEntityName($this->name)
             ->withEntityUrl(route('admin.pages.edit', $this->getKey()));
+    }
+
+    /**
+     * Set the options for the HasMetaTags trait.
+     *
+     * @return MetaTagOptions
+     */
+    public function getMetaTagOptions(): MetaTagOptions
+    {
+        return MetaTagOptions::instance();
     }
 }

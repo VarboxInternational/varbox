@@ -49,6 +49,8 @@
     </div>
 </div>
 
+@include('varbox::helpers.meta.container', ['model' => $item ?? null])
+
 @if($item->exists)
     @if(isset($revision))
         @include('varbox::helpers.block.container', ['model' => $item, 'revision' => $revision])

@@ -276,6 +276,7 @@ class CreateVarboxTables extends Migration
                 $table->string('type');
 
                 $table->json('data')->nullable();
+                $table->json('meta')->nullable();
 
                 $table->timestamp('drafted_at')->nullable();
                 $table->timestamps();
