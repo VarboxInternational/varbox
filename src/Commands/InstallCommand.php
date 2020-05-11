@@ -5,6 +5,7 @@ namespace Varbox\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Schema;
 use Varbox\Seed\CountriesSeeder;
 use Varbox\Seed\LanguagesSeeder;
 use Varbox\Seed\PermissionsSeeder;
@@ -71,6 +72,7 @@ class InstallCommand extends Command
         $this->manageUploads();
         $this->manageBackups();
         $this->manageWysiwyg();
+        $this->setupPasswordResets();
         $this->migrateTables();
         $this->seedDatabase();
         $this->overwriteBindings();
@@ -496,6 +498,41 @@ class InstallCommand extends Command
             $this->callSilent('varbox:wysiwyg-link');
             $this->line('<fg=green>SUCCESS |</> The "public/wysiwyg/" directory has been linked!');
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function setupPasswordResets()
+    {
+        $this->line(PHP_EOL . PHP_EOL);
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        $this->line('<fg=yellow>SETTING UP PASSWORD RESETS</>');
+        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+
+        if (Schema::hasTable('password_resets')) {
+            $this->line('<fg=green>SUCCESS |</> The "password_resets" table already exists.');
+
+            return;
+        }
+
+        $vendorMigrationFile = base_path('vendor/laravel/ui/stubs/migrations/2014_10_12_100000_create_password_resets_table.php');
+        $localMigrationFile = base_path('database/migrations/2014_10_12_100000_create_password_resets_table.php');
+
+        if ($this->files->exists($localMigrationFile)) {
+            $this->line('<fg=green>SUCCESS |</> The "create_password_resets_table" migration already exists.');
+
+            return;
+        }
+
+        if (!$this->files->exists($vendorMigrationFile)) {
+            $this->line('<fg=red>ERROR |</> The "vendor/laravel/ui/stubs/migrations/2014_10_12_100000_create_password_resets_table.php" does not exist!');
+            $this->line('<fg=red>ERROR |</> Install the "laravel/ui" composer package and run "php artisan varbox:install" again.');
+        }
+
+        copy($vendorMigrationFile, $localMigrationFile);
+
+        $this->line('<fg=green>SUCCESS |</> The "create_password_resets_table" migration file was successfully copied from "laravel/ui".');
     }
 
     /**
