@@ -69,7 +69,7 @@ class EmailsController extends Controller
 
             $query->filtered($request->all(), $filter)->sorted($request->all(), $sort);
 
-            $this->items = $query->paginate(config('varbox.base.crud.per_page', 10));
+            $this->items = $query->paginate(config('varbox.base.crud.per_page', 30));
             $this->title = 'Emails';
             $this->view = view('varbox::admin.emails.index');
             $this->vars = [

@@ -71,7 +71,7 @@ class BlocksController extends Controller
             $this->items = $query
                 ->filtered($request->all(), $filter)
                 ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.base.crud.per_page', 10));
+                ->paginate(config('varbox.base.crud.per_page', 30));
 
             $this->title = 'Blocks';
             $this->view = view('varbox::admin.blocks.index');
