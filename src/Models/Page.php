@@ -9,12 +9,14 @@ use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\MetaTagOptions;
 use Varbox\Options\RevisionOptions;
+use Varbox\Options\TranslationOptions;
 use Varbox\Options\UrlOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasMetaTags;
 use Varbox\Traits\HasNodes;
 use Varbox\Traits\HasRevisions;
+use Varbox\Traits\HasTranslations;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\HasUrl;
 use Varbox\Traits\IsCacheable;
@@ -39,6 +41,14 @@ class Page extends Model implements PageModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+
+    use HasTranslations;
+
+    public function getTranslationOptions(): TranslationOptions
+    {
+        return TranslationOptions::instance()
+            ->fieldsToTranslate('data');
+    }
 
     /**
      * The database table.

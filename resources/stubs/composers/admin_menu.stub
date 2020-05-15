@@ -5,7 +5,7 @@ namespace DummyNamespace;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Varbox\Helpers\AdminMenuHelper;
+use Varbox\Helpers\MenuHelper;
 use Varbox\Menu\MenuItem;
 
 class AdminMenuComposer
@@ -35,7 +35,7 @@ class AdminMenuComposer
      */
     public function compose(View $view)
     {
-        $menu = menu_admin()->make(function (AdminMenuHelper $menu) {
+        $menu = menu()->make(function (MenuHelper $menu) {
             $menu->add(function (MenuItem $item) {
                 $item->name('Home')->url(route('admin'))->data('icon', 'fa-home')->active('admin');
             });

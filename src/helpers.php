@@ -32,13 +32,13 @@ if (!function_exists('form_admin_lang')) {
     }
 }
 
-if (!function_exists('menu_admin')) {
+if (!function_exists('menu')) {
     /**
-     * @return \Varbox\Contracts\AdminMenuHelperContract
+     * @return \Varbox\Contracts\MenuHelperContract
      */
-    function menu_admin()
+    function menu()
     {
-        return app('admin_menu.helper');
+        return app('menu.helper');
     }
 }
 

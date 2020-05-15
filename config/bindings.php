@@ -1139,15 +1139,15 @@ return [
         | To extend or replace this functionality, change the value below with your full "admin menu helper" FQN.
         |
         | Your class will have to (first option is recommended):
-        | - extend the "Varbox\Helpers\AdminMenuHelper" class
-        | - or at least implement the "Varbox\Contracts\AdminMenuHelperContract" interface.
+        | - extend the "Varbox\Helpers\MenuHelper" class
+        | - or at least implement the "Varbox\Contracts\MenuHelperContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - menu_admin() OR app('admin_menu.helper') OR app('\Varbox\Contracts\AdminMenuHelperContract')
+        | - menu() OR app('menu.helper') OR app('\Varbox\Contracts\MenuHelperContract')
         | - or you could even use your own class as a direct implementation
         |
         */
-        'admin_menu_helper' => \Varbox\Helpers\AdminMenuHelper::class,
+        'menu_helper' => \Varbox\Helpers\MenuHelper::class,
 
         /*
         |

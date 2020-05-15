@@ -4,10 +4,10 @@ namespace Varbox\Helpers;
 
 use Closure;
 use Illuminate\Support\Collection;
-use Varbox\Contracts\AdminMenuHelperContract;
+use Varbox\Contracts\MenuHelperContract;
 use Varbox\Menu\MenuItem;
 
-class AdminMenuHelper implements AdminMenuHelperContract
+class MenuHelper implements MenuHelperContract
 {
     /**
      * The menu items.

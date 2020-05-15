@@ -31,7 +31,7 @@ use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminFormLangHelperContract;
-use Varbox\Contracts\AdminMenuHelperContract;
+use Varbox\Contracts\MenuHelperContract;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\CityModelContract;
@@ -61,7 +61,7 @@ use Varbox\Contracts\UserModelContract;
 use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminFormLangHelper;
-use Varbox\Helpers\AdminMenuHelper;
+use Varbox\Helpers\MenuHelper;
 use Varbox\Helpers\FlashHelper;
 use Varbox\Helpers\MetaHelper;
 use Varbox\Helpers\UploadedHelper;
@@ -587,8 +587,8 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->app->singleton(AdminFormLangHelperContract::class, $binding['helpers']['admin_form_lang_helper'] ?? AdminFormLangHelper::class);
         $this->app->alias(AdminFormLangHelperContract::class, 'admin_form_lang.helper');
 
-        $this->app->singleton(AdminMenuHelperContract::class, $binding['helpers']['admin_menu_helper'] ?? AdminMenuHelper::class);
-        $this->app->alias(AdminMenuHelperContract::class, 'admin_menu.helper');
+        $this->app->singleton(MenuHelperContract::class, $binding['helpers']['menu_helper'] ?? MenuHelper::class);
+        $this->app->alias(MenuHelperContract::class, 'menu.helper');
 
         $this->app->bind(FlashHelperContract::class, $binding['helpers']['flash_helper'] ?? FlashHelper::class);
         $this->app->alias(FlashHelperContract::class, 'flash.helper');

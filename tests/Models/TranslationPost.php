@@ -35,6 +35,8 @@ class TranslationPost extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'array',
+        'content' => 'array',
         'data' => 'array'
     ];
 

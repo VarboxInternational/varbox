@@ -4,7 +4,7 @@ namespace Varbox\Contracts;
 
 use Varbox\Menu\MenuItem;
 
-interface AdminMenuHelperContract
+interface MenuHelperContract
 {
     /**
      * @param \Closure $callback
