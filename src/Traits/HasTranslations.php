@@ -251,20 +251,6 @@ trait HasTranslations
     }
 
     /**
-     * Merge the $casts property with the translatable fields.
-     *
-     * @return array
-     * @throws Exception
-     */
-    public function getCasts()
-    {
-        return array_merge(
-            parent::getCasts(),
-            array_fill_keys($this->getTranslatableAttributes(), 'array')
-        );
-    }
-
-    /**
      * Determine the locale to be used.
      *
      * @param string $key
