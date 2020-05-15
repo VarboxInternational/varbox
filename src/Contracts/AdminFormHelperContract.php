@@ -202,45 +202,4 @@ interface AdminFormHelperContract
      * @return string
      */
     public function editor($name, $label = null, $value = null, array $options = []);
-
-    /**
-     * @param string $name
-     * @param string|null $label
-     * @param string|null $value
-     * @param array $options
-     * @return string
-     */
-    public function calendar($name, $label = null, $value = null, array $options = []);
-
-    /**
-     * @param string $name
-     * @param string|null $label
-     * @param int $start
-     * @param int $end
-     * @param string|null $selected
-     * @param array $options
-     * @return string
-     */
-    public function selectRange($name, $label = null, $start = 0, $end = 0, $selected = null, array $options = []);
-
-    /**
-     * @param string $name
-     * @param string|null $label
-     * @param int $start
-     * @param int $end
-     * @param string|null $selected
-     * @param array $options
-     * @return string
-     */
-    public function selectYear($name, $label = null, $start = null, $end = null, $selected = null, array $options = []);
-
-    /**
-     * @param string $name
-     * @param string|null $label
-     * @param string|null $selected
-     * @param array $options
-     * @param string $format
-     * @return string
-     */
-    public function selectMonth($name, $label = null, $selected = null, array $options = [], $format = '%B');
 }
