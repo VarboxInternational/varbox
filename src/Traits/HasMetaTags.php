@@ -33,34 +33,6 @@ trait HasMetaTags
     }
 
     /**
-     * Merge the $casts property with the meta fields.
-     *
-     * @return array
-     */
-    public function getFillable()
-    {
-        if (in_array($this->getMetaColumn(), parent::getFillable())) {
-            return parent::getFillable();
-        }
-
-        return array_merge(parent::getFillable(), [
-            $this->getMetaColumn()
-        ]);
-    }
-
-    /**
-     * Merge the $casts property with the meta fields.
-     *
-     * @return array
-     */
-    public function getCasts()
-    {
-        return array_merge(parent::getCasts(), [
-            $this->getMetaColumn() => 'array'
-        ]);
-    }
-
-    /**
      * Display the meta tags stored for a model instance.
      *
      * @return string
