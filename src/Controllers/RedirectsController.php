@@ -141,6 +141,22 @@ class RedirectsController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
+    public function export()
+    {
+        try {
+            $this->model->exportToFile();
+
+            flash()->success('All redirects have been successfully exported to the "bootstrap/redirects.php" file!');
+        } catch (\Exception $e) {
+            flash()->error('Something went wrong! Please try again.', $e);
+        }
+
+        return redirect()->route('admin.redirects.index');
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteAll()
     {
         try {

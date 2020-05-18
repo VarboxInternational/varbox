@@ -26,4 +26,9 @@ interface RedirectModelContract
      * @return RedirectModelContract|null
      */
     public static function findValidOrNull($path);
+
+    /**
+     * @return void
+     */
+    public static function exportToFile();
 }

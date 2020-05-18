@@ -25,6 +25,7 @@ Route::group([
         Route::get('edit/{redirect}', ['as' => 'admin.redirects.edit', 'uses' => $controllers['redirects'] . '@edit', 'permissions' => 'redirects-edit']);
         Route::put('update/{redirect}', ['as' => 'admin.redirects.update', 'uses' => $controllers['redirects'] . '@update', 'permissions' => 'redirects-edit']);
         Route::delete('destroy/{redirect}', ['as' => 'admin.redirects.destroy', 'uses' => $controllers['redirects'] . '@destroy', 'permissions' => 'redirects-delete']);
+        Route::post('export', ['as' => 'admin.redirects.export', 'uses' => $controllers['redirects'] . '@export', 'permissions' => 'redirects-export']);
         Route::delete('delete-all', ['as' => 'admin.redirects.delete_all', 'uses' => $controllers['redirects'] . '@deleteAll', 'permissions' => 'redirects-delete']);
     });
 });

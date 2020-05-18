@@ -674,6 +674,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'redirects-delete',
             ],
+            'Export' => [
+                'group' => 'Redirects',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'redirects-export',
+            ],
         ],
     ];
 

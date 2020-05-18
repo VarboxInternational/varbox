@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Varbox\Contracts\RedirectModelContract;
 use Varbox\Exceptions\RedirectException;
 use Varbox\Options\ActivityOptions;
@@ -108,6 +109,44 @@ class Redirect extends Model implements RedirectModelContract
             ->whereNotNull('new_url')->where('new_url', '!=', '')
             ->whereIn('status', array_keys((array)config('varbox.redirect.statuses', [])))
             ->latest()->first();
+    }
+
+    /**
+     * Export all redirects as an array format inside the "bootstrap/redirects.php" file.
+     * To make use of the exported redirects, add the following in your "public/index.php" file.
+     * The code above should be the first piece of code in your "public/index.php" file.
+     *
+     * if (file_exists(__DIR__ . '/../bootstrap/redirects.php')) {
+     *     foreach (require_once __DIR__ . '/../bootstrap/redirects.php' as $redirect) {
+     *         if ($_SERVER['REQUEST_URI'] == '/' . trim($redirect['from'], '/')) {
+     *             header('Location: ' . '/' . trim($redirect['to'], '/'), true, $redirect['status']);
+     *             die;
+     *         }
+     *     }
+     * }
+     *
+     * @return void
+     */
+    public static function exportToFile()
+    {
+        $file = base_path('bootstrap/redirects.php');
+        $content = "";
+
+        foreach (static::all() as $redirect) {
+            $content .= "    [\n";
+            $content .= "        'from' => '" . $redirect->old_url . "',\n";
+            $content .= "        'to' => '" . $redirect->new_url . "',\n";
+            $content .= "        'status' => '" . $redirect->status . "',\n";
+            $content .= "    ],\n";
+        }
+
+        if ($content) {
+            $contents = "<?php\n\nreturn [\n" . $content . "];";
+
+            File::put($file, $contents);
+        } else {
+            File::delete($file);
+        }
     }
 
     /**
