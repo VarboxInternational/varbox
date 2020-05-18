@@ -76,7 +76,7 @@ use Varbox\Middleware\CheckPermissions;
 use Varbox\Middleware\CheckRoles;
 use Varbox\Middleware\IsTranslatable;
 use Varbox\Middleware\NotAuthenticated;
-use Varbox\Middleware\OverrideConfigs;
+use Varbox\Middleware\OverwriteConfigs;
 use Varbox\Middleware\PersistLocale;
 use Varbox\Middleware\RedirectRequests;
 use Varbox\Models\Activity;
@@ -138,7 +138,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router = $router;
 
         $this->publishConfigs();
-        $this->overrideConfigs();
+        $this->OverwriteConfigs();
         $this->publishMigrations();
         $this->publishViews();
         $this->publishAssets();
@@ -197,7 +197,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     /**
      * @return void
      */
-    protected function overrideConfigs()
+    protected function OverwriteConfigs()
     {
         $this->config->set([
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
@@ -281,12 +281,12 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router->aliasMiddleware('varbox.not.authenticated', $middleware['not_authenticated_middleware'] ?? NotAuthenticated::class);
         $this->router->aliasMiddleware('varbox.check.roles', $middleware['check_roles_middleware'] ?? CheckRoles::class);
         $this->router->aliasMiddleware('varbox.check.permissions', $middleware['check_permissions_middleware'] ?? CheckPermissions::class);
-        $this->router->aliasMiddleware('varbox.override.configs', $middleware['override_configs_middleware'] ?? OverrideConfigs::class);
+        $this->router->aliasMiddleware('varbox.overwrite.configs', $middleware['overwrite_configs_middleware'] ?? OverwriteConfigs::class);
         $this->router->aliasMiddleware('varbox.redirect.requests', $middleware['redirect_requests_middleware'] ?? RedirectRequests::class);
         $this->router->aliasMiddleware('varbox.persist.locale', $middleware['persist_locale_middleware'] ?? PersistLocale::class);
         $this->router->aliasMiddleware('varbox.is.translatable', $middleware['is_translatable_middleware'] ?? IsTranslatable::class);
 
-        /*$this->router->prependMiddlewareToGroup('web', 'varbox.override.configs');
+        /*$this->router->prependMiddlewareToGroup('web', 'varbox.overwrite.configs');
         $this->router->prependMiddlewareToGroup('web', 'varbox.redirect.requests');
         $this->router->pushMiddlewareToGroup('web', 'varbox.persist.locale');*/
     }

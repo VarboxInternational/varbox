@@ -41,6 +41,8 @@ class ActivityTest extends TestCase
     {
         parent::setUp();
 
+        $this->app['config']->set('varbox.activity.enabled', true);
+
         $this->setUpTestingConditions();
     }
 

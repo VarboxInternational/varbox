@@ -19,6 +19,18 @@ class HasActivityTest extends TestCase
      */
     protected $post;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.activity.enabled', true);
+    }
+
     /** @test */
     public function it_morphs_many_activity_logs()
     {

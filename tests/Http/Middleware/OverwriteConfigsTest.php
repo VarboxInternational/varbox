@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Varbox\Models\Config;
 use Varbox\Tests\Http\TestCase;
 
-class OverrideConfigsTest extends TestCase
+class OverwriteConfigsTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -25,7 +25,7 @@ class OverrideConfigsTest extends TestCase
 
         $this->createConfigs();
 
-        Route::middleware('varbox.override.configs')->get('/_test/override-configs', function () {
+        Route::middleware('varbox.overwrite.configs')->get('/_test/overwrite-configs', function () {
             return implode(' --- ', [
                 config('app.name'), config('auth.guards.default'), config('logging.default')
             ]);
@@ -33,13 +33,13 @@ class OverrideConfigsTest extends TestCase
     }
 
     /** @test */
-    public function it_overrides_the_config_values_for_the_allowed_keys()
+    public function it_overwrites_the_config_values_for_the_allowed_keys()
     {
         $this->app['config']->set('varbox.config.keys', [
             'app.name', 'auth.guards.default'
         ]);
 
-        $response = $this->get('/_test/override-configs');
+        $response = $this->get('/_test/overwrite-configs');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringContainsString('Test App Name', $response->getContent());

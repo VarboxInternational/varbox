@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Varbox\Models\Config;
 
-class OverrideConfigs
+class OverwriteConfigs
 {
     /**
      * Handle an incoming request.

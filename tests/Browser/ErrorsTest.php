@@ -36,6 +36,18 @@ class ErrorsTest extends TestCase
      */
     protected $error3;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.errors.enabled', true);
+    }
+
     /** @test */
     public function an_admin_can_view_the_list_page_if_it_is_a_super_admin()
     {
@@ -143,7 +155,6 @@ class ErrorsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertSee($this->getDisplayedErrorType())
-                ->assertSee($this->getDisplayedErrorUrl())
                 ->assertSee($this->errorModel->code)
                 ->assertSee($this->errorModel->occurrences)
                 ->assertSee($this->errorModel->created_at->toDateTimeString())
@@ -151,7 +162,6 @@ class ErrorsTest extends TestCase
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertDontSee($this->getDisplayedErrorType())
-                ->assertDontSee($this->getDisplayedErrorUrl())
                 ->assertDontSee($this->errorModel->code)
                 ->assertDontSee($this->errorModel->occurrences)
                 ->assertDontSee($this->errorModel->created_at->toDateTimeString());
@@ -170,7 +180,6 @@ class ErrorsTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertSee($this->getDisplayedErrorType())
-                ->assertSee($this->getDisplayedErrorUrl())
                 ->assertSee($this->errorModel->code)
                 ->assertSee($this->errorModel->occurrences)
                 ->assertSee($this->errorModel->created_at->toDateTimeString())
@@ -178,7 +187,6 @@ class ErrorsTest extends TestCase
                 ->assertSee('The record was successfully deleted!')
                 ->visitLastPage('/admin/errors/', $this->errorModel)
                 ->assertDontSee($this->getDisplayedErrorType())
-                ->assertDontSee($this->getDisplayedErrorUrl())
                 ->assertDontSee($this->errorModel->code)
                 ->assertDontSee($this->errorModel->occurrences)
                 ->assertDontSee($this->errorModel->created_at->toDateTimeString());
@@ -495,13 +503,5 @@ class ErrorsTest extends TestCase
     protected function getDisplayedErrorType()
     {
         return Arr::last(explode('\\', $this->errorModel->type));
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDisplayedErrorUrl()
-    {
-        return str_replace(config('app.url'), '', $this->errorModel->url) ?: '/';
     }
 }

@@ -15,6 +15,16 @@ class ErrorEventsTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.errors.enabled', true);
+    }
+
     /** @test */
     public function it_dispatches_an_error_saved_event_after_creating_the_error_database_record()
     {

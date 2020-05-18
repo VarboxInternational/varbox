@@ -31,6 +31,8 @@ class ErrorHandlerTest extends TestCase
     {
         $this->app->instance(ExceptionHandler::class, app(Handler::class));
 
+        $this->app['config']->set('varbox.errors.enabled', true);
+
         $this->get('/_test/error-handler');
 
         $this->assertEquals(1, Error::count());

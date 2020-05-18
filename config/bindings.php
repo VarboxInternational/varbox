@@ -1046,15 +1046,15 @@ return [
 
         /*
         |
-        | Concrete implementation for the "override configs middleware".
-        | To extend or replace this functionality, change the value below with your full "override configs middleware" FQN.
+        | Concrete implementation for the "overwrite configs middleware".
+        | To extend or replace this functionality, change the value below with your full "overwrite configs middleware" FQN.
         |
         | Once the value below is changed, your new middleware will be automatically registered with the application.
         |
-        | You can then use the middleware by its alias: "varbox.override.configs"
+        | You can then use the middleware by its alias: "varbox.overwrite.configs"
         |
         */
-        'override_configs_middleware' => \Varbox\Middleware\OverrideConfigs::class,
+        'overwrite_configs_middleware' => \Varbox\Middleware\OverwriteConfigs::class,
 
         /*
         |

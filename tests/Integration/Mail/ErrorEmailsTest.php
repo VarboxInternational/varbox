@@ -13,6 +13,16 @@ class ErrorEmailsTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.errors.enabled', true);
+    }
+
     /** @test */
     public function it_doesnt_send_any_notification_emails_if_the_config_value_is_empty()
     {

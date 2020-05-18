@@ -50,11 +50,11 @@ class NotAuthenticatedTest extends TestCase
 
         Route::get('admin', function () {
             return 'Admin';
-        });
+        })->name('admin');
 
-        Route::middleware('varbox.not.authenticated:admin')->get('/_test/not-authenticated', function () {
+        Route::get('/_test/not-authenticated', function () {
             return 'OK';
-        });
+        })->middleware('varbox.not.authenticated:admin');
 
         $response = $this->actingAs($this->user, 'admin')->get('/_test/not-authenticated');
 

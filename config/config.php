@@ -4,13 +4,6 @@ return [
 
     /*
     |
-    | Flag indicating whether or not configuration values can be modified from admin on runtime.
-    |
-    */
-    'enabled' => env('OVERWRITE_CONFIGS', false),
-
-    /*
-    |
     | The list of Laravel configurations that can be editable from the admin.
     |
     | Specify any config key from any Laravel configuration file to make it editable.

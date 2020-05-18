@@ -25,6 +25,18 @@ class ErrorTest extends TestCase
      */
     protected $exception;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app['config']->set('varbox.errors.enabled', true);
+    }
+
     /** @test */
     public function it_uses_the_is_cacheable_trait()
     {
