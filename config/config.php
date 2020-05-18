@@ -7,7 +7,7 @@ return [
     | Flag indicating whether or not configuration values can be modified from admin on runtime.
     |
     */
-    'enabled' => true,
+    'enabled' => env('OVERWRITE_CONFIGS', false),
 
     /*
     |

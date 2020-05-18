@@ -129,14 +129,21 @@ class InstallCommand extends Command
             }
 
             if (false === strpos($env, 'LOG_ACTIVITY')) {
-                $this->files->append($this->laravel->environmentFilePath(), "\nLOG_ACTIVITY=false\n");
+                $this->files->append($this->laravel->environmentFilePath(), "\nLOG_ACTIVITY=false");
                 $this->line('<fg=green>SUCCESS |</> Appended "LOG_ACTIVITY" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "LOG_ACTIVITY" configuration.');
             }
 
+            if (false === strpos($env, 'OVERWRITE_CONFIGS')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nOVERWRITE_CONFIGS=false");
+                $this->line('<fg=green>SUCCESS |</> Appended "OVERWRITE_CONFIGS" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "OVERWRITE_CONFIGS" configuration.');
+            }
+
             if (false === strpos($env, 'SAVE_ERRORS')) {
-                $this->files->append($this->laravel->environmentFilePath(), "\nSAVE_ERRORS=false\n");
+                $this->files->append($this->laravel->environmentFilePath(), "\nSAVE_ERRORS=false");
                 $this->line('<fg=green>SUCCESS |</> Appended "SAVE_ERRORS" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "SAVE_ERRORS" configuration.');

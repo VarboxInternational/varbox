@@ -8,7 +8,7 @@ return [
     | If set to false, no activities will be saved to the database.
     |
     */
-    'enabled' => env('LOG_ACTIVITY', true),
+    'enabled' => env('LOG_ACTIVITY', false),
 
     /*
     |

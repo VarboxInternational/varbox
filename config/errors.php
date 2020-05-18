@@ -8,7 +8,7 @@ return [
     | If set to false, no errors will be saved to the database.
     |
     */
-    'enabled' => env('SAVE_ERRORS', true),
+    'enabled' => env('SAVE_ERRORS', false),
 
     /*
     |
