@@ -3,6 +3,7 @@
 namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\File;
 use Varbox\Exceptions\RedirectException;
 use Varbox\Models\Redirect;
 use Varbox\Tests\Integration\TestCase;
@@ -144,5 +145,50 @@ class RedirectTest extends TestCase
         $redirect = Redirect::findValidOrNull('/the-old-url/');
 
         $this->assertNull($redirect);
+    }
+
+    /** @test */
+    public function it_creates_a_php_file_when_exporting_redirects()
+    {
+        Redirect::create([
+            'old_url' => 'old-url',
+            'new_url' => 'new-url',
+            'status' => '301',
+        ]);
+
+        Redirect::create([
+            'old_url' => 'another-old/url',
+            'new_url' => 'another-new/url',
+            'status' => '302',
+        ]);
+
+        Redirect::exportToFile();
+
+        $file = base_path('bootstrap/redirects.php');
+        $contents = File::get($file);
+
+        $this->assertFileExists($file);
+
+        $this->assertStringContainsString("'from' => 'old-url'", $contents);
+        $this->assertStringContainsString("'to' => 'new-url'", $contents);
+        $this->assertStringContainsString("'status' => '301'", $contents);
+
+        $this->assertStringContainsString("'from' => 'another-old/url'", $contents);
+        $this->assertStringContainsString("'to' => 'another-new/url'", $contents);
+        $this->assertStringContainsString("'status' => '302'", $contents);
+    }
+
+    /** @test */
+    public function it_deletes_the_php_file_when_exporting_an_empty_list_of_redirects()
+    {
+        $file = base_path('bootstrap/redirects.php');
+
+        File::put($file, '');
+
+        $this->assertFileExists($file);
+
+        Redirect::exportToFile();
+
+        $this->assertFileNotExists($file);
     }
 }

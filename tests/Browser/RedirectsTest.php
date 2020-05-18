@@ -317,6 +317,39 @@ class RedirectsTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_export_redirects_if_it_has_permission()
+    {
+        $this->admin->grantPermission('redirects-list');
+        $this->admin->grantPermission('redirects-export');
+
+        $this->createRedirect();
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/redirects')
+                ->clickButtonWithConfirm('Export File')
+                ->assertSee('All redirects have been successfully exported to the "bootstrap/redirects.php" file!');
+        });
+
+        $this->assertFileExists(base_path('bootstrap/redirects.php'));
+
+        $this->deleteRedirect();
+    }
+
+    /** @test */
+    public function an_admin_cannot_export_redirects_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('redirects-list');
+        $this->admin->revokePermission('redirects-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/redirects')
+                ->assertDontSee('Export File');
+        });
+    }
+
+    /** @test */
     public function an_admin_can_delete_all_redirects_if_it_has_permission()
     {
         $this->admin->grantPermission('redirects-list');
