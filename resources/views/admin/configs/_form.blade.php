@@ -12,6 +12,16 @@
             <h3 class="card-title">Basic Info</h3>
         </div>
         <div class="card-body">
+            <div class="alert alert-warning col-12 mb-5">
+                <div class="d-inline-block float-left text-left mx-auto" style="margin-top: 2px;">
+                    <i class="fe fe-alert-circle mr-2" aria-hidden="true"></i>
+                </div>
+                <div class="d-inline-block">
+                    To specify an <strong>array</strong> value, use <strong>";"</strong> to delimit your elements.<br />
+                    Example: first@mail.com;second@mail.com
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-6">
                     {!! form_admin()->select('key', 'Key', $keys, null, ['required']) !!}
