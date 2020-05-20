@@ -29,7 +29,6 @@
         "illuminate/view": "^7.0",
         "laravel/ui": "^2.0",
         "intervention/image": "^2.5",
-        "predis/predis": "^1.1",
         "laravelcollective/html": "^6.1",
         "kalnoy/nestedset": "^5.0",
         "spatie/laravel-backup": "^6.8"
@@ -39,7 +38,6 @@
         "orchestra/testbench": "^5.0",
         "orchestra/testbench-dusk": "^5.0",
         "doctrine/dbal": "^2.10",
-        "predis/predis": "^1.1",
         "roquie/laravel-dusk-select2": "^1.1"
     },
     "autoload": {

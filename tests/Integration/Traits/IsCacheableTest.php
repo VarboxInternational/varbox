@@ -19,7 +19,7 @@ class IsCacheableTest extends TestCase
     {
         parent::setUp();
 
-        $this->app['config']->set('database.redis.client', 'predis');
+        $this->app['config']->set('database.redis.client', 'phpredis');
     }
 
     /** @test */
