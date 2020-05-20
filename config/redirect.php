@@ -15,4 +15,11 @@ return [
 
     ],
 
+    /*
+    |
+    | Export the redirects into the "bootstrap/redirects.php" on every create / update / delete.
+    |
+    */
+    'automatic_export' => false
+
 ];

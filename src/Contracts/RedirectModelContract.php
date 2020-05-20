@@ -31,4 +31,9 @@ interface RedirectModelContract
      * @return void
      */
     public static function exportToFile();
+
+    /**
+     * @return bool
+     */
+    public static function shouldExportToFileAutomatically();
 }

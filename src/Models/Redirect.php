@@ -55,6 +55,18 @@ class Redirect extends Model implements RedirectModelContract
 
             $model->syncOldRedirects($model, $model->new_url);
         });
+
+        static::saved(function (Redirect $model) {
+            if (static::shouldExportToFileAutomatically()) {
+                static::exportToFile();
+            }
+        });
+
+        static::deleted(function (Redirect $model) {
+            if (static::shouldExportToFileAutomatically()) {
+                static::exportToFile();
+            }
+        });
     }
 
     /**
@@ -147,6 +159,16 @@ class Redirect extends Model implements RedirectModelContract
         } else {
             File::delete($file);
         }
+    }
+
+    /**
+     * Determine if an automatic file export should happen.
+     *
+     * @return bool
+     */
+    public static function shouldExportToFileAutomatically()
+    {
+        return config('varbox.redirect.automatic_export') === true;
     }
 
     /**

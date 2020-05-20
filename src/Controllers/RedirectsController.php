@@ -162,6 +162,10 @@ class RedirectsController extends Controller
         try {
             $this->model->truncate();
 
+            if ($this->model->shouldExportToFileAutomatically()) {
+                $this->model->exportToFile();
+            }
+
             flash()->success('All redirects have been successfully deleted!');
         } catch (\Exception $e) {
             flash()->error('Something went wrong! Please try again.', $e);
