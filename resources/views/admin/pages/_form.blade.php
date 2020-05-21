@@ -1,9 +1,9 @@
 @include('varbox::validation')
 
 @if($item->exists)
-    {!! form_admin_lang()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    {!! form_admin()->model($item, ['url' => $url, 'method' => 'PUT', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @else
-    {!! form_admin_lang()->open(['url' => $url, 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
+    {!! form_admin()->open(['url' => $url, 'method' => 'POST', 'class' => 'frm row row-cards', 'files' => true]) !!}
 @endif
 
 <div class="col-md-12">
@@ -36,13 +36,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    {!! form_admin_lang()->text('data[title]', 'Title') !!}
+                    {!! form_admin()->text('data[title]', 'Title') !!}
                 </div>
                 <div class="col-md-6">
-                    {!! form_admin_lang()->text('data[subtitle]', 'Subtitle') !!}
+                    {!! form_admin()->text('data[subtitle]', 'Subtitle') !!}
                 </div>
                 <div class="col-md-12">
-                    {!! form_admin_lang()->editor('data[content]', 'Content') !!}
+                    {!! form_admin()->editor('data[content]', 'Content') !!}
                 </div>
             </div>
         </div>
