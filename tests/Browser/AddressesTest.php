@@ -612,7 +612,7 @@ class AddressesTest extends TestCase
     /** @test */
     public function an_admin_can_clear_address_filters()
     {
-        $this->admin->grantPermission('cities-list');
+        $this->admin->grantPermission('addresses-list');
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -658,8 +658,8 @@ class AddressesTest extends TestCase
     /** @test */
     public function it_requires_an_address_when_updating_an_address()
     {
-        $this->admin->grantPermission('cities-list');
-        $this->admin->grantPermission('cities-edit');
+        $this->admin->grantPermission('addresses-list');
+        $this->admin->grantPermission('addresses-edit');
 
         $this->createCountry();
         $this->createState();

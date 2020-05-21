@@ -5,12 +5,8 @@ namespace Varbox\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Schema;
-use Varbox\Seed\CountriesSeeder;
-use Varbox\Seed\LanguagesSeeder;
-use Varbox\Seed\PermissionsSeeder;
-use Varbox\Seed\RolesSeeder;
-use Varbox\Seed\UsersSeeder;
 
 class InstallCommand extends Command
 {
@@ -31,21 +27,29 @@ class InstallCommand extends Command
     /**
      * The filesystem instance.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var Filesystem
      */
     protected $files;
 
     /**
+     * The composer instance.
+     *
+     * @var Composer
+     */
+    protected $composer;
+
+    /**
      * Create a new controller creator command instance.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
+     * @param Filesystem $files
+     * @param Composer $composer
      */
-    public function __construct(Filesystem $files)
+    public function __construct(Filesystem $files, Composer $composer)
     {
         parent::__construct();
 
         $this->files = $files;
+        $this->composer = $composer;
     }
 
     /**
@@ -73,9 +77,8 @@ class InstallCommand extends Command
         $this->manageBackups();
         $this->manageWysiwyg();
         $this->setupPasswordResets();
-        $this->migrateTables();
-        $this->seedDatabase();
         $this->overwriteBindings();
+        $this->copySeeders();
     }
 
     /**
@@ -538,40 +541,42 @@ class InstallCommand extends Command
     /**
      * @return void
      */
-    protected function migrateTables()
+    protected function copySeeders()
     {
         $this->line(PHP_EOL . PHP_EOL);
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
-        $this->line('<fg=yellow>MIGRATING TABLES</>');
+        $this->line('<fg=yellow>COPYING SEEDERS</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $this->call('migrate');
-    }
+        $this->files->ensureDirectoryExists(base_path('database/seeds'));
 
-    /**
-     * @return void
-     */
-    protected function seedDatabase()
-    {
-        $this->line(PHP_EOL . PHP_EOL);
-        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
-        $this->line('<fg=yellow>SEEDING DATABASE</>');
-        $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
+        if (!$this->files->exists(base_path('database/seeds/PermissionsSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/PermissionsSeeder.php', base_path('database/seeds/PermissionsSeeder.php'));
+        }
 
-        $this->callSilent('db:seed', ['--class' => PermissionsSeeder::class]);
-        $this->line('<fg=green>SUCCESS |</> Seeded permissions!');
+        if (!$this->files->exists(base_path('database/seeds/RolesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/RolesSeeder.php', base_path('database/seeds/RolesSeeder.php'));
+        }
 
-        $this->callSilent('db:seed', ['--class' => RolesSeeder::class]);
-        $this->line('<fg=green>SUCCESS |</> Seeded roles!');
+        if (!$this->files->exists(base_path('database/seeds/UsersSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/UsersSeeder.php', base_path('database/seeds/UsersSeeder.php'));
+        }
 
-        $this->callSilent('db:seed', ['--class' => UsersSeeder::class]);
-        $this->line('<fg=green>SUCCESS |</> Seeded users!');
+        if (!$this->files->exists(base_path('database/seeds/CountriesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/CountriesSeeder.php', base_path('database/seeds/CountriesSeeder.php'));
+        }
 
-        $this->callSilent('db:seed', ['--class' => CountriesSeeder::class]);
-        $this->line('<fg=green>SUCCESS |</> Seeded countries!');
+        if (!$this->files->exists(base_path('database/seeds/LanguagesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/LanguagesSeeder.php', base_path('database/seeds/LanguagesSeeder.php'));
+        }
 
-        $this->callSilent('db:seed', ['--class' => LanguagesSeeder::class]);
-        $this->line('<fg=green>SUCCESS |</> Seeded languages!');
+        if (!$this->files->exists(base_path('database/seeds/VarboxSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeds/VarboxSeeder.php', base_path('database/seeds/VarboxSeeder.php'));
+        }
+
+        $this->composer->dumpAutoloads();
+
+        $this->line('<fg=green>SUCCESS |</> Copied all seeders inside the "database/seeds/" directory.');
     }
 
     /**

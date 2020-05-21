@@ -1,16 +1,17 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Varbox\Tests\Browser\Seeders;
+
 use Varbox\Contracts\PermissionModelContract;
 
-class PermissionsSeeder extends Seeder
+class PermissionsSeeder
 {
     /**
      * Mapping structure of admin permissions.
      *
      * @var array
      */
-    protected $permissions = [
+    protected static $permissions = [
         'Users' => [
             'List' => [
                 'group' => 'Users',
@@ -682,14 +683,13 @@ class PermissionsSeeder extends Seeder
     ];
 
     /**
-     * Run the database seeds.
-     *
-     * @param PermissionModelContract $permission
      * @return void
      */
-    public function run(PermissionModelContract $permission)
+    public static function seed()
     {
-        foreach ($this->permissions as $permissions) {
+        $permission = app(PermissionModelContract::class);
+
+        foreach (self::$permissions as $permissions) {
             foreach ($permissions as $data) {
                 if ($permission->where('name', $data['name'])->count() == 0) {
                     $permission->doNotLogActivity()->create($data);

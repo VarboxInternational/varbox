@@ -445,6 +445,8 @@ class LanguagesTest extends TestCase
         $this->admin->grantPermission('languages-list');
         $this->admin->grantPermission('languages-edit');
 
+        $this->createLanguage();
+
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/languages')
@@ -455,6 +457,8 @@ class LanguagesTest extends TestCase
                 ->waitForText('The name field is required')
                 ->assertSee('The name field is required');
         });
+
+        $this->deleteLanguage();
     }
 
     /** @test */
@@ -462,6 +466,8 @@ class LanguagesTest extends TestCase
     {
         $this->admin->grantPermission('languages-list');
         $this->admin->grantPermission('languages-edit');
+
+        $this->createLanguage();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -473,6 +479,8 @@ class LanguagesTest extends TestCase
                 ->waitForText('The code field is required')
                 ->assertSee('The code field is required');
         });
+
+        $this->deleteLanguage();
     }
 
     /**

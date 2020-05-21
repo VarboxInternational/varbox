@@ -445,6 +445,8 @@ class CountriesTest extends TestCase
         $this->admin->grantPermission('countries-list');
         $this->admin->grantPermission('countries-edit');
 
+        $this->createCountry();
+
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/countries')
@@ -455,6 +457,8 @@ class CountriesTest extends TestCase
                 ->waitForText('The name field is required')
                 ->assertSee('The name field is required');
         });
+
+        $this->deleteCountry();;
     }
 
     /** @test */
@@ -462,6 +466,8 @@ class CountriesTest extends TestCase
     {
         $this->admin->grantPermission('countries-list');
         $this->admin->grantPermission('countries-edit');
+
+        $this->createCountry();
 
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
@@ -473,6 +479,8 @@ class CountriesTest extends TestCase
                 ->waitForText('The code field is required')
                 ->assertSee('The code field is required');
         });
+
+        $this->deleteCountry();
     }
 
     /**

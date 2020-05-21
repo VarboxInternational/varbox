@@ -430,7 +430,7 @@ class PagesTest extends TestCase
     public function it_requires_a_name_when_updating_a_page()
     {
         $this->admin->grantPermission('pages-list');
-        $this->admin->grantPermission('pages-add');
+        $this->admin->grantPermission('pages-edit');
 
         $this->createPage();
 

@@ -1,28 +1,24 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Varbox\Tests\Browser\Seeders;
+
 use Varbox\Contracts\UserModelContract;
 
-class UsersSeeder extends Seeder
+class UsersSeeder
 {
     /**
-     * Run the database seeds.
-     *
-     * @param UserModelContract $user
      * @return void
      */
-    public function run(UserModelContract $user)
+    public static function seed()
     {
+        $user = app(UserModelContract::class);
+
         if ($user->where('email', 'admin@mail.com')->count() == 0) {
-            $admin = $user->doNotLogActivity()->create([
+            $user->doNotLogActivity()->create([
                 'name' => 'Admin User',
                 'email' => 'admin@mail.com',
                 'password' => bcrypt('admin'),
                 'active' => true,
-            ]);
-
-            $admin->doNotLogActivity()->assignRoles([
-                'Admin', 'Super'
             ]);
         }
     }

@@ -90,7 +90,6 @@ class TranslationServiceTest extends TestCase
         $fileTranslations = Translation::withGroup('test')->get();
         $jsonTranslations = Translation::withGroup('_json')->get();
 
-        $this->assertEquals(4, Translation::count());
         $this->assertEquals(2, $fileTranslations->count());
         $this->assertEquals(2, $jsonTranslations->count());
 

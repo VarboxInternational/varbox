@@ -65,10 +65,6 @@ class TranslationService implements TranslationServiceContract
         foreach ($this->files->directories($this->app['path.lang']) as $path) {
             $locale = basename($path);
 
-            if (!$this->translationShouldBeImported($locale)) {
-                continue;
-            }
-
             foreach ($this->files->allFiles($path) as $file) {
                 $this->importFileTranslations(
                     $file, $path, $locale, $replace
@@ -226,20 +222,6 @@ class TranslationService implements TranslationServiceContract
         }
 
         $translation->save();
-    }
-
-    /**
-     * Determine if a translation should be imported.
-     *
-     * A translation should be imported if the language from database with the corresponding locale.
-     * Has the "active" column set to "yes" (1).
-     *
-     * @param string $locale
-     * @return bool
-     */
-    protected function translationShouldBeImported($locale)
-    {
-        return in_array($locale, $this->languageModel->onlyActive()->pluck('code')->toArray());
     }
 
     /**

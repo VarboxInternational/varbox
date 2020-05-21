@@ -1,16 +1,17 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Varbox\Tests\Browser\Seeders;
+
 use Varbox\Contracts\RoleModelContract;
 
-class RolesSeeder extends Seeder
+class RolesSeeder
 {
     /**
      * Mapping structure of admin roles.
      *
      * @var array
      */
-    protected $roles = [
+    protected static $roles = [
         'Admin' => [
             'name' => 'Admin',
             'guard' => 'admin',
@@ -22,14 +23,13 @@ class RolesSeeder extends Seeder
     ];
 
     /**
-     * Run the database seeds.
-     *
-     * @param RoleModelContract $role
      * @return void
      */
-    public function run(RoleModelContract $role)
+    public static function seed()
     {
-        foreach ($this->roles as $label => $data) {
+        $role = app(RoleModelContract::class);
+
+        foreach (self::$roles as $label => $data) {
             if ($role->where('name', $data['name'])->count() == 0) {
                 $role->doNotLogActivity()->create($data);
             }

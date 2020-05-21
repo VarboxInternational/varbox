@@ -483,7 +483,7 @@ class UsersTest extends TestCase
     public function it_requires_an_email_when_updating_a_user()
     {
         $this->admin->grantPermission('users-list');
-        $this->admin->grantPermission('users-add');
+        $this->admin->grantPermission('users-edit');
 
         $this->createUser();
 
@@ -507,7 +507,7 @@ class UsersTest extends TestCase
     public function it_requires_a_name_when_updating_a_user()
     {
         $this->admin->grantPermission('users-list');
-        $this->admin->grantPermission('users-add');
+        $this->admin->grantPermission('users-edit');
 
         $this->createUser();
 

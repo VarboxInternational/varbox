@@ -485,7 +485,7 @@ class AdminsTest extends TestCase
     public function it_requires_an_email_when_updating_an_admin()
     {
         $this->admin->grantPermission('admins-list');
-        $this->admin->grantPermission('admins-add');
+        $this->admin->grantPermission('admins-edit');
 
         $this->createAdmin();
 
@@ -509,7 +509,7 @@ class AdminsTest extends TestCase
     public function it_requires_a_name_when_updating_an_admin()
     {
         $this->admin->grantPermission('admins-list');
-        $this->admin->grantPermission('admins-add');
+        $this->admin->grantPermission('admins-edit');
 
         $this->createAdmin();
 

@@ -5,7 +5,7 @@
 @section('content')
     <div class="row row-cards">
         <div class="col-lg-3">
-            @hasanypermission(['redirects-add', 'redirects-delete'])
+            @hasanypermission(['redirects-add', 'redirects-export', 'redirects-delete'])
                 <div class="card">
                     <div class="card-body">
                         @permission('redirects-add')

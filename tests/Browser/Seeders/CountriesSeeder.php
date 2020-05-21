@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Varbox\Tests\Browser\Seeders;
+
 use Varbox\Contracts\CountryModelContract;
 
-class CountriesSeeder extends Seeder
+class CountriesSeeder
 {
     /**
      * @var array
      */
-    protected $countries = [
+    protected static $countries = [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',
@@ -257,14 +258,13 @@ class CountriesSeeder extends Seeder
     ];
 
     /**
-     * Run the database seeds.
-     *
-     * @param CountryModelContract $country
      * @return void
      */
-    public function run(CountryModelContract $country)
+    public static function seed()
     {
-        foreach ($this->countries as $code => $name) {
+        $country = app(CountryModelContract::class);
+
+        foreach (self::$countries as $code => $name) {
             if ($country->where('name', $name)->orWhere('code', $code)->count() > 0) {
                 continue;
             }

@@ -11,9 +11,13 @@ use Intervention\Image\ImageServiceProvider;
 use Orchestra\Testbench\Dusk\Options as OrchestraDuskOptions;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraDuskTestCase;
 use Spatie\Backup\BackupServiceProvider;
+use Varbox\Models\Permission;
 use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Tests\Browser\Browsers\VarboxBrowser;
+use Varbox\Tests\Browser\Seeders\PermissionsSeeder;
+use Varbox\Tests\Browser\Seeders\RolesSeeder;
+use Varbox\Tests\Browser\Seeders\UsersSeeder;
 use Varbox\VarboxServiceProvider;
 
 abstract class TestCase extends OrchestraDuskTestCase
@@ -135,6 +139,11 @@ abstract class TestCase extends OrchestraDuskTestCase
     protected function installVarboxPlatform()
     {
         $this->artisan('varbox:install');
+        $this->artisan('migrate');
+
+        PermissionsSeeder::seed();
+        RolesSeeder::seed();
+        UsersSeeder::seed();
     }
 
     /**
@@ -147,7 +156,7 @@ abstract class TestCase extends OrchestraDuskTestCase
         $this->admin = User::first();
 
         $this->admin->removeRoles(Role::all());
-        $this->admin->revokePermission(Role::all());
+        $this->admin->revokePermission(Permission::all());
 
         $this->admin->assignRoles('Admin');
     }

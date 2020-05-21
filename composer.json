@@ -42,8 +42,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Varbox\\": "src/",
-            "Varbox\\Seed\\": "database/seeds/"
+            "Varbox\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -53,9 +52,6 @@
         "psr-4": {
             "Varbox\\Tests\\": "tests"
         }
-    },
-    "scripts": {
-        "test": "phpunit"
     },
     "config": {
         "sort-packages": true

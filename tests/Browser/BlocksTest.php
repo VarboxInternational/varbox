@@ -546,7 +546,7 @@ class BlocksTest extends TestCase
     public function it_requires_a_name_when_updating_a_block()
     {
         $this->admin->grantPermission('blocks-list');
-        $this->admin->grantPermission('blocks-add');
+        $this->admin->grantPermission('blocks-edit');
 
         $this->createBlock();
 
@@ -567,7 +567,7 @@ class BlocksTest extends TestCase
     public function it_requires_a_unique_name_when_updating_a_block()
     {
         $this->admin->grantPermission('blocks-list');
-        $this->admin->grantPermission('blocks-add');
+        $this->admin->grantPermission('blocks-edit');
 
         $this->createBlock();
         $this->createBlockModified();

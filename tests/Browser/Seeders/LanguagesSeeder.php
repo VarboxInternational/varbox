@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Varbox\Tests\Browser\Seeders;
+
 use Varbox\Contracts\LanguageModelContract;
 
-class LanguagesSeeder extends Seeder
+class LanguagesSeeder
 {
     /**
      * @var array
      */
-    protected $languages = [
+    protected static $languages = [
         'aa' => 'Afar',
         'ab' => 'Abkhazian',
         'af' => 'Afrikaans',
@@ -147,16 +148,15 @@ class LanguagesSeeder extends Seeder
     ];
 
     /**
-     * Run the database seeds.
-     *
-     * @param LanguageModelContract $language
      * @return void
      */
-    public function run(LanguageModelContract $language)
+    public static function seed()
     {
-        asort($this->languages);
+        $language = app(LanguageModelContract::class);
 
-        foreach ($this->languages as $code => $name) {
+        asort(self::$languages);
+
+        foreach (self::$languages as $code => $name) {
             if ($language->where('code', $code)->orWhere('name', $name)->count() == 0) {
                 $language->doNotLogActivity()->create([
                     'name' => $name,

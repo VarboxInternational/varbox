@@ -541,7 +541,7 @@ class EmailsTest extends TestCase
     public function it_requires_a_name_when_updating_an_email()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-add');
+        $this->admin->grantPermission('emails-edit');
 
         $this->createEmail();
 
@@ -563,7 +563,7 @@ class EmailsTest extends TestCase
     public function it_requires_a_unique_name_when_updating_an_email()
     {
         $this->admin->grantPermission('emails-list');
-        $this->admin->grantPermission('emails-add');
+        $this->admin->grantPermission('emails-edit');
 
         $this->createEmail();
         $this->createEmailModified();
