@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\DB;
+use Varbox\Contracts\CountryModelContract;
+
+class StatesSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @param CountryModelContract $country
+     * @param Filesystem $files
+     * @return void
+     */
+    public function run(CountryModelContract $country, Filesystem $files)
+    {
+        if ($files->exists(database_path('sql/states.sql'))) {
+            DB::unprepared($files->get(database_path('sql/states.sql')));
+        } else {
+            $this->command->error('The file "database/sql/states.sql" file does not exist!');
+            die;
+        }
+    }
+}
