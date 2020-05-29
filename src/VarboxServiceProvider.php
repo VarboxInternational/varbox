@@ -218,7 +218,7 @@ class VarboxServiceProvider extends BaseServiceProvider
             $timestamp = date('Y_m_d_His', time());
 
             $this->publishes([
-                __DIR__ . '/../database/migrations/create_varbox_tables.php.stub' => database_path() . "/migrations/{$timestamp}_create_varbox_tables.php",
+                __DIR__ . '/../database/migrations/create_varbox_tables.stub' => database_path() . "/migrations/{$timestamp}_create_varbox_tables.php",
             ], 'varbox-migrations');
         }
     }

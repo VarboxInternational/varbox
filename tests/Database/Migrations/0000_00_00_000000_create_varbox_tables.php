@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Kalnoy\Nestedset\NestedSet;
 
@@ -170,8 +171,11 @@ class CreateVarboxTables extends Migration
 
                 $table->string('name')->unique();
                 $table->string('code')->unique();
+                $table->string('flag')->nullable();
+                $table->string('capital')->nullable();
 
-                $table->timestamps();
+                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
             });
         }
 
@@ -180,10 +184,11 @@ class CreateVarboxTables extends Migration
                 $table->increments('id');
                 $table->integer('country_id')->unsigned()->index();
 
-                $table->string('name')->unique();
-                $table->string('code')->unique();
+                $table->string('name');
+                $table->string('code');
 
-                $table->timestamps();
+                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
 
                 $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             });
@@ -196,8 +201,11 @@ class CreateVarboxTables extends Migration
                 $table->integer('state_id')->unsigned()->index()->nullable();
 
                 $table->string('name');
+                $table->decimal('latitude', 10, 8)->nullable();
+                $table->decimal('longitude', 11, 8)->nullable();
 
-                $table->timestamps();
+                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
 
                 $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
                 $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('set null');
