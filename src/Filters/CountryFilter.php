@@ -25,7 +25,7 @@ class CountryFilter extends Filter
             'search' => [
                 'operator' => Filter::OPERATOR_LIKE,
                 'condition' => Filter::CONDITION_OR,
-                'columns' => 'name,code',
+                'columns' => 'name,code,capital',
             ],
             'start_date' => [
                 'operator' => Filter::OPERATOR_DATE_GREATER_OR_EQUAL,

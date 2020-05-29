@@ -13,14 +13,32 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     {!! form_admin()->text('name', 'Name', null, ['required']) !!}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     {!! form_admin()->select('country_id', 'Country', ['' => 'Please select'] + $countries->pluck('name', 'id')->toArray(), null, ['required']) !!}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     {!! form_admin()->select('state_id', 'State', ['' => 'None'] + ($item->exists && isset($states) ? $states->pluck('name', 'id')->toArray() : [])) !!}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-status bg-green"></div>
+        <div class="card-header">
+            <h3 class="card-title">Location Info</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    {!! form_admin()->text('latitude', 'Latitude') !!}
+                </div>
+                <div class="col-md-6">
+                    {!! form_admin()->text('longitude', 'Longitude') !!}
                 </div>
             </div>
         </div>

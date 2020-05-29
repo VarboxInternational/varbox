@@ -41,11 +41,15 @@ class CountriesController extends Controller
     public function index(Request $request, CountryFilter $filter, CountrySort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
-            $this->items = $this->model
-                ->filtered($request->all(), $filter)
-                ->sorted($request->all(), $sort)
-                ->paginate(config('varbox.crud.per_page', 30));
+            $query = $this->model->filtered($request->all(), $filter);
 
+            if ($request->filled('sort')) {
+                $query->sorted($request->all(), $sort);
+            } else {
+                $query->alphabetically();
+            }
+
+            $this->items = $query->paginate(config('varbox.crud.per_page', 30));
             $this->title = 'Countries';
             $this->view = view('varbox::admin.countries.index');
         });

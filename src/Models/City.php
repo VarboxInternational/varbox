@@ -36,6 +36,8 @@ class City extends Model implements CityModelContract
         'country_id',
         'state_id',
         'name',
+        'latitude',
+        'longitude',
     ];
 
     /**

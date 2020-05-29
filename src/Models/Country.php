@@ -33,6 +33,8 @@ class Country extends Model implements CountryModelContract
     protected $fillable = [
         'name',
         'code',
+        'capital',
+        'flag',
     ];
 
     /**

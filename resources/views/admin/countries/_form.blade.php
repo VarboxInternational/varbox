@@ -19,6 +19,12 @@
                 <div class="col-md-6">
                     {!! form_admin()->text('code', 'Code', null, ['required']) !!}
                 </div>
+                <div class="col-md-6">
+                    {!! form_admin()->text('capital', 'Capital') !!}
+                </div>
+                <div class="col-md-6">
+                    {!! form_admin()->text('flag', 'Flag') !!}
+                </div>
             </div>
         </div>
     </div>
