@@ -59,7 +59,7 @@ class StatesController extends Controller
                 $query->alphabetically();
             }
 
-            $this->items = $query->paginate(config('varbox.crud.per_page', 30));
+            $this->items = $query->paginate(8);
             $this->title = 'States';
             $this->view = view('varbox::admin.states.index');
             $this->vars = [

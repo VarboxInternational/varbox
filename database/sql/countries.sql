@@ -9,8 +9,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-TRUNCATE TABLE `countries`;
-
 INSERT INTO `countries` (`id`, `name`, `code`, `flag`, `capital`) VALUES
 (1, 'Afghanistan', 'AF', '🇦🇫', 'Kabul'),
 (2, 'Aland Islands', 'AX', '🇦🇽', 'Mariehamn'),

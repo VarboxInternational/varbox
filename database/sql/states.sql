@@ -9,8 +9,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-TRUNCATE TABLE `states`;
-
 INSERT INTO `states` (`id`, `country_id`, `name`, `code`) VALUES
 (1, 70, 'Southern Nations, Nationalities, and Peoples\' Region', 'SN'),
 (2, 70, 'Somali Region', 'SO'),
