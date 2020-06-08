@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\BlockFilterContract;
+use Varbox\Contracts\BlockSortContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
@@ -19,7 +20,6 @@ use Varbox\Traits\CanRevision;
 use Varbox\Contracts\BlockModelContract;
 use Varbox\Models\Block;
 use Varbox\Requests\BlockRequest;
-use Varbox\Sorts\BlockSort;
 
 class BlocksController extends Controller
 {
@@ -46,11 +46,11 @@ class BlocksController extends Controller
     /**
      * @param Request $request
      * @param BlockFilterContract $filter
-     * @param BlockSort $sort
+     * @param BlockSortContract $sort
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function index(Request $request, BlockFilterContract $filter, BlockSort $sort)
+    public function index(Request $request, BlockFilterContract $filter, BlockSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();

@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class RoleSort extends Sort
+use Varbox\Contracts\RoleSortContract;
+
+class RoleSort extends Sort implements RoleSortContract
 {
     /**
      * Get the request field name to sort by.

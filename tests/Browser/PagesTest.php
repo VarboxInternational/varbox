@@ -883,10 +883,13 @@ class PagesTest extends TestCase
         $this->updatePage();
 
         $this->browse(function ($browser) {
-            $browser->loginAs($this->admin, 'admin')
+            $browser->resize(1600, 1600)->loginAs($this->admin, 'admin')
                 ->visit('/admin/pages/edit/' . $this->pageModel->id)
+                ->screenshot('1')
                 ->openRevisionsContainer()
+                ->screenshot('2')
                 ->clickRollbackRevisionButton()
+                ->screenshot('3')
                 ->pause(500)
                 ->assertSee('The revision was successfully rolled back')
                 ->assertPathIs('/admin/pages/edit/' . $this->pageModel->id)

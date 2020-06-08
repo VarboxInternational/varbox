@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class AddressSort extends Sort
+use Varbox\Contracts\AddressSortContract;
+
+class AddressSort extends Sort implements AddressSortContract
 {
     /**
      * Get the request field name to sort by.

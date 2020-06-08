@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class BackupSort extends Sort
+use Varbox\Contracts\BackupSortContract;
+
+class BackupSort extends Sort implements BackupSortContract
 {
     /**
      * Get the request field name to sort by.

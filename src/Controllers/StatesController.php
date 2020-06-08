@@ -10,8 +10,8 @@ use Illuminate\Routing\Controller;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateFilterContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\StateSortContract;
 use Varbox\Requests\StateRequest;
-use Varbox\Sorts\StateSort;
 use Varbox\Traits\CanCrud;
 
 class StatesController extends Controller
@@ -44,11 +44,11 @@ class StatesController extends Controller
     /**
      * @param Request $request
      * @param StateFilterContract $filter
-     * @param StateSort $sort
+     * @param StateSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, StateFilterContract $filter, StateSort $sort)
+    public function index(Request $request, StateFilterContract $filter, StateSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->with('country')->filtered($request->all(), $filter);
@@ -59,7 +59,7 @@ class StatesController extends Controller
                 $query->alphabetically();
             }
 
-            $this->items = $query->paginate(8);
+            $this->items = $query->paginate(config('varbox.crud.per_page', 30));
             $this->title = 'States';
             $this->view = view('varbox::admin.states.index');
             $this->vars = [

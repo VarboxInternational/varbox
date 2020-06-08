@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class UploadSort extends Sort
+use Varbox\Contracts\UploadSortContract;
+
+class UploadSort extends Sort implements UploadSortContract
 {
     /**
      * Get the request field name to sort by.

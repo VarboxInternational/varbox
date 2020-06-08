@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class LanguageSort extends Sort
+use Varbox\Contracts\LanguageSortContract;
+
+class LanguageSort extends Sort implements LanguageSortContract
 {
     /**
      * Get the request field name to sort by.

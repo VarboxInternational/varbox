@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class CountrySort extends Sort
+use Varbox\Contracts\CountrySortContract;
+
+class CountrySort extends Sort implements CountrySortContract
 {
     /**
      * Get the request field name to sort by.

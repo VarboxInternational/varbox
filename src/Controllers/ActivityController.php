@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\ActivityFilterContract;
 use Varbox\Contracts\ActivityModelContract;
+use Varbox\Contracts\ActivitySortContract;
 use Varbox\Contracts\UserModelContract;
-use Varbox\Sorts\ActivitySort;
 use Varbox\Traits\CanCrud;
 
 class ActivityController extends Controller
@@ -42,11 +42,11 @@ class ActivityController extends Controller
     /**
      * @param Request $request
      * @param ActivityFilterContract $filter
-     * @param ActivitySort $sort
+     * @param ActivitySortContract $sort
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function index(Request $request, ActivityFilterContract $filter, ActivitySort $sort)
+    public function index(Request $request, ActivityFilterContract $filter, ActivitySortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

@@ -4,7 +4,7 @@ namespace Varbox\Controllers;
 
 use Illuminate\Http\Request;
 use Varbox\Contracts\PageFilterContract;
-use Varbox\Sorts\PageSort;
+use Varbox\Contracts\PageSortContract;
 
 class PagesTreeController extends PagesController
 {
@@ -70,11 +70,11 @@ class PagesTreeController extends PagesController
     /**
      * @param Request $request
      * @param PageFilterContract $filter
-     * @param PageSort $sort
+     * @param PageSortContract $sort
      * @param int|null $parent
      * @return \Illuminate\View\View
      */
-    public function listItems(Request $request, PageFilterContract $filter, PageSort $sort, $parent = null)
+    public function listItems(Request $request, PageFilterContract $filter, PageSortContract $sort, $parent = null)
     {
         $q = $this->model->withDrafts();
         $query = $this->model->withDrafts()

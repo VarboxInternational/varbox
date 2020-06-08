@@ -29,19 +29,30 @@ use Varbox\Composers\LanguagesComposer;
 use Varbox\Composers\NotificationsComposer;
 use Varbox\Contracts\ActivityFilterContract;
 use Varbox\Contracts\ActivityModelContract;
+use Varbox\Contracts\ActivitySortContract;
 use Varbox\Contracts\AddressFilterContract;
 use Varbox\Contracts\AddressModelContract;
+use Varbox\Contracts\AddressSortContract;
 use Varbox\Contracts\AdminFilterContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminFormLangHelperContract;
+use Varbox\Contracts\AdminSortContract;
 use Varbox\Contracts\BackupFilterContract;
+use Varbox\Contracts\BackupSortContract;
 use Varbox\Contracts\BlockFilterContract;
+use Varbox\Contracts\BlockSortContract;
 use Varbox\Contracts\CityFilterContract;
+use Varbox\Contracts\CitySortContract;
 use Varbox\Contracts\ConfigFilterContract;
+use Varbox\Contracts\ConfigSortContract;
 use Varbox\Contracts\CountryFilterContract;
+use Varbox\Contracts\CountrySortContract;
 use Varbox\Contracts\EmailFilterContract;
+use Varbox\Contracts\EmailSortContract;
 use Varbox\Contracts\ErrorFilterContract;
+use Varbox\Contracts\ErrorSortContract;
 use Varbox\Contracts\LanguageFilterContract;
+use Varbox\Contracts\LanguageSortContract;
 use Varbox\Contracts\MenuFilterContract;
 use Varbox\Contracts\MenuHelperContract;
 use Varbox\Contracts\BackupModelContract;
@@ -54,30 +65,39 @@ use Varbox\Contracts\ErrorModelContract;
 use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\MenuModelContract;
+use Varbox\Contracts\MenuSortContract;
 use Varbox\Contracts\MetaHelperContract;
 use Varbox\Contracts\PageFilterContract;
 use Varbox\Contracts\PageModelContract;
+use Varbox\Contracts\PageSortContract;
 use Varbox\Contracts\PermissionFilterContract;
 use Varbox\Contracts\PermissionModelContract;
+use Varbox\Contracts\PermissionSortContract;
 use Varbox\Contracts\RedirectFilterContract;
 use Varbox\Contracts\RedirectModelContract;
+use Varbox\Contracts\RedirectSortContract;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Contracts\RoleFilterContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Contracts\RoleSortContract;
 use Varbox\Contracts\StateFilterContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\StateSortContract;
 use Varbox\Contracts\TranslationFilterContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
+use Varbox\Contracts\TranslationSortContract;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploaderLangHelperContract;
 use Varbox\Contracts\UploadFilterContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
+use Varbox\Contracts\UploadSortContract;
 use Varbox\Contracts\UrlModelContract;
 use Varbox\Contracts\UserFilterContract;
 use Varbox\Contracts\UserModelContract;
+use Varbox\Contracts\UserSortContract;
 use Varbox\Events\ErrorSavedSuccessfully;
 use Varbox\Filters\ActivityFilter;
 use Varbox\Filters\AddressFilter;
@@ -142,6 +162,26 @@ use Varbox\Models\Url;
 use Varbox\Models\User;
 use Varbox\Services\TranslationService;
 use Varbox\Services\UploadService;
+use Varbox\Sorts\ActivitySort;
+use Varbox\Sorts\AddressSort;
+use Varbox\Sorts\AdminSort;
+use Varbox\Sorts\BackupSort;
+use Varbox\Sorts\BlockSort;
+use Varbox\Sorts\CitySort;
+use Varbox\Sorts\ConfigSort;
+use Varbox\Sorts\CountrySort;
+use Varbox\Sorts\EmailSort;
+use Varbox\Sorts\ErrorSort;
+use Varbox\Sorts\LanguageSort;
+use Varbox\Sorts\MenuSort;
+use Varbox\Sorts\PageSort;
+use Varbox\Sorts\PermissionSort;
+use Varbox\Sorts\RedirectSort;
+use Varbox\Sorts\RoleSort;
+use Varbox\Sorts\StateSort;
+use Varbox\Sorts\TranslationSort;
+use Varbox\Sorts\UploadSort;
+use Varbox\Sorts\UserSort;
 
 class VarboxServiceProvider extends BaseServiceProvider
 {
@@ -205,6 +245,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerModelBindings();
         $this->registerHelperBindings();
         $this->registerFilterBindings();
+        $this->registerSortBindings();
     }
 
     /**
@@ -655,64 +696,54 @@ class VarboxServiceProvider extends BaseServiceProvider
         $binding = $this->config['varbox.bindings'];
 
         $this->app->singleton(ActivityFilterContract::class, $binding['filters']['activity_filter'] ?? ActivityFilter::class);
-        $this->app->alias(ActivityFilterContract::class, 'activity.filter');
-
         $this->app->singleton(AddressFilterContract::class, $binding['filters']['address_filter'] ?? AddressFilter::class);
-        $this->app->alias(AddressFilterContract::class, 'address.filter');
-
         $this->app->singleton(AdminFilterContract::class, $binding['filters']['admin_filter'] ?? AdminFilter::class);
-        $this->app->alias(AdminFilterContract::class, 'admin.filter');
-
         $this->app->singleton(BackupFilterContract::class, $binding['filters']['backup_filter'] ?? BackupFilter::class);
-        $this->app->alias(BackupFilterContract::class, 'backup.filter');
-
         $this->app->singleton(BlockFilterContract::class, $binding['filters']['block_filter'] ?? BlockFilter::class);
-        $this->app->alias(BlockFilterContract::class, 'block.filter');
-
         $this->app->singleton(CityFilterContract::class, $binding['filters']['city_filter'] ?? CityFilter::class);
-        $this->app->alias(CityFilterContract::class, 'city.filter');
-
         $this->app->singleton(ConfigFilterContract::class, $binding['filters']['config_filter'] ?? ConfigFilter::class);
-        $this->app->alias(ConfigFilterContract::class, 'config.filter');
-
         $this->app->singleton(CountryFilterContract::class, $binding['filters']['country_filter'] ?? CountryFilter::class);
-        $this->app->alias(CountryFilterContract::class, 'country.filter');
-
         $this->app->singleton(EmailFilterContract::class, $binding['filters']['email_filter'] ?? EmailFilter::class);
-        $this->app->alias(EmailFilterContract::class, 'email.filter');
-
         $this->app->singleton(ErrorFilterContract::class, $binding['filters']['error_filter'] ?? ErrorFilter::class);
-        $this->app->alias(ErrorFilterContract::class, 'error.filter');
-
         $this->app->singleton(LanguageFilterContract::class, $binding['filters']['language_filter'] ?? LanguageFilter::class);
-        $this->app->alias(LanguageFilterContract::class, 'language.filter');
-
         $this->app->singleton(MenuFilterContract::class, $binding['filters']['menu_filter'] ?? MenuFilter::class);
-        $this->app->alias(MenuFilterContract::class, 'menu.filter');
-
         $this->app->singleton(PageFilterContract::class, $binding['filters']['page_filter'] ?? PageFilter::class);
-        $this->app->alias(PageFilterContract::class, 'page.filter');
-
         $this->app->singleton(PermissionFilterContract::class, $binding['filters']['permission_filter'] ?? PermissionFilter::class);
-        $this->app->alias(PermissionFilterContract::class, 'permission.filter');
-
         $this->app->singleton(RedirectFilterContract::class, $binding['filters']['redirect_filter'] ?? RedirectFilter::class);
-        $this->app->alias(RedirectFilterContract::class, 'redirect.filter');
-
         $this->app->singleton(RoleFilterContract::class, $binding['filters']['role_filter'] ?? RoleFilter::class);
-        $this->app->alias(RoleFilterContract::class, 'role.filter');
-
         $this->app->singleton(StateFilterContract::class, $binding['filters']['state_filter'] ?? StateFilter::class);
-        $this->app->alias(StateFilterContract::class, 'state.filter');
-
         $this->app->singleton(TranslationFilterContract::class, $binding['filters']['translations_filter'] ?? TranslationFilter::class);
-        $this->app->alias(TranslationFilterContract::class, 'translations.filter');
-
         $this->app->singleton(UploadFilterContract::class, $binding['filters']['upload_filter'] ?? UploadFilter::class);
-        $this->app->alias(UploadFilterContract::class, 'upload.filter');
-
         $this->app->singleton(UserFilterContract::class, $binding['filters']['user_filter'] ?? UserFilter::class);
-        $this->app->alias(UserFilterContract::class, 'user.filter');
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerSortBindings()
+    {
+        $binding = $this->config['varbox.bindings'];
+
+        $this->app->singleton(ActivitySortContract::class, $binding['sorts']['activity_sort'] ?? ActivitySort::class);
+        $this->app->singleton(AddressSortContract::class, $binding['sorts']['address_sort'] ?? AddressSort::class);
+        $this->app->singleton(AdminSortContract::class, $binding['sorts']['admin_sort'] ?? AdminSort::class);
+        $this->app->singleton(BackupSortContract::class, $binding['sorts']['backup_sort'] ?? BackupSort::class);
+        $this->app->singleton(BlockSortContract::class, $binding['sorts']['block_sort'] ?? BlockSort::class);
+        $this->app->singleton(CitySortContract::class, $binding['sorts']['city_sort'] ?? CitySort::class);
+        $this->app->singleton(ConfigSortContract::class, $binding['sorts']['config_sort'] ?? ConfigSort::class);
+        $this->app->singleton(CountrySortContract::class, $binding['sorts']['country_sort'] ?? CountrySort::class);
+        $this->app->singleton(EmailSortContract::class, $binding['sorts']['email_sort'] ?? EmailSort::class);
+        $this->app->singleton(ErrorSortContract::class, $binding['sorts']['error_sort'] ?? ErrorSort::class);
+        $this->app->singleton(LanguageSortContract::class, $binding['sorts']['language_sort'] ?? LanguageSort::class);
+        $this->app->singleton(MenuSortContract::class, $binding['sorts']['menu_sort'] ?? MenuSort::class);
+        $this->app->singleton(PageSortContract::class, $binding['sorts']['page_sort'] ?? PageSort::class);
+        $this->app->singleton(PermissionSortContract::class, $binding['sorts']['permission_sort'] ?? PermissionSort::class);
+        $this->app->singleton(RedirectSortContract::class, $binding['sorts']['redirect_sort'] ?? RedirectSort::class);
+        $this->app->singleton(RoleSortContract::class, $binding['sorts']['role_sort'] ?? RoleSort::class);
+        $this->app->singleton(StateSortContract::class, $binding['sorts']['state_sort'] ?? StateSort::class);
+        $this->app->singleton(TranslationSortContract::class, $binding['sorts']['translations_sort'] ?? TranslationSort::class);
+        $this->app->singleton(UploadSortContract::class, $binding['sorts']['upload_sort'] ?? UploadSort::class);
+        $this->app->singleton(UserSortContract::class, $binding['sorts']['user_sort'] ?? UserSort::class);
     }
 
     /**

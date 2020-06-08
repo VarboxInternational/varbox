@@ -7,8 +7,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Varbox\Contracts\RedirectFilterContract;
 use Varbox\Contracts\RedirectModelContract;
+use Varbox\Contracts\RedirectSortContract;
 use Varbox\Requests\RedirectRequest;
-use Varbox\Sorts\RedirectSort;
 use Varbox\Models\Redirect;
 use Varbox\Traits\CanCrud;
 use Illuminate\Http\Request;
@@ -37,11 +37,11 @@ class RedirectsController extends Controller
     /**
      * @param Request $request
      * @param RedirectFilterContract $filter
-     * @param RedirectSort $sort
+     * @param RedirectSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, RedirectFilterContract $filter, RedirectSort $sort)
+    public function index(Request $request, RedirectFilterContract $filter, RedirectSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

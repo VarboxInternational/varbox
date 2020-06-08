@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class PageSort extends Sort
+use Varbox\Contracts\PageSortContract;
+
+class PageSort extends Sort implements PageSortContract
 {
     /**
      * Get the request field name to sort by.

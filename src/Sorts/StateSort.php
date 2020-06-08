@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class StateSort extends Sort
+use Varbox\Contracts\StateSortContract;
+
+class StateSort extends Sort implements StateSortContract
 {
     /**
      * Get the request field name to sort by.

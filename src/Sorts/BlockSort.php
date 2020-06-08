@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class BlockSort extends Sort
+use Varbox\Contracts\BlockSortContract;
+
+class BlockSort extends Sort implements BlockSortContract
 {
     /**
      * Get the request field name to sort by.

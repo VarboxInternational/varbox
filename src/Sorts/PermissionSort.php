@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class PermissionSort extends Sort
+use Varbox\Contracts\PermissionSortContract;
+
+class PermissionSort extends Sort implements PermissionSortContract
 {
     /**
      * Get the request field name to sort by.

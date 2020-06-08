@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class MenuSort extends Sort
+use Varbox\Contracts\MenuSortContract;
+
+class MenuSort extends Sort implements MenuSortContract
 {
     /**
      * Get the request field name to sort by.

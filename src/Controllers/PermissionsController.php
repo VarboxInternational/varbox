@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\PermissionFilterContract;
 use Varbox\Contracts\PermissionModelContract;
+use Varbox\Contracts\PermissionSortContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Requests\PermissionRequest;
-use Varbox\Sorts\PermissionSort;
 use Varbox\Traits\CanCrud;
 
 class PermissionsController extends Controller
@@ -44,11 +44,11 @@ class PermissionsController extends Controller
     /**
      * @param Request $request
      * @param PermissionFilterContract $filter
-     * @param PermissionSort $sort
+     * @param PermissionSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, PermissionFilterContract $filter, PermissionSort $sort)
+    public function index(Request $request, PermissionFilterContract $filter, PermissionSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

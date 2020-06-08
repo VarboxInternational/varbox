@@ -13,13 +13,13 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Varbox\Contracts\EmailFilterContract;
+use Varbox\Contracts\EmailSortContract;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
 use Varbox\Requests\EmailRequest;
-use Varbox\Sorts\EmailSort;
 use Varbox\Traits\CanDuplicate;
 
 class EmailsController extends Controller
@@ -45,11 +45,11 @@ class EmailsController extends Controller
     /**
      * @param Request $request
      * @param EmailFilterContract $filter
-     * @param EmailSort $sort
+     * @param EmailSortContract $sort
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function index(Request $request, EmailFilterContract $filter, EmailSort $sort)
+    public function index(Request $request, EmailFilterContract $filter, EmailSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();

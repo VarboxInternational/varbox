@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class RedirectSort extends Sort
+use Varbox\Contracts\RedirectSortContract;
+
+class RedirectSort extends Sort implements RedirectSortContract
 {
     /**
      * Get the request field name to sort by.

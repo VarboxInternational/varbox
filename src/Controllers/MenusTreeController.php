@@ -5,7 +5,7 @@ namespace Varbox\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Varbox\Contracts\MenuFilterContract;
-use Varbox\Sorts\MenuSort;
+use Varbox\Contracts\MenuSortContract;
 
 class MenusTreeController extends MenusController
 {
@@ -69,12 +69,12 @@ class MenusTreeController extends MenusController
     /**
      * @param Request $request
      * @param MenuFilterContract $filter
-     * @param MenuSort $sort
+     * @param MenuSortContract $sort
      * @param string $location
      * @param int|null $parent
      * @return \Illuminate\View\View
      */
-    public function listItems(Request $request, MenuFilterContract $filter, MenuSort $sort, $location, $parent = null)
+    public function listItems(Request $request, MenuFilterContract $filter, MenuSortContract $sort, $location, $parent = null)
     {
         $q = $this->model->whereLocation($location);
         $query = $this->model->whereLocation($location)

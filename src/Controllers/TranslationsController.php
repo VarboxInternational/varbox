@@ -12,8 +12,8 @@ use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\TranslationFilterContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
+use Varbox\Contracts\TranslationSortContract;
 use Varbox\Requests\TranslationRequest;
-use Varbox\Sorts\TranslationSort;
 use Varbox\Traits\CanCrud;
 
 class TranslationsController extends Controller
@@ -46,11 +46,11 @@ class TranslationsController extends Controller
     /**
      * @param Request $request
      * @param TranslationFilterContract $filter
-     * @param TranslationSort $sort
+     * @param TranslationSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, TranslationFilterContract $filter, TranslationSort $sort)
+    public function index(Request $request, TranslationFilterContract $filter, TranslationSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

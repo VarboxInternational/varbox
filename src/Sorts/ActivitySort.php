@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class ActivitySort extends Sort
+use Varbox\Contracts\ActivitySortContract;
+
+class ActivitySort extends Sort implements ActivitySortContract
 {
     /**
      * Get the request field name to sort by.

@@ -10,9 +10,9 @@ use Illuminate\Routing\Controller;
 use Varbox\Contracts\PermissionModelContract;
 use Varbox\Contracts\RoleFilterContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Contracts\RoleSortContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Requests\RoleRequest;
-use Varbox\Sorts\RoleSort;
 use Varbox\Traits\CanCrud;
 
 class RolesController extends Controller
@@ -52,11 +52,11 @@ class RolesController extends Controller
     /**
      * @param Request $request
      * @param RoleFilterContract $filter
-     * @param RoleSort $sort
+     * @param RoleSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, RoleFilterContract $filter, RoleSort $sort)
+    public function index(Request $request, RoleFilterContract $filter, RoleSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

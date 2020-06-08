@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\LanguageFilterContract;
 use Varbox\Contracts\LanguageModelContract;
+use Varbox\Contracts\LanguageSortContract;
 use Varbox\Requests\LanguageRequest;
-use Varbox\Sorts\LanguageSort;
 use Varbox\Traits\CanCrud;
 
 class LanguagesController extends Controller
@@ -36,11 +36,11 @@ class LanguagesController extends Controller
     /**
      * @param Request $request
      * @param LanguageFilterContract $filter
-     * @param LanguageSort $sort
+     * @param LanguageSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, LanguageFilterContract $filter, LanguageSort $sort)
+    public function index(Request $request, LanguageFilterContract $filter, LanguageSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

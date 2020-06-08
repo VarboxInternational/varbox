@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\CityFilterContract;
 use Varbox\Contracts\CityModelContract;
+use Varbox\Contracts\CitySortContract;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Requests\CityRequest;
-use Varbox\Sorts\CitySort;
 use Varbox\Traits\CanCrud;
 
 class CitiesController extends Controller
@@ -50,11 +50,11 @@ class CitiesController extends Controller
     /**
      * @param Request $request
      * @param CityFilterContract $filter
-     * @param CitySort $sort
+     * @param CitySortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, CityFilterContract $filter, CitySort $sort)
+    public function index(Request $request, CityFilterContract $filter, CitySortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->with([

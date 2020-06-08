@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\ErrorFilterContract;
 use Varbox\Contracts\ErrorModelContract;
-use Varbox\Sorts\ErrorSort;
+use Varbox\Contracts\ErrorSortContract;
 use Varbox\Traits\CanCrud;
 
 class ErrorsController extends Controller
@@ -36,11 +36,11 @@ class ErrorsController extends Controller
     /**
      * @param Request $request
      * @param ErrorFilterContract $filter
-     * @param ErrorSort $sort
+     * @param ErrorSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, ErrorFilterContract $filter, ErrorSort $sort)
+    public function index(Request $request, ErrorFilterContract $filter, ErrorSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

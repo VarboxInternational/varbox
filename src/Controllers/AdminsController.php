@@ -8,10 +8,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\AdminFilterContract;
+use Varbox\Contracts\AdminSortContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Requests\AdminRequest;
-use Varbox\Sorts\AdminSort;
 use Varbox\Traits\CanCrud;
 
 class AdminsController extends Controller
@@ -44,11 +44,11 @@ class AdminsController extends Controller
     /**
      * @param Request $request
      * @param AdminFilterContract $filter
-     * @param AdminSort $sort
+     * @param AdminSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, AdminFilterContract $filter, AdminSort $sort)
+    public function index(Request $request, AdminFilterContract $filter, AdminSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model->onlyAdmins()

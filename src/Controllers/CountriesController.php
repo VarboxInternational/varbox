@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\CountryFilterContract;
 use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\CountrySortContract;
 use Varbox\Requests\CountryRequest;
-use Varbox\Sorts\CountrySort;
 use Varbox\Traits\CanCrud;
 
 class CountriesController extends Controller
@@ -34,11 +34,11 @@ class CountriesController extends Controller
     /**
      * @param Request $request
      * @param CountryFilterContract $filter
-     * @param CountrySort $sort
+     * @param CountrySortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, CountryFilterContract $filter, CountrySort $sort)
+    public function index(Request $request, CountryFilterContract $filter, CountrySortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->filtered($request->all(), $filter);

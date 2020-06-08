@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\AddressFilterContract;
 use Varbox\Contracts\AddressModelContract;
+use Varbox\Contracts\AddressSortContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Requests\AddressRequest;
-use Varbox\Sorts\AddressSort;
 use Varbox\Traits\CanCrud;
 
 class AddressesController extends Controller
@@ -60,12 +60,12 @@ class AddressesController extends Controller
     /**
      * @param Request $request
      * @param AddressFilterContract $filter
-     * @param AddressSort $sort
+     * @param AddressSortContract $sort
      * @param UserModelContract $user
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, AddressFilterContract $filter, AddressSort $sort, UserModelContract $user)
+    public function index(Request $request, AddressFilterContract $filter, AddressSortContract $sort, UserModelContract $user)
     {
         return $this->_index(function () use ($request, $filter, $sort, $user) {
             $this->items = $this->model->ofUser($user)

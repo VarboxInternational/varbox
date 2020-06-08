@@ -13,9 +13,9 @@ use Illuminate\Routing\Controller;
 use Varbox\Contracts\UploadFilterContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
+use Varbox\Contracts\UploadSortContract;
 use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
-use Varbox\Sorts\UploadSort;
 
 class UploadsController extends Controller
 {
@@ -39,10 +39,10 @@ class UploadsController extends Controller
     /**
      * @param Request $request
      * @param UploadFilterContract $filter
-     * @param UploadSort $sort
+     * @param UploadSortContract $sort
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, UploadFilterContract $filter, UploadSort $sort)
+    public function index(Request $request, UploadFilterContract $filter, UploadSortContract $sort)
     {
         meta()->set('title', 'Admin - Uploads');
 

@@ -1293,7 +1293,7 @@ return [
         | - or at least implement the "Varbox\Contracts\ActivityFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('activity.filter') OR app('\Varbox\Contracts\ActivityFilterContract')
+        | - app('\Varbox\Contracts\ActivityFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1309,7 +1309,7 @@ return [
         | - or at least implement the "Varbox\Contracts\AddressFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('address.filter') OR app('\Varbox\Contracts\AddressFilterContract')
+        | - app('\Varbox\Contracts\AddressFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1325,7 +1325,7 @@ return [
         | - or at least implement the "Varbox\Contracts\AdminFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('admin.filter') OR app('\Varbox\Contracts\AdminFilterContract')
+        | - app('\Varbox\Contracts\AdminFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1341,7 +1341,7 @@ return [
         | - or at least implement the "Varbox\Contracts\BackupFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('backup.filter') OR app('\Varbox\Contracts\BackupFilterContract')
+        | - app('\Varbox\Contracts\BackupFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1357,7 +1357,7 @@ return [
         | - or at least implement the "Varbox\Contracts\CityFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('city.filter') OR app('\Varbox\Contracts\CityFilterContract')
+        | - app('\Varbox\Contracts\CityFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1373,7 +1373,7 @@ return [
         | - or at least implement the "Varbox\Contracts\ConfigFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('config.filter') OR app('\Varbox\Contracts\ConfigFilterContract')
+        | - app('\Varbox\Contracts\ConfigFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1389,7 +1389,7 @@ return [
         | - or at least implement the "Varbox\Contracts\CountryFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('country.filter') OR app('\Varbox\Contracts\CountryFilterContract')
+        | - app('\Varbox\Contracts\CountryFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1405,7 +1405,7 @@ return [
         | - or at least implement the "Varbox\Contracts\EmailFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('email.filter') OR app('\Varbox\Contracts\EmailFilterContract')
+        | - OR app('\Varbox\Contracts\EmailFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1421,7 +1421,7 @@ return [
         | - or at least implement the "Varbox\Contracts\ErrorFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('error.filter') OR app('\Varbox\Contracts\ErrorFilterContract')
+        | - app('\Varbox\Contracts\ErrorFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1437,7 +1437,7 @@ return [
         | - or at least implement the "Varbox\Contracts\LanguageFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('language.filter') OR app('\Varbox\Contracts\LanguageFilterContract')
+        | - app('\Varbox\Contracts\LanguageFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1453,7 +1453,7 @@ return [
         | - or at least implement the "Varbox\Contracts\MenuFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('menu.filter') OR app('\Varbox\Contracts\MenuFilterContract')
+        | - app('\Varbox\Contracts\MenuFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1469,7 +1469,7 @@ return [
         | - or at least implement the "Varbox\Contracts\PageFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('page.filter') OR app('\Varbox\Contracts\PageFilterContract')
+        | - app('\Varbox\Contracts\PageFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1485,7 +1485,7 @@ return [
         | - or at least implement the "Varbox\Contracts\PermissionFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('permission.filter') OR app('\Varbox\Contracts\PermissionFilterContract')
+        | - app('\Varbox\Contracts\PermissionFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1501,7 +1501,7 @@ return [
         | - or at least implement the "Varbox\Contracts\RedirectFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('redirect.filter') OR app('\Varbox\Contracts\RedirectFilterContract')
+        | - app('\Varbox\Contracts\RedirectFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1517,7 +1517,7 @@ return [
         | - or at least implement the "Varbox\Contracts\RoleFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('role.filter') OR app('\Varbox\Contracts\RoleFilterContract')
+        | - app('\Varbox\Contracts\RoleFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1533,7 +1533,7 @@ return [
         | - or at least implement the "Varbox\Contracts\StateFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('state.filter') OR app('\Varbox\Contracts\StateFilterContract')
+        | - app('\Varbox\Contracts\StateFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1549,7 +1549,7 @@ return [
         | - or at least implement the "Varbox\Contracts\TranslationFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('translation.filter') OR app('\Varbox\Contracts\TranslationFilterContract')
+        | - app('\Varbox\Contracts\TranslationFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1565,7 +1565,7 @@ return [
         | - or at least implement the "Varbox\Contracts\UploadFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('upload.filter') OR app('\Varbox\Contracts\UploadFilterContract')
+        | - app('\Varbox\Contracts\UploadFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
@@ -1581,11 +1581,324 @@ return [
         | - or at least implement the "Varbox\Contracts\UserFilterContract" interface.
         |
         | Regardless of the concrete implementation below, you can still use it like:
-        | - app('user.filter') OR app('\Varbox\Contracts\UserFilterContract')
+        | - app('\Varbox\Contracts\UserFilterContract')
         | - or you could even use your own class as a direct implementation
         |
         */
         'user_filter' => \Varbox\Filters\UserFilter::class,
+
+    ],
+
+    /*
+    | --------------------------------------------------------------------------------------------------------------
+    | Sort Class Bindings
+    | --------------------------------------------------------------------------------------------------------------
+    */
+    'sorts' => [
+
+        /*
+        |
+        | Concrete implementation for the "activity sort".
+        | To extend or replace this functionality, change the value below with your full "activity sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\ActivitySort" class
+        | - or at least implement the "Varbox\Contracts\ActivitySortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\ActivitySortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'activity_sort' => \Varbox\Sorts\ActivitySort::class,
+
+        /*
+        |
+        | Concrete implementation for the "address sort".
+        | To extend or replace this functionality, change the value below with your full "address sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\AddressSort" class
+        | - or at least implement the "Varbox\Contracts\AddressSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\AddressSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'address_sort' => \Varbox\Sorts\AddressSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "admin sort".
+        | To extend or replace this functionality, change the value below with your full "admin sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\AdminSort" class
+        | - or at least implement the "Varbox\Contracts\AdminSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\AdminSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'admin_sort' => \Varbox\Sorts\AdminSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "backup sort".
+        | To extend or replace this functionality, change the value below with your full "backup sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\BackupSort" class
+        | - or at least implement the "Varbox\Contracts\BackupSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\BackupSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'backup_sort' => \Varbox\Sorts\BackupSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "city sort".
+        | To extend or replace this functionality, change the value below with your full "city sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\CitySort" class
+        | - or at least implement the "Varbox\Contracts\CitySortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\CitySortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'city_sort' => \Varbox\Sorts\CitySort::class,
+
+        /*
+        |
+        | Concrete implementation for the "config sort".
+        | To extend or replace this functionality, change the value below with your full "config sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\ConfigSort" class
+        | - or at least implement the "Varbox\Contracts\ConfigSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\ConfigSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'config_sort' => \Varbox\Sorts\ConfigSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "country sort".
+        | To extend or replace this functionality, change the value below with your full "country sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\CountrySort" class
+        | - or at least implement the "Varbox\Contracts\CountrySortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\CountrySortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'country_sort' => \Varbox\Sorts\CountrySort::class,
+
+        /*
+        |
+        | Concrete implementation for the "email sort".
+        | To extend or replace this functionality, change the value below with your full "email sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\EmailSort" class
+        | - or at least implement the "Varbox\Contracts\EmailSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - OR app('\Varbox\Contracts\EmailSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'email_sort' => \Varbox\Sorts\EmailSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "error sort".
+        | To extend or replace this functionality, change the value below with your full "error sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\ErrorSort" class
+        | - or at least implement the "Varbox\Contracts\ErrorSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\ErrorSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'error_sort' => \Varbox\Sorts\ErrorSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "language sort".
+        | To extend or replace this functionality, change the value below with your full "language sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\LanguageSort" class
+        | - or at least implement the "Varbox\Contracts\LanguageSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\LanguageSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'language_sort' => \Varbox\Sorts\LanguageSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "menu sort".
+        | To extend or replace this functionality, change the value below with your full "menu sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\MenuSort" class
+        | - or at least implement the "Varbox\Contracts\MenuSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\MenuSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'menu_sort' => \Varbox\Sorts\MenuSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "page sort".
+        | To extend or replace this functionality, change the value below with your full "page sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\PageSort" class
+        | - or at least implement the "Varbox\Contracts\PageSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\PageSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'page_sort' => \Varbox\Sorts\PageSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "permission sort".
+        | To extend or replace this functionality, change the value below with your full "permission sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\PermissionSort" class
+        | - or at least implement the "Varbox\Contracts\PermissionSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\PermissionSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'permission_sort' => \Varbox\Sorts\PermissionSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "redirect sort".
+        | To extend or replace this functionality, change the value below with your full "redirect sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\RedirectSort" class
+        | - or at least implement the "Varbox\Contracts\RedirectSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\RedirectSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'redirect_sort' => \Varbox\Sorts\RedirectSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "role sort".
+        | To extend or replace this functionality, change the value below with your full "role sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\RoleSort" class
+        | - or at least implement the "Varbox\Contracts\RoleSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\RoleSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'role_sort' => \Varbox\Sorts\RoleSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "state sort".
+        | To extend or replace this functionality, change the value below with your full "state sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\StateSort" class
+        | - or at least implement the "Varbox\Contracts\StateSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\StateSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'state_sort' => \Varbox\Sorts\StateSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "translation sort".
+        | To extend or replace this functionality, change the value below with your full "translation sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\TranslationSort" class
+        | - or at least implement the "Varbox\Contracts\TranslationSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\TranslationSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'translation_sort' => \Varbox\Sorts\TranslationSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "upload sort".
+        | To extend or replace this functionality, change the value below with your full "upload sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\UploadSort" class
+        | - or at least implement the "Varbox\Contracts\UploadSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\UploadSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'upload_sort' => \Varbox\Sorts\UploadSort::class,
+
+        /*
+        |
+        | Concrete implementation for the "user sort".
+        | To extend or replace this functionality, change the value below with your full "user sort" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Sorts\UserSort" class
+        | - or at least implement the "Varbox\Contracts\UserSortContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('\Varbox\Contracts\UserSortContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'user_sort' => \Varbox\Sorts\UserSort::class,
 
     ],
 

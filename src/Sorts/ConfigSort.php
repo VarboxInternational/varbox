@@ -2,7 +2,9 @@
 
 namespace Varbox\Sorts;
 
-class ConfigSort extends Sort
+use Varbox\Contracts\ConfigSortContract;
+
+class ConfigSort extends Sort implements ConfigSortContract
 {
     /**
      * Get the request field name to sort by.

@@ -11,8 +11,8 @@ use Varbox\Contracts\AddressModelContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\UserFilterContract;
 use Varbox\Contracts\UserModelContract;
+use Varbox\Contracts\UserSortContract;
 use Varbox\Requests\UserRequest;
-use Varbox\Sorts\UserSort;
 use Varbox\Traits\CanCrud;
 
 class UsersController extends Controller
@@ -52,11 +52,11 @@ class UsersController extends Controller
     /**
      * @param Request $request
      * @param UserFilterContract $filter
-     * @param UserSort $sort
+     * @param UserSortContract $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, UserFilterContract $filter, UserSort $sort)
+    public function index(Request $request, UserFilterContract $filter, UserSortContract $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model->excludingAdmins()
