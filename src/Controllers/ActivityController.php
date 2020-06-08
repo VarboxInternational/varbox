@@ -8,9 +8,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\ActivityFilterContract;
 use Varbox\Contracts\ActivityModelContract;
 use Varbox\Contracts\UserModelContract;
-use Varbox\Filters\ActivityFilter;
 use Varbox\Sorts\ActivitySort;
 use Varbox\Traits\CanCrud;
 
@@ -41,12 +41,12 @@ class ActivityController extends Controller
 
     /**
      * @param Request $request
-     * @param ActivityFilter $filter
+     * @param ActivityFilterContract $filter
      * @param ActivitySort $sort
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function index(Request $request, ActivityFilter $filter, ActivitySort $sort)
+    public function index(Request $request, ActivityFilterContract $filter, ActivitySort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

@@ -12,12 +12,12 @@ use Illuminate\Mail\Markdown;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Varbox\Contracts\EmailFilterContract;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanRevision;
 use Varbox\Models\Email;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
-use Varbox\Filters\EmailFilter;
 use Varbox\Requests\EmailRequest;
 use Varbox\Sorts\EmailSort;
 use Varbox\Traits\CanDuplicate;
@@ -44,12 +44,12 @@ class EmailsController extends Controller
 
     /**
      * @param Request $request
-     * @param EmailFilter $filter
+     * @param EmailFilterContract $filter
      * @param EmailSort $sort
      * @return \Illuminate\View\View
      * @throws Exception
      */
-    public function index(Request $request, EmailFilter $filter, EmailSort $sort)
+    public function index(Request $request, EmailFilterContract $filter, EmailSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->query();

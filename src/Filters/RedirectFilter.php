@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class RedirectFilter extends Filter
+use Varbox\Contracts\RedirectFilterContract;
+
+class RedirectFilter extends Filter implements RedirectFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

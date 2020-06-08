@@ -1276,4 +1276,317 @@ return [
 
     ],
 
+    /*
+    | --------------------------------------------------------------------------------------------------------------
+    | Filter Class Bindings
+    | --------------------------------------------------------------------------------------------------------------
+    */
+    'filters' => [
+
+        /*
+        |
+        | Concrete implementation for the "activity filter".
+        | To extend or replace this functionality, change the value below with your full "activity filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\ActivityFilter" class
+        | - or at least implement the "Varbox\Contracts\ActivityFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('activity.filter') OR app('\Varbox\Contracts\ActivityFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'activity_filter' => \Varbox\Filters\ActivityFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "address filter".
+        | To extend or replace this functionality, change the value below with your full "address filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\AddressFilter" class
+        | - or at least implement the "Varbox\Contracts\AddressFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('address.filter') OR app('\Varbox\Contracts\AddressFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'address_filter' => \Varbox\Filters\AddressFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "admin filter".
+        | To extend or replace this functionality, change the value below with your full "admin filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\AdminFilter" class
+        | - or at least implement the "Varbox\Contracts\AdminFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('admin.filter') OR app('\Varbox\Contracts\AdminFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'admin_filter' => \Varbox\Filters\AdminFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "backup filter".
+        | To extend or replace this functionality, change the value below with your full "backup filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\BackupFilter" class
+        | - or at least implement the "Varbox\Contracts\BackupFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('backup.filter') OR app('\Varbox\Contracts\BackupFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'backup_filter' => \Varbox\Filters\BackupFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "city filter".
+        | To extend or replace this functionality, change the value below with your full "city filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\CityFilter" class
+        | - or at least implement the "Varbox\Contracts\CityFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('city.filter') OR app('\Varbox\Contracts\CityFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'city_filter' => \Varbox\Filters\CityFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "config filter".
+        | To extend or replace this functionality, change the value below with your full "config filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\ConfigFilter" class
+        | - or at least implement the "Varbox\Contracts\ConfigFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('config.filter') OR app('\Varbox\Contracts\ConfigFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'config_filter' => \Varbox\Filters\ConfigFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "country filter".
+        | To extend or replace this functionality, change the value below with your full "country filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\CountryFilter" class
+        | - or at least implement the "Varbox\Contracts\CountryFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('country.filter') OR app('\Varbox\Contracts\CountryFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'country_filter' => \Varbox\Filters\CountryFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "email filter".
+        | To extend or replace this functionality, change the value below with your full "email filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\EmailFilter" class
+        | - or at least implement the "Varbox\Contracts\EmailFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('email.filter') OR app('\Varbox\Contracts\EmailFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'email_filter' => \Varbox\Filters\EmailFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "error filter".
+        | To extend or replace this functionality, change the value below with your full "error filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\ErrorFilter" class
+        | - or at least implement the "Varbox\Contracts\ErrorFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('error.filter') OR app('\Varbox\Contracts\ErrorFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'error_filter' => \Varbox\Filters\ErrorFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "language filter".
+        | To extend or replace this functionality, change the value below with your full "language filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\LanguageFilter" class
+        | - or at least implement the "Varbox\Contracts\LanguageFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('language.filter') OR app('\Varbox\Contracts\LanguageFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'language_filter' => \Varbox\Filters\LanguageFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "menu filter".
+        | To extend or replace this functionality, change the value below with your full "menu filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\MenuFilter" class
+        | - or at least implement the "Varbox\Contracts\MenuFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('menu.filter') OR app('\Varbox\Contracts\MenuFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'menu_filter' => \Varbox\Filters\MenuFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "page filter".
+        | To extend or replace this functionality, change the value below with your full "page filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\PageFilter" class
+        | - or at least implement the "Varbox\Contracts\PageFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('page.filter') OR app('\Varbox\Contracts\PageFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'page_filter' => \Varbox\Filters\PageFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "permission filter".
+        | To extend or replace this functionality, change the value below with your full "permission filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\PermissionFilter" class
+        | - or at least implement the "Varbox\Contracts\PermissionFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('permission.filter') OR app('\Varbox\Contracts\PermissionFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'permission_filter' => \Varbox\Filters\PermissionFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "redirect filter".
+        | To extend or replace this functionality, change the value below with your full "redirect filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\RedirectFilter" class
+        | - or at least implement the "Varbox\Contracts\RedirectFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('redirect.filter') OR app('\Varbox\Contracts\RedirectFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'redirect_filter' => \Varbox\Filters\RedirectFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "role filter".
+        | To extend or replace this functionality, change the value below with your full "role filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\RoleFilter" class
+        | - or at least implement the "Varbox\Contracts\RoleFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('role.filter') OR app('\Varbox\Contracts\RoleFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'role_filter' => \Varbox\Filters\RoleFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "state filter".
+        | To extend or replace this functionality, change the value below with your full "state filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\StateFilter" class
+        | - or at least implement the "Varbox\Contracts\StateFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('state.filter') OR app('\Varbox\Contracts\StateFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'state_filter' => \Varbox\Filters\StateFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "translation filter".
+        | To extend or replace this functionality, change the value below with your full "translation filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\TranslationFilter" class
+        | - or at least implement the "Varbox\Contracts\TranslationFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('translation.filter') OR app('\Varbox\Contracts\TranslationFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'translation_filter' => \Varbox\Filters\TranslationFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "upload filter".
+        | To extend or replace this functionality, change the value below with your full "upload filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\UploadFilter" class
+        | - or at least implement the "Varbox\Contracts\UploadFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('upload.filter') OR app('\Varbox\Contracts\UploadFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'upload_filter' => \Varbox\Filters\UploadFilter::class,
+
+        /*
+        |
+        | Concrete implementation for the "user filter".
+        | To extend or replace this functionality, change the value below with your full "user filter" FQN.
+        |
+        | Your class will have to (first option is recommended):
+        | - extend the "Varbox\Filters\UserFilter" class
+        | - or at least implement the "Varbox\Contracts\UserFilterContract" interface.
+        |
+        | Regardless of the concrete implementation below, you can still use it like:
+        | - app('user.filter') OR app('\Varbox\Contracts\UserFilterContract')
+        | - or you could even use your own class as a direct implementation
+        |
+        */
+        'user_filter' => \Varbox\Filters\UserFilter::class,
+
+    ],
+
 ];

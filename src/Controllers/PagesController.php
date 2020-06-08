@@ -16,10 +16,8 @@ use Varbox\Traits\CanDuplicate;
 use Varbox\Traits\CanPreview;
 use Varbox\Traits\CanRevision;
 use Varbox\Contracts\PageModelContract;
-use Varbox\Filters\PageFilter;
 use Varbox\Models\Page;
 use Varbox\Requests\PageRequest;
-use Varbox\Sorts\PageSort;
 
 class PagesController extends Controller
 {
@@ -44,15 +42,12 @@ class PagesController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param PageFilter $filter
-     * @param PageSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, PageFilter $filter, PageSort $sort)
+    public function index()
     {
-        return $this->_index(function () use ($request, $filter, $sort) {
+        return $this->_index(function () {
             $this->items = new Collection;
             $this->title = 'Pages';
             $this->view = view('varbox::admin.pages.index');

@@ -8,8 +8,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\CountryModelContract;
+use Varbox\Contracts\StateFilterContract;
 use Varbox\Contracts\StateModelContract;
-use Varbox\Filters\StateFilter;
 use Varbox\Requests\StateRequest;
 use Varbox\Sorts\StateSort;
 use Varbox\Traits\CanCrud;
@@ -43,12 +43,12 @@ class StatesController extends Controller
 
     /**
      * @param Request $request
-     * @param StateFilter $filter
+     * @param StateFilterContract $filter
      * @param StateSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, StateFilter $filter, StateSort $sort)
+    public function index(Request $request, StateFilterContract $filter, StateSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->with('country')->filtered($request->all(), $filter);

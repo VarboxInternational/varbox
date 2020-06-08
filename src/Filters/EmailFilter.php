@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class EmailFilter extends Filter
+use Varbox\Contracts\EmailFilterContract;
+
+class EmailFilter extends Filter implements EmailFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

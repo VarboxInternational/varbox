@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class BlockFilter extends Filter
+use Varbox\Contracts\BlockFilterContract;
+
+class BlockFilter extends Filter implements BlockFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

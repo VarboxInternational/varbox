@@ -174,8 +174,8 @@ class CreateVarboxTables extends Migration
                 $table->string('flag')->nullable();
                 $table->string('capital')->nullable();
 
-                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
-                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
             });
         }
 
@@ -187,8 +187,8 @@ class CreateVarboxTables extends Migration
                 $table->string('name');
                 $table->string('code');
 
-                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
-                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
 
                 $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             });
@@ -204,8 +204,8 @@ class CreateVarboxTables extends Migration
                 $table->decimal('latitude', 10, 8)->nullable();
                 $table->decimal('longitude', 11, 8)->nullable();
 
-                $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
-                $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))->nullable();
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
 
                 $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
                 $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('set null');

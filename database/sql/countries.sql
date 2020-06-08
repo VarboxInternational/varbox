@@ -258,6 +258,7 @@ INSERT INTO `countries` (`id`, `name`, `code`, `flag`, `capital`) VALUES
 (246, 'Zambia', 'ZM', '🇿🇲', 'Lusaka'),
 (247, 'Zimbabwe', 'ZW', '🇿🇼', 'Harare');
 
+UPDATE `countries` SET `created_at` = NOW(), `updated_at` = NOW();
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

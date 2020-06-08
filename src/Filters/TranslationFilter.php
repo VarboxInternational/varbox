@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class TranslationFilter extends Filter
+use Varbox\Contracts\TranslationFilterContract;
+
+class TranslationFilter extends Filter implements TranslationFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

@@ -7,10 +7,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\CityFilterContract;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\CountryModelContract;
 use Varbox\Contracts\StateModelContract;
-use Varbox\Filters\CityFilter;
 use Varbox\Requests\CityRequest;
 use Varbox\Sorts\CitySort;
 use Varbox\Traits\CanCrud;
@@ -49,12 +49,12 @@ class CitiesController extends Controller
 
     /**
      * @param Request $request
-     * @param CityFilter $filter
+     * @param CityFilterContract $filter
      * @param CitySort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, CityFilter $filter, CitySort $sort)
+    public function index(Request $request, CityFilterContract $filter, CitySort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $query = $this->model->with([

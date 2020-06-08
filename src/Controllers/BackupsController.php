@@ -10,8 +10,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
+use Varbox\Contracts\BackupFilterContract;
 use Varbox\Contracts\BackupModelContract;
-use Varbox\Filters\BackupFilter;
 use Varbox\Sorts\BackupSort;
 use Varbox\Traits\CanCrud;
 
@@ -37,12 +37,12 @@ class BackupsController extends Controller
 
     /**
      * @param Request $request
-     * @param BackupFilter $filter
+     * @param BackupFilterContract $filter
      * @param BackupSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, BackupFilter $filter, BackupSort $sort)
+    public function index(Request $request, BackupFilterContract $filter, BackupSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

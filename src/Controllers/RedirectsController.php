@@ -5,8 +5,8 @@ namespace Varbox\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Varbox\Contracts\RedirectFilterContract;
 use Varbox\Contracts\RedirectModelContract;
-use Varbox\Filters\RedirectFilter;
 use Varbox\Requests\RedirectRequest;
 use Varbox\Sorts\RedirectSort;
 use Varbox\Models\Redirect;
@@ -36,12 +36,12 @@ class RedirectsController extends Controller
 
     /**
      * @param Request $request
-     * @param RedirectFilter $filter
+     * @param RedirectFilterContract $filter
      * @param RedirectSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, RedirectFilter $filter, RedirectSort $sort)
+    public function index(Request $request, RedirectFilterContract $filter, RedirectSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

@@ -4873,6 +4873,7 @@ INSERT INTO `states` (`id`, `country_id`, `name`, `code`) VALUES
 (4853, 101, 'West Bengal', 'WB'),
 (4854, 225, 'Sinop Province', '57');
 
+UPDATE `states` SET `created_at` = NOW(), `updated_at` = NOW();
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

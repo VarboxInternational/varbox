@@ -7,8 +7,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\ConfigFilterContract;
 use Varbox\Contracts\ConfigModelContract;
-use Varbox\Filters\ConfigFilter;
 use Varbox\Requests\ConfigRequest;
 use Varbox\Sorts\ConfigSort;
 use Varbox\Traits\CanCrud;
@@ -35,12 +35,12 @@ class ConfigsController extends Controller
 
     /**
      * @param Request $request
-     * @param ConfigFilter $filter
+     * @param ConfigFilterContract $filter
      * @param ConfigSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, ConfigFilter $filter, ConfigSort $sort)
+    public function index(Request $request, ConfigFilterContract $filter, ConfigSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

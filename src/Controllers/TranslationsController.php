@@ -9,9 +9,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\LanguageModelContract;
+use Varbox\Contracts\TranslationFilterContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
-use Varbox\Filters\TranslationFilter;
 use Varbox\Requests\TranslationRequest;
 use Varbox\Sorts\TranslationSort;
 use Varbox\Traits\CanCrud;
@@ -45,12 +45,12 @@ class TranslationsController extends Controller
 
     /**
      * @param Request $request
-     * @param TranslationFilter $filter
+     * @param TranslationFilterContract $filter
      * @param TranslationSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, TranslationFilter $filter, TranslationSort $sort)
+    public function index(Request $request, TranslationFilterContract $filter, TranslationSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

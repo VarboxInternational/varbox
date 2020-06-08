@@ -10,11 +10,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\UploadFilterContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Exceptions\UploadException;
 use Varbox\Models\Upload;
-use Varbox\Filters\UploadFilter;
 use Varbox\Sorts\UploadSort;
 
 class UploadsController extends Controller
@@ -38,11 +38,11 @@ class UploadsController extends Controller
 
     /**
      * @param Request $request
-     * @param UploadFilter $filter
+     * @param UploadFilterContract $filter
      * @param UploadSort $sort
      * @return \Illuminate\View\View
      */
-    public function index(Request $request, UploadFilter $filter, UploadSort $sort)
+    public function index(Request $request, UploadFilterContract $filter, UploadSort $sort)
     {
         meta()->set('title', 'Admin - Uploads');
 

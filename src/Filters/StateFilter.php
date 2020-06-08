@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class StateFilter extends Filter
+use Varbox\Contracts\StateFilterContract;
+
+class StateFilter extends Filter implements StateFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

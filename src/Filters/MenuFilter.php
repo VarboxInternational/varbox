@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class MenuFilter extends Filter
+use Varbox\Contracts\MenuFilterContract;
+
+class MenuFilter extends Filter implements MenuFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

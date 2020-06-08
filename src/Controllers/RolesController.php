@@ -8,9 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Varbox\Contracts\PermissionModelContract;
+use Varbox\Contracts\RoleFilterContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\UserModelContract;
-use Varbox\Filters\RoleFilter;
 use Varbox\Requests\RoleRequest;
 use Varbox\Sorts\RoleSort;
 use Varbox\Traits\CanCrud;
@@ -51,12 +51,12 @@ class RolesController extends Controller
 
     /**
      * @param Request $request
-     * @param RoleFilter $filter
+     * @param RoleFilterContract $filter
      * @param RoleSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, RoleFilter $filter, RoleSort $sort)
+    public function index(Request $request, RoleFilterContract $filter, RoleSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

@@ -8,8 +8,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\ErrorFilterContract;
 use Varbox\Contracts\ErrorModelContract;
-use Varbox\Filters\ErrorFilter;
 use Varbox\Sorts\ErrorSort;
 use Varbox\Traits\CanCrud;
 
@@ -35,12 +35,12 @@ class ErrorsController extends Controller
 
     /**
      * @param Request $request
-     * @param ErrorFilter $filter
+     * @param ErrorFilterContract $filter
      * @param ErrorSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, ErrorFilter $filter, ErrorSort $sort)
+    public function index(Request $request, ErrorFilterContract $filter, ErrorSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model

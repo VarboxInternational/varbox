@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class RoleFilter extends Filter
+use Varbox\Contracts\RoleFilterContract;
+
+class RoleFilter extends Filter implements RoleFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

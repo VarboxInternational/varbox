@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class CountryFilter extends Filter
+use Varbox\Contracts\CountryFilterContract;
+
+class CountryFilter extends Filter implements CountryFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

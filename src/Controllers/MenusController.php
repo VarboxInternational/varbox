@@ -11,9 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\MenuModelContract;
-use Varbox\Filters\MenuFilter;
 use Varbox\Requests\MenuRequest;
-use Varbox\Sorts\MenuSort;
 
 class MenusController extends Controller
 {
@@ -49,18 +47,15 @@ class MenusController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param MenuFilter $filter
-     * @param MenuSort $sort
      * @param string $location
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, MenuFilter $filter, MenuSort $sort, $location)
+    public function index($location)
     {
         cache()->forget('first_tree_load');
 
-        return $this->_index(function () use ($request, $filter, $sort, $location) {
+        return $this->_index(function () use ($location) {
             $this->items = new Collection;
             $this->title = 'Menus';
             $this->view = view('varbox::admin.menus.index');

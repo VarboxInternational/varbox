@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class UploadFilter extends Filter
+use Varbox\Contracts\UploadFilterContract;
+
+class UploadFilter extends Filter implements UploadFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

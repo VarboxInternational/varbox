@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class ErrorFilter extends Filter
+use Varbox\Contracts\ErrorFilterContract;
+
+class ErrorFilter extends Filter implements ErrorFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

@@ -27,10 +27,22 @@ use Varbox\Commands\NotificationsCleanCommand;
 use Varbox\Composers\AdminMenuComposer;
 use Varbox\Composers\LanguagesComposer;
 use Varbox\Composers\NotificationsComposer;
+use Varbox\Contracts\ActivityFilterContract;
 use Varbox\Contracts\ActivityModelContract;
+use Varbox\Contracts\AddressFilterContract;
 use Varbox\Contracts\AddressModelContract;
+use Varbox\Contracts\AdminFilterContract;
 use Varbox\Contracts\AdminFormHelperContract;
 use Varbox\Contracts\AdminFormLangHelperContract;
+use Varbox\Contracts\BackupFilterContract;
+use Varbox\Contracts\BlockFilterContract;
+use Varbox\Contracts\CityFilterContract;
+use Varbox\Contracts\ConfigFilterContract;
+use Varbox\Contracts\CountryFilterContract;
+use Varbox\Contracts\EmailFilterContract;
+use Varbox\Contracts\ErrorFilterContract;
+use Varbox\Contracts\LanguageFilterContract;
+use Varbox\Contracts\MenuFilterContract;
 use Varbox\Contracts\MenuHelperContract;
 use Varbox\Contracts\BackupModelContract;
 use Varbox\Contracts\BlockModelContract;
@@ -43,22 +55,50 @@ use Varbox\Contracts\FlashHelperContract;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Contracts\MenuModelContract;
 use Varbox\Contracts\MetaHelperContract;
+use Varbox\Contracts\PageFilterContract;
 use Varbox\Contracts\PageModelContract;
+use Varbox\Contracts\PermissionFilterContract;
 use Varbox\Contracts\PermissionModelContract;
+use Varbox\Contracts\RedirectFilterContract;
 use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RevisionModelContract;
+use Varbox\Contracts\RoleFilterContract;
 use Varbox\Contracts\RoleModelContract;
+use Varbox\Contracts\StateFilterContract;
 use Varbox\Contracts\StateModelContract;
+use Varbox\Contracts\TranslationFilterContract;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Contracts\TranslationServiceContract;
 use Varbox\Contracts\UploadedHelperContract;
 use Varbox\Contracts\UploaderHelperContract;
 use Varbox\Contracts\UploaderLangHelperContract;
+use Varbox\Contracts\UploadFilterContract;
 use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UploadServiceContract;
 use Varbox\Contracts\UrlModelContract;
+use Varbox\Contracts\UserFilterContract;
 use Varbox\Contracts\UserModelContract;
 use Varbox\Events\ErrorSavedSuccessfully;
+use Varbox\Filters\ActivityFilter;
+use Varbox\Filters\AddressFilter;
+use Varbox\Filters\AdminFilter;
+use Varbox\Filters\BackupFilter;
+use Varbox\Filters\BlockFilter;
+use Varbox\Filters\CityFilter;
+use Varbox\Filters\ConfigFilter;
+use Varbox\Filters\CountryFilter;
+use Varbox\Filters\EmailFilter;
+use Varbox\Filters\ErrorFilter;
+use Varbox\Filters\LanguageFilter;
+use Varbox\Filters\MenuFilter;
+use Varbox\Filters\PageFilter;
+use Varbox\Filters\PermissionFilter;
+use Varbox\Filters\RedirectFilter;
+use Varbox\Filters\RoleFilter;
+use Varbox\Filters\StateFilter;
+use Varbox\Filters\TranslationFilter;
+use Varbox\Filters\UploadFilter;
+use Varbox\Filters\UserFilter;
 use Varbox\Helpers\AdminFormHelper;
 use Varbox\Helpers\AdminFormLangHelper;
 use Varbox\Helpers\MenuHelper;
@@ -164,6 +204,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerServiceBindings();
         $this->registerModelBindings();
         $this->registerHelperBindings();
+        $this->registerFilterBindings();
     }
 
     /**
@@ -604,6 +645,74 @@ class VarboxServiceProvider extends BaseServiceProvider
 
         $this->app->singleton(UploaderLangHelperContract::class, $binding['helpers']['uploader_lang_helper'] ?? UploaderLangHelper::class);
         $this->app->alias(UploaderLangHelperContract::class, 'uploader_lang.helper');
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerFilterBindings()
+    {
+        $binding = $this->config['varbox.bindings'];
+
+        $this->app->singleton(ActivityFilterContract::class, $binding['filters']['activity_filter'] ?? ActivityFilter::class);
+        $this->app->alias(ActivityFilterContract::class, 'activity.filter');
+
+        $this->app->singleton(AddressFilterContract::class, $binding['filters']['address_filter'] ?? AddressFilter::class);
+        $this->app->alias(AddressFilterContract::class, 'address.filter');
+
+        $this->app->singleton(AdminFilterContract::class, $binding['filters']['admin_filter'] ?? AdminFilter::class);
+        $this->app->alias(AdminFilterContract::class, 'admin.filter');
+
+        $this->app->singleton(BackupFilterContract::class, $binding['filters']['backup_filter'] ?? BackupFilter::class);
+        $this->app->alias(BackupFilterContract::class, 'backup.filter');
+
+        $this->app->singleton(BlockFilterContract::class, $binding['filters']['block_filter'] ?? BlockFilter::class);
+        $this->app->alias(BlockFilterContract::class, 'block.filter');
+
+        $this->app->singleton(CityFilterContract::class, $binding['filters']['city_filter'] ?? CityFilter::class);
+        $this->app->alias(CityFilterContract::class, 'city.filter');
+
+        $this->app->singleton(ConfigFilterContract::class, $binding['filters']['config_filter'] ?? ConfigFilter::class);
+        $this->app->alias(ConfigFilterContract::class, 'config.filter');
+
+        $this->app->singleton(CountryFilterContract::class, $binding['filters']['country_filter'] ?? CountryFilter::class);
+        $this->app->alias(CountryFilterContract::class, 'country.filter');
+
+        $this->app->singleton(EmailFilterContract::class, $binding['filters']['email_filter'] ?? EmailFilter::class);
+        $this->app->alias(EmailFilterContract::class, 'email.filter');
+
+        $this->app->singleton(ErrorFilterContract::class, $binding['filters']['error_filter'] ?? ErrorFilter::class);
+        $this->app->alias(ErrorFilterContract::class, 'error.filter');
+
+        $this->app->singleton(LanguageFilterContract::class, $binding['filters']['language_filter'] ?? LanguageFilter::class);
+        $this->app->alias(LanguageFilterContract::class, 'language.filter');
+
+        $this->app->singleton(MenuFilterContract::class, $binding['filters']['menu_filter'] ?? MenuFilter::class);
+        $this->app->alias(MenuFilterContract::class, 'menu.filter');
+
+        $this->app->singleton(PageFilterContract::class, $binding['filters']['page_filter'] ?? PageFilter::class);
+        $this->app->alias(PageFilterContract::class, 'page.filter');
+
+        $this->app->singleton(PermissionFilterContract::class, $binding['filters']['permission_filter'] ?? PermissionFilter::class);
+        $this->app->alias(PermissionFilterContract::class, 'permission.filter');
+
+        $this->app->singleton(RedirectFilterContract::class, $binding['filters']['redirect_filter'] ?? RedirectFilter::class);
+        $this->app->alias(RedirectFilterContract::class, 'redirect.filter');
+
+        $this->app->singleton(RoleFilterContract::class, $binding['filters']['role_filter'] ?? RoleFilter::class);
+        $this->app->alias(RoleFilterContract::class, 'role.filter');
+
+        $this->app->singleton(StateFilterContract::class, $binding['filters']['state_filter'] ?? StateFilter::class);
+        $this->app->alias(StateFilterContract::class, 'state.filter');
+
+        $this->app->singleton(TranslationFilterContract::class, $binding['filters']['translations_filter'] ?? TranslationFilter::class);
+        $this->app->alias(TranslationFilterContract::class, 'translations.filter');
+
+        $this->app->singleton(UploadFilterContract::class, $binding['filters']['upload_filter'] ?? UploadFilter::class);
+        $this->app->alias(UploadFilterContract::class, 'upload.filter');
+
+        $this->app->singleton(UserFilterContract::class, $binding['filters']['user_filter'] ?? UserFilter::class);
+        $this->app->alias(UserFilterContract::class, 'user.filter');
     }
 
     /**

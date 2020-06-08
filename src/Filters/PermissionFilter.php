@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class PermissionFilter extends Filter
+use Varbox\Contracts\PermissionFilterContract;
+
+class PermissionFilter extends Filter implements PermissionFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

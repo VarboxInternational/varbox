@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class PageFilter extends Filter
+use Varbox\Contracts\PageFilterContract;
+
+class PageFilter extends Filter implements PageFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

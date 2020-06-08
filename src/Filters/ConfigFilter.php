@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class ConfigFilter extends Filter
+use Varbox\Contracts\ConfigFilterContract;
+
+class ConfigFilter extends Filter implements ConfigFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

@@ -2,7 +2,9 @@
 
 namespace Varbox\Filters;
 
-class BackupFilter extends Filter
+use Varbox\Contracts\BackupFilterContract;
+
+class BackupFilter extends Filter implements BackupFilterContract
 {
     /**
      * Get the main where condition between entire request fields.

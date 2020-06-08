@@ -7,9 +7,9 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Varbox\Contracts\AdminFilterContract;
 use Varbox\Contracts\RoleModelContract;
 use Varbox\Contracts\UserModelContract;
-use Varbox\Filters\AdminFilter;
 use Varbox\Requests\AdminRequest;
 use Varbox\Sorts\AdminSort;
 use Varbox\Traits\CanCrud;
@@ -33,7 +33,7 @@ class AdminsController extends Controller
      * AdminsController constructor.
      *
      * @param UserModelContract $model
-     * @param RoleModelContract $user
+     * @param RoleModelContract $role
      */
     public function __construct(UserModelContract $model, RoleModelContract $role)
     {
@@ -43,12 +43,12 @@ class AdminsController extends Controller
 
     /**
      * @param Request $request
-     * @param AdminFilter $filter
+     * @param AdminFilterContract $filter
      * @param AdminSort $sort
      * @return \Illuminate\View\View
      * @throws \Exception
      */
-    public function index(Request $request, AdminFilter $filter, AdminSort $sort)
+    public function index(Request $request, AdminFilterContract $filter, AdminSort $sort)
     {
         return $this->_index(function () use ($request, $filter, $sort) {
             $this->items = $this->model->onlyAdmins()
