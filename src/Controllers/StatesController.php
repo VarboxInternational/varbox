@@ -150,6 +150,22 @@ class StatesController extends Controller
 
     /**
      * @param Request $request
+     * @param StateFilterContract $filter
+     * @param StateSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, StateFilterContract $filter, StateSortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
+     * @param Request $request
      * @param CountryModelContract|null $country
      * @return array
      */
