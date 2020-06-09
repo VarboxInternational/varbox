@@ -11,6 +11,7 @@ use Varbox\Contracts\RoleModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
@@ -20,6 +21,7 @@ class Role extends Model implements RoleModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table
@@ -121,5 +123,39 @@ class Role extends Model implements RoleModelContract
             ->withEntityType('role')
             ->withEntityName($this->name)
             ->withEntityUrl(route('admin.roles.edit', $this->getKey()));
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Guard', 'Permissions', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        if ($this->permissions()->count() > 0) {
+            $permissions = implode(',', $this->permissions()->pluck('name')->toArray());
+        } else {
+            $permissions = 'None';
+        }
+
+        return [
+            $this->name,
+            $this->guard,
+            $permissions,
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }

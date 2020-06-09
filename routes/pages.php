@@ -28,6 +28,11 @@ Route::group([
         Route::delete('destroy/{page}', ['as' => 'admin.pages.destroy', 'uses' => $controllers['pages'] . '@destroy', 'permissions' => 'pages-delete']);
 
         /**
+         * Export Actions.
+         */
+        Route::get('csv', ['as' => 'admin.pages.csv', 'uses' => $controllers['pages'] . '@csv', 'permissions' => 'pages-export']);
+
+        /**
          * Draft Actions.
          */
         Route::post('draft/{page?}', ['as' => 'admin.pages.draft', 'uses' => $controllers['pages'] . '@saveDraft', 'permissions' => 'pages-draft']);

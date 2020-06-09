@@ -178,6 +178,22 @@ class UsersController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param UserFilterContract $filter
+     * @param UserSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, UserFilterContract $filter, UserSortContract $sort)
+    {
+        $items = $this->model->excludingAdmins()
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
      * @return mixed
      */
     protected function initRequest()

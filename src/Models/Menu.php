@@ -11,6 +11,7 @@ use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasNodes;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 use Varbox\Contracts\MenuModelContract;
@@ -22,6 +23,7 @@ class Menu extends Model implements MenuModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table.
@@ -258,5 +260,35 @@ class Menu extends Model implements MenuModelContract
                 'location' => $this->location,
                 'menu' => $this->getKey()
             ]));
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Url', 'Type', 'Active', 'Parent Menu', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->name,
+            $this->url,
+            $this->type,
+            $this->active ? 'Yes' : 'No',
+            $this->parent && $this->parent->exists ? $this->parent->name : 'None',
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }

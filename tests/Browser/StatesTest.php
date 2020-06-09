@@ -74,6 +74,44 @@ class StatesTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_view_the_export_button_if_it_is_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_export_button_if_it_has_permission()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->grantPermission('states-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_export_button_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('states-list');
+        $this->admin->revokePermission('states-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/states')
+                ->assertSourceMissing('button-export');
+        });
+    }
+
+    /** @test */
     public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
     {
         $this->admin->assignRoles('Super');

@@ -31,6 +31,11 @@ Route::group([
         Route::delete('{location}/destroy/{menu}', ['as' => 'admin.menus.destroy', 'uses' => $controllers['menus'] . '@destroy', 'permissions' => 'menus-delete']);
 
         /**
+         * Export Actions.
+         */
+        Route::get('{location}/csv', ['as' => 'admin.menus.csv', 'uses' => $controllers['menus'] . '@csv', 'permissions' => 'menus-export']);
+
+        /**
          * Tree Actions.
          */
         Route::group([

@@ -143,4 +143,20 @@ class PermissionsController extends Controller
             $this->item->delete();
         });
     }
+
+    /**
+     * @param Request $request
+     * @param PermissionFilterContract $filter
+     * @param PermissionSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, PermissionFilterContract $filter, PermissionSortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
 }

@@ -160,6 +160,22 @@ class AdminsController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param AdminFilterContract $filter
+     * @param AdminSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, AdminFilterContract $filter, AdminSortContract $sort)
+    {
+        $items = $this->model->onlyAdmins()
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
      * @return mixed
      */
     protected function initRequest()

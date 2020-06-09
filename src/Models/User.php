@@ -12,6 +12,7 @@ use Varbox\Traits\HasActivity;
 use Varbox\Traits\HasAddresses;
 use Varbox\Traits\HasRolesAndPermissions;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
@@ -23,6 +24,7 @@ class User extends Authenticatable implements UserModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
     use Notifiable;
 
     /**
@@ -226,5 +228,33 @@ class User extends Authenticatable implements UserModelContract
             ->withEntityType($type)
             ->withEntityName($this->email)
             ->withEntityUrl($url);
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Email', 'Active', 'Joined At', 'Last Modified At'
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->name,
+            $this->email,
+            $this->isActive() ? 'Yes' : 'No',
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }

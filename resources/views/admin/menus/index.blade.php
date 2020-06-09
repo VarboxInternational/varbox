@@ -5,9 +5,16 @@
 @section('content')
     <div class="row row-cards">
         <div class="col-lg-3">
-            @permission('menus-add')
-                @include('varbox::buttons.add', ['url' => route('admin.menus.create', $location)])
-            @endpermission
+            <div class="card">
+                <div class="card-body">
+                    @permission('menus-add')
+                        @include('varbox::buttons.add', ['url' => route('admin.menus.create', $location)])
+                    @endpermission
+                    @permission('menus-export')
+                        @include('varbox::buttons.csv', ['url' => route('admin.menus.csv', ['location' => $location] + request()->query())])
+                    @endpermission
+                </div>
+            </div>
 
             @include('varbox::admin.menus._tree')
             @include('varbox::admin.menus._filter')

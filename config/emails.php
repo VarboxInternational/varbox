@@ -23,13 +23,13 @@ return [
     */
     'types' => [
 
-        /*'test-mail' => [
+        'test-mail' => [
             'class' => 'App\Mail\TestMail',
             'view' => 'emails.test_mail',
             'variables' => [
                 'username', 'home_url'
             ],
-        ],*/
+        ],
 
     ],
 

@@ -12,6 +12,7 @@ use Varbox\Options\ActivityOptions;
 use Varbox\Services\UploadService;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
@@ -21,6 +22,7 @@ class Upload extends Model implements UploadModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table.
@@ -344,5 +346,35 @@ class Upload extends Model implements UploadModelContract
             ->withEntityUrl(route('admin.uploads.index', [
                 'search' => $this->original_name
             ]));
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Source', 'Type', 'Size', 'Mime', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->original_name,
+            uploaded($this->full_path)->url(),
+            $this->type,
+            $this->size_mb . ' MB',
+            $this->mime,
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }

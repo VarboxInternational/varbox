@@ -9,6 +9,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Varbox\Contracts\MenuFilterContract;
+use Varbox\Contracts\MenuSortContract;
 use Varbox\Traits\CanCrud;
 use Varbox\Contracts\MenuModelContract;
 use Varbox\Requests\MenuRequest;
@@ -158,6 +160,24 @@ class MenusController extends Controller
 
             $this->item->delete();
         });
+    }
+
+    /**
+     * @param $location
+     * @param Request $request
+     * @param MenuFilterContract $filter
+     * @param MenuSortContract $sort
+     * @return mixed
+     */
+    public function csv($location, Request $request, MenuFilterContract $filter, MenuSortContract $sort)
+    {
+        $items = $this->model->whereLocation($location)
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->orderBy($this->model->getLftName())
+            ->get();
+
+        return $this->model->exportToCsv($items);
     }
 
     /**

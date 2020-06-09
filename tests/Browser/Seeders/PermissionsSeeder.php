@@ -43,6 +43,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'users-impersonate',
             ],
+            'Export' => [
+                'group' => 'Users',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'users-export',
+            ],
         ],
         'Admins' => [
             'List' => [
@@ -68,6 +74,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'admins-delete',
+            ],
+            'Export' => [
+                'group' => 'Admins',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'admins-export',
             ],
         ],
         'Roles' => [
@@ -95,6 +107,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'roles-delete',
             ],
+            'Export' => [
+                'group' => 'Roles',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'roles-export',
+            ],
         ],
         'Permissions' => [
             'List' => [
@@ -120,6 +138,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'permissions-delete',
+            ],
+            'Export' => [
+                'group' => 'Permissions',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'permissions-export',
             ],
         ],
         'Uploads' => [
@@ -158,6 +182,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'uploads-delete',
+            ],
+            'Export' => [
+                'group' => 'Uploads',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'uploads-export',
             ],
         ],
         'Revisions' => [
@@ -239,6 +269,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'countries-delete',
             ],
+            'Export' => [
+                'group' => 'Countries',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'countries-export',
+            ],
         ],
         'States' => [
             'List' => [
@@ -265,6 +301,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'states-delete',
             ],
+            'Export' => [
+                'group' => 'States',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'states-export',
+            ],
         ],
         'Cities' => [
             'List' => [
@@ -290,6 +332,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'cities-delete',
+            ],
+            'Export' => [
+                'group' => 'Cities',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'cities-export',
             ],
         ],
         'Addresses' => [
@@ -415,6 +463,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'pages-delete',
             ],
+            'Export' => [
+                'group' => 'Pages',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'pages-export',
+            ],
             'Draft' => [
                 'group' => 'Pages',
                 'label' => 'Draft',
@@ -465,6 +519,12 @@ class PermissionsSeeder
                 'guard' => 'admin',
                 'name' => 'menus-delete',
             ],
+            'Export' => [
+                'group' => 'Menus',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'menus-export',
+            ],
         ],
         'Emails' => [
             'List' => [
@@ -490,6 +550,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'emails-delete',
+            ],
+            'Export' => [
+                'group' => 'Emails',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'emails-export',
             ],
             'Draft' => [
                 'group' => 'Emails',
@@ -546,6 +612,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'blocks-delete',
+            ],
+            'Export' => [
+                'group' => 'Blocks',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'blocks-export',
             ],
             'Draft' => [
                 'group' => 'Emails',
@@ -608,6 +680,12 @@ class PermissionsSeeder
                 'label' => 'Delete',
                 'guard' => 'admin',
                 'name' => 'languages-delete',
+            ],
+            'Export' => [
+                'group' => 'Languages',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'languages-export',
             ],
             'Change' => [
                 'group' => 'Languages',

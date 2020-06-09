@@ -27,6 +27,11 @@ Route::group([
         Route::delete('destroy/{email}', ['as' => 'admin.emails.destroy', 'uses' => $controllers['emails'] . '@destroy', 'permissions' => 'emails-delete']);
 
         /**
+         * Export Actions.
+         */
+        Route::get('csv', ['as' => 'admin.emails.csv', 'uses' => $controllers['emails'] . '@csv', 'permissions' => 'emails-export']);
+
+        /**
          * Draft Actions.
          */
         Route::post('draft/{email?}', ['as' => 'admin.emails.draft', 'uses' => $controllers['emails'] . '@saveDraft', 'permissions' => 'emails-draft']);

@@ -128,4 +128,20 @@ class CountriesController extends Controller
             $this->item->delete();
         });
     }
+
+    /**
+     * @param Request $request
+     * @param CountryFilterContract $filter
+     * @param CountrySortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, CountryFilterContract $filter, CountrySortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
 }

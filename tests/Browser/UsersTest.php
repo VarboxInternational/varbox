@@ -65,6 +65,44 @@ class UsersTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_view_the_export_button_if_it_is_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_export_button_if_it_has_permission()
+    {
+        $this->admin->grantPermission('users-list');
+        $this->admin->grantPermission('users-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_export_button_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('users-list');
+        $this->admin->revokePermission('users-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/users')
+                ->assertSourceMissing('button-export');
+        });
+    }
+
+    /** @test */
     public function an_admin_can_view_the_add_page_if_it_is_a_super_admin()
     {
         $this->admin->assignRoles('Super');

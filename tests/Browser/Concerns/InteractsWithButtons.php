@@ -66,6 +66,17 @@ trait InteractsWithButtons
     }
 
     /**
+     * Click the view record button.
+     *
+     * @param string $text
+     * @return $this
+     */
+    public function clickExportRecordsButton($text)
+    {
+        return $this->clickButton($text, 'button-export', 'a');
+    }
+
+    /**
      * Click the edit record button.
      *
      * @param string $text

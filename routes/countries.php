@@ -25,5 +25,6 @@ Route::group([
         Route::get('edit/{country}', ['as' => 'admin.countries.edit', 'uses' => $controllers['countries'] . '@edit', 'permissions' => 'countries-edit']);
         Route::put('update/{country}', ['as' => 'admin.countries.update', 'uses' => $controllers['countries'] . '@update', 'permissions' => 'countries-edit']);
         Route::delete('destroy/{country}', ['as' => 'admin.countries.destroy', 'uses' => $controllers['countries'] . '@destroy', 'permissions' => 'countries-delete']);
+        Route::get('csv', ['as' => 'admin.countries.csv', 'uses' => $controllers['countries'] . '@csv', 'permissions' => 'countries-export']);
     });
 });

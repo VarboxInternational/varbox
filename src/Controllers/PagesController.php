@@ -10,6 +10,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
+use Varbox\Contracts\PageFilterContract;
+use Varbox\Contracts\PageSortContract;
 use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
@@ -139,6 +141,23 @@ class PagesController extends Controller
 
             $this->item->delete();
         });
+    }
+
+    /**
+     * @param Request $request
+     * @param PageFilterContract $filter
+     * @param PageSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, PageFilterContract $filter, PageSortContract $sort)
+    {
+        $items = $this->model->withDrafts()
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->orderBy($this->model->getLftName())
+            ->get();
+
+        return $this->model->exportToCsv($items);
     }
 
     /**

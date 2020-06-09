@@ -160,4 +160,20 @@ class RolesController extends Controller
             $this->item->delete();
         });
     }
+
+    /**
+     * @param Request $request
+     * @param RoleFilterContract $filter
+     * @param RoleSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, RoleFilterContract $filter, RoleSortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
 }

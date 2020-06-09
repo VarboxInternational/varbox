@@ -146,4 +146,20 @@ class UploadsController extends Controller
             return redirect()->route('admin.uploads.index');
         }
     }
+
+    /**
+     * @param Request $request
+     * @param UploadFilterContract $filter
+     * @param UploadSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, UploadFilterContract $filter, UploadSortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
 }

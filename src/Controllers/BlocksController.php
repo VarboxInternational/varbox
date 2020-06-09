@@ -177,6 +177,22 @@ class BlocksController extends Controller
 
     /**
      * @param Request $request
+     * @param BlockFilterContract $filter
+     * @param BlockSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, BlockFilterContract $filter, BlockSortContract $sort)
+    {
+        $items = $this->model->withDrafts()
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
+     * @param Request $request
      * @return array
      * @throws \Throwable
      */
