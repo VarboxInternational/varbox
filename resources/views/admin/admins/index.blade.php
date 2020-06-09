@@ -10,7 +10,7 @@
                     @permission('admins-add')
                         @include('varbox::buttons.add', ['url' => route('admin.admins.create')])
                     @endpermission
-                    @permission('users-export')
+                    @permission('admins-export')
                         @include('varbox::buttons.csv', ['url' => route('admin.admins.csv', request()->query())])
                     @endpermission
                 </div>

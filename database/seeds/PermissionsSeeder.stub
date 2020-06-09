@@ -138,6 +138,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'permissions-delete',
             ],
+            'Export' => [
+                'group' => 'Permissions',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'permissions-export',
+            ],
         ],
         'Uploads' => [
             'List' => [
