@@ -151,7 +151,7 @@ class PagesController extends Controller
      */
     public function csv(Request $request, PageFilterContract $filter, PageSortContract $sort)
     {
-        $items = $this->model
+        $items = $this->model->withDrafts()
             ->filtered($request->all(), $filter)
             ->sorted($request->all(), $sort)
             ->get();

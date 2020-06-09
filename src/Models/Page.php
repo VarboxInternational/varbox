@@ -243,7 +243,7 @@ class Page extends Model implements PageModelContract
     public function getCsvColumns()
     {
         return [
-            'Name', 'Url', 'Type', 'Parent Page', 'Created At', 'Last Modified At',
+            'Name', 'Url', 'Type', 'Published', 'Parent Page', 'Created At', 'Last Modified At',
         ];
     }
 
@@ -258,6 +258,7 @@ class Page extends Model implements PageModelContract
             $this->name,
             $this->getUrl(),
             $this->type,
+            $this->isDrafted() ? 'No' : 'Yes',
             $this->parent && $this->parent->exists ? $this->parent->name : 'None',
             $this->created_at->format('Y-m-d H:i:s'),
             $this->updated_at->format('Y-m-d H:i:s'),

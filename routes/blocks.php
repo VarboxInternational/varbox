@@ -27,6 +27,11 @@ Route::group([
         Route::delete('destroy/{block}', ['as' => 'admin.blocks.destroy', 'uses' => $controllers['blocks'] . '@destroy', 'permissions' => 'blocks-delete']);
 
         /**
+         * Export Actions.
+         */
+        Route::get('csv', ['as' => 'admin.blocks.csv', 'uses' => $controllers['blocks'] . '@csv', 'blocks' => 'blocks-export']);
+
+        /**
          * Draft Actions.
          */
         Route::post('draft/{block?}', ['as' => 'admin.blocks.draft', 'uses' => $controllers['blocks'] . '@saveDraft', 'permissions' => 'blocks-draft']);

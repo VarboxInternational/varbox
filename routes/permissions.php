@@ -28,7 +28,7 @@ Route::group([
 
         /**
          * Export Actions.
-         */g
+         */
         Route::get('csv', ['as' => 'admin.permissions.csv', 'uses' => $controllers['permissions'] . '@csv', 'permissions' => 'permissions-export']);
     });
 });
