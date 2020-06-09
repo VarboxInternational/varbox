@@ -106,6 +106,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'roles-delete',
             ],
+            'Export' => [
+                'group' => 'Roles',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'roles-export',
+            ],
         ],
         'Permissions' => [
             'List' => [

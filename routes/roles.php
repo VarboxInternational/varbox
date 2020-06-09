@@ -25,5 +25,6 @@ Route::group([
         Route::get('edit/{role}', ['as' => 'admin.roles.edit', 'uses' => $controllers['roles'] . '@edit', 'permissions' => 'roles-edit']);
         Route::put('update/{role}', ['as' => 'admin.roles.update', 'uses' => $controllers['roles'] . '@update', 'permissions' => 'roles-edit']);
         Route::delete('destroy/{role}', ['as' => 'admin.roles.destroy', 'uses' => $controllers['roles'] . '@destroy', 'permissions' => 'roles-delete']);
+        Route::get('csv', ['as' => 'admin.roles.csv', 'uses' => $controllers['roles'] . '@csv', 'permissions' => 'roles-export']);
     });
 });
