@@ -438,6 +438,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'pages-delete',
             ],
+            'Export' => [
+                'group' => 'Pages',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'pages-export',
+            ],
             'Draft' => [
                 'group' => 'Pages',
                 'label' => 'Draft',

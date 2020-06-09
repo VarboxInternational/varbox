@@ -18,6 +18,7 @@ use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\HasUrl;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
@@ -39,6 +40,7 @@ class Page extends Model implements PageModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table.
@@ -231,5 +233,34 @@ class Page extends Model implements PageModelContract
     public function getMetaTagOptions(): MetaTagOptions
     {
         return MetaTagOptions::instance();
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Url', 'Type', 'Parent Page', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->name,
+            $this->getUrl(),
+            $this->type,
+            $this->parent && $this->parent->exists ? $this->parent->name : 'None',
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }
