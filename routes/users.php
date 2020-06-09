@@ -26,5 +26,6 @@ Route::group([
         Route::put('update/{user}', ['as' => 'admin.users.update', 'uses' => $controllers['users'] . '@update', 'permissions' => 'users-edit']);
         Route::delete('destroy/{user}', ['as' => 'admin.users.destroy', 'uses' => $controllers['users'] . '@destroy', 'permissions' => 'users-delete']);
         Route::post('impersonate/{user}', ['as' => 'admin.users.impersonate', 'uses' => $controllers['users'] . '@impersonate', 'permissions' => 'users-impersonate']);
+        Route::get('csv', ['as' => 'admin.users.csv', 'uses' => $controllers['users'] . '@csv', 'permissions' => 'users-export']);
     });
 });

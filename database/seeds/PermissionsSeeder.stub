@@ -42,6 +42,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'users-impersonate',
             ],
+            'Export' => [
+                'group' => 'Users',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'users-export',
+            ],
         ],
         'Admins' => [
             'List' => [
