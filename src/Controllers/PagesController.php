@@ -154,6 +154,7 @@ class PagesController extends Controller
         $items = $this->model->withDrafts()
             ->filtered($request->all(), $filter)
             ->sorted($request->all(), $sort)
+            ->orderBy($this->model->getLftName())
             ->get();
 
         return $this->model->exportToCsv($items);

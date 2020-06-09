@@ -29,7 +29,7 @@ Route::group([
         /**
          * Export Actions.
          */
-        Route::get('csv', ['as' => 'admin.blocks.csv', 'uses' => $controllers['blocks'] . '@csv', 'blocks' => 'blocks-export']);
+        Route::get('csv', ['as' => 'admin.blocks.csv', 'uses' => $controllers['blocks'] . '@csv', 'permissions' => 'blocks-export']);
 
         /**
          * Draft Actions.

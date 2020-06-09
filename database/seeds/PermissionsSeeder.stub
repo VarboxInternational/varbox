@@ -494,6 +494,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'menus-delete',
             ],
+            'Export' => [
+                'group' => 'Menus',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'menus-export',
+            ],
         ],
         'Emails' => [
             'List' => [
