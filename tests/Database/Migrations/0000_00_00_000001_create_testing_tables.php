@@ -281,6 +281,12 @@ class CreateTestingTables extends Migration
             $table->string('slug')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('csv_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -290,6 +296,7 @@ class CreateTestingTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('csv_posts');
         Schema::dropIfExists('url_posts');
         Schema::dropIfExists('upload_posts');
         Schema::dropIfExists('translation_posts');
