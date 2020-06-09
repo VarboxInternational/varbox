@@ -76,6 +76,44 @@ class UploadsTest extends TestCase
     }
 
     /** @test */
+    public function an_admin_can_view_the_export_button_if_it_is_super_admin()
+    {
+        $this->admin->assignRoles('Super');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_can_view_the_export_button_if_it_has_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->grantPermission('uploads-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertSourceHas('button-export');
+        });
+    }
+
+    /** @test */
+    public function an_admin_cannot_view_the_export_button_if_it_doesnt_have_permission()
+    {
+        $this->admin->grantPermission('uploads-list');
+        $this->admin->revokePermission('uploads-export');
+
+        $this->browse(function ($browser) {
+            $browser->loginAs($this->admin, 'admin')
+                ->visit('/admin/uploads')
+                ->assertSourceMissing('button-export');
+        });
+    }
+
+    /** @test */
     public function an_admin_can_upload_a_file_if_it_has_permission()
     {
         $this->admin->grantPermission('uploads-list');
