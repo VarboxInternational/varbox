@@ -25,7 +25,15 @@ Route::group([
         Route::get('edit/{user}', ['as' => 'admin.users.edit', 'uses' => $controllers['users'] . '@edit', 'permissions' => 'users-edit']);
         Route::put('update/{user}', ['as' => 'admin.users.update', 'uses' => $controllers['users'] . '@update', 'permissions' => 'users-edit']);
         Route::delete('destroy/{user}', ['as' => 'admin.users.destroy', 'uses' => $controllers['users'] . '@destroy', 'permissions' => 'users-delete']);
+
+        /**
+         * Impersonate Action.
+         */
         Route::post('impersonate/{user}', ['as' => 'admin.users.impersonate', 'uses' => $controllers['users'] . '@impersonate', 'permissions' => 'users-impersonate']);
+
+        /**
+         * Export Actions.
+         */
         Route::get('csv', ['as' => 'admin.users.csv', 'uses' => $controllers['users'] . '@csv', 'permissions' => 'users-export']);
     });
 });
