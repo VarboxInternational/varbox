@@ -268,6 +268,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'countries-delete',
             ],
+            'Export' => [
+                'group' => 'Countries',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'countries-export',
+            ],
         ],
         'States' => [
             'List' => [

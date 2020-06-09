@@ -8,6 +8,7 @@ use Varbox\Contracts\CountryModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
 
@@ -17,6 +18,7 @@ class Country extends Model implements CountryModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table.
@@ -82,5 +84,33 @@ class Country extends Model implements CountryModelContract
             ->withEntityType('country')
             ->withEntityName($this->name)
             ->withEntityUrl(route('admin.countries.edit', $this->getKey()));
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Code', 'Capital', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->name,
+            strtoupper($this->code),
+            $this->capital,
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }
