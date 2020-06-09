@@ -26,5 +26,6 @@ Route::group([
         Route::put('update/{language}', ['as' => 'admin.languages.update', 'uses' => $controllers['languages'] . '@update', 'permissions' => 'languages-edit']);
         Route::delete('destroy/{language}', ['as' => 'admin.languages.destroy', 'uses' => $controllers['languages'] . '@destroy', 'permissions' => 'languages-delete']);
         Route::get('change/{language}', ['as' => 'admin.languages.change', 'uses' => $controllers['languages'] . '@change', 'permissions' => 'languages-change']);
+        Route::get('csv', ['as' => 'admin.languages.csv', 'uses' => $controllers['languages'] . '@csv', 'permissions' => 'languages-export']);
     });
 });

@@ -140,6 +140,22 @@ class LanguagesController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param LanguageFilterContract $filter
+     * @param LanguageSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, LanguageFilterContract $filter, LanguageSortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
      * @return mixed
      */
     protected function initRequest()

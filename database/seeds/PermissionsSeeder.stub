@@ -662,6 +662,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'languages-delete',
             ],
+            'Export' => [
+                'group' => 'Languages',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'languages-export',
+            ],
             'Change' => [
                 'group' => 'Languages',
                 'label' => 'Change',
