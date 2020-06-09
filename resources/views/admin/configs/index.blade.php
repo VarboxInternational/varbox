@@ -5,9 +5,13 @@
 @section('content')
     <div class="row row-cards">
         <div class="col-lg-3">
-            @permission('configs-add')
-                @include('varbox::buttons.add', ['url' => route('admin.configs.create')])
-            @endpermission
+            <div class="card">
+                <div class="card-body">
+                    @permission('configs-add')
+                        @include('varbox::buttons.add', ['url' => route('admin.configs.create')])
+                    @endpermission
+                </div>
+            </div>
 
             @include('varbox::admin.configs._filter')
         </div>

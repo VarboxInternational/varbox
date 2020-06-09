@@ -9,9 +9,7 @@
                 <div class="card">
                     <div class="card-body">
                         @permission('redirects-add')
-                            <a href="{{ route('admin.redirects.create') }}" class="button-add btn btn-primary btn-square btn-block">
-                                <i class="fe fe-plus mr-2"></i>Add New
-                            </a>
+                            @include('varbox::buttons.add', ['url' => route('admin.redirects.create')])
                         @endpermission
                         @permission('redirects-export')
                             {!! form()->open(['url' => route('admin.redirects.export'), 'method' => 'POST']) !!}

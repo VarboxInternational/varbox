@@ -160,6 +160,22 @@ class CitiesController extends Controller
 
     /**
      * @param Request $request
+     * @param CityFilterContract $filter
+     * @param CitySortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, CityFilterContract $filter, CitySortContract $sort)
+    {
+        $items = $this->model
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
+     * @param Request $request
      * @param CountryModelContract|null $country
      * @param StateModelContract|null $state
      * @return array
