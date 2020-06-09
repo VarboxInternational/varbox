@@ -13,6 +13,7 @@ use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasRevisions;
 use Varbox\Traits\HasUploads;
 use Varbox\Traits\IsCacheable;
+use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
@@ -29,6 +30,7 @@ class Email extends Model implements EmailModelContract
     use IsCacheable;
     use IsFilterable;
     use IsSortable;
+    use IsCsvExportable;
 
     /**
      * The database table.
@@ -235,5 +237,33 @@ class Email extends Model implements EmailModelContract
             ->withEntityType('email')
             ->withEntityName($this->name)
             ->withEntityUrl(route('admin.emails.edit', $this->getKey()));
+    }
+
+    /**
+     * Get the heading columns for the csv.
+     *
+     * @return array
+     */
+    public function getCsvColumns()
+    {
+        return [
+            'Name', 'Type', 'Published', 'Created At', 'Last Modified At',
+        ];
+    }
+
+    /**
+     * Get the values for a row in the csv.
+     *
+     * @return array
+     */
+    public function toCsvArray()
+    {
+        return [
+            $this->name,
+            $this->type,
+            $this->isDrafted() ? 'No' : 'Yes',
+            $this->created_at->format('Y-m-d H:i:s'),
+            $this->updated_at->format('Y-m-d H:i:s'),
+        ];
     }
 }

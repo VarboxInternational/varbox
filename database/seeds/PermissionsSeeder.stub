@@ -526,6 +526,12 @@ class PermissionsSeeder extends Seeder
                 'guard' => 'admin',
                 'name' => 'emails-delete',
             ],
+            'Export' => [
+                'group' => 'Emails',
+                'label' => 'Export',
+                'guard' => 'admin',
+                'name' => 'emails-export',
+            ],
             'Draft' => [
                 'group' => 'Emails',
                 'label' => 'Draft',

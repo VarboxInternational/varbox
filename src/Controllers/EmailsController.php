@@ -166,6 +166,22 @@ class EmailsController extends Controller
 
     /**
      * @param Request $request
+     * @param EmailFilterContract $filter
+     * @param EmailSortContract $sort
+     * @return mixed
+     */
+    public function csv(Request $request, EmailFilterContract $filter, EmailSortContract $sort)
+    {
+        $items = $this->model->withDrafts()
+            ->filtered($request->all(), $filter)
+            ->sorted($request->all(), $sort)
+            ->get();
+
+        return $this->model->exportToCsv($items);
+    }
+
+    /**
+     * @param Request $request
      * @param EmailModelContract $email
      * @return \Illuminate\Support\HtmlString
      */
