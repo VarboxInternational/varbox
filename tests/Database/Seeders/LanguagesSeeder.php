@@ -1,6 +1,6 @@
 <?php
 
-namespace Varbox\Tests\Browser\Seeders;
+namespace Varbox\Tests\Database\Seeders;
 
 use Varbox\Contracts\LanguageModelContract;
 

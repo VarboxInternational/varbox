@@ -1,8 +1,0 @@
-1. hostfile entry pointing the dev2 domain to localhost (maybe from ansible)
-
-2. run the following commands inside: scripts/ansible_post.sh
-- cd cd /var/www/proskauer/node-nlp
-- npm install
-- npm start
-
-3. config node-nlp/ormconfig.json file to use the ansible variables for connecting to the db
