@@ -218,7 +218,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->router = $router;
 
         $this->publishConfigs();
-        $this->OverwriteConfigs();
+        $this->overwriteConfigs();
         $this->publishMigrations();
         $this->publishViews();
         $this->publishAssets();
@@ -279,7 +279,7 @@ class VarboxServiceProvider extends BaseServiceProvider
     /**
      * @return void
      */
-    protected function OverwriteConfigs()
+    protected function overwriteConfigs()
     {
         $this->config->set([
             'backup.backup.name' => $this->config['varbox']['backup']['name'] ?? 'VarBox',
@@ -296,11 +296,19 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function publishMigrations()
     {
-        if (empty(File::glob(database_path('migrations/*_create_varbox_tables.php')))) {
+        if (empty(File::glob(database_path('migrations/*_create_varbox_free_tables.php')))) {
             $timestamp = date('Y_m_d_His', time());
 
             $this->publishes([
-                __DIR__ . '/../database/migrations/create_varbox_tables.stub' => database_path() . "/migrations/{$timestamp}_create_varbox_tables.php",
+                __DIR__ . '/../database/migrations/create_varbox_free_tables.stub' => database_path() . "/migrations/{$timestamp}_create_varbox_free_tables.php",
+            ], 'varbox-migrations');
+        }
+
+        if (empty(File::glob(database_path('migrations/*_create_varbox_paid_tables.php')))) {
+            $timestamp = date('Y_m_d_His', time());
+
+            $this->publishes([
+                __DIR__ . '/../database/migrations/create_varbox_paid_tables.stub' => database_path() . "/migrations/{$timestamp}_create_varbox_paid_tables.php",
             ], 'varbox-migrations');
         }
     }

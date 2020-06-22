@@ -24,36 +24,10 @@ class DashboardController extends Controller
     protected $userModel;
 
     /**
-     * @var UploadModelContract
-     */
-    protected $uploadModel;
-
-    /**
-     * @var ActivityModelContract
-     */
-    protected $activityModel;
-
-    /**
-     * @var ErrorModelContract
-     */
-    protected $errorModel;
-
-    /**
      * @param UserModelContract $userModel
-     * @param UploadModelContract $uploadModel
-     * @param ActivityModelContract $activityModel
-     * @param ErrorModelContract $errorModel
      */
-    public function __construct(
-        UserModelContract $userModel,
-        UploadModelContract $uploadModel,
-        ActivityModelContract $activityModel,
-        ErrorModelContract $errorModel
-    ) {
+    public function __construct(UserModelContract $userModel) {
         $this->userModel = $userModel;
-        $this->uploadModel = $uploadModel;
-        $this->activityModel = $activityModel;
-        $this->errorModel = $errorModel;
     }
 
     /**
@@ -67,20 +41,17 @@ class DashboardController extends Controller
 
         return view('varbox::admin.dashboard')->with([
             'hideTitle' => true,
-            'usersRegisteredInTheLastMonth' => $this->usersRegisteredInTheLasMonth(),
-            'filesUploadedInTheLasMonth' => $this->filesUploadedInTheLasMonth(),
-            'activityLoggedInTheLasMonth' => $this->activityLoggedInTheLasMonth(),
-            'errorsOccurredInTheLasMonth' => $this->errorsOccurredInTheLasMonth(),
-            'latestUsers' => $this->latestUsers(),
-            'latestUploads' => $this->latestUploads(),
-            'latestActivity' => $this->latestActivity(),
+            'usersRegisteredInTheLastMonth' => $this->usersRegisteredInTheLastMonth(),
+            'usersRegisteredInTheLastWeek' => $this->usersRegisteredInTheLastWeek(),
+            'activeUsers' => $this->activeUsers(),
+            'inactiveUsers' => $this->inactiveUsers(),
         ]);
     }
 
     /**
      * @return int
      */
-    protected function usersRegisteredInTheLasMonth()
+    protected function usersRegisteredInTheLastMonth()
     {
         return $this->userModel
             ->excludingAdmins()
@@ -91,64 +62,33 @@ class DashboardController extends Controller
     /**
      * @return int
      */
-    protected function filesUploadedInTheLasMonth()
-    {
-        return $this->uploadModel
-            ->where('created_at', '>=', now()->subMonth()->startOfDay())
-            ->count();
-    }
-
-    /**
-     * @return int
-     */
-    protected function activityLoggedInTheLasMonth()
-    {
-        return $this->activityModel
-            ->where('created_at', '>=', now()->subMonth()->startOfDay())
-            ->count();
-    }
-
-    /**
-     * @return int
-     */
-    protected function errorsOccurredInTheLasMonth()
-    {
-        return $this->errorModel
-            ->where('created_at', '>=', now()->subMonth()->startOfDay())
-            ->count();
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function latestUsers()
+    protected function usersRegisteredInTheLastWeek()
     {
         return $this->userModel
             ->excludingAdmins()
-            ->latest()
-            ->take(5)
-            ->get();
+            ->where('created_at', '>=', now()->subWeek()->startOfDay())
+            ->count();
     }
 
     /**
-     * @return Collection
+     * @return int
      */
-    protected function latestUploads()
+    protected function activeUsers()
     {
-        return $this->uploadModel
-            ->latest()
-            ->take(5)
-            ->get();
+        return $this->userModel
+            ->excludingAdmins()
+            ->onlyActive()
+            ->count();
     }
 
     /**
-     * @return Collection
+     * @return int
      */
-    protected function latestActivity()
+    protected function inactiveUsers()
     {
-        return $this->activityModel
-            ->latest()
-            ->take(5)
-            ->get();
+        return $this->userModel
+            ->excludingAdmins()
+            ->onlyInactive()
+            ->count();
     }
 }
