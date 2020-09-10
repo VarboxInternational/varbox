@@ -182,9 +182,13 @@ use Varbox\Sorts\StateSort;
 use Varbox\Sorts\TranslationSort;
 use Varbox\Sorts\UploadSort;
 use Varbox\Sorts\UserSort;
+use Varbox\Traits\CanCheckLicense;
+use Varbox\Traits\CanSendReports;
 
 class VarboxServiceProvider extends BaseServiceProvider
 {
+    use CanCheckLicense, CanSendReports;
+
     /**
      * @var ConfigRepository
      */
@@ -231,6 +235,9 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->loadRoutes();
         $this->registerRoutes();
         $this->listenToEvents();
+        $this->checkLicenseCodeExists();
+        $this->sendUsageReport();
+
     }
 
     /**
@@ -558,6 +565,7 @@ class VarboxServiceProvider extends BaseServiceProvider
      */
     protected function mergeConfigs()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/license.php', 'varbox.license');
         $this->mergeConfigFrom(__DIR__ . '/../config/admin.php', 'varbox.admin');
         $this->mergeConfigFrom(__DIR__ . '/../config/activity.php', 'varbox.activity');
         $this->mergeConfigFrom(__DIR__ . '/../config/backup.php', 'varbox.backup');
