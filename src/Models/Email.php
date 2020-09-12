@@ -5,6 +5,8 @@ namespace Varbox\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Varbox\Contracts\EmailModelContract;
+use Varbox\Exceptions\EmailException;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
@@ -17,8 +19,6 @@ use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\EmailModelContract;
-use Varbox\Exceptions\EmailException;
 
 class Email extends Model implements EmailModelContract
 {

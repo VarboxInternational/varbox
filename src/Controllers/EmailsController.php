@@ -13,14 +13,14 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Varbox\Contracts\EmailFilterContract;
-use Varbox\Contracts\EmailSortContract;
-use Varbox\Traits\CanDraft;
-use Varbox\Traits\CanRevision;
-use Varbox\Models\Email;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\EmailModelContract;
+use Varbox\Contracts\EmailSortContract;
+use Varbox\Models\Email;
 use Varbox\Requests\EmailRequest;
+use Varbox\Traits\CanCrud;
+use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
+use Varbox\Traits\CanRevision;
 
 class EmailsController extends Controller
 {

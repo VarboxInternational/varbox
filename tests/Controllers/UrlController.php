@@ -2,8 +2,8 @@
 
 namespace Varbox\Tests\Controllers;
 
-use Varbox\Models\Url;
 use Illuminate\Routing\Controller;
+use Varbox\Models\Url;
 
 class UrlController extends Controller
 {

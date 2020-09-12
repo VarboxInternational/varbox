@@ -4,13 +4,16 @@ namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Varbox\Contracts\PageModelContract;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
+use Varbox\Options\BlockOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\MetaTagOptions;
 use Varbox\Options\RevisionOptions;
 use Varbox\Options\UrlOptions;
 use Varbox\Traits\HasActivity;
+use Varbox\Traits\HasBlocks;
 use Varbox\Traits\HasDuplicates;
 use Varbox\Traits\HasMetaTags;
 use Varbox\Traits\HasNodes;
@@ -22,9 +25,6 @@ use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\PageModelContract;
-use Varbox\Options\BlockOptions;
-use Varbox\Traits\HasBlocks;
 
 class Page extends Model implements PageModelContract
 {

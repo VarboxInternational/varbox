@@ -11,15 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\BlockFilterContract;
+use Varbox\Contracts\BlockModelContract;
 use Varbox\Contracts\BlockSortContract;
 use Varbox\Contracts\RevisionModelContract;
+use Varbox\Models\Block;
+use Varbox\Requests\BlockRequest;
 use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
 use Varbox\Traits\CanRevision;
-use Varbox\Contracts\BlockModelContract;
-use Varbox\Models\Block;
-use Varbox\Requests\BlockRequest;
 
 class BlocksController extends Controller
 {

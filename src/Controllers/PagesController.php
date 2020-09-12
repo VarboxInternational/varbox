@@ -11,15 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Varbox\Contracts\PageFilterContract;
+use Varbox\Contracts\PageModelContract;
 use Varbox\Contracts\PageSortContract;
+use Varbox\Models\Page;
+use Varbox\Requests\PageRequest;
 use Varbox\Traits\CanCrud;
 use Varbox\Traits\CanDraft;
 use Varbox\Traits\CanDuplicate;
 use Varbox\Traits\CanPreview;
 use Varbox\Traits\CanRevision;
-use Varbox\Contracts\PageModelContract;
-use Varbox\Models\Page;
-use Varbox\Requests\PageRequest;
 
 class PagesController extends Controller
 {

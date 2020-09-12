@@ -2,9 +2,9 @@
 
 namespace Varbox\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Varbox\Contracts\RevisionModelContract;
 use Varbox\Traits\IsDraftable;

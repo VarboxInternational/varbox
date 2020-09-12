@@ -5,6 +5,7 @@ namespace Varbox\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Varbox\Contracts\BlockModelContract;
 use Varbox\Options\ActivityOptions;
 use Varbox\Options\DuplicateOptions;
 use Varbox\Options\RevisionOptions;
@@ -17,7 +18,6 @@ use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsDraftable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\BlockModelContract;
 
 class Block extends Model implements BlockModelContract
 {

@@ -4,7 +4,6 @@ namespace Varbox\Tests\Integration\Models;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Varbox\Models\Config;
-use Varbox\Models\Permission;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Traits\HasActivity;
 use Varbox\Traits\IsCacheable;

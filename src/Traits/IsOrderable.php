@@ -2,11 +2,11 @@
 
 namespace Varbox\Traits;
 
-use Illuminate\Database\Eloquent\Model;
-use Varbox\Options\OrderOptions;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use Varbox\Options\OrderOptions;
 
 trait IsOrderable
 {

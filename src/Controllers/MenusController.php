@@ -10,10 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Varbox\Contracts\MenuFilterContract;
-use Varbox\Contracts\MenuSortContract;
-use Varbox\Traits\CanCrud;
 use Varbox\Contracts\MenuModelContract;
+use Varbox\Contracts\MenuSortContract;
 use Varbox\Requests\MenuRequest;
+use Varbox\Traits\CanCrud;
 
 class MenusController extends Controller
 {

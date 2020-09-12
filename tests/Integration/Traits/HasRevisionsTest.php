@@ -3,17 +3,17 @@
 namespace Varbox\Tests\Integration\Traits;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Varbox\Models\Revision;
+use Varbox\Options\RevisionOptions;
 use Varbox\Tests\Integration\TestCase;
 use Varbox\Tests\Models\RevisionAuthor;
-use Varbox\Tests\Models\RevisionTag;
-use Varbox\Tests\Models\RevisionPost;
 use Varbox\Tests\Models\RevisionComment;
-use Varbox\Options\RevisionOptions;
+use Varbox\Tests\Models\RevisionPost;
+use Varbox\Tests\Models\RevisionTag;
 
 class HasRevisionsTest extends TestCase
 {

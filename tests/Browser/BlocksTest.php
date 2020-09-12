@@ -4,8 +4,6 @@ namespace Varbox\Tests\Browser;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
-use Mockery;
-use Varbox\Commands\BlockMakeCommand;
 use Varbox\Models\Block;
 
 class BlocksTest extends TestCase
