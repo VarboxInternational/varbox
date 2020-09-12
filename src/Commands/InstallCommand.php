@@ -556,41 +556,41 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>COPYING SEEDERS AND SQL</>');
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
-        $this->files->ensureDirectoryExists(database_path('seeds'));
+        $this->files->ensureDirectoryExists(database_path('seeders'));
 
-        if (!$this->files->exists(database_path('seeds/PermissionsSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/PermissionsSeeder.stub', database_path('seeds/PermissionsSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/PermissionsSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/PermissionsSeeder.stub', database_path('seeders/PermissionsSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/RolesSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/RolesSeeder.stub', database_path('seeds/RolesSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/RolesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/RolesSeeder.stub', database_path('seeders/RolesSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/UsersSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/UsersSeeder.stub', database_path('seeds/UsersSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/UsersSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/UsersSeeder.stub', database_path('seeders/UsersSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/LanguagesSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/LanguagesSeeder.stub', database_path('seeds/LanguagesSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/LanguagesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/LanguagesSeeder.stub', database_path('seeders/LanguagesSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/CountriesSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/CountriesSeeder.stub', database_path('seeds/CountriesSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/CountriesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/CountriesSeeder.stub', database_path('seeders/CountriesSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/StatesSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/StatesSeeder.stub', database_path('seeds/StatesSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/StatesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/StatesSeeder.stub', database_path('seeders/StatesSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/CitiesSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/CitiesSeeder.stub', database_path('seeds/CitiesSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/CitiesSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/CitiesSeeder.stub', database_path('seeders/CitiesSeeder.php'));
         }
 
-        if (!$this->files->exists(database_path('seeds/VarboxSeeder.php'))) {
-            copy(__DIR__ . '/../../database/seeds/VarboxSeeder.stub', database_path('seeds/VarboxSeeder.php'));
+        if (!$this->files->exists(database_path('seeders/VarboxSeeder.php'))) {
+            copy(__DIR__ . '/../../database/seeders/VarboxSeeder.stub', database_path('seeders/VarboxSeeder.php'));
         }
 
-        $this->line('<fg=green>SUCCESS |</> Copied all seeders inside the "database/seeds/" directory.');
+        $this->line('<fg=green>SUCCESS |</> Copied all seeders inside the "database/seeders/" directory.');
 
         $this->files->ensureDirectoryExists(database_path('sql'));
 
