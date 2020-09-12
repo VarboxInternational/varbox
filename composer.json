@@ -5,14 +5,47 @@
     "homepage": "https://varbox.io",
     "keywords": [
         "laravel",
-        "varbox"
+        "varbox",
+        "admin panel",
+        "access control",
+        "media library",
+        "content management",
+        "content pages",
+        "content menus",
+        "custom emails",
+        "multi language",
+        "languages and translations",
+        "static translations",
+        "geo location",
+        "countries list",
+        "countries list",
+        "cities list",
+        "admin redirects",
+        "error reporting",
+        "application backups",
+        "users and admins",
+        "roles and permissions",
+        "file upload",
+        "duplicate models",
+        "model revisions",
+        "draft models",
+        "custom urls",
+        "model slugs",
+        "admin form",
+        "admin menu",
+        "filter records",
+        "sort records",
+        "order records",
+        "preview model",
+        "csv export",
+        "meta tags"
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
         {
             "name": "Andrei Badea",
-            "email": "zbiller@gmail.com"
+            "email": "andrei.badea@varbox.io"
         }
     ],
     "require": {
