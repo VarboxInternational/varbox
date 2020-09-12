@@ -68,7 +68,7 @@ class StatesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/states')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('States');
         });
     }
@@ -151,7 +151,7 @@ class StatesTest extends TestCase
                 ->visit('/admin/states')
                 ->assertDontSee('Add New')
                 ->visit('/admin/states/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add State');
         });
     }
@@ -211,7 +211,7 @@ class StatesTest extends TestCase
                 ->visitLastPage('/admin/states', $this->stateModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/states/edit/' . $this->stateModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit State');
         });
 

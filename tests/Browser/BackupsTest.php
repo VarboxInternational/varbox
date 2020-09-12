@@ -63,7 +63,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Backups');
         });
     }

@@ -79,7 +79,7 @@ class EmailsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/emails')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Emails');
         });
     }
@@ -162,7 +162,7 @@ class EmailsTest extends TestCase
                 ->visit('/admin/emails')
                 ->assertDontSee('Add New')
                 ->visit('/admin/emails/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Email');
         });
     }
@@ -217,7 +217,7 @@ class EmailsTest extends TestCase
                 ->visitLastPage('/admin/emails', $this->emailModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/emails/edit/' . $this->emailModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Email');
         });
 

@@ -85,7 +85,7 @@ class ConfigsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/configs')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Configs');
         });
     }
@@ -130,7 +130,7 @@ class ConfigsTest extends TestCase
                 ->visit('/admin/configs')
                 ->assertDontSee('Add New')
                 ->visit('/admin/configs/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Config');
         });
     }
@@ -185,7 +185,7 @@ class ConfigsTest extends TestCase
                 ->visitLastPage('/admin/configs', $this->configModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/configs/edit/' . $this->configModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Config');
         });
 

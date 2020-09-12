@@ -58,7 +58,7 @@ class TranslationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/translations')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Translations');
         });
     }
@@ -113,7 +113,7 @@ class TranslationsTest extends TestCase
                 ->visitLastPage('/admin/translations', $this->translationModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/translations/edit/' . $this->translationModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Translation');
         });
 

@@ -59,7 +59,7 @@ class AdminsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/admins')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Admins');
         });
     }
@@ -142,7 +142,7 @@ class AdminsTest extends TestCase
                 ->visit('/admin/admins')
                 ->assertDontSee('Add New')
                 ->visit('/admin/admins/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Admin');
         });
     }
@@ -197,7 +197,7 @@ class AdminsTest extends TestCase
                 ->visitLastPage('/admin/admins', $this->adminModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/admins/edit/' . $this->adminModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Admin');
         });
 

@@ -84,7 +84,7 @@ class NotificationsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/notifications')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Notifications');
         });
     }
