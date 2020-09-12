@@ -193,7 +193,7 @@ class InstallCommand extends Command
         $this->line('<fg=yellow>-------------------------------------------------------------------------------------------------------</>');
 
         $authGuardsStub = __DIR__ . '/../../resources/stubs/config/auth/guards.stub';
-        $userModelFile = $this->laravel['path'] . '/User.php';
+        $userModelFile = $this->laravel['path'] . '/Models/User.php';
         $authConfig = $this->laravel['path.config'] . '/auth.php';
 
         if ($this->files->exists($authConfig)) {
@@ -243,17 +243,17 @@ class InstallCommand extends Command
 
                 $this->files->put($userModelFile, $content);
 
-                $this->line('<fg=green>SUCCESS |</> Extended the "app/User.php" with the VarBox user model.');
-                $this->line('<fg=green>SUCCESS |</> Modified the "fillable" property of the "app/User.php".');
-                $this->line('<fg=green>SUCCESS |</> Modified the "casts" property of the "app/User.php".');
+                $this->line('<fg=green>SUCCESS |</> Extended the "app/Models/User.php" with the VarBox user model.');
+                $this->line('<fg=green>SUCCESS |</> Modified the "fillable" property of the "app/Models/User.php".');
+                $this->line('<fg=green>SUCCESS |</> Modified the "casts" property of the "app/Models/User.php".');
             } else {
-                $this->line('<fg=red>ERROR   |</> Could not get the contents of "app/User.php"! You will need to update this manually.');
+                $this->line('<fg=red>ERROR   |</> Could not get the contents of "app/Models/User.php"! You will need to update this manually.');
                 $this->line('<fg=red>ERROR   |</> Change "extends Authenticatable" to "extends \Varbox\Models\User" in your user model.');
                 $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: active');
                 $this->line('<fg=red>ERROR   |</> Append to the "casts" property the following: "active" => "boolean"');
             }
         } else {
-            $this->line('<fg=red>ERROR   |</> Unable to locate "app/User.php"! You will need to update this manually.');
+            $this->line('<fg=red>ERROR   |</> Unable to locate "app/Models/User.php"! You will need to update this manually.');
             $this->line('<fg=red>ERROR   |</> Change "extends Authenticatable" to "extends \Varbox\Models\User" in your user model.');
             $this->line('<fg=red>ERROR   |</> Append to the "fillable" property the following fields: active');
             $this->line('<fg=red>ERROR   |</> Append to the "casts" property the following: "active" => "boolean"');
@@ -641,10 +641,10 @@ class InstallCommand extends Command
             $content = $this->files->get($bindingsConfigFile);
 
             if ($content !== false) {
-                if (class_exists('\App\User')) {
+                if (class_exists('\App\Models\User')) {
                     $content = str_replace(
                         '\Varbox\Models\User::class',
-                        "\App\User::class",
+                        "\App\Models\User::class",
                         $content
                     );
                 }
@@ -663,12 +663,12 @@ class InstallCommand extends Command
                 $this->line('<fg=green>SUCCESS |</> Overwritten the "user_model" inside the "config/varbox/bindings.php" file.');
             } else {
                 $this->line('<fg=red>ERROR   |</> Could not get the contents of "config/varbox/bindings.php"! You will need to update this manually.');
-                $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\User::class" in your bindings config file.');
+                $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\Models\User::class" in your bindings config file.');
                 $this->line('<fg=red>ERROR   |</> Change "admin_menu_view_composer" value to "\App\Http\Composers\AdminMenuComposer::class" in your bindings config file.');
             }
         } else {
             $this->line('<fg=red>ERROR   |</> Unable to locate "config/varbox/bindings.php"! You will need to update this manually.');
-            $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\User::class" in your bindings config file.');
+            $this->line('<fg=red>ERROR   |</> Change "user_model" value to "\App\Models\User::class" in your bindings config file.');
             $this->line('<fg=red>ERROR   |</> Change "admin_menu_view_composer" value to "\App\Http\Composers\AdminMenuComposer::class" in your bindings config file.');
         }
     }
