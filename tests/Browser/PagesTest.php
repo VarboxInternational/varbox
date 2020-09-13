@@ -957,6 +957,7 @@ class PagesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/pages/edit/' . $this->pageModel->id)
                 ->openRevisionsContainer()
+                ->pause(500)
                 ->clickDeleteRevisionButton()
                 ->pause(500)
                 ->assertSee('There are no revisions for this record');
