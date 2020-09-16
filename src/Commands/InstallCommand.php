@@ -119,7 +119,7 @@ class InstallCommand extends Command
             $env = $this->files->get($this->laravel->environmentFilePath());
 
             if (false === strpos($env, 'VARBOX_LICENSE_CODE')) {
-                $this->files->append($this->laravel->environmentFilePath(), "\nVARBOX_LICENSE_CODE=");
+                $this->files->append($this->laravel->environmentFilePath(), "\nVARBOX_LICENSE_CODE=\n");
                 $this->line('<fg=green>SUCCESS |</> Appended "VARBOX_LICENSE_CODE" configuration to the ".env" file!');
             } else {
                 $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "VARBOX_LICENSE_CODE" configuration.');
