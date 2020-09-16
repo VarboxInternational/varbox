@@ -54,3 +54,7 @@ Please see the [License File](LICENSE.md) and [Pricing](https://varbox.io/buy) f
 ## Security
 
 If you discover any security related issues, please email [andrei.badea@varbox.io](mailto:andrei.badea@varbox.io) instead of using the issue tracker.
+
+## Changelog
+
+Please see the [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
