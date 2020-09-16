@@ -1,7 +1,7 @@
 {
     "name": "varbox/varbox",
-    "description": "VarBox",
-    "license": "MIT",
+    "description": "Laravel Admin Panel",
+    "license": "proprietary",
     "homepage": "https://varbox.io",
     "keywords": [
         "laravel",
