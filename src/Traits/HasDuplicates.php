@@ -4,9 +4,9 @@ namespace Varbox\Traits;
 
 use Closure;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
 use Varbox\Helpers\RelationHelper;
 use Varbox\Options\DuplicateOptions;
 

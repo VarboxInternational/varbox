@@ -4,8 +4,6 @@ namespace Varbox\Tests\Browser;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
-use Mockery;
-use Varbox\Commands\BlockMakeCommand;
 use Varbox\Models\Block;
 
 class BlocksTest extends TestCase
@@ -99,7 +97,7 @@ class BlocksTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/blocks')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Blocks');
         });
     }
@@ -182,7 +180,7 @@ class BlocksTest extends TestCase
                 ->visit('/admin/blocks')
                 ->assertDontSee('Add New')
                 ->visit('/admin/blocks/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Block');
         });
     }
@@ -237,7 +235,7 @@ class BlocksTest extends TestCase
                 ->visitLastPage('/admin/blocks', $this->blockModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/blocks/edit/' . $this->blockModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Block');
         });
 

@@ -75,7 +75,7 @@ class CitiesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/cities')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Cities');
         });
     }
@@ -158,7 +158,7 @@ class CitiesTest extends TestCase
                 ->visit('/admin/cities')
                 ->assertDontSee('Add New')
                 ->visit('/admin/cities/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add City');
         });
     }
@@ -223,7 +223,7 @@ class CitiesTest extends TestCase
                 ->visitLastPage('/admin/cities', $this->cityModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/cities/edit/' . $this->cityModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit City');
         });
 

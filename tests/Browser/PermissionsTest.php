@@ -58,7 +58,7 @@ class PermissionsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/permissions')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Permissions');
         });
     }
@@ -141,7 +141,7 @@ class PermissionsTest extends TestCase
                 ->visit('/admin/permissions')
                 ->assertDontSee('Add New')
                 ->visit('/admin/permissions/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Permission');
         });
     }
@@ -196,7 +196,7 @@ class PermissionsTest extends TestCase
                 ->visitLastPage('/admin/permissions', $this->permissionModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/permissions/edit/' . $this->permissionModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Permission');
         });
 

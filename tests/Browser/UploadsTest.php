@@ -70,7 +70,7 @@ class UploadsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/uploads')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Uploads');
         });
     }

@@ -56,7 +56,7 @@ class LanguagesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/languages')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Languages');
         });
     }
@@ -139,7 +139,7 @@ class LanguagesTest extends TestCase
                 ->visit('/admin/languages')
                 ->assertDontSee('Add New')
                 ->visit('/admin/languages/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Language');
         });
     }
@@ -194,7 +194,7 @@ class LanguagesTest extends TestCase
                 ->visitLastPage('/admin/languages', $this->languageModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/languages/edit/' . $this->languageModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Language');
         });
 

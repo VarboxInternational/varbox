@@ -95,7 +95,7 @@ class MenusTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/menus/locations')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Menu Locations');
         });
     }
@@ -136,7 +136,7 @@ class MenusTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/menus/' . $this->menuLocation)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Menus');
         });
     }
@@ -217,7 +217,7 @@ class MenusTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/menus/' . $this->menuLocation . '/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Menu');
         });
     }
@@ -278,7 +278,7 @@ class MenusTest extends TestCase
                 ->visitLastPage('/admin/menus/' . $this->menuLocation, $this->menuModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/menus/' . $this->menuLocation . '/edit/' . $this->menuModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Menu');
         });
 

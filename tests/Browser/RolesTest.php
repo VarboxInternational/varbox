@@ -52,7 +52,7 @@ class RolesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/roles')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Roles');
         });
     }
@@ -135,7 +135,7 @@ class RolesTest extends TestCase
                 ->visit('/admin/roles')
                 ->assertDontSee('Add New')
                 ->visit('/admin/roles/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Role');
         });
     }
@@ -190,7 +190,7 @@ class RolesTest extends TestCase
                 ->visitLastPage('/admin/roles', $this->roleModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/roles/edit/' . $this->roleModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Role');
         });
 

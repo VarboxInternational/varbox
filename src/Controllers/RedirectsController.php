@@ -5,14 +5,14 @@ namespace Varbox\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Varbox\Contracts\RedirectFilterContract;
 use Varbox\Contracts\RedirectModelContract;
 use Varbox\Contracts\RedirectSortContract;
-use Varbox\Requests\RedirectRequest;
 use Varbox\Models\Redirect;
+use Varbox\Requests\RedirectRequest;
 use Varbox\Traits\CanCrud;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
 class RedirectsController extends Controller
 {

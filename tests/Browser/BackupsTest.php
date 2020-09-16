@@ -63,7 +63,7 @@ class BackupsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/backups')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Backups');
         });
     }
@@ -147,7 +147,7 @@ class BackupsTest extends TestCase
                 ->assertDontSee($this->backupModel->date->toDateTimeString());
         });
 
-        $this->assertFileNotExists($this->backupPath());
+        $this->assertFileDoesNotExist($this->backupPath());
     }
 
     /** @test */
@@ -172,7 +172,7 @@ class BackupsTest extends TestCase
                 ->assertDontSee($this->backupModel->date->toDateTimeString());
         });
 
-        $this->assertFileNotExists($this->backupPath());
+        $this->assertFileDoesNotExist($this->backupPath());
     }
 
     /** @test */

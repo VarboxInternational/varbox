@@ -3,8 +3,6 @@
 namespace Varbox\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Varbox\Options\SlugOptions;
-use Varbox\Traits\HasSlug;
 
 class SortAuthor extends Model
 {

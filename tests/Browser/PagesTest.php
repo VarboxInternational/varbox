@@ -101,7 +101,7 @@ class PagesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/pages')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Pages');
         });
     }
@@ -184,7 +184,7 @@ class PagesTest extends TestCase
                 ->visit('/admin/pages')
                 ->assertDontSee('Add New')
                 ->visit('/admin/pages/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Page');
         });
     }
@@ -245,7 +245,7 @@ class PagesTest extends TestCase
                 ->visitLastPage('/admin/pages', $this->pageModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/pages/edit/' . $this->pageModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Page');
         });
 
@@ -957,6 +957,7 @@ class PagesTest extends TestCase
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/pages/edit/' . $this->pageModel->id)
                 ->openRevisionsContainer()
+                ->pause(500)
                 ->clickDeleteRevisionButton()
                 ->pause(500)
                 ->assertSee('There are no revisions for this record');

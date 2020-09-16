@@ -56,7 +56,7 @@ class CountriesTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/countries')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Countries');
         });
     }
@@ -139,7 +139,7 @@ class CountriesTest extends TestCase
                 ->visit('/admin/countries')
                 ->assertDontSee('Add New')
                 ->visit('/admin/countries/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Country');
         });
     }
@@ -194,7 +194,7 @@ class CountriesTest extends TestCase
                 ->visitLastPage('/admin/countries', $this->countryModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/countries/edit/' . $this->countryModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Country');
         });
 

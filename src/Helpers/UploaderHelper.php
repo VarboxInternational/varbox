@@ -4,7 +4,6 @@ namespace Varbox\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Varbox\Contracts\UploadedHelperContract;

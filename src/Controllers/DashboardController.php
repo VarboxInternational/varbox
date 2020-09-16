@@ -3,15 +3,11 @@
 namespace Varbox\Controllers;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Varbox\Contracts\ActivityModelContract;
-use Varbox\Contracts\ErrorModelContract;
-use Varbox\Contracts\UploadModelContract;
 use Varbox\Contracts\UserModelContract;
 
 class DashboardController extends Controller

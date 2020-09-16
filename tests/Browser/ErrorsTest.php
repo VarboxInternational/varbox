@@ -82,7 +82,7 @@ class ErrorsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/errors')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Errors');
         });
     }
@@ -137,7 +137,7 @@ class ErrorsTest extends TestCase
                 ->visitLastPage('/admin/errors', $this->errorModel)
                 ->assertSourceMissing('button-view')
                 ->visit('/admin/errors/show/' . $this->errorModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Errors');
         });
 

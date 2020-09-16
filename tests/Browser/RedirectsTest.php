@@ -61,7 +61,7 @@ class RedirectsTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/redirects')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Redirects');
         });
     }
@@ -106,7 +106,7 @@ class RedirectsTest extends TestCase
                 ->visit('/admin/redirects')
                 ->assertDontSee('Add New')
                 ->visit('/admin/redirects/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add Redirect');
         });
     }
@@ -161,7 +161,7 @@ class RedirectsTest extends TestCase
                 ->visitLastPage('/admin/redirects', $this->redirectModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/redirects/edit/' . $this->redirectModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit Redirect');
         });
 

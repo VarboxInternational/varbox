@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Varbox\Contracts\MenuModelContract;
 use Varbox\Exceptions\CrudException;
 use Varbox\Options\ActivityOptions;
 use Varbox\Traits\HasActivity;
@@ -14,7 +15,6 @@ use Varbox\Traits\IsCacheable;
 use Varbox\Traits\IsCsvExportable;
 use Varbox\Traits\IsFilterable;
 use Varbox\Traits\IsSortable;
-use Varbox\Contracts\MenuModelContract;
 
 class Menu extends Model implements MenuModelContract
 {

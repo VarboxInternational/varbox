@@ -3,7 +3,6 @@
 namespace Varbox\Options;
 
 use Exception;
-use Illuminate\Support\Arr;
 
 class MetaTagOptions
 {

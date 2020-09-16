@@ -59,7 +59,7 @@ class UsersTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/users')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Users');
         });
     }
@@ -142,7 +142,7 @@ class UsersTest extends TestCase
                 ->visit('/admin/users')
                 ->assertDontSee('Add New')
                 ->visit('/admin/users/create')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Add User');
         });
     }
@@ -197,7 +197,7 @@ class UsersTest extends TestCase
                 ->visitLastPage('/admin/users', $this->userModel)
                 ->assertSourceMissing('button-edit')
                 ->visit('/admin/users/edit/' . $this->userModel->id)
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Edit User');
         });
 

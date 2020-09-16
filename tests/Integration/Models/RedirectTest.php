@@ -189,6 +189,6 @@ class RedirectTest extends TestCase
 
         Redirect::exportToFile();
 
-        $this->assertFileNotExists($file);
+        $this->assertFileDoesNotExist($file);
     }
 }

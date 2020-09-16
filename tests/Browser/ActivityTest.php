@@ -99,7 +99,7 @@ class ActivityTest extends TestCase
         $this->browse(function ($browser) {
             $browser->loginAs($this->admin, 'admin')
                 ->visit('/admin/activity')
-                ->assertSee('Unauthorized')
+                ->assertSee('401')
                 ->assertDontSee('Activity');
         });
     }

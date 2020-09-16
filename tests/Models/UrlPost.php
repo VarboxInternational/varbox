@@ -3,8 +3,8 @@
 namespace Varbox\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Varbox\Tests\Controllers\UrlController;
 use Varbox\Options\UrlOptions;
+use Varbox\Tests\Controllers\UrlController;
 use Varbox\Traits\HasUrl;
 
 class UrlPost extends Model

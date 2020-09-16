@@ -3,15 +3,14 @@
 namespace Varbox\Traits;
 
 use Closure;
-use Exception;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Varbox\Models\Revision;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Varbox\Helpers\RelationHelper;
-use Varbox\Options\RevisionOptions;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\RevisionModelContract;
+use Varbox\Helpers\RelationHelper;
+use Varbox\Models\Revision;
+use Varbox\Options\RevisionOptions;
 
 trait HasRevisions
 {
