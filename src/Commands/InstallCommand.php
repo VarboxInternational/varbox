@@ -118,6 +118,13 @@ class InstallCommand extends Command
         try {
             $env = $this->files->get($this->laravel->environmentFilePath());
 
+            if (false === strpos($env, 'VARBOX_LICENSE_CODE')) {
+                $this->files->append($this->laravel->environmentFilePath(), "\nVARBOX_LICENSE_CODE=");
+                $this->line('<fg=green>SUCCESS |</> Appended "VARBOX_LICENSE_CODE" configuration to the ".env" file!');
+            } else {
+                $this->line('<fg=green>SUCCESS |</> The ".env" file already contains the "VARBOX_LICENSE_CODE" configuration.');
+            }
+
             if (false === strpos($env, 'CACHE_ALL_QUERIES')) {
                 $this->files->append($this->laravel->environmentFilePath(), "\nCACHE_ALL_QUERIES=false");
                 $this->line('<fg=green>SUCCESS |</> Appended "CACHE_ALL_QUERIES" configuration to the ".env" file!');

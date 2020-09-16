@@ -15,9 +15,9 @@ use Varbox\Models\Permission;
 use Varbox\Models\Role;
 use Varbox\Models\User;
 use Varbox\Tests\Browser\Browsers\VarboxBrowser;
-use Varbox\Tests\Browser\Seeders\PermissionsSeeder;
-use Varbox\Tests\Browser\Seeders\RolesSeeder;
-use Varbox\Tests\Browser\Seeders\UsersSeeder;
+use Varbox\Tests\Database\Seeders\PermissionsSeeder;
+use Varbox\Tests\Database\Seeders\RolesSeeder;
+use Varbox\Tests\Database\Seeders\UsersSeeder;
 use Varbox\VarboxServiceProvider;
 
 abstract class TestCase extends OrchestraDuskTestCase
