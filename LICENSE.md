@@ -34,4 +34,3 @@ By using Varbox in production without a valid license code for that project, iss
 - being publicly disclosed as untrustworthy, in a "Wall of Shame" section, on partner websites, on social networks like Twitter, Facebook and LinkedIn, or any other way the copyright holder sees fit;
 
 The copyright holder will attempt to contact the user 7 days before punitive action is taken if contact information is easily available, but is not obligated to do so. The user who has committed a breach of license terms can only purchase a special "Redemption License", issued individually, priced at 10 to 1000 times the list price, depending on the gravity of the breach and estimated foregone earnings. The price of the "Redemption License" is to be decided by the copyright holder on a case-by-case basis. Contact [office@varbox.io](mailto:office@varbox.io) if you've found you're breaching the terms - special consideration is given to those who report themselves.
-g
