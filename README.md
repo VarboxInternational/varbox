@@ -12,6 +12,7 @@
     <a href="https://varbox.io/">Website</a> | 
     <a href="https://varbox.io/docs/2.x/installation">Documentation</a> | 
     <a href="https://varbox.io/buy">Buy License</a>
+    <br><br>
 </p>
 
 ## Getting Started
