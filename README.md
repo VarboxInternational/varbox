@@ -23,12 +23,6 @@
 - [Full Example](https://varbox.io/docs/full-example) - Fully implement a crud system
 - [Full Documentation](https://varbox.io/docs) - Browse our extensive documentation
 
-<p align="center">
-    <a href="https://varbox.io" title="Varbox Admin Screenshot">
-        <img src="https://varbox.io/images/dashboard-with-filters.png" style="max-width: 690px" />
-    </a>
-<p>
-
 ## Modules & Components
 
 - [Admin Crud](https://varbox.io/admin-crud) - Build Laravel CRUD systems with ease in just a few of minutes
@@ -40,6 +34,14 @@
 - [Activity Log](https://varbox.io/activity-log) - Have a clear overview of who modified what inside your Laravel application
 - [System Settings](https://varbox.io/system-settings) - Reduce developer work by integrating our Laravel components
 - [Notifications Manager](https://varbox.io/notifications-manager) - Easily manage Laravel database notifications for every user in your 
+
+## Just A Taste
+
+<p align="center">
+    <a href="https://varbox.io" title="Varbox Admin Screenshot">
+        <img src="https://varbox.io/images/dashboard-with-filters.png" style="max-width: 690px" />
+    </a>
+<p>
 
 ## Get In Touch
 
