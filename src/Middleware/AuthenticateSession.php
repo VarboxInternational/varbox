@@ -3,9 +3,9 @@
 namespace Varbox\Middleware;
 
 use Closure;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
+use Varbox\Exceptions\AuthenticationException;
 
 class AuthenticateSession
 {
@@ -88,6 +88,8 @@ class AuthenticateSession
 
         $request->session()->flush();
 
-        throw new AuthenticationException;
+        throw new AuthenticationException('Unauthenticated', [
+            $guard
+        ]);
     }
 }
