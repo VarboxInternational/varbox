@@ -182,12 +182,10 @@ use Varbox\Sorts\StateSort;
 use Varbox\Sorts\TranslationSort;
 use Varbox\Sorts\UploadSort;
 use Varbox\Sorts\UserSort;
-use Varbox\Traits\CanCheckLicense;
-use Varbox\Traits\CanSendReports;
 
 class VarboxServiceProvider extends BaseServiceProvider
 {
-    use CanCheckLicense, CanSendReports;
+    use VarboxLicense;
 
     /**
      * @var ConfigRepository
@@ -236,7 +234,7 @@ class VarboxServiceProvider extends BaseServiceProvider
         $this->registerRoutes();
         $this->listenToEvents();
         $this->checkLicenseCodeExists();
-        $this->sendUsageReport();
+        $this->checkLicenseCodeValid();
 
     }
 
