@@ -2,7 +2,7 @@
 
 namespace Varbox\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Varbox\Traits\HasFactory;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

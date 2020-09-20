@@ -3,7 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Varbox\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Contracts\LanguageModelContract;
 use Varbox\Exceptions\CrudException;

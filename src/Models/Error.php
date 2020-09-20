@@ -3,7 +3,7 @@
 namespace Varbox\Models;
 
 use Exception;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Varbox\Traits\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
