@@ -6,7 +6,8 @@ All notable changes to `Varbox` will be documented in this file
 
 ### Added
 
-- Attach support for model factories on Varbox models
+- `Varbox\Traits\HasFactory` trait
+- Support for Varbox model factories inside Laravel app
 
 ## 2.0.0 - 2020/09/17
 
@@ -19,7 +20,7 @@ All notable changes to `Varbox` will be documented in this file
 - PHPUnit deprecated methods
 - Seeder namespaces
 - Seeder directory name
-- Models new directory
+- Models new directoryc
 
 ## 1.0.0 - 2020/07/11
 
