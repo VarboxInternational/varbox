@@ -2,6 +2,12 @@
 
 All notable changes to `Varbox` will be documented in this file
 
+## 2.0.1 - 2020/09/20
+
+### Added
+
+- Attach support for model factories on Varbox models
+
 ## 2.0.0 - 2020/09/17
 
 ### Added
