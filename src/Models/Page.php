@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Contracts\PageModelContract;
 use Varbox\Exceptions\CrudException;
@@ -28,6 +29,7 @@ use Varbox\Traits\IsSortable;
 
 class Page extends Model implements PageModelContract
 {
+    use HasFactory;
     use HasUrl;
     use HasUploads;
     use HasRevisions;

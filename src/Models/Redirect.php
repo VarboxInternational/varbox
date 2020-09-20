@@ -2,6 +2,7 @@
 
 namespace Varbox\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Varbox\Contracts\RedirectModelContract;
@@ -14,6 +15,7 @@ use Varbox\Traits\IsSortable;
 
 class Redirect extends Model implements RedirectModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

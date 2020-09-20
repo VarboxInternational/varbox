@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -15,6 +16,7 @@ use Varbox\Traits\IsSortable;
 
 class Error extends Model implements ErrorModelContract
 {
+    use HasFactory;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;

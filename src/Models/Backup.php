@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Varbox\Contracts\BackupModelContract;
@@ -14,6 +15,7 @@ use Varbox\Traits\IsSortable;
 
 class Backup extends Model implements BackupModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

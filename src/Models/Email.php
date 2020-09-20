@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Varbox\Contracts\EmailModelContract;
@@ -22,6 +23,7 @@ use Varbox\Traits\IsSortable;
 
 class Email extends Model implements EmailModelContract
 {
+    use HasFactory;
     use HasUploads;
     use HasRevisions;
     use HasDuplicates;

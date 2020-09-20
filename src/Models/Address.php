@@ -4,6 +4,7 @@ namespace Varbox\Models;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Varbox\Contracts\AddressModelContract;
@@ -18,6 +19,7 @@ use Varbox\Traits\IsSortable;
 
 class Address extends Model implements AddressModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

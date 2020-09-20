@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Varbox\Contracts\BlockModelContract;
@@ -21,6 +22,7 @@ use Varbox\Traits\IsSortable;
 
 class Block extends Model implements BlockModelContract
 {
+    use HasFactory;
     use HasUploads;
     use HasRevisions;
     use HasDuplicates;

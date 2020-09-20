@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Contracts\CityModelContract;
 use Varbox\Contracts\CountryModelContract;
@@ -16,6 +17,7 @@ use Varbox\Traits\IsSortable;
 
 class City extends Model implements CityModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

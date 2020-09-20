@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Varbox\Contracts\ActivityModelContract;
@@ -13,6 +14,7 @@ use Varbox\Traits\IsSortable;
 
 class Activity extends Model implements ActivityModelContract
 {
+    use HasFactory;
     use IsCacheable;
     use IsFilterable;
     use IsSortable;

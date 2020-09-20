@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Varbox\Contracts\TranslationModelContract;
 use Varbox\Options\ActivityOptions;
@@ -13,6 +14,7 @@ use Varbox\Traits\IsSortable;
 
 class Translation extends Model implements TranslationModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

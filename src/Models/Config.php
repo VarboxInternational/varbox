@@ -2,6 +2,7 @@
 
 namespace Varbox\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Varbox\Contracts\ConfigModelContract;
@@ -13,6 +14,7 @@ use Varbox\Traits\IsSortable;
 
 class Config extends Model implements ConfigModelContract
 {
+    use HasFactory;
     use HasActivity;
     use IsCacheable;
     use IsFilterable;

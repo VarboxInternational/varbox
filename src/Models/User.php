@@ -2,6 +2,7 @@
 
 namespace Varbox\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,6 +19,7 @@ use Varbox\Traits\IsSortable;
 
 class User extends Authenticatable implements UserModelContract
 {
+    use HasFactory;
     use HasRolesAndPermissions;
     use HasAddresses;
     use HasActivity;

@@ -3,6 +3,7 @@
 namespace Varbox\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ use Varbox\Traits\IsSortable;
 
 class Menu extends Model implements MenuModelContract
 {
+    use HasFactory;
     use HasNodes;
     use HasActivity;
     use IsCacheable;
