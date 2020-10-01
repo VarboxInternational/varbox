@@ -39,7 +39,7 @@
 
 <p align="center">
     <a href="https://varbox.io" title="Varbox Admin Screenshot">
-        <img src="https://varbox.io/images/dashboard-with-filters.png" style="max-width: 690px" />
+        <img src="https://varbox.io/images/demo.gif" style="max-width: 690px" />
     </a>
 <p>
 
