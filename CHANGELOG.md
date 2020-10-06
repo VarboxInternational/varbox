@@ -2,6 +2,13 @@
 
 All notable changes to `Varbox` will be documented in this file
 
+## 1.1.0 - 2020/10/06
+
+### Fixed
+
+- Sorting by relation foreign keys (other than `id`)
+- Duplicate fillable properties on `User` model from `varbox:install`
+
 ## 1.0.0 - 2020/07/11
 
 ### Added
