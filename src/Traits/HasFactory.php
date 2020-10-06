@@ -11,26 +11,19 @@ trait HasFactory
     use HasIlluminateFactory;
 
     /**
-     * Get a new factory instance for the model.
+     * Create a new factory instance for the model.
      *
-     * @param mixed $parameters
-     * @return Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public static function factory(...$parameters)
+    protected static function newFactory()
     {
         $model = Str::after(get_called_class(), 'Varbox\\Models\\');
         $class = "Database\Factories\\{$model}Factory";
 
-        if (static::newFactory()) {
-            $factory = static::newFactory();
-        } elseif (class_exists($class)) {
-            $factory = Factory::factoryForModel($model);
-        } else {
-            $factory = Factory::factoryForModel(get_called_class());
+        if (class_exists($class)) {
+            return Factory::factoryForModel($model);
         }
 
-        return $factory
-            ->count(is_numeric($parameters[0] ?? null) ? $parameters[0] : null)
-            ->state(is_array($parameters[0] ?? null) ? $parameters[0] : ($parameters[1] ?? []));
+        return Factory::factoryForModel(get_called_class());
     }
 }
