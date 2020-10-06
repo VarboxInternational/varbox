@@ -2,6 +2,17 @@
 
 All notable changes to `Varbox` will be documented in this file
 
+## 2.1.0 - 2020/10/06
+
+### Fixed
+
+- Sorting by relation foreign keys (other than `id`)
+- Duplicate fillable properties on `User` model from `varbox:install`
+
+## Changed
+
+- Factory trait makes use of the Laravel's `newFactory` method
+
 ## 2.0.1 - 2020/09/20
 
 ### Added
