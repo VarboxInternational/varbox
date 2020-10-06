@@ -171,27 +171,17 @@ trait IsSortable
             $models[] = $rel->getModel();
 
             $modelTable = $previousModel->getTable();
-            $modelKey = $previousModel->getKeyName();
             $relationTable = $rel->getModel()->getTable();
-            $relationKey = $rel->getForeignKeyName();
+            $modelKey = $rel->getForeignKeyName();
+            $relationKey = $rel->getModel()->getKeyName();
 
             if (! $this->alreadyJoinedForSorting($relationTable)) {
                 switch (get_class($rel)) {
                     case BelongsTo::class:
-                        $this->sort['query']->join($relationTable, $modelTable.'.'.$relationKey, '=', $relationTable.'.'.$modelKey);
-                        break;
-                    case HasOne::class:
                         $this->sort['query']->join($relationTable, $modelTable.'.'.$modelKey, '=', $relationTable.'.'.$relationKey);
                         break;
-                    case MorphOne::class:
-                        $morphClass = $previousModel->getMorphClass();
-                        $morphType = $rel->getMorphType();
-
-                        $this->sort['query']->join($relationTable, function ($join) use ($modelTable, $relationTable, $modelKey, $relationKey, $morphClass, $morphType) {
-                            $join->on($modelTable . '.'.$modelKey, '=', $relationTable . '.' . $relationKey)
-                                ->where($relationTable . '.' . $morphType, '=', $morphClass);
-                        });
-
+                    case HasOne::class:
+                        $this->sort['query']->join($relationTable, $modelTable.'.'.$relationKey, '=', $relationTable.'.'.$modelKey);
                         break;
                 }
             }
