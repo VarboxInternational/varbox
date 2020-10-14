@@ -228,8 +228,8 @@ class InstallCommand extends Command
                 );
 
                 $content = str_replace(
-                    "'name', 'email', 'password'",
-                    "'name', 'email', 'password', 'active'",
+                    "'name', 'email', 'password'" . PHP_EOL,
+                    "'name', 'email', 'password', 'active'" . PHP_EOL,
                     $content
                 );
 

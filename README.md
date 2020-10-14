@@ -9,8 +9,9 @@
         <img src="https://img.shields.io/badge/License-dual-blue">
     </a>
     <br><br>
-    <a href="https://varbox.io/">Website</a> | 
-    <a href="https://varbox.io/docs">Documentation</a> | 
+    <a href="https://varbox.io/">Our Website</a> | 
+    <a href="https://varbox.io/docs">Browse Documentation</a> | 
+    <a href="https://demo.varbox.io/admin">Live Demo</a> | 
     <a href="https://varbox.io/buy">Buy License</a>
     <br><br>
 </p>
