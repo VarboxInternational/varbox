@@ -60,6 +60,7 @@ class Page extends Model implements PageModelContract
         'slug',
         'type',
         'data',
+        'meta',
     ];
 
     /**
@@ -78,6 +79,7 @@ class Page extends Model implements PageModelContract
      */
     protected $casts = [
         'data' => 'array',
+        'meta' => 'array',
     ];
 
     /**
