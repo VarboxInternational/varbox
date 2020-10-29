@@ -2,6 +2,13 @@
 
 All notable changes to `Varbox` will be documented in this file
 
+## 1.2.0 - 2020/10/29
+
+### Fixed
+
+- Multiple attribute for non-required form select elements
+- Error displaying empty meta tags for model
+
 ## 1.1.0 - 2020/10/06
 
 ### Fixed
