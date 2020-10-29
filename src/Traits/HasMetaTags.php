@@ -45,7 +45,7 @@ trait HasMetaTags
         $tags = $this->{$this->getMetaColumn()};
         $defaults = $this->metaTagsOptions->defaultMetaValues;
 
-        foreach ($tags as $key => $value) {
+        foreach ((array)$tags ?? [] as $key => $value) {
             if ($value) {
                 $meta->set($key, $value);
             } elseif (!empty($defaults[$key])) {
