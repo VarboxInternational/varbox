@@ -539,7 +539,7 @@ class AdminFormHelper implements AdminFormHelperContract
     protected function options($options = [])
     {
         foreach ($options as $key => $val) {
-            if ($key == 'required' || $val == 'required') {
+            if ($key === 'required' || $val === 'required') {
                 unset($options[$key]);
             }
         }
