@@ -31,10 +31,10 @@ trait IsCsvExportable
         return response()->stream(function() use ($items) {
             $file = fopen('php://output', 'w');
 
-            fputcsv($file, $this->getCsvColumns());
+            fputcsv($file, $this->getCsvColumns(), "\t");
 
             foreach($items as $item) {
-                fputcsv($file, $item->toCsvArray());
+                fputcsv($file, $item->toCsvArray(), "\t");
             }
 
             fclose($file);
