@@ -2,6 +2,16 @@
 
 All notable changes to `Varbox` will be documented in this file
 
+## 2.3.0 - 2021/02/09
+
+### Fixed
+
+- Preview throwing a 404 error
+
+### Changed
+
+- Use tab delimiter on csv exports
+
 ## 2.2.0 - 2020/10/29
 
 ### Fixed
