@@ -112,7 +112,7 @@ trait CanPreview
             return $model;
         }
 
-        abort(404);
+        return app($class);
     }
 
     /**
