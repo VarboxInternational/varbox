@@ -61,7 +61,7 @@
         "illuminate/validation": "^8.0",
         "illuminate/view": "^8.0",
         "intervention/image": "^2.5",
-        "kalnoy/nestedset": "^5.0",
+        "kalnoy/nestedset": "^6.0",
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.2",
         "spatie/laravel-backup": "^6.11"
